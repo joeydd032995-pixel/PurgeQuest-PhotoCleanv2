@@ -217,6 +217,7 @@ struct CombatView: View {
 
     private func exit() {
         try? modelContext.save()
+        combat.endSessionActivity()
         appState.combatRequested = false
         dismiss()
     }

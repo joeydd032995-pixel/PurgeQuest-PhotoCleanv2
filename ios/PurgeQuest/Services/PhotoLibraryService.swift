@@ -152,9 +152,9 @@ final class PhotoLibraryService {
             let monster: MonsterType
             switch asset.mediaType {
             case .video:
-                monster = MLAnalysisService.classifyVideo(asset: asset, estimatedBytes: bytes)
+                monster = MediaClassifierRegistry.video.classify(asset: asset, estimatedBytes: bytes)
             default:
-                monster = MLAnalysisService.classifyPhoto(asset: asset, thumbnail: thumb)
+                monster = MediaClassifierRegistry.photo.classify(asset: asset, thumbnail: thumb)
             }
             let item = MediaItem(
                 id: asset.localIdentifier,

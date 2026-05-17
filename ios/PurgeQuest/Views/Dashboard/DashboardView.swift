@@ -21,6 +21,9 @@ struct DashboardView: View {
         ScrollView {
             VStack(spacing: 18) {
                 heroHeader
+                if let event = SeasonalEventService.shared.activeEvent {
+                    SeasonalEventBanner(event: event)
+                }
                 statsGrid
                 questsPanel
                 enterDungeonButton
@@ -34,6 +37,7 @@ struct DashboardView: View {
         .task {
             libraryStats = PhotoLibraryService.shared.fetchLibraryStats()
             updateStreak()
+            SeasonalEventService.shared.refresh()
         }
         .onAppear {
             withAnimation(.easeInOut(duration: 2.5).repeatForever(autoreverses: true)) {

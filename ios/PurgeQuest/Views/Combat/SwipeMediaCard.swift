@@ -17,7 +17,9 @@ struct SwipeMediaCard: View {
     @State private var isDragging: Bool = false
     @State private var snapAway: CGSize? = nil
     @State private var dynamicFlavor: String? = nil
+    @State private var showLivePreview: Bool = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.scenePhase) private var scenePhase
 
     private let commitThreshold: CGFloat = 110
     private var rotation: Angle {
@@ -44,10 +46,29 @@ struct SwipeMediaCard: View {
             guard isFront else { return }
             if let cached = FoundationFlavorService.shared.cached(for: item) {
                 dynamicFlavor = cached
-                return
+            } else {
+                let result = await FoundationFlavorService.shared.flavor(for: item)
+                dynamicFlavor = result
             }
-            let result = await FoundationFlavorService.shared.flavor(for: item)
-            dynamicFlavor = result
+            // Kick off looping video preview after a tiny delay so the
+            // thumbnail reads first and the player has time to attach.
+            if item.kind == .video {
+                try? await Task.sleep(for: .milliseconds(220))
+                guard !Task.isCancelled, isFront else { return }
+                VideoPreviewService.shared.play(phAssetID: item.id)
+                withAnimation(.easeInOut(duration: 0.35)) { showLivePreview = true }
+            }
+        }
+        .onDisappear {
+            if item.kind == .video {
+                VideoPreviewService.shared.stop(forAssetID: item.id)
+            }
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase != .active, item.kind == .video {
+                VideoPreviewService.shared.stop(forAssetID: item.id)
+                showLivePreview = false
+            }
         }
         .accessibilityLabel(item.voiceOverDescription)
         .accessibilityAdjustableAction { dir in
@@ -60,37 +81,44 @@ struct SwipeMediaCard: View {
     }
 
     private var cardBody: some View {
-        ZStack {
-            // Background thumbnail
-            Color.dungeonStoneLight
-                .overlay {
-                    if let thumb = item.thumbnail {
-                        Image(uiImage: thumb)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .allowsHitTesting(false)
-                    } else {
-                        Image(systemName: item.monsterType.symbol)
-                            .font(.system(size: 80, weight: .bold))
-                            .foregroundStyle(item.monsterType.accentColor.opacity(0.5))
-                    }
+        Color.dungeonStoneLight
+            .overlay {
+                if let thumb = item.thumbnail {
+                    Image(uiImage: thumb)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .allowsHitTesting(false)
+                } else {
+                    Image(systemName: item.monsterType.symbol)
+                        .font(.system(size: 80, weight: .bold))
+                        .foregroundStyle(item.monsterType.accentColor.opacity(0.5))
                 }
-                .overlay(
-                    LinearGradient(
-                        colors: [.clear, .black.opacity(0.4), .black.opacity(0.85)],
-                        startPoint: .top, endPoint: .bottom
-                    )
-                )
-                .overlay(alignment: .top) { topMetaBar }
-                .overlay(alignment: .bottomLeading) { bottomMetaBar }
-
-            if item.kind == .video {
-                Image(systemName: "play.circle.fill")
-                    .font(.system(size: 70, weight: .bold))
-                    .foregroundStyle(.white.opacity(0.85))
-                    .shadow(radius: 12)
             }
-        }
+            .overlay {
+                if item.kind == .video, isFront, showLivePreview {
+                    VideoPreviewLayerView()
+                        .allowsHitTesting(false)
+                        .transition(.opacity)
+                }
+            }
+            .overlay(
+                LinearGradient(
+                    colors: [.clear, .black.opacity(0.4), .black.opacity(0.85)],
+                    startPoint: .top, endPoint: .bottom
+                )
+                .allowsHitTesting(false)
+            )
+            .overlay {
+                if item.kind == .video, !(isFront && showLivePreview) {
+                    Image(systemName: "play.circle.fill")
+                        .font(.system(size: 70, weight: .bold))
+                        .foregroundStyle(.white.opacity(0.85))
+                        .shadow(radius: 12)
+                        .allowsHitTesting(false)
+                }
+            }
+            .overlay(alignment: .top) { topMetaBar }
+            .overlay(alignment: .bottomLeading) { bottomMetaBar }
     }
 
     private var topMetaBar: some View {

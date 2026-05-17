@@ -83,6 +83,7 @@ final class CombatViewModel {
         phase = .loading
         heroCurrentHP = hero.maxHP
         heroMaxHP = hero.maxHP
+        CombatLiveActivityService.shared.start(heroName: hero.name)
 
         let svc = PhotoLibraryService.shared
         let assets = svc.fetchAssets(limit: Self.initialFetchLimit, includeVideos: includeVideos, videoOnly: videoOnly)
@@ -135,11 +136,13 @@ final class CombatViewModel {
         peakCombo = max(peakCombo, combo)
         hero.highestCombo = max(hero.highestCombo, peakCombo)
 
-        // XP with class perks
+        // XP with class perks + seasonal event bonus
         let multiplier = max(1, min(combo / 5 + 1, 3))
         var xp = item.monsterType.xpReward * multiplier
         if hero.heroClass == .archivist, item.kind == .photo { xp = Int(Double(xp) * 1.20) }
         if hero.heroClass == .cinematographer, item.kind == .video { xp = Int(Double(xp) * 1.20) }
+        let seasonalBonus = SeasonalEventService.shared.xpMultiplier(for: item.monsterType)
+        if seasonalBonus > 1.0 { xp = Int(Double(xp) * seasonalBonus) }
         sessionXP += xp
 
         // Gems = MB freed * combo multiplier
@@ -161,6 +164,7 @@ final class CombatViewModel {
         }
         if combo > 0 && combo % 5 == 0 { HapticsService.shared.comboBurst() }
 
+        pushLiveActivityUpdate()
         advance()
     }
 
@@ -173,6 +177,7 @@ final class CombatViewModel {
         spareFlashTrigger &+= 1
         screenShakeTrigger &+= 1
         HapticsService.shared.medium()
+        pushLiveActivityUpdate()
         advance()
     }
 
@@ -239,6 +244,22 @@ final class CombatViewModel {
         await proceedToNextRoom(hero: hero, context: context, quests: quests)
     }
 
+    private func pushLiveActivityUpdate() {
+        CombatLiveActivityService.shared.update(
+            heroHP: heroCurrentHP,
+            heroMaxHP: heroMaxHP,
+            combo: combo,
+            room: roomNumber,
+            total: Self.totalRoomsPerSession,
+            remaining: roomRemaining,
+            mb: Double(sessionBytesFreed) / 1_048_576.0
+        )
+    }
+
+    func endSessionActivity() {
+        CombatLiveActivityService.shared.end()
+    }
+
     private func proceedToNextRoom(hero: Hero, context: ModelContext, quests: [Quest]) async {
         if perfectRoom {
             // Perfect room achievement bump
@@ -255,6 +276,7 @@ final class CombatViewModel {
         roomNumber += 1
         if roomNumber > Self.totalRoomsPerSession || queueIndex >= allItems.count {
             phase = .sessionComplete
+            CombatLiveActivityService.shared.end()
             return
         }
         loadNextRoom()
