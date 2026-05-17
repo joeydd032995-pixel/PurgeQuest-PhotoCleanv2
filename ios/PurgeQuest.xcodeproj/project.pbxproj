@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		XX2BD248A823E028801C55XX /* PurgeQuestWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = XX11AC582E8F68AC4F2634XX /* PurgeQuestWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		105FC58A2E9EAD3200EA8BCF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,29 +25,54 @@
 			remoteGlobalIDString = 105FC5792E9EAD3100EA8BCF;
 			remoteInfo = PurgeQuest;
 		};
+		XXE83BE4E7DE91F2F0FA0DXX /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 105FC5722E9EAD3100EA8BCF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = XX4A62692E314444A5EBFCXX;
+			remoteInfo = PurgeQuestWidget;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		XX96115A717DBE541CB139XX /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				XX2BD248A823E028801C55XX /* PurgeQuestWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		105FC57A2E9EAD3100EA8BCF /* PurgeQuest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PurgeQuest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		105FC5892E9EAD3200EA8BCF /* PurgeQuestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PurgeQuestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		105FC5932E9EAD3200EA8BCF /* PurgeQuestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PurgeQuestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		XX11AC582E8F68AC4F2634XX /* PurgeQuestWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PurgeQuestWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		XXD367847C00A52A94B5B3XX /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = XX4A62692E314444A5EBFCXX /* PurgeQuestWidget */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		105FC57C2E9EAD3100EA8BCF /* PurgeQuest */ = {
+		XX1A3E41DD27878C0A3BFCXX /* PurgeQuestWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = PurgeQuest;
+			path = PurgeQuestWidget;
 			sourceTree = "<group>";
-		};
-		105FC58C2E9EAD3200EA8BCF /* PurgeQuestTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = PurgeQuestTests;
-			sourceTree = "<group>";
-		};
-		105FC5962E9EAD3200EA8BCF /* PurgeQuestUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = PurgeQuestUITests;
-			sourceTree = "<group>";
+			exceptions = (
+				XXD367847C00A52A94B5B3XX /* PBXFileSystemSynchronizedBuildFileExceptionSet */,
+			);
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -69,7 +98,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		XX75B8358D2242CEB782C5XX /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		105FC57C2E9EAD3100EA8BCF /* PurgeQuest */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PurgeQuest;
+			sourceTree = "<group>";
+		};
+		105FC58C2E9EAD3200EA8BCF /* PurgeQuestTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PurgeQuestTests;
+			sourceTree = "<group>";
+		};
+		105FC5962E9EAD3200EA8BCF /* PurgeQuestUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PurgeQuestUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXGroup section */
 		105FC5712E9EAD3100EA8BCF = {
@@ -79,6 +133,7 @@
 				105FC58C2E9EAD3200EA8BCF /* PurgeQuestTests */,
 				105FC5962E9EAD3200EA8BCF /* PurgeQuestUITests */,
 				105FC57B2E9EAD3100EA8BCF /* Products */,
+				XX1A3E41DD27878C0A3BFCXX /* PurgeQuestWidget */,
 			);
 			sourceTree = "<group>";
 		};
@@ -88,6 +143,7 @@
 				105FC57A2E9EAD3100EA8BCF /* PurgeQuest.app */,
 				105FC5892E9EAD3200EA8BCF /* PurgeQuestTests.xctest */,
 				105FC5932E9EAD3200EA8BCF /* PurgeQuestUITests.xctest */,
+				XX11AC582E8F68AC4F2634XX /* PurgeQuestWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -102,10 +158,12 @@
 				105FC5762E9EAD3100EA8BCF /* Sources */,
 				105FC5772E9EAD3100EA8BCF /* Frameworks */,
 				105FC5782E9EAD3100EA8BCF /* Resources */,
+				XX96115A717DBE541CB139XX /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				XX401EE95BBEF055377159XX /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				105FC57C2E9EAD3100EA8BCF /* PurgeQuest */,
@@ -163,6 +221,26 @@
 			productReference = 105FC5932E9EAD3200EA8BCF /* PurgeQuestUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		XX4A62692E314444A5EBFCXX /* PurgeQuestWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = XXCC478B01135B6601EAEAXX /* Build configuration list for PBXNativeTarget "PurgeQuestWidget" */;
+			buildPhases = (
+				XXE0FD6AFA7551401BFCEBXX /* Sources */,
+				XX75B8358D2242CEB782C5XX /* Frameworks */,
+				XX8DEE49FEB104205DDA8DXX /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PurgeQuestWidget;
+			productName = PurgeQuestWidget;
+			productReference = XX11AC582E8F68AC4F2634XX /* PurgeQuestWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+			fileSystemSynchronizedGroups = (
+				XX1A3E41DD27878C0A3BFCXX /* PurgeQuestWidget */,
+			);
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -203,6 +281,7 @@
 				105FC5792E9EAD3100EA8BCF /* PurgeQuest */,
 				105FC5882E9EAD3200EA8BCF /* PurgeQuestTests */,
 				105FC5922E9EAD3200EA8BCF /* PurgeQuestUITests */,
+				XX4A62692E314444A5EBFCXX /* PurgeQuestWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -223,6 +302,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		105FC5912E9EAD3200EA8BCF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		XX8DEE49FEB104205DDA8DXX /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,6 +339,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		XXE0FD6AFA7551401BFCEBXX /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -265,6 +358,11 @@
 			isa = PBXTargetDependency;
 			target = 105FC5792E9EAD3100EA8BCF /* PurgeQuest */;
 			targetProxy = 105FC5942E9EAD3200EA8BCF /* PBXContainerItemProxy */;
+		};
+		XX401EE95BBEF055377159XX /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = XX4A62692E314444A5EBFCXX /* PurgeQuestWidget */;
+			targetProxy = XXE83BE4E7DE91F2F0FA0DXX /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -395,6 +493,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PurgeQuest/PurgeQuest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -421,7 +520,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -430,6 +529,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PurgeQuest/PurgeQuest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -456,7 +556,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -470,7 +570,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "app.rork.ahfrcx0wtdh34ummglth2.tests";
+				PRODUCT_BUNDLE_IDENTIFIER = app.rork.ahfrcx0wtdh34ummglth2.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -492,7 +592,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "app.rork.ahfrcx0wtdh34ummglth2.tests";
+				PRODUCT_BUNDLE_IDENTIFIER = app.rork.ahfrcx0wtdh34ummglth2.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -512,7 +612,7 @@
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "app.rork.ahfrcx0wtdh34ummglth2.uitests";
+				PRODUCT_BUNDLE_IDENTIFIER = app.rork.ahfrcx0wtdh34ummglth2.uitests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -532,7 +632,7 @@
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "app.rork.ahfrcx0wtdh34ummglth2.uitests";
+				PRODUCT_BUNDLE_IDENTIFIER = app.rork.ahfrcx0wtdh34ummglth2.uitests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -543,6 +643,52 @@
 				TEST_TARGET_NAME = PurgeQuest;
 			};
 			name = Release;
+		};
+		XX903C148B10DCD22AF973XX /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = PurgeQuestWidget/PurgeQuestWidget.entitlements;
+				PRODUCT_BUNDLE_IDENTIFIER = com.purgequest.app.purgequestwidget;
+				PRODUCT_NAME = PurgeQuestWidget;
+				SWIFT_VERSION = 5.0;
+				SDKROOT = iphoneos;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PurgeQuestWidget/Info.plist;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				MARKETING_VERSION = 1.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
+			};
+			name = Release;
+		};
+		XXB6A00ECC4BD3DBBFC9B8XX /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = PurgeQuestWidget/PurgeQuestWidget.entitlements;
+				PRODUCT_BUNDLE_IDENTIFIER = com.purgequest.app.purgequestwidget;
+				PRODUCT_NAME = PurgeQuestWidget;
+				SWIFT_VERSION = 5.0;
+				SDKROOT = iphoneos;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PurgeQuestWidget/Info.plist;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				MARKETING_VERSION = 1.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
+			};
+			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
@@ -579,6 +725,15 @@
 			buildConfigurations = (
 				105FC5A42E9EAD3200EA8BCF /* Debug */,
 				105FC5A52E9EAD3200EA8BCF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		XXCC478B01135B6601EAEAXX /* Build configuration list for PBXNativeTarget "PurgeQuestWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				XXB6A00ECC4BD3DBBFC9B8XX /* Debug */,
+				XX903C148B10DCD22AF973XX /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

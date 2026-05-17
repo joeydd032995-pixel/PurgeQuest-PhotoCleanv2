@@ -38,6 +38,16 @@ struct DashboardView: View {
             libraryStats = PhotoLibraryService.shared.fetchLibraryStats()
             updateStreak()
             SeasonalEventService.shared.refresh()
+            WidgetSnapshotService.write(hero: hero, quests: quests)
+        }
+        .onChange(of: hero?.gems ?? 0) { _, _ in
+            WidgetSnapshotService.write(hero: hero, quests: quests)
+        }
+        .onChange(of: hero?.streakDays ?? 0) { _, _ in
+            WidgetSnapshotService.write(hero: hero, quests: quests)
+        }
+        .onChange(of: quests.map(\.currentCount)) { _, _ in
+            WidgetSnapshotService.write(hero: hero, quests: quests)
         }
         .onAppear {
             withAnimation(.easeInOut(duration: 2.5).repeatForever(autoreverses: true)) {

@@ -1,0 +1,107 @@
+{
+  "identifier" : "PurgeQuestStoreKit",
+  "nonRenewingSubscriptions" : [],
+  "products" : [
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "PQGEMS250",
+      "localizations" : [
+        {
+          "description" : "A pouch of 250 Storage Gems for cosmetic flair.",
+          "displayName" : "250 Storage Gems",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.purgequest.gems.250",
+      "referenceName" : "Gems 250",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "PQGEMS1000",
+      "localizations" : [
+        {
+          "description" : "A satchel of 1,000 Storage Gems.",
+          "displayName" : "1,000 Storage Gems",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.purgequest.gems.1000",
+      "referenceName" : "Gems 1000",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "9.99",
+      "familyShareable" : false,
+      "internalID" : "PQGEMS5000",
+      "localizations" : [
+        {
+          "description" : "A treasure chest of 5,000 Storage Gems.",
+          "displayName" : "5,000 Storage Gems",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.purgequest.gems.5000",
+      "referenceName" : "Gems 5000",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "PQEMBERS",
+      "localizations" : [
+        {
+          "description" : "Crimson flames trail your steps.",
+          "displayName" : "Ember Cloak Skin",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.purgequest.cosmetic.embers",
+      "referenceName" : "Embers Skin",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "PQAURORA",
+      "localizations" : [
+        {
+          "description" : "Soft northern-light particle effect.",
+          "displayName" : "Aurora Trail FX",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.purgequest.cosmetic.aurora",
+      "referenceName" : "Aurora FX",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "7.99",
+      "familyShareable" : false,
+      "internalID" : "PQVSBUNDLE",
+      "localizations" : [
+        {
+          "description" : "Five video-themed cosmetics including the Film Reel Blade and Reel Spirit pet.",
+          "displayName" : "Video Slayer Bundle",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.purgequest.cosmetic.videoSlayerBundle",
+      "referenceName" : "Video Slayer Bundle",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : []
+  },
+  "subscriptionGroups" : [],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}
