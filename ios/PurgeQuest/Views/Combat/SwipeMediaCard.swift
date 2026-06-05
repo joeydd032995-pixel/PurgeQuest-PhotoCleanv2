@@ -18,6 +18,7 @@ struct SwipeMediaCard: View {
     @State private var snapAway: CGSize? = nil
     @State private var dynamicFlavor: String? = nil
     @State private var showLivePreview: Bool = false
+    @State private var elitePulse: Bool = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
 
@@ -70,7 +71,7 @@ struct SwipeMediaCard: View {
                 showLivePreview = false
             }
         }
-        .accessibilityLabel(item.voiceOverDescription)
+        .accessibilityLabel(item.monsterType.isElite ? "Elite. \(item.voiceOverDescription)" : item.voiceOverDescription)
         .accessibilityAdjustableAction { dir in
             switch dir {
             case .increment: onSpare()
@@ -122,16 +123,20 @@ struct SwipeMediaCard: View {
     }
 
     private var topMetaBar: some View {
-        HStack {
+        HStack(spacing: 8) {
             HStack(spacing: 6) {
                 Image(systemName: item.monsterType.symbol)
                     .font(.caption.weight(.bold))
                 Text(item.monsterType.displayName)
                     .font(.caption.weight(.semibold))
+                    .lineLimit(1)
             }
             .padding(.horizontal, 10).padding(.vertical, 6)
             .background(Capsule().fill(item.monsterType.accentColor.opacity(0.85)))
             .foregroundStyle(.dungeonVoid)
+            if item.monsterType.isElite {
+                eliteBadge
+            }
             Spacer()
             if item.kind == .video, !item.formattedDuration.isEmpty {
                 Text(item.formattedDuration)
@@ -142,6 +147,38 @@ struct SwipeMediaCard: View {
             }
         }
         .padding(12)
+    }
+
+    /// Small gold crown badge marking high-HP "boss" monsters — the foes a Purge
+    /// Knight earns bonus XP for slaying. Pulses gently unless Reduce Motion is on.
+    private var eliteBadge: some View {
+        HStack(spacing: 3) {
+            Image(systemName: "crown.fill")
+                .font(.system(size: 9, weight: .black))
+            Text("ELITE")
+                .font(.system(size: 10, weight: .black))
+                .tracking(0.6)
+        }
+        .padding(.horizontal, 8).padding(.vertical, 5)
+        .foregroundStyle(.dungeonVoid)
+        .background(
+            Capsule().fill(
+                LinearGradient(
+                    colors: [Color(red: 1.0, green: 0.86, blue: 0.45), .questAmberDeep],
+                    startPoint: .topLeading, endPoint: .bottomTrailing
+                )
+            )
+        )
+        .overlay(Capsule().stroke(.white.opacity(0.65), lineWidth: 0.6))
+        .shadow(color: .questAmber.opacity(elitePulse ? 0.85 : 0.35), radius: elitePulse ? 7 : 3)
+        .scaleEffect(elitePulse ? 1.05 : 1.0)
+        .onAppear {
+            guard !reduceMotion else { return }
+            withAnimation(.easeInOut(duration: 1.1).repeatForever(autoreverses: true)) {
+                elitePulse = true
+            }
+        }
+        .accessibilityHidden(true)
     }
 
     private var bottomMetaBar: some View {
