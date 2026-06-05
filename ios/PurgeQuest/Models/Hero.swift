@@ -34,7 +34,7 @@ enum HeroClass: String, CaseIterable, Codable {
         switch self {
         case .archivist:       return "+20% XP from photo monsters"
         case .cinematographer: return "+20% XP from video monsters"
-        case .purgeKnight:     return "+15% combo duration"
+        case .purgeKnight:     return "+30% XP from elite monsters"
         case .digitalHermit:   return "+10% Gem multiplier"
         }
     }

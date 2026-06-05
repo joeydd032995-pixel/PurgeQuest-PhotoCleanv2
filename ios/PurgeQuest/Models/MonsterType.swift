@@ -80,6 +80,10 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         }
     }
 
+    /// Elite monsters are the high-HP "bosses" (Leviathan, Minotaur, Dragon, Ancient
+    /// Archive, Video Vampire) — the toughest foes a Purge Knight is rewarded for slaying.
+    var isElite: Bool { hp >= 2 }
+
     var xpReward: Int {
         switch self {
         case .longTakeLeviathan: return 80
