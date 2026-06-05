@@ -31,6 +31,10 @@ enum CombatPhase: Equatable {
 struct PendingDecision: Identifiable {
     let item: MediaItem
     var willDelete: Bool
+    /// Full reward captured at the instant of the swipe (base × combo × class perk × seasonal bonus).
+    /// Stored per-decision so toggling items off in the room summary keeps rewards exact.
+    var xpReward: Int = 0
+    var gemReward: Int = 0
     var id: String { item.id }
 }
 
@@ -136,25 +140,13 @@ final class CombatViewModel {
         peakCombo = max(peakCombo, combo)
         hero.highestCombo = max(hero.highestCombo, peakCombo)
 
-        // XP with class perks + seasonal event bonus
-        let multiplier = max(1, min(combo / 5 + 1, 3))
-        var xp = item.monsterType.xpReward * multiplier
-        if hero.heroClass == .archivist, item.kind == .photo { xp = Int(Double(xp) * 1.20) }
-        if hero.heroClass == .cinematographer, item.kind == .video { xp = Int(Double(xp) * 1.20) }
-        let seasonalBonus = SeasonalEventService.shared.xpMultiplier(for: item.monsterType)
-        if seasonalBonus > 1.0 { xp = Int(Double(xp) * seasonalBonus) }
-        sessionXP += xp
-
-        // Gems = MB freed * combo multiplier
-        let mb = Double(item.estimatedBytes) / 1_048_576.0
-        var gems = Int(mb.rounded()) * multiplier
-        if hero.heroClass == .digitalHermit { gems = Int(Double(gems) * 1.10) }
-        sessionGems += gems
-        sessionBytesFreed += item.estimatedBytes
-
-        if item.kind == .photo { sessionPhotosDeleted += 1 } else { sessionVideosDeleted += 1 }
-
-        pendingDecisions.append(PendingDecision(item: item, willDelete: true))
+        // Capture the full reward now, while this combo is live. It rides along on the
+        // decision so it survives any toggles in the room summary and is banked verbatim
+        // when the room is confirmed.
+        let earned = reward(for: item, hero: hero, combo: combo)
+        pendingDecisions.append(
+            PendingDecision(item: item, willDelete: true, xpReward: earned.xp, gemReward: earned.gems)
+        )
         deleteFlashTrigger &+= 1
 
         if item.kind == .video {
@@ -166,6 +158,24 @@ final class CombatViewModel {
 
         pushLiveActivityUpdate()
         advance()
+    }
+
+    /// XP + gems for slaying one monster at the given combo, with class perks and the active
+    /// seasonal event folded in. Combo multiplier ramps 1× → 2× (combo 5) → 3× (combo 10+).
+    private func reward(for item: MediaItem, hero: Hero, combo: Int) -> (xp: Int, gems: Int) {
+        let multiplier = max(1, min(combo / 5 + 1, 3))
+
+        var xp = item.monsterType.xpReward * multiplier
+        if hero.heroClass == .archivist, item.kind == .photo { xp = Int(Double(xp) * 1.20) }
+        if hero.heroClass == .cinematographer, item.kind == .video { xp = Int(Double(xp) * 1.20) }
+        let seasonalBonus = SeasonalEventService.shared.xpMultiplier(for: item.monsterType)
+        if seasonalBonus > 1.0 { xp = Int(Double(xp) * seasonalBonus) }
+
+        let mb = Double(item.estimatedBytes) / 1_048_576.0
+        var gems = Int(mb.rounded()) * multiplier
+        if hero.heroClass == .digitalHermit { gems = Int(Double(gems) * 1.10) }
+
+        return (xp, gems)
     }
 
     func decideSpare(_ item: MediaItem) {
@@ -230,7 +240,7 @@ final class CombatViewModel {
                 GameDataService.updateQuests(quests, for: item.monsterType, mbFreedThisAction: mb)
             }
             // Apply rewards to hero
-            applyRewardsToHero(hero: hero, sessionDelta: false)
+            applyRewardsToHero(hero: hero)
             try? context.save()
             HapticsService.shared.success()
             await proceedToNextRoom(hero: hero, context: context, quests: quests)
@@ -282,28 +292,39 @@ final class CombatViewModel {
         loadNextRoom()
     }
 
-    private func applyRewardsToHero(hero: Hero, sessionDelta: Bool) {
-        // Gem & XP get applied based on what was actually purged this room.
-        let confirmedItems = pendingDecisions.filter { $0.willDelete }
-        // Recompute from confirmed pending only — since we may have toggled some off in summary
-        var actualXP = 0
-        var actualGems = 0
-        var actualBytes: Int64 = 0
+    /// Banks every reward the player confirmed in the current room. Because each reward was
+    /// captured at swipe time, combo / class / seasonal bonuses all carry through — and any
+    /// items toggled off in the summary are simply excluded.
+    private func applyRewardsToHero(hero: Hero) {
+        let confirmed = pendingDecisions.filter { $0.willDelete }
+        guard !confirmed.isEmpty else { return }
+
+        var roomXP = 0
+        var roomGems = 0
+        var roomBytes: Int64 = 0
         var photos = 0, videos = 0
-        for d in confirmedItems {
-            actualBytes += d.item.estimatedBytes
-            actualXP += d.item.monsterType.xpReward
-            let mb = Double(d.item.estimatedBytes) / 1_048_576.0
-            actualGems += Int(mb.rounded())
+        for d in confirmed {
+            roomXP += d.xpReward
+            roomGems += d.gemReward
+            roomBytes += d.item.estimatedBytes
             if d.item.kind == .photo { photos += 1 } else { videos += 1 }
         }
-        hero.totalXP += actualXP
-        hero.gems += actualGems
-        hero.totalMBFreed += Double(actualBytes) / 1_048_576.0
+
+        // Bank onto the hero's lifetime totals.
+        hero.totalXP += roomXP
+        hero.gems += roomGems
+        hero.totalMBFreed += Double(roomBytes) / 1_048_576.0
         hero.totalPhotosPurged += photos
         hero.totalVideosPurged += videos
 
-        // Level-up check
+        // Roll the session tallies forward — only what was actually purged this room.
+        sessionXP += roomXP
+        sessionGems += roomGems
+        sessionBytesFreed += roomBytes
+        sessionPhotosDeleted += photos
+        sessionVideosDeleted += videos
+
+        // A single fat room can pop multiple levels; +10 max HP each, full heal on level-up.
         while hero.totalXP >= Hero.xpForLevel(hero.level + 1) {
             hero.level += 1
             hero.maxHP += 10

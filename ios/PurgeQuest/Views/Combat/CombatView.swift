@@ -168,6 +168,8 @@ struct CombatView: View {
                 summaryRow(label: "Photos purged", value: "\(combat.sessionPhotosDeleted)", tint: .questAmber)
                 summaryRow(label: "Videos purged", value: "\(combat.sessionVideosDeleted)", tint: .videoSapphire)
                 summaryRow(label: "Storage freed", value: ByteCountFormatter.string(fromByteCount: combat.sessionBytesFreed, countStyle: .file), tint: .gemEmerald)
+                summaryRow(label: "XP earned", value: "+\(combat.sessionXP)", tint: .questAmberDeep)
+                summaryRow(label: "Gems earned", value: "+\(combat.sessionGems)", tint: .gemEmerald)
                 summaryRow(label: "Peak combo", value: "\(combat.peakCombo)×", tint: .combatCrimson)
             }
             .padding()

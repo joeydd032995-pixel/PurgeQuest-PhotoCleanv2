@@ -43,6 +43,7 @@ struct RoomSummaryView: View {
             HStack(spacing: 10) {
                 StatTile(icon: "internaldrive.fill", label: "To free", value: label, tint: .gemEmerald)
                 StatTile(icon: "sparkle", label: "XP", value: "+\(estimatedXP)", tint: .questAmber)
+                StatTile(icon: "diamond.fill", label: "Gems", value: "+\(estimatedGems)", tint: .gemEmerald)
             }
             HStack(spacing: 10) {
                 StatTile(icon: "photo.fill", label: "Photos to purge", value: "\(combat.pendingPhotoCount)", tint: .questAmber)
@@ -63,7 +64,11 @@ struct RoomSummaryView: View {
     }
 
     private var estimatedXP: Int {
-        combat.pendingDecisions.filter { $0.willDelete }.reduce(0) { $0 + $1.item.monsterType.xpReward }
+        combat.pendingDecisions.filter { $0.willDelete }.reduce(0) { $0 + $1.xpReward }
+    }
+
+    private var estimatedGems: Int {
+        combat.pendingDecisions.filter { $0.willDelete }.reduce(0) { $0 + $1.gemReward }
     }
 
     private var pendingGrid: some View {
