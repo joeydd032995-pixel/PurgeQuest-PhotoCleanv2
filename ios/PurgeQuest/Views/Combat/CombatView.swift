@@ -37,7 +37,7 @@ struct CombatView: View {
         .navigationBarBackButtonHidden(true)
         .task {
             guard let hero = heroes.first else { return }
-            await combat.bootstrap(includeVideos: appState.includeVideos, videoOnly: appState.videoOnlyMode, hero: hero)
+            await combat.bootstrap(includeVideos: appState.includeVideos, videoOnly: appState.videoOnlyMode, hero: hero, context: modelContext)
         }
         .onChange(of: combat.screenShakeTrigger) { _, _ in
             shake()
@@ -121,7 +121,7 @@ struct CombatView: View {
                         item: top,
                         isFront: true,
                         onDelete: { combat.decideDelete(top, hero: hero) },
-                        onSpare: { combat.decideSpare(top) }
+                        onSpare: { combat.decideSpare(top, context: modelContext) }
                     )
                     .id(top.id)
                     .transition(.scale.combined(with: .opacity))
@@ -141,7 +141,7 @@ struct CombatView: View {
                 }
                 .accessibilityHint("Mark monster for deletion")
 
-                Button { if let top = combat.topItem { combat.decideSpare(top) } } label: {
+                Button { if let top = combat.topItem { combat.decideSpare(top, context: modelContext) } } label: {
                     Label("SPARE", systemImage: "shield.fill")
                         .font(.headline.weight(.heavy))
                         .frame(maxWidth: .infinity).padding(.vertical, 14)
@@ -176,14 +176,35 @@ struct CombatView: View {
             .background(RoundedRectangle(cornerRadius: 18).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 18).stroke(Color.dungeonAsh, lineWidth: 1)))
             .padding(.horizontal, 24)
 
+            if combat.hasMoreItems, let hero = heroes.first {
+                Button {
+                    combat.continueDeeper(hero: hero)
+                } label: {
+                    Label("Continue Deeper", systemImage: "arrow.down.to.line.compact")
+                        .font(.headline.weight(.heavy))
+                        .frame(maxWidth: .infinity).padding(.vertical, 14)
+                        .background(LinearGradient.emeraldGlow, in: Capsule())
+                        .foregroundStyle(.dungeonVoid)
+                }
+                .accessibilityHint("Start another run through the dungeon without returning to the dashboard")
+            }
+
             Button("Return to Dashboard") {
                 exit()
             }
             .font(.headline)
             .padding(.vertical, 14).padding(.horizontal, 28)
-            .background(Capsule().fill(LinearGradient.amberGlow))
-            .foregroundStyle(.dungeonVoid)
+            .background(
+                Capsule().fill(
+                    combat.hasMoreItems
+                        ? AnyShapeStyle(Color.dungeonStone)
+                        : AnyShapeStyle(LinearGradient.amberGlow)
+                )
+                .overlay(Capsule().stroke(Color.dungeonAsh, lineWidth: combat.hasMoreItems ? 1 : 0))
+            )
+            .foregroundStyle(combat.hasMoreItems ? Color.textPrimary : Color.dungeonVoid)
         }
+        .padding()
     }
 
     private func summaryRow(label: String, value: String, tint: Color) -> some View {

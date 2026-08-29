@@ -14,6 +14,7 @@ struct SettingsView: View {
     @Query(sort: \DeletedMediaRecord.deletedAt, order: .reverse) private var deletions: [DeletedMediaRecord]
 
     @State private var confirmReset = false
+    @State private var confirmForgetSpared = false
     @State private var showHeroCard = false
 
     private var hero: Hero? { heroes.first }
@@ -29,6 +30,12 @@ struct SettingsView: View {
                 section(title: "Combat") {
                     toggleRow(title: "Include Videos", subtitle: "Battle photo and video monsters together", isOn: $appState.includeVideos)
                     toggleRow(title: "Video Focus Mode", subtitle: "Video-only rooms — slay clips fastest", isOn: $appState.videoOnlyMode)
+                    Button(role: .destructive) {
+                        confirmForgetSpared = true
+                    } label: {
+                        Label("Forget spared monsters", systemImage: "arrow.uturn.backward")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
 
                 section(title: "Lifetime Stats") {
@@ -107,6 +114,12 @@ struct SettingsView: View {
         } message: {
             Text("This will erase your hero, achievements, and quests. Your Photos library is unaffected.")
         }
+        .alert("Forget spared monsters?", isPresented: $confirmForgetSpared) {
+            Button("Cancel", role: .cancel) {}
+            Button("Forget", role: .destructive) { forgetSpared() }
+        } message: {
+            Text("Monsters you previously spared will reappear at the top of your next dive.")
+        }
         .sheet(isPresented: $showHeroCard) {
             if let hero { HeroCardSheet(hero: hero) }
         }
@@ -158,9 +171,17 @@ struct SettingsView: View {
         }
     }
 
+    private func forgetSpared() {
+        for r in (try? modelContext.fetch(FetchDescriptor<SparedMediaRecord>())) ?? [] {
+            modelContext.delete(r)
+        }
+        try? modelContext.save()
+    }
+
     private func resetAllData() {
         for h in heroes { modelContext.delete(h) }
         for d in deletions { modelContext.delete(d) }
+        for s in (try? modelContext.fetch(FetchDescriptor<SparedMediaRecord>())) ?? [] { modelContext.delete(s) }
         for q in (try? modelContext.fetch(FetchDescriptor<Quest>())) ?? [] { modelContext.delete(q) }
         for a in (try? modelContext.fetch(FetchDescriptor<Achievement>())) ?? [] { modelContext.delete(a) }
         for c in (try? modelContext.fetch(FetchDescriptor<CosmeticItem>())) ?? [] { modelContext.delete(c) }

@@ -18,7 +18,8 @@ struct PurgeQuestApp: App {
             CosmeticItem.self,
             Quest.self,
             DeletedMediaRecord.self,
-            CombatSession.self
+            CombatSession.self,
+            SparedMediaRecord.self
         ])
         let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         do {

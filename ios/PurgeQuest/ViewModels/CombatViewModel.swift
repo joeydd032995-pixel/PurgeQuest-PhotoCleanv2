@@ -83,20 +83,37 @@ final class CombatViewModel {
 
     // MARK: - Setup
 
-    func bootstrap(includeVideos: Bool, videoOnly: Bool, hero: Hero) async {
+    func bootstrap(includeVideos: Bool, videoOnly: Bool, hero: Hero, context: ModelContext) async {
         phase = .loading
         heroCurrentHP = hero.maxHP
         heroMaxHP = hero.maxHP
         CombatLiveActivityService.shared.start(heroName: hero.name)
 
+        // Resume progress: skip everything already swiped (spared) or purged, so
+        // re-entering the dungeon continues where the last session left off.
+        var seenIDs = Set<String>()
+        if let spared = try? context.fetch(FetchDescriptor<SparedMediaRecord>()) {
+            seenIDs.formUnion(spared.map(\.assetIdentifier))
+        }
+        if let purged = try? context.fetch(FetchDescriptor<DeletedMediaRecord>()) {
+            seenIDs.formUnion(purged.map(\.assetIdentifier))
+        }
+
         let svc = PhotoLibraryService.shared
-        let assets = svc.fetchAssets(limit: Self.initialFetchLimit, includeVideos: includeVideos, videoOnly: videoOnly)
-        if assets.isEmpty {
+        // Over-fetch by the seen count — seen items cluster at the oldest end of
+        // the library, so this guarantees a full batch of fresh monsters.
+        let assets = svc.fetchAssets(
+            limit: Self.initialFetchLimit + seenIDs.count,
+            includeVideos: includeVideos,
+            videoOnly: videoOnly
+        )
+        let fresh = assets.filter { !seenIDs.contains($0.localIdentifier) }
+        if fresh.isEmpty {
             phase = .empty
             return
         }
         let thumbSize = CGSize(width: 600, height: 600)
-        let items = await svc.buildMediaItems(from: assets, thumbSize: thumbSize)
+        let items = await svc.buildMediaItems(from: fresh, thumbSize: thumbSize)
         self.allItems = items
         self.queueIndex = 0
         loadNextRoom()
@@ -179,12 +196,15 @@ final class CombatViewModel {
         return (xp, gems)
     }
 
-    func decideSpare(_ item: MediaItem) {
+    func decideSpare(_ item: MediaItem, context: ModelContext) {
         combo = 0
         perfectRoom = false
         let dmg = item.monsterType.attackDamage
         heroCurrentHP = max(0, heroCurrentHP - dmg)
         pendingDecisions.append(PendingDecision(item: item, willDelete: false))
+        // Persist the spare so this monster is skipped on every future dive.
+        context.insert(SparedMediaRecord(assetIdentifier: item.id))
+        try? context.save()
         spareFlashTrigger &+= 1
         screenShakeTrigger &+= 1
         HapticsService.shared.medium()
@@ -265,6 +285,23 @@ final class CombatViewModel {
             remaining: roomRemaining,
             mb: Double(sessionBytesFreed) / 1_048_576.0
         )
+    }
+
+    /// True when the library queue still holds unseen monsters after a run ends —
+    /// powers the "Continue Deeper" option on the session-complete screen.
+    var hasMoreItems: Bool { queueIndex < allItems.count }
+
+    /// Keeps the hero in the dungeon after a completed run: refills HP, resets the
+    /// room counter, and continues through the remaining unseen queue. Lifetime
+    /// rewards are already banked; session tallies keep accumulating across dives.
+    func continueDeeper(hero: Hero) {
+        roomNumber = 1
+        combo = 0
+        perfectRoom = true
+        heroCurrentHP = heroMaxHP
+        hero.currentHP = heroMaxHP
+        loadNextRoom()
+        pushLiveActivityUpdate()
     }
 
     func endSessionActivity() {
