@@ -5,8 +5,10 @@
 
 import SwiftUI
 
-/// A chibi vector mini-figure of the hero, drawn entirely with SwiftUI shapes.
-/// Tunic, armor, headgear, weapon and pet visually change with equipped items.
+/// The hero mini-figure, drawn in a "tiny style" chibi standard: oversized head,
+/// thick outlines, big cartoon eyes. The Knight wears a plumed helmet with a
+/// dark face opening, carries a shield and sword; the Magician wears a pointed
+/// hat and beard. Armor, headgear, weapon, tunic and pet change with equipped items.
 struct MiniAvatarView: View {
     let hero: Hero
     let equipped: [CosmeticItem]
@@ -19,27 +21,29 @@ struct MiniAvatarView: View {
     /// Base design unit so every dimension scales with the orb size.
     private var u: CGFloat { size / 200 }
 
+    private var isKnight: Bool { hero.archetype == .knight }
+
     private func item(_ type: CosmeticType) -> CosmeticItem? {
         equipped.first { $0.type == type }
     }
 
     // MARK: - Palette
 
-    private var accent: Color { hero.archetype == .knight ? .questAmber : .xpViolet }
-    private var skinTone: Color { Color(red: 0.95, green: 0.79, blue: 0.64) }
-    private var steel: Color { Color(red: 0.64, green: 0.68, blue: 0.74) }
-    private var steelDeep: Color { Color(red: 0.40, green: 0.44, blue: 0.52) }
-    private var charcoal: Color { Color(red: 0.15, green: 0.14, blue: 0.19) }
-    private var wood: Color { Color(red: 0.52, green: 0.36, blue: 0.21) }
-    private var leather: Color { Color(red: 0.36, green: 0.28, blue: 0.20) }
+    private var accent: Color { isKnight ? .questAmber : .xpViolet }
+    private var skinTone: Color { Color(red: 0.96, green: 0.78, blue: 0.55) }
+    private var steel: Color { Color(red: 0.72, green: 0.75, blue: 0.80) }
+    private var steelDeep: Color { Color(red: 0.45, green: 0.48, blue: 0.55) }
+    private var charcoal: Color { Color(red: 0.22, green: 0.20, blue: 0.26) }
+    private var wood: Color { Color(red: 0.55, green: 0.38, blue: 0.22) }
+    private var outline: Color { Color(red: 0.09, green: 0.07, blue: 0.11) }
 
     /// Tunic color driven by the equipped skin; falls back to the archetype accent.
     private var tunicColor: Color {
         switch item(.skin)?.id {
         case "skin.iron": return steelDeep
-        case "skin.embers": return .combatCrimsonDeep
-        case "skin.archivist": return leather
-        case "skin.warden": return Color(red: 0.23, green: 0.25, blue: 0.32)
+        case "skin.embers": return Color(red: 0.72, green: 0.20, blue: 0.22)
+        case "skin.archivist": return Color(red: 0.40, green: 0.31, blue: 0.22)
+        case "skin.warden": return Color(red: 0.26, green: 0.28, blue: 0.36)
         default: return accent
         }
     }
@@ -47,13 +51,16 @@ struct MiniAvatarView: View {
     private var petColor: Color {
         switch item(.pet)?.id {
         case "pet.reel": return .videoSapphire
-        case "pet.owl": return .questAmberDeep
+        case "pet.owl": return Color(red: 0.62, green: 0.46, blue: 0.28)
         default: return .gemEmerald
         }
     }
 
-    private var hasRobe: Bool {
-        item(.armor)?.id == "armor.arcanist" || item(.skin)?.id == "skin.archivist"
+    /// Draws a shape with a flat fill and the thick dark outline of the sprite standard.
+    private func outlined<S: Shape>(_ shape: S, _ fill: Color, lineWidth: CGFloat = 2.4) -> some View {
+        shape
+            .fill(fill)
+            .overlay(shape.stroke(outline, lineWidth: lineWidth * u))
     }
 
     // MARK: - Body
@@ -62,14 +69,14 @@ struct MiniAvatarView: View {
         ZStack {
             Ellipse()
                 .fill(Color.black.opacity(0.4))
-                .frame(width: 46 * u, height: 10 * u)
+                .frame(width: 50 * u, height: 10 * u)
                 .blur(radius: 3 * u)
-                .offset(y: 62 * u)
+                .offset(y: 64 * u)
 
             figure
                 .offset(y: isBobbing ? -2.5 * u : 0)
         }
-        .frame(width: 118 * u, height: 132 * u)
+        .frame(width: 118 * u, height: 140 * u)
         .onAppear { startBobbing() }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilitySummary)
@@ -97,12 +104,14 @@ struct MiniAvatarView: View {
             robeBack
             legs
             torso
-            arms
+            leftArm
+            shield
             headGroup
+            rightArm
             weaponLayer
             petLayer
         }
-        .frame(width: 112 * u, height: 130 * u)
+        .frame(width: 112 * u, height: 140 * u)
         .animation(.spring(response: 0.4, dampingFraction: 0.75), value: equipped.map(\.id))
     }
 
@@ -110,332 +119,511 @@ struct MiniAvatarView: View {
 
     private var legs: some View {
         ZStack {
-            shadedCapsule(width: 9, height: 22).offset(x: -9 * u, y: -4 * u)
-            shadedCapsule(width: 9, height: 22).offset(x: 9 * u, y: -4 * u)
-            boot(x: -9)
-            boot(x: 9)
+            leg(x: -7)
+            leg(x: 7)
+            boot(x: -7.5)
+            boot(x: 7.5)
         }
-        .offset(y: 31 * u)
+    }
+
+    private func leg(x: CGFloat) -> some View {
+        outlined(Capsule(), charcoal, lineWidth: 2.2)
+            .frame(width: 9 * u, height: 17 * u)
+            .offset(x: x * u, y: 34 * u)
     }
 
     private func boot(x: CGFloat) -> some View {
-        RoundedRectangle(cornerRadius: 4 * u, style: .continuous)
-            .fill(charcoal)
-            .frame(width: 16 * u, height: 8 * u)
-            .overlay(
-                RoundedRectangle(cornerRadius: 4 * u, style: .continuous)
-                    .fill(Color.white.opacity(0.08))
-                    .frame(height: 3 * u)
-                    .offset(y: -2 * u)
-            )
-            .offset(x: x * u, y: 6 * u)
-    }
-
-    private func shadedCapsule(width: CGFloat, height: CGFloat) -> some View {
-        Capsule()
-            .fill(tunicColor)
-            .overlay(Capsule().fill(Color.black.opacity(0.3)))
-            .frame(width: width * u, height: height * u)
+        ZStack {
+            RoundedRectangle(cornerRadius: 3.5 * u, style: .continuous)
+                .fill(Color(red: 0.32, green: 0.24, blue: 0.16))
+            RoundedRectangle(cornerRadius: 3.5 * u, style: .continuous)
+                .stroke(outline, lineWidth: 2.2 * u)
+        }
+        .frame(width: 16 * u, height: 9 * u)
+        .offset(x: x * u, y: 44 * u)
     }
 
     // MARK: Torso & armor
 
     private var torso: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 13 * u, style: .continuous)
-                .fill(tunicColor)
-                .frame(width: 42 * u, height: 46 * u)
-
+            bodyShape
             armorLayer
+            belt
         }
-        .offset(y: 1 * u)
+        .offset(y: 12 * u)
+    }
+
+    private var bodyShape: some View {
+        outlined(
+            RoundedRectangle(cornerRadius: 9 * u, style: .continuous),
+            tunicColor,
+            lineWidth: 2.6
+        )
+        .frame(width: 31 * u, height: 27 * u)
     }
 
     @ViewBuilder private var armorLayer: some View {
         switch item(.armor)?.id {
         case "armor.iron":
-            pauldrons(color: steel)
-            chestPlate(fill: steel, stroke: steelDeep)
-            rivets
+            Circle().fill(steel).frame(width: 12 * u, height: 12 * u)
+                .overlay(Circle().stroke(outline, lineWidth: 2 * u))
+                .offset(x: -17 * u, y: -9 * u)
+            Circle().fill(steel).frame(width: 12 * u, height: 12 * u)
+                .overlay(Circle().stroke(outline, lineWidth: 2 * u))
+                .offset(x: 17 * u, y: -9 * u)
+            outlined(RoundedRectangle(cornerRadius: 5 * u, style: .continuous), steel, lineWidth: 2.4)
+                .frame(width: 25 * u, height: 19 * u)
+            Rectangle()
+                .fill(.questAmber)
+                .frame(width: 25 * u, height: 3.4 * u)
+                .offset(y: -3 * u)
         case "armor.dragonhide":
-            pauldrons(color: .gemEmerald)
-            chestPlate(fill: .gemEmeraldDeep, stroke: .gemEmerald)
+            Circle().fill(.gemEmerald).frame(width: 12 * u, height: 12 * u)
+                .overlay(Circle().stroke(outline, lineWidth: 2 * u))
+                .offset(x: -17 * u, y: -9 * u)
+            Circle().fill(.gemEmerald).frame(width: 12 * u, height: 12 * u)
+                .overlay(Circle().stroke(outline, lineWidth: 2 * u))
+                .offset(x: 17 * u, y: -9 * u)
+            outlined(RoundedRectangle(cornerRadius: 5 * u, style: .continuous), .gemEmeraldDeep, lineWidth: 2.4)
+                .frame(width: 25 * u, height: 19 * u)
             scaleDots
         case "armor.arcanist":
-            RoundedRectangle(cornerRadius: 6 * u, style: .continuous)
-                .fill(Color(red: 0.42, green: 0.28, blue: 0.72))
-                .frame(width: 34 * u, height: 10 * u)
-                .offset(y: -17 * u)
+            outlined(RoundedRectangle(cornerRadius: 4 * u, style: .continuous), Color(red: 0.46, green: 0.30, blue: 0.76), lineWidth: 2.4)
+                .frame(width: 26 * u, height: 8 * u)
+                .offset(y: -8 * u)
             Circle()
                 .fill(.questAmber)
                 .frame(width: 5 * u, height: 5 * u)
-                .offset(y: -8 * u)
+                .overlay(Circle().stroke(outline, lineWidth: 1.4 * u))
+                .offset(y: 2 * u)
         default:
             EmptyView()
         }
     }
 
-    private func pauldrons(color: Color) -> some View {
-        ZStack {
-            Circle().fill(color).frame(width: 15 * u, height: 15 * u)
-                .overlay(Circle().stroke(Color.black.opacity(0.25), lineWidth: 1.2 * u))
-                .offset(x: -20 * u, y: -17 * u)
-            Circle().fill(color).frame(width: 15 * u, height: 15 * u)
-                .overlay(Circle().stroke(Color.black.opacity(0.25), lineWidth: 1.2 * u))
-                .offset(x: 20 * u, y: -17 * u)
-        }
-    }
-
-    private func chestPlate(fill: Color, stroke: Color) -> some View {
-        RoundedRectangle(cornerRadius: 8 * u, style: .continuous)
-            .fill(
-                LinearGradient(colors: [fill.lighter(0.15), fill], startPoint: .top, endPoint: .bottom)
-            )
-            .frame(width: 32 * u, height: 24 * u)
-            .overlay(RoundedRectangle(cornerRadius: 8 * u, style: .continuous).stroke(stroke, lineWidth: 1.4 * u))
-            .offset(y: 2 * u)
-    }
-
-    private var rivets: some View {
-        ZStack {
-            Circle().fill(Color.white.opacity(0.5)).frame(width: 2.6 * u, height: 2.6 * u).offset(x: -8 * u, y: -2 * u)
-            Circle().fill(Color.white.opacity(0.5)).frame(width: 2.6 * u, height: 2.6 * u).offset(x: 8 * u, y: -2 * u)
-            Circle().fill(Color.white.opacity(0.5)).frame(width: 2.6 * u, height: 2.6 * u).offset(y: 7 * u)
-        }
-    }
-
     private var scaleDots: some View {
         ZStack {
-            Circle().fill(.gemEmerald).frame(width: 3 * u, height: 3 * u).offset(x: -6 * u, y: -1 * u)
-            Circle().fill(.gemEmerald).frame(width: 3 * u, height: 3 * u).offset(x: 0, y: -1 * u)
-            Circle().fill(.gemEmerald).frame(width: 3 * u, height: 3 * u).offset(x: 6 * u, y: -1 * u)
-            Circle().fill(.gemEmerald).frame(width: 3 * u, height: 3 * u).offset(x: -3 * u, y: 6 * u)
-            Circle().fill(.gemEmerald).frame(width: 3 * u, height: 3 * u).offset(x: 3 * u, y: 6 * u)
+            scaleDot(x: -6, y: -2)
+            scaleDot(x: 0, y: -2)
+            scaleDot(x: 6, y: -2)
+            scaleDot(x: -3, y: 4)
+            scaleDot(x: 3, y: 4)
         }
-        .offset(y: 2 * u)
+    }
+
+    private func scaleDot(x: CGFloat, y: CGFloat) -> some View {
+        Circle()
+            .fill(.gemEmerald)
+            .frame(width: 3 * u, height: 3 * u)
+            .offset(x: x * u, y: y * u)
+    }
+
+    private var belt: some View {
+        ZStack {
+            Rectangle()
+                .fill(charcoal)
+                .frame(width: 31 * u, height: 5 * u)
+                .offset(y: 9 * u)
+            Circle()
+                .fill(.questAmber)
+                .frame(width: 5.5 * u, height: 5.5 * u)
+                .overlay(Circle().stroke(outline, lineWidth: 1.4 * u))
+                .offset(y: 9 * u)
+        }
     }
 
     // MARK: Robe (behind body)
 
     @ViewBuilder private var robeBack: some View {
-        if hasRobe {
-            TaperedShape(topWidth: 0.62, bottomWidth: 1)
+        if item(.armor)?.id == "armor.arcanist" || item(.skin)?.id == "skin.archivist" {
+            TaperedShape(topWidth: 0.55, bottomWidth: 1)
                 .fill(
                     item(.armor)?.id == "armor.arcanist"
-                        ? Color(red: 0.36, green: 0.23, blue: 0.62)
-                        : Color(red: 0.30, green: 0.22, blue: 0.15)
+                        ? Color(red: 0.46, green: 0.30, blue: 0.76)
+                        : Color(red: 0.33, green: 0.25, blue: 0.17)
                 )
-                .frame(width: 60 * u, height: 48 * u)
-                .offset(y: 4 * u)
+                .overlay(TaperedShape(topWidth: 0.55, bottomWidth: 1).stroke(outline, lineWidth: 2.4 * u))
+                .frame(width: 46 * u, height: 40 * u)
+                .offset(y: 20 * u)
         }
     }
 
     // MARK: Arms
 
-    private var arms: some View {
-        ZStack {
-            Capsule()
-                .fill(tunicColor)
-                .frame(width: 9 * u, height: 30 * u)
-                .rotationEffect(.degrees(16))
-                .offset(x: -25 * u, y: 0)
-            Circle().fill(skinTone).frame(width: 7 * u, height: 7 * u).offset(x: -31 * u, y: 13 * u)
+    private var leftArm: some View {
+        outlined(Capsule(), tunicColor, lineWidth: 2.2)
+            .frame(width: 8 * u, height: 17 * u)
+            .rotationEffect(.degrees(18))
+            .offset(x: -18 * u, y: 8 * u)
+    }
 
-            Capsule()
-                .fill(tunicColor)
-                .frame(width: 9 * u, height: 30 * u)
-                .rotationEffect(.degrees(-16))
-                .offset(x: 25 * u, y: 0)
-            Circle().fill(skinTone).frame(width: 7 * u, height: 7 * u).offset(x: 31 * u, y: 13 * u)
+    private var rightArm: some View {
+        outlined(Capsule(), tunicColor, lineWidth: 2.2)
+            .frame(width: 8 * u, height: 17 * u)
+            .rotationEffect(.degrees(-42))
+            .offset(x: 18 * u, y: 6 * u)
+    }
+
+    // MARK: Shield (Knight signature)
+
+    @ViewBuilder private var shield: some View {
+        if isKnight {
+            ZStack {
+                RoundedRectangle(cornerRadius: 6 * u, style: .continuous)
+                    .fill(charcoal)
+                Rectangle()
+                    .fill(Color.combatCrimson)
+                    .frame(width: 4.5 * u, height: 15 * u)
+                Rectangle()
+                    .fill(Color.combatCrimson)
+                    .frame(width: 10 * u, height: 4.5 * u)
+            }
+            .overlay(
+                RoundedRectangle(cornerRadius: 6 * u, style: .continuous)
+                    .stroke(outline, lineWidth: 2.4 * u)
+            )
+            .frame(width: 20 * u, height: 24 * u)
+            .offset(x: -26 * u, y: 13 * u)
+            .transition(.scale(scale: 0.5).combined(with: .opacity))
         }
-        .offset(y: -1 * u)
     }
 
     // MARK: Head
 
     private var headGroup: some View {
         ZStack {
-            if item(.head)?.id == "head.hood" {
-                hoodBack
+            headModel
+        }
+        .offset(y: -28 * u)
+    }
+
+    @ViewBuilder private var headModel: some View {
+        switch item(.head)?.id {
+        case "head.iron":
+            plumedHelmet(dome: steel, trim: .questAmber, showPlume: false)
+        case "head.dragoncrest":
+            plumedHelmet(dome: .questAmber, trim: .combatCrimson, showPlume: true)
+        case "head.starhat":
+            starWizardHat
+        case "head.hood":
+            hoodedHead
+        default:
+            if isKnight {
+                plumedHelmet(dome: steel, trim: steelDeep, showPlume: true)
+            } else {
+                wizardHead
             }
+        }
+    }
+
+    /// Big cartoon eyes with dark pupils and a glint, matching the sprite standard.
+    private var eyes: some View {
+        ZStack {
+            eye(x: -7.5)
+            eye(x: 7.5)
+        }
+    }
+
+    private func eye(x: CGFloat) -> some View {
+        ZStack {
+            Circle()
+                .fill(Color.white)
+                .overlay(Circle().stroke(outline, lineWidth: 1.8 * u))
+                .frame(width: 11.5 * u, height: 11.5 * u)
+            Circle()
+                .fill(outline)
+                .frame(width: 5.4 * u, height: 5.4 * u)
+                .offset(x: 1.8 * u, y: 0.6 * u)
+            Circle()
+                .fill(Color.white)
+                .frame(width: 2 * u, height: 2 * u)
+                .offset(x: 3.4 * u, y: -1.2 * u)
+        }
+        .offset(x: x * u)
+    }
+
+    /// Knight-style helmet: big dome, dark face opening, trim band, optional plume.
+    private func plumedHelmet(dome: Color, trim: Color, showPlume: Bool) -> some View {
+        ZStack {
+            if showPlume {
+                PlumeShape()
+                    .fill(Color.combatCrimson)
+                    .overlay(PlumeShape().stroke(outline, lineWidth: 2.2 * u))
+                    .frame(width: 24 * u, height: 17 * u)
+                    .rotationEffect(.degrees(-12))
+                    .offset(x: 4 * u, y: -31 * u)
+            }
+
+            Circle()
+                .fill(dome)
+                .overlay(Circle().stroke(outline, lineWidth: 2.6 * u))
+                .frame(width: 54 * u, height: 54 * u)
+
+            Circle()
+                .fill(outline)
+                .frame(width: 38 * u, height: 38 * u)
+                .offset(y: 7 * u)
 
             Circle()
                 .fill(skinTone)
-                .frame(width: 40 * u, height: 40 * u)
+                .frame(width: 33 * u, height: 33 * u)
+                .offset(y: 8.5 * u)
 
-            face
-            headwear
-        }
-        .offset(y: -39 * u)
-    }
+            eyes.offset(y: 6 * u)
 
-    private var face: some View {
-        ZStack {
-            Circle().fill(Color.dungeonVoid.opacity(0.85)).frame(width: 4.2 * u, height: 4.2 * u).offset(x: -7.5 * u, y: -3 * u)
-            Circle().fill(Color.dungeonVoid.opacity(0.85)).frame(width: 4.2 * u, height: 4.2 * u).offset(x: 7.5 * u, y: -3 * u)
-
-            Circle()
-                .trim(from: 0.08, to: 0.42)
-                .stroke(Color.dungeonVoid.opacity(0.75), style: StrokeStyle(lineWidth: 2 * u, lineCap: .round))
-                .frame(width: 12 * u, height: 12 * u)
-                .offset(y: 4 * u)
-        }
-    }
-
-    @ViewBuilder private var headwear: some View {
-        switch item(.head)?.id {
-        case "head.iron":
-            ironDome
             Rectangle()
-                .fill(steelDeep)
-                .frame(width: 5 * u, height: 14 * u)
-                .offset(y: 5 * u)
-        case "head.dragoncrest":
-            Image(systemName: "arrowtriangle.up.fill")
-                .resizable()
-                .foregroundStyle(.questAmber)
-                .frame(width: 8 * u, height: 9 * u)
-                .rotationEffect(.degrees(-38))
-                .offset(x: -21 * u, y: -14 * u)
-            Image(systemName: "arrowtriangle.up.fill")
-                .resizable()
-                .foregroundStyle(.questAmber)
-                .frame(width: 8 * u, height: 9 * u)
-                .rotationEffect(.degrees(38))
-                .offset(x: 21 * u, y: -14 * u)
-            dome(fill: .questAmber, deep: .questAmberDeep)
-        case "head.starhat":
-            wizardHat
-        case "head.hood":
-            Image(systemName: "arrowtriangle.up.fill")
-                .resizable()
-                .foregroundStyle(charcoal)
-                .frame(width: 13 * u, height: 15 * u)
-                .offset(y: -26 * u)
-        default:
-            Circle()
-                .fill(charcoal)
-                .frame(width: 40 * u, height: 40 * u)
-                .mask(alignment: .top) { Rectangle().frame(width: 40 * u, height: 17 * u) }
-                .offset(y: -3 * u)
+                .fill(Color.white.opacity(0.85))
+                .frame(width: 27 * u, height: 4.5 * u)
+                .overlay(Rectangle().stroke(outline, lineWidth: 1.4 * u))
+                .offset(y: -5 * u)
+
+            rivet(x: -19, y: -15)
+            rivet(x: 19, y: -15)
+            rivet(x: 0, y: -22)
         }
     }
 
-    private var ironDome: some View {
-        dome(fill: steel, deep: steelDeep)
-    }
-
-    private func dome(fill: Color, deep: Color) -> some View {
+    private func rivet(x: CGFloat, y: CGFloat) -> some View {
         Circle()
-            .fill(
-                LinearGradient(colors: [fill.lighter(0.18), deep], startPoint: .top, endPoint: .bottom)
-            )
-            .frame(width: 42 * u, height: 42 * u)
-            .mask(alignment: .top) { Rectangle().frame(width: 42 * u, height: 19 * u) }
-            .overlay(alignment: .top) {
-                Rectangle()
-                    .fill(deep)
-                    .frame(width: 42 * u, height: 2.5 * u)
-                    .offset(y: 18 * u)
-            }
-            .offset(y: -2 * u)
+            .fill(Color.white.opacity(0.45))
+            .frame(width: 2.8 * u, height: 2.8 * u)
+            .offset(x: x * u, y: y * u)
     }
 
+    /// Magician head: open face, big eyes, bushy white beard, pointed hat.
+    private var wizardHead: some View {
+        ZStack {
+            wizardHat
+
+            Circle()
+                .fill(skinTone)
+                .overlay(Circle().stroke(outline, lineWidth: 2.6 * u))
+                .frame(width: 45 * u, height: 45 * u)
+                .offset(y: 2 * u)
+
+            eyes.offset(y: -1 * u)
+
+            // Mustache
+            Ellipse()
+                .fill(Color.white)
+                .overlay(Ellipse().stroke(outline, lineWidth: 1.6 * u))
+                .frame(width: 11 * u, height: 5 * u)
+                .rotationEffect(.degrees(14))
+                .offset(x: -5.5 * u, y: 8.5 * u)
+            Ellipse()
+                .fill(Color.white)
+                .overlay(Ellipse().stroke(outline, lineWidth: 1.6 * u))
+                .frame(width: 11 * u, height: 5 * u)
+                .rotationEffect(.degrees(-14))
+                .offset(x: 5.5 * u, y: 8.5 * u)
+
+            // Beard
+            Ellipse()
+                .fill(Color.white)
+                .overlay(Ellipse().stroke(outline, lineWidth: 2.2 * u))
+                .frame(width: 26 * u, height: 19 * u)
+                .offset(y: 17 * u)
+        }
+    }
+
+    /// Pointed wizard hat with bent tip, brim and amber band.
     private var wizardHat: some View {
         ZStack {
-            Image(systemName: "arrowtriangle.up.fill")
-                .resizable()
-                .foregroundStyle(
-                    LinearGradient(colors: [.xpViolet, .videoSapphire], startPoint: .bottom, endPoint: .top)
-                )
-                .frame(width: 26 * u, height: 25 * u)
-                .offset(y: -2 * u)
+            Circle()
+                .fill(Color(red: 0.46, green: 0.30, blue: 0.76))
+                .frame(width: 8 * u, height: 8 * u)
+                .overlay(Circle().stroke(outline, lineWidth: 2 * u))
+                .offset(x: -4 * u, y: -38 * u)
+
+            ConeShape()
+                .fill(Color(red: 0.52, green: 0.34, blue: 0.82))
+                .overlay(ConeShape().stroke(outline, lineWidth: 2.4 * u))
+                .frame(width: 50 * u, height: 32 * u)
+                .offset(y: -22 * u)
+
+            Ellipse()
+                .fill(Color(red: 0.46, green: 0.30, blue: 0.76))
+                .overlay(Ellipse().stroke(outline, lineWidth: 2.4 * u))
+                .frame(width: 56 * u, height: 12 * u)
+                .offset(y: -8 * u)
+
+            Rectangle()
+                .fill(.questAmber)
+                .frame(width: 22 * u, height: 4.5 * u)
+                .overlay(Rectangle().stroke(outline, lineWidth: 1.4 * u))
+                .offset(y: -13 * u)
+        }
+    }
+
+    /// Starry variant of the wizard hat for the "starhat" cosmetic.
+    private var starWizardHat: some View {
+        ZStack {
+            wizardHat
             Image(systemName: "sparkle")
                 .font(.system(size: 9 * u, weight: .bold))
                 .foregroundStyle(.questAmber)
-                .offset(x: 5 * u, y: -8 * u)
-            Ellipse()
-                .fill(Color(red: 0.42, green: 0.28, blue: 0.72))
-                .frame(width: 36 * u, height: 8 * u)
-                .offset(y: 10 * u)
+                .offset(x: 6 * u, y: -26 * u)
         }
-        .offset(y: -12 * u)
     }
 
-    private var hoodBack: some View {
-        Circle()
-            .fill(charcoal)
-            .frame(width: 49 * u, height: 49 * u)
-            .offset(y: -2 * u)
+    /// Dark hood wrapping the head with a shadowed face.
+    private var hoodedHead: some View {
+        ZStack {
+            Circle()
+                .fill(charcoal)
+                .overlay(Circle().stroke(outline, lineWidth: 2.6 * u))
+                .frame(width: 52 * u, height: 52 * u)
+
+            Image(systemName: "arrowtriangle.up.fill")
+                .resizable()
+                .foregroundStyle(charcoal)
+                .frame(width: 13 * u, height: 14 * u)
+                .offset(y: -30 * u)
+
+            Circle()
+                .fill(skinTone.mix(with: .black, by: 0.18))
+                .frame(width: 32 * u, height: 32 * u)
+                .offset(y: 8 * u)
+
+            eyes.offset(y: 6 * u)
+        }
     }
 
     // MARK: Weapon
 
     @ViewBuilder private var weaponLayer: some View {
+        ZStack {
+            weaponModel
+            Circle()
+                .fill(skinTone)
+                .overlay(Circle().stroke(outline, lineWidth: 1.6 * u))
+                .frame(width: 8 * u, height: 8 * u)
+                .offset(y: 12 * u)
+        }
+        .offset(x: 30 * u, y: -4 * u)
+    }
+
+    /// Default weapon: the Knight's simple sword, held upright like the sprites.
+    @ViewBuilder private var weaponModel: some View {
         if let weapon = item(.weapon) {
-            ZStack {
-                weaponModel(id: weapon.id)
-                Circle()
-                    .fill(skinTone)
-                    .frame(width: 7.5 * u, height: 7.5 * u)
-                    .offset(y: 14 * u)
-            }
-            .offset(x: 37 * u, y: 5 * u)
-            .transition(.scale(scale: 0.5, anchor: .bottom).combined(with: .opacity))
+            heldWeapon(id: weapon.id)
+                .transition(.scale(scale: 0.5, anchor: .bottom).combined(with: .opacity))
+        } else if isKnight {
+            simpleSword
+        } else {
+            simpleWand
         }
     }
 
-    @ViewBuilder private func weaponModel(id: String) -> some View {
+    private var simpleSword: some View {
+        VStack(spacing: 0) {
+            RoundedRectangle(cornerRadius: 1.5 * u, style: .continuous)
+                .fill(steel)
+                .overlay(RoundedRectangle(cornerRadius: 1.5 * u, style: .continuous).stroke(outline, lineWidth: 2 * u))
+                .frame(width: 6.5 * u, height: 25 * u)
+            Rectangle()
+                .fill(.questAmber)
+                .overlay(Rectangle().stroke(outline, lineWidth: 1.6 * u))
+                .frame(width: 15 * u, height: 4.5 * u)
+            Rectangle()
+                .fill(charcoal)
+                .overlay(Rectangle().stroke(outline, lineWidth: 1.6 * u))
+                .frame(width: 4.5 * u, height: 9 * u)
+        }
+    }
+
+    private var simpleWand: some View {
+        VStack(spacing: 2 * u) {
+            Circle()
+                .fill(.xpViolet)
+                .overlay(Circle().stroke(outline, lineWidth: 1.8 * u))
+                .frame(width: 8 * u, height: 8 * u)
+                .shadow(color: .xpViolet.opacity(0.8), radius: 3.5 * u)
+            Capsule()
+                .fill(wood)
+                .overlay(Capsule().stroke(outline, lineWidth: 1.6 * u))
+                .frame(width: 4 * u, height: 30 * u)
+        }
+    }
+
+    @ViewBuilder private func heldWeapon(id: String) -> some View {
         switch id {
         case "weapon.staff":
-            VStack(spacing: 1.5 * u) {
+            VStack(spacing: 2 * u) {
                 Circle()
-                    .fill(
-                        RadialGradient(colors: [.xpViolet, .dungeonVoid], center: .center, startRadius: 0, endRadius: 7 * u)
-                    )
+                    .fill(.xpViolet)
+                    .overlay(Circle().stroke(outline, lineWidth: 2 * u))
                     .frame(width: 12 * u, height: 12 * u)
-                    .shadow(color: .xpViolet.opacity(0.7), radius: 4 * u)
-                Capsule().fill(wood).frame(width: 3.5 * u, height: 42 * u)
+                    .shadow(color: .xpViolet.opacity(0.8), radius: 4 * u)
+                Capsule()
+                    .fill(wood)
+                    .overlay(Capsule().stroke(outline, lineWidth: 1.8 * u))
+                    .frame(width: 4.5 * u, height: 42 * u)
             }
         case "weapon.gem":
             VStack(spacing: 0) {
                 RoundedRectangle(cornerRadius: 3 * u, style: .continuous)
-                    .fill(LinearGradient(colors: [.questAmber, .questAmberDeep], startPoint: .top, endPoint: .bottom))
-                    .frame(width: 17 * u, height: 10 * u)
-                Capsule().fill(wood).frame(width: 4 * u, height: 30 * u)
+                    .fill(.questAmber)
+                    .overlay(RoundedRectangle(cornerRadius: 3 * u, style: .continuous).stroke(outline, lineWidth: 2.2 * u))
+                    .frame(width: 18 * u, height: 10 * u)
+                Capsule()
+                    .fill(wood)
+                    .overlay(Capsule().stroke(outline, lineWidth: 1.8 * u))
+                    .frame(width: 4.5 * u, height: 32 * u)
             }
         case "weapon.reel":
-            ZStack {
-                RoundedRectangle(cornerRadius: 2 * u, style: .continuous)
-                    .fill(LinearGradient(colors: [steel.lighter(0.2), steelDeep], startPoint: .top, endPoint: .bottom))
-                    .frame(width: 5 * u, height: 44 * u)
+            VStack(spacing: 0) {
                 Circle()
                     .fill(.videoSapphire)
-                    .frame(width: 13 * u, height: 13 * u)
-                    .overlay(Circle().fill(Color.dungeonVoid).frame(width: 5 * u, height: 5 * u))
-                    .offset(y: -9 * u)
+                    .overlay(Circle().stroke(outline, lineWidth: 2 * u))
+                    .frame(width: 14 * u, height: 14 * u)
+                    .overlay(Circle().fill(outline).frame(width: 5 * u, height: 5 * u))
+                    .offset(y: 4 * u)
+                RoundedRectangle(cornerRadius: 1.5 * u, style: .continuous)
+                    .fill(steel)
+                    .overlay(RoundedRectangle(cornerRadius: 1.5 * u, style: .continuous).stroke(outline, lineWidth: 2 * u))
+                    .frame(width: 6 * u, height: 22 * u)
+                Rectangle()
+                    .fill(.questAmber)
+                    .overlay(Rectangle().stroke(outline, lineWidth: 1.6 * u))
+                    .frame(width: 14 * u, height: 4 * u)
+                Rectangle()
+                    .fill(charcoal)
+                    .overlay(Rectangle().stroke(outline, lineWidth: 1.6 * u))
+                    .frame(width: 4.5 * u, height: 8 * u)
             }
         case "weapon.stormblade":
             Image(systemName: "bolt.fill")
                 .resizable()
-                .foregroundStyle(
-                    LinearGradient(colors: [.videoSapphire, .textPrimary], startPoint: .top, endPoint: .bottom)
-                )
-                .frame(width: 13 * u, height: 42 * u)
-                .shadow(color: .videoSapphire.opacity(0.8), radius: 4 * u)
+                .foregroundStyle(.videoSapphire)
+                .frame(width: 13 * u, height: 40 * u)
+                .shadow(color: .videoSapphire.opacity(0.85), radius: 4 * u)
         default:
             ZStack {
                 Rectangle()
                     .fill(.videoSapphire)
-                    .frame(width: 11 * u, height: 11 * u)
+                    .frame(width: 12 * u, height: 12 * u)
                     .rotationEffect(.degrees(45))
-                    .scaleEffect(y: 1.55)
+                    .scaleEffect(y: 1.6)
+                    .overlay(
+                        Rectangle()
+                            .stroke(outline, lineWidth: 2 * u)
+                            .frame(width: 12 * u, height: 12 * u)
+                            .rotationEffect(.degrees(45))
+                            .scaleEffect(y: 1.6)
+                    )
                 Rectangle()
-                    .fill(Color.white.opacity(0.4))
+                    .fill(Color.white.opacity(0.45))
                     .frame(width: 4 * u, height: 4 * u)
                     .rotationEffect(.degrees(45))
-                    .scaleEffect(y: 1.55)
+                    .scaleEffect(y: 1.6)
                     .offset(x: -2 * u, y: -3 * u)
+                Capsule()
+                    .fill(wood)
+                    .overlay(Capsule().stroke(outline, lineWidth: 1.6 * u))
+                    .frame(width: 4 * u, height: 10 * u)
+                    .offset(y: 16 * u)
             }
         }
     }
@@ -445,31 +633,30 @@ struct MiniAvatarView: View {
     @ViewBuilder private var petLayer: some View {
         if item(.pet) != nil {
             ZStack {
-                Image(systemName: "arrowtriangle.up.fill")
-                    .resizable()
-                    .foregroundStyle(petColor)
-                    .frame(width: 6 * u, height: 7 * u)
-                    .offset(x: -4.5 * u, y: -9 * u)
-                Image(systemName: "arrowtriangle.up.fill")
-                    .resizable()
-                    .foregroundStyle(petColor)
-                    .frame(width: 6 * u, height: 7 * u)
-                    .offset(x: 4.5 * u, y: -9 * u)
+                ear(x: -4.5)
+                ear(x: 4.5)
                 Circle()
-                    .fill(
-                        LinearGradient(colors: [petColor.lighter(0.2), petColor], startPoint: .top, endPoint: .bottom)
-                    )
+                    .fill(petColor)
+                    .overlay(Circle().stroke(outline, lineWidth: 2.2 * u))
                     .frame(width: 15 * u, height: 15 * u)
-                Circle().fill(Color.dungeonVoid).frame(width: 2.6 * u, height: 2.6 * u).offset(x: -3.2 * u, y: -1 * u)
-                Circle().fill(Color.dungeonVoid).frame(width: 2.6 * u, height: 2.6 * u).offset(x: 3.2 * u, y: -1 * u)
+                Circle().fill(outline).frame(width: 2.8 * u, height: 2.8 * u).offset(x: -3.2 * u, y: -1 * u)
+                Circle().fill(outline).frame(width: 2.8 * u, height: 2.8 * u).offset(x: 3.2 * u, y: -1 * u)
             }
-            .offset(x: -45 * u, y: 46 * u)
+            .offset(x: -46 * u, y: 50 * u)
             .transition(.scale(scale: 0.4).combined(with: .opacity))
         }
     }
+
+    private func ear(x: CGFloat) -> some View {
+        Image(systemName: "arrowtriangle.up.fill")
+            .resizable()
+            .foregroundStyle(petColor)
+            .frame(width: 6 * u, height: 7 * u)
+            .offset(x: x * u, y: -9 * u)
+    }
 }
 
-// MARK: - Helpers
+// MARK: - Shapes
 
 /// A quadrilateral tapering from a relative top width to a relative bottom width.
 private struct TaperedShape: Shape {
@@ -485,6 +672,50 @@ private struct TaperedShape: Shape {
         path.addLine(to: CGPoint(x: midX + topHalf, y: rect.minY))
         path.addLine(to: CGPoint(x: midX + bottomHalf, y: rect.maxY))
         path.addLine(to: CGPoint(x: midX - bottomHalf, y: rect.maxY))
+        path.closeSubpath()
+        return path
+    }
+}
+
+/// Curved wizard-hat cone with a bent tip, matching the classic mage silhouette.
+private struct ConeShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let tip = CGPoint(x: rect.minX + rect.width * 0.42, y: rect.minY)
+        path.move(to: CGPoint(x: rect.minX, y: rect.maxY))
+        path.addQuadCurve(
+            to: tip,
+            control: CGPoint(x: rect.minX + rect.width * 0.1, y: rect.minY + rect.height * 0.45)
+        )
+        path.addQuadCurve(
+            to: CGPoint(x: rect.maxX, y: rect.maxY),
+            control: CGPoint(x: rect.maxX - rect.width * 0.12, y: rect.minY + rect.height * 0.3)
+        )
+        path.closeSubpath()
+        return path
+    }
+}
+
+/// Wavy helmet plume sweeping toward the upper right, like the knight sprites.
+private struct PlumeShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.move(to: CGPoint(x: rect.minX + rect.width * 0.08, y: rect.maxY))
+        path.addCurve(
+            to: CGPoint(x: rect.maxX * 0.96, y: rect.minY + rect.height * 0.2),
+            control1: CGPoint(x: rect.midX, y: rect.maxY - rect.height * 0.95),
+            control2: CGPoint(x: rect.maxX * 0.88, y: rect.minY)
+        )
+        path.addCurve(
+            to: CGPoint(x: rect.maxX * 0.52, y: rect.maxY * 0.6),
+            control1: CGPoint(x: rect.maxX * 0.78, y: rect.minY + rect.height * 0.5),
+            control2: CGPoint(x: rect.maxX * 0.82, y: rect.maxY * 0.55)
+        )
+        path.addCurve(
+            to: CGPoint(x: rect.minX + rect.width * 0.08, y: rect.maxY),
+            control1: CGPoint(x: rect.maxX * 0.3, y: rect.maxY * 0.5),
+            control2: CGPoint(x: rect.minX + rect.width * 0.02, y: rect.maxY * 0.8)
+        )
         path.closeSubpath()
         return path
     }
