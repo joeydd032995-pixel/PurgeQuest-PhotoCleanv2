@@ -11,9 +11,10 @@ struct OnboardingView: View {
     @State private var pageIndex: Int = 0
     @State private var requestingPermission: Bool = false
     @State private var selectedClass: HeroClass = .purgeKnight
+    @State private var selectedArchetype: CharacterArchetype = .knight
     @State private var heroName: String = ""
 
-    private let totalPages = 4
+    private let totalPages = 5
 
     var body: some View {
         ZStack {
@@ -35,7 +36,8 @@ struct OnboardingView: View {
                     introPage.tag(0)
                     permissionPage.tag(1)
                     classPage.tag(2)
-                    swipeTutorialPage.tag(3)
+                    characterPage.tag(3)
+                    swipeTutorialPage.tag(4)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .animation(.easeInOut, value: pageIndex)
@@ -170,6 +172,74 @@ struct OnboardingView: View {
         }
     }
 
+    private var characterPage: some View {
+        VStack(spacing: 16) {
+            Text("Choose Your Character")
+                .font(.title.weight(.bold))
+                .foregroundStyle(.textPrimary)
+                .padding(.top, 24)
+            Text("Who ventures into the dungeon?")
+                .font(.callout)
+                .foregroundStyle(.textSecondary)
+
+            VStack(spacing: 14) {
+                ForEach(CharacterArchetype.allCases, id: \.self) { arch in
+                    characterCard(arch)
+                }
+            }
+            .padding(.horizontal, 24)
+            Spacer()
+        }
+    }
+
+    private func characterCard(_ arch: CharacterArchetype) -> some View {
+        let selected = selectedArchetype == arch
+        let tint: Color = arch == .knight ? .questAmber : .xpViolet
+        return Button {
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                selectedArchetype = arch
+            }
+            HapticsService.shared.light()
+        } label: {
+            HStack(spacing: 16) {
+                ZStack {
+                    Circle()
+                        .fill(tint.opacity(0.25))
+                        .frame(width: 76, height: 76)
+                    Image(systemName: arch.symbol)
+                        .font(.system(size: 40, weight: .bold))
+                        .foregroundStyle(tint)
+                        .symbolRenderingMode(.hierarchical)
+                }
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(arch.displayName)
+                        .font(.title3.weight(.heavy))
+                        .foregroundStyle(.textPrimary)
+                    Text(arch.tagline)
+                        .font(.callout)
+                        .foregroundStyle(.textSecondary)
+                }
+                Spacer()
+                if selected {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.title3)
+                        .foregroundStyle(tint)
+                }
+            }
+            .padding(16)
+            .background(
+                RoundedRectangle(cornerRadius: 18)
+                    .fill(Color.dungeonStone)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 18)
+                            .stroke(selected ? tint : Color.dungeonAsh, lineWidth: selected ? 2 : 1)
+                    )
+                    .shadow(color: selected ? tint.opacity(0.35) : .clear, radius: 14)
+            )
+        }
+        .buttonStyle(.plain)
+    }
+
     private func classRow(_ hc: HeroClass) -> some View {
         let selected = selectedClass == hc
         return Button {
@@ -277,6 +347,7 @@ struct OnboardingView: View {
         } else {
             // Persist hero choices via UserDefaults; the actual Hero is created lazily.
             UserDefaults.standard.set(selectedClass.rawValue, forKey: "pq.selectedClass")
+            UserDefaults.standard.set(selectedArchetype.rawValue, forKey: "pq.archetype")
             let trimmed = heroName.trimmingCharacters(in: .whitespaces)
             UserDefaults.standard.set(trimmed.isEmpty ? "Hero" : trimmed, forKey: "pq.heroName")
             appState.completeOnboarding()

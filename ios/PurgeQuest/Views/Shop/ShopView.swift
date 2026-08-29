@@ -12,6 +12,10 @@ private enum ShopFilter: String, CaseIterable {
     case free = "Free"
     case video = "Video"
     case skins = "Skins"
+    case head = "Head"
+    case armor = "Armor"
+    case weapons = "Weapons"
+    case pets = "Pets"
     case effects = "FX"
     case bundles = "Bundles"
 }
@@ -36,6 +40,10 @@ struct ShopView: View {
             case .free: return c.priceGems == 0 || c.isUnlocked
             case .video: return c.isVideoThemed
             case .skins: return c.type == .skin
+            case .head: return c.type == .head
+            case .armor: return c.type == .armor
+            case .weapons: return c.type == .weapon
+            case .pets: return c.type == .pet
             case .effects: return c.type == .effect
             case .bundles: return false
             }
@@ -173,7 +181,7 @@ struct ShopView: View {
         if item.isUnlocked {
             for c in cosmetics where c.type == item.type { c.isEquipped = false }
             item.isEquipped = true
-            hero.equippedSkinID = item.id
+            if item.type == .skin { hero.equippedSkinID = item.id }
             HapticsService.shared.success()
         } else {
             if hero.gems >= item.priceGems {

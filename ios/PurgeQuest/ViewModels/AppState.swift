@@ -14,7 +14,7 @@ enum AppPhase {
 }
 
 enum MainTab: Hashable {
-    case dashboard, achievements, shop, settings
+    case dashboard, hero, achievements, shop, settings
 }
 
 @Observable

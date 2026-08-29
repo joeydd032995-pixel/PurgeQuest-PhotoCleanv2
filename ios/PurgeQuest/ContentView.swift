@@ -60,6 +60,10 @@ struct ContentView: View {
             .tabItem { Label("Dungeon", systemImage: "shield.lefthalf.filled") }
             .tag(MainTab.dashboard)
 
+            NavigationStack { HeroTabView() }
+                .tabItem { Label("Hero", systemImage: "figure.fencing") }
+                .tag(MainTab.hero)
+
             NavigationStack { AchievementsView() }
                 .tabItem { Label("Trophies", systemImage: "trophy.fill") }
                 .tag(MainTab.achievements)
@@ -86,6 +90,10 @@ struct ContentView: View {
         if let className = UserDefaults.standard.string(forKey: "pq.selectedClass"),
            let cls = HeroClass(rawValue: className) {
             hero.heroClass = cls
+        }
+        if let archetypeRaw = UserDefaults.standard.string(forKey: "pq.archetype"),
+           let archetype = CharacterArchetype(rawValue: archetypeRaw) {
+            hero.archetype = archetype
         }
         if let name = UserDefaults.standard.string(forKey: "pq.heroName"), !name.isEmpty {
             hero.name = name

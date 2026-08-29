@@ -6,11 +6,25 @@
 import Foundation
 import SwiftData
 
-enum CosmeticType: String, Codable {
+enum CosmeticType: String, CaseIterable, Codable {
     case skin
+    case head
+    case armor
     case weapon
     case pet
     case effect
+
+    /// Human-friendly slot name shown in the Hero tab.
+    var displayName: String {
+        switch self {
+        case .skin:   return "Skin"
+        case .head:   return "Head"
+        case .armor:  return "Armor"
+        case .weapon: return "Weapon"
+        case .pet:    return "Pet"
+        case .effect: return "FX"
+        }
+    }
 }
 
 @Model

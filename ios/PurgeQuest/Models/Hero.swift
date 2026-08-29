@@ -6,6 +6,34 @@
 import Foundation
 import SwiftData
 
+/// The player's visual persona, chosen at launch. Purely cosmetic identity —
+/// gameplay bonuses come from HeroClass.
+enum CharacterArchetype: String, CaseIterable, Codable {
+    case knight
+    case magician
+
+    var displayName: String {
+        switch self {
+        case .knight:   return "Knight"
+        case .magician: return "Magician"
+        }
+    }
+
+    var symbol: String {
+        switch self {
+        case .knight:   return "figure.fencing"
+        case .magician: return "wand.and.stars"
+        }
+    }
+
+    var tagline: String {
+        switch self {
+        case .knight:   return "Steel, shield and stubborn courage."
+        case .magician: return "Spells, sparkles and storage sorcery."
+        }
+    }
+}
+
 enum HeroClass: String, CaseIterable, Codable {
     case archivist
     case cinematographer
@@ -57,6 +85,7 @@ final class Hero {
     var totalVideosPurged: Int
     var highestCombo: Int
     var equippedSkinID: String?
+    var archetypeRaw: String = CharacterArchetype.knight.rawValue
     var createdAt: Date
 
     var heroClass: HeroClass {
@@ -64,13 +93,20 @@ final class Hero {
         set { heroClassRaw = newValue.rawValue }
     }
 
+    var archetype: CharacterArchetype {
+        get { CharacterArchetype(rawValue: archetypeRaw) ?? .knight }
+        set { archetypeRaw = newValue.rawValue }
+    }
+
     init(
         name: String = "Hero",
-        heroClass: HeroClass = .purgeKnight
+        heroClass: HeroClass = .purgeKnight,
+        archetype: CharacterArchetype = .knight
     ) {
         self.id = UUID()
         self.name = name
         self.heroClassRaw = heroClass.rawValue
+        self.archetypeRaw = archetype.rawValue
         self.level = 1
         self.totalXP = 0
         self.currentHP = 100
