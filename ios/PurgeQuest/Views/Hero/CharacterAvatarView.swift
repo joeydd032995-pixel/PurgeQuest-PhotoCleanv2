@@ -5,8 +5,9 @@
 
 import SwiftUI
 
-/// The hero's layered avatar: a Knight or Magician figure on a glowing stage,
-/// with small badges for each equipped wearable slot orbiting the figure.
+/// The hero's layered avatar: a chibi mini-figure on a glowing stage inside the
+/// orb, with small badges for each equipped wearable slot orbiting the figure.
+/// Gear worn by the figure changes live with equipped items.
 struct CharacterAvatarView: View {
     let hero: Hero
     let equipped: [CosmeticItem]
@@ -45,14 +46,8 @@ struct CharacterAvatarView: View {
                 .fill(Color.dungeonStone.opacity(0.75))
                 .frame(width: size - 14, height: size - 14)
 
-            Image(systemName: archetype.symbol)
-                .font(.system(size: size * 0.36, weight: .bold))
-                .foregroundStyle(LinearGradient(
-                    colors: [accent, accent.opacity(0.55)],
-                    startPoint: .top, endPoint: .bottom
-                ))
-                .symbolRenderingMode(.hierarchical)
-                .shadow(color: accent.opacity(0.55), radius: 14)
+            MiniAvatarView(hero: hero, equipped: equipped, size: size)
+                .frame(width: size * 0.62, height: size * 0.72)
 
             if let head = item(for: .head) {
                 badge(head, tint: .questAmber)
