@@ -112,9 +112,10 @@ struct MiniAvatarView: View {
             robeBack
             legs
             torso
-            arms
+            leftArm
             headGroup
             weaponLayer
+            rightArm
             petLayer
         }
         .frame(width: 112 * u, height: 140 * u)
@@ -141,25 +142,25 @@ struct MiniAvatarView: View {
     private func boot(x: CGFloat) -> some View {
         ZStack {
             UnevenRoundedRectangle(
-                topLeadingRadius: 5.5 * u,
+                topLeadingRadius: 6.5 * u,
                 bottomLeadingRadius: 2 * u,
                 bottomTrailingRadius: 2 * u,
-                topTrailingRadius: 5.5 * u,
+                topTrailingRadius: 6.5 * u,
                 style: .continuous
             )
             .fill(bootColor)
             .overlay(
                 UnevenRoundedRectangle(
-                    topLeadingRadius: 5.5 * u,
+                    topLeadingRadius: 6.5 * u,
                     bottomLeadingRadius: 2 * u,
                     bottomTrailingRadius: 2 * u,
-                    topTrailingRadius: 5.5 * u,
+                    topTrailingRadius: 6.5 * u,
                     style: .continuous
                 )
                 .stroke(outline, lineWidth: 2.2 * u)
             )
         }
-        .frame(width: 13.5 * u, height: 9 * u)
+        .frame(width: 14.5 * u, height: 9.5 * u)
         .offset(x: x * u, y: 47 * u)
     }
 
@@ -168,7 +169,7 @@ struct MiniAvatarView: View {
     private var torso: some View {
         ZStack {
             outlined(TaperedShape(topWidth: 0.78, bottomWidth: 1), tunicColor, lineWidth: 2.6)
-                .frame(width: 30 * u, height: 24 * u)
+                .frame(width: 28 * u, height: 24 * u)
 
             armorLayer
             belt
@@ -177,13 +178,13 @@ struct MiniAvatarView: View {
             Circle()
                 .fill(accent)
                 .overlay(Circle().stroke(outline, lineWidth: 2.2 * u))
-                .frame(width: 15 * u, height: 15 * u)
-                .offset(y: -8.5 * u)
+                .frame(width: 17 * u, height: 17 * u)
+                .offset(y: -8 * u)
             // Small notch cut into the collar's top, per the reference torso.
             NotchShape()
                 .fill(outline)
-                .frame(width: 4.5 * u, height: 3.5 * u)
-                .offset(y: -13.5 * u)
+                .frame(width: 5 * u, height: 3.5 * u)
+                .offset(y: -12.5 * u)
         }
         .offset(y: 21 * u)
     }
@@ -226,7 +227,7 @@ struct MiniAvatarView: View {
         ZStack {
             Rectangle()
                 .fill(leather)
-                .frame(width: 30 * u, height: 6 * u)
+                .frame(width: 28 * u, height: 6 * u)
                 .overlay(Rectangle().stroke(outline, lineWidth: 1.6 * u))
                 .offset(y: 8 * u)
             Capsule()
@@ -253,12 +254,18 @@ struct MiniAvatarView: View {
         }
     }
 
-    // MARK: Arms — thin black sticks with fist mitts
+    // MARK: Arms — thin black sticks with fist mitts; the right mitt grips the weapon
 
-    private var arms: some View {
+    private var leftArm: some View { arm(side: -1) }
+
+    /// Drawn after the weapon layer so the mitt visibly wraps the grip.
+    private var rightArm: some View {
         ZStack {
-            arm(side: -1)
             arm(side: 1)
+            Capsule()
+                .fill(outline)
+                .frame(width: 6 * u, height: 1.6 * u)
+                .offset(x: 25.5 * u, y: 27 * u)
         }
     }
 
@@ -266,8 +273,8 @@ struct MiniAvatarView: View {
         ZStack {
             outlined(Capsule(), outline, lineWidth: 1.2)
                 .frame(width: 4.2 * u, height: 14 * u)
-                .rotationEffect(.degrees(side * 24))
-                .offset(x: side * 3 * u, y: 3 * u)
+                .rotationEffect(.degrees(side * 30))
+                .offset(x: side * 3.5 * u, y: 3 * u)
 
             ZStack {
                 Circle()
@@ -326,13 +333,13 @@ struct MiniAvatarView: View {
 
     private func eye(x: CGFloat) -> some View {
         ZStack {
-            Ellipse()
+            Circle()
                 .fill(outline)
-                .frame(width: 7.5 * u, height: 9 * u)
+                .frame(width: 8 * u, height: 8 * u)
             Circle()
                 .fill(Color.white)
                 .frame(width: 2.4 * u, height: 2.4 * u)
-                .offset(x: 1.4 * u, y: -2.4 * u)
+                .offset(x: 1.4 * u, y: -1.4 * u)
         }
         .offset(x: x * u)
     }
@@ -343,10 +350,10 @@ struct MiniAvatarView: View {
             FaceWindowShape()
                 .fill(skinTone)
                 .overlay(FaceWindowShape().stroke(outline, lineWidth: 2.4 * u))
-                .frame(width: 47 * u, height: 33 * u)
-                .offset(y: 7 * u)
+                .frame(width: 48 * u, height: 36 * u)
+                .offset(y: 10.5 * u)
 
-            eyes.offset(y: 4 * u)
+            eyes.offset(y: 6 * u)
         }
     }
 
@@ -362,10 +369,10 @@ struct MiniAvatarView: View {
                 EmptyView()
             }
 
-            Circle()
+            Ellipse()
                 .fill(dome)
-                .overlay(Circle().stroke(outline, lineWidth: 2.8 * u))
-                .frame(width: 68 * u, height: 68 * u)
+                .overlay(Ellipse().stroke(outline, lineWidth: 2.8 * u))
+                .frame(width: 70 * u, height: 66 * u)
 
             if band {
                 RoundedRectangle(cornerRadius: 4.5 * u, style: .continuous)
@@ -388,11 +395,19 @@ struct MiniAvatarView: View {
 
     /// Two-lobed orange fin crest with the dark center slice, per the close-up reference.
     private func finCrest(color: Color) -> some View {
-        FinShape()
-            .fill(color)
-            .overlay(FinShape().stroke(outline, lineWidth: 2.4 * u))
-            .frame(width: 34 * u, height: 21 * u)
-            .offset(x: 2 * u, y: -35 * u)
+        ZStack {
+            FinShape()
+                .fill(color)
+            // Dark slice between the two lobes, per the close-up reference.
+            NotchShape()
+                .fill(outline)
+                .frame(width: 4.5 * u, height: 12 * u)
+                .rotationEffect(.degrees(14))
+                .offset(x: -3 * u, y: -2 * u)
+        }
+        .overlay(FinShape().stroke(outline, lineWidth: 2.4 * u))
+        .frame(width: 36 * u, height: 22 * u)
+        .offset(x: 2 * u, y: -36 * u)
     }
 
     private func bandRivet(x: CGFloat) -> some View {
@@ -521,7 +536,10 @@ struct MiniAvatarView: View {
         ZStack {
             weaponModel
         }
-        .offset(x: 33 * u, y: -4 * u)
+        // Anchored so the grip passes through the right fist at (81.5, 95);
+        // the blade leans outward, resting against the helmet like the reference.
+        .rotationEffect(.degrees(-8), anchor: .center)
+        .offset(x: 25.5 * u, y: 10.5 * u)
     }
 
     /// Default weapon: the Knight's wide two-facet sword, held tip-up.
@@ -541,22 +559,25 @@ struct MiniAvatarView: View {
             ZStack {
                 BladeShape()
                     .fill(steel)
-                    .overlay(BladeShape().stroke(outline, lineWidth: 2.2 * u))
-                    .frame(width: 13 * u, height: 27 * u)
-                // Lighter leading facet + white sheen stripe, per the reference blade.
+                    .frame(width: 14 * u, height: 30 * u)
+                // Two-tone split: darker left facet, light sheen on the right,
+                // clipped to the tapered blade silhouette.
+                Rectangle()
+                    .fill(steelDeep.opacity(0.45))
+                    .frame(width: 7 * u, height: 30 * u)
+                    .offset(x: -3.5 * u)
                 Rectangle()
                     .fill(Color.white.opacity(0.4))
-                    .frame(width: 3 * u, height: 18 * u)
-                    .offset(x: -2.5 * u, y: -1 * u)
-                Rectangle()
-                    .fill(Color.white.opacity(0.18))
-                    .frame(width: 5 * u, height: 18 * u)
-                    .offset(x: 3 * u, y: -1 * u)
+                    .frame(width: 2.6 * u, height: 19 * u)
+                    .offset(x: 2.6 * u, y: -1 * u)
             }
+            .frame(width: 14 * u, height: 30 * u)
+            .clipShape(BladeShape())
+            .overlay(BladeShape().stroke(outline, lineWidth: 2.2 * u))
             Rectangle()
                 .fill(.questAmber)
                 .overlay(Rectangle().stroke(outline, lineWidth: 1.8 * u))
-                .frame(width: 19 * u, height: 5.5 * u)
+                .frame(width: 20 * u, height: 6 * u)
             Rectangle()
                 .fill(leather)
                 .overlay(Rectangle().stroke(outline, lineWidth: 1.8 * u))
@@ -765,31 +786,6 @@ private struct FaceWindowShape: Shape {
         path.addQuadCurve(
             to: CGPoint(x: rect.minX + w * 0.06, y: rect.minY + h * 0.30),
             control: CGPoint(x: rect.minX + w * 0.005, y: rect.minY + h * 0.52)
-        )
-        path.closeSubpath()
-        return path
-    }
-}
-
-/// Wavy helmet plume sweeping toward the upper right (dragon-crest variant).
-private struct PlumeShape: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        path.move(to: CGPoint(x: rect.minX + rect.width * 0.08, y: rect.maxY))
-        path.addCurve(
-            to: CGPoint(x: rect.maxX * 0.96, y: rect.minY + rect.height * 0.2),
-            control1: CGPoint(x: rect.midX, y: rect.maxY - rect.height * 0.95),
-            control2: CGPoint(x: rect.maxX * 0.88, y: rect.minY)
-        )
-        path.addCurve(
-            to: CGPoint(x: rect.maxX * 0.52, y: rect.maxY * 0.6),
-            control1: CGPoint(x: rect.maxX * 0.78, y: rect.minY + rect.height * 0.5),
-            control2: CGPoint(x: rect.maxX * 0.82, y: rect.maxY * 0.55)
-        )
-        path.addCurve(
-            to: CGPoint(x: rect.minX + rect.width * 0.08, y: rect.maxY),
-            control1: CGPoint(x: rect.maxX * 0.3, y: rect.maxY * 0.5),
-            control2: CGPoint(x: rect.minX + rect.width * 0.02, y: rect.maxY * 0.8)
         )
         path.closeSubpath()
         return path
