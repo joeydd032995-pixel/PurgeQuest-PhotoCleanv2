@@ -114,8 +114,8 @@ struct MiniAvatarView: View {
             torso
             leftArm
             headGroup
-            weaponLayer
             rightArm
+            weaponLayer
             petLayer
         }
         .frame(width: 112 * u, height: 140 * u)
@@ -258,7 +258,7 @@ struct MiniAvatarView: View {
 
     private var leftArm: some View { arm(side: -1) }
 
-    /// Drawn after the weapon layer so the mitt visibly wraps the grip.
+    /// Drawn before the weapon layer so the sword overlays the front of the mitt.
     private var rightArm: some View {
         ZStack {
             arm(side: 1)
