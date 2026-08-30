@@ -11,6 +11,7 @@ enum CosmeticType: String, CaseIterable, Codable {
     case head
     case armor
     case weapon
+    case shield
     case pet
     case effect
 
@@ -21,6 +22,7 @@ enum CosmeticType: String, CaseIterable, Codable {
         case .head:   return "Head"
         case .armor:  return "Armor"
         case .weapon: return "Weapon"
+        case .shield: return "Shield"
         case .pet:    return "Pet"
         case .effect: return "FX"
         }

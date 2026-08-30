@@ -113,6 +113,7 @@ struct MiniAvatarView: View {
             legs
             torso
             leftArm
+            shieldLayer
             headGroup
             rightArm
             weaponLayer
@@ -532,13 +533,13 @@ struct MiniAvatarView: View {
 
     // MARK: Weapon
 
+    /// Anchored so the grip passes through the right fist at (81.5, 95);
+    /// held tilted slightly inward, blade resting against the helmet.
     @ViewBuilder private var weaponLayer: some View {
         ZStack {
             weaponModel
         }
-        // Anchored so the grip passes through the right fist at (81.5, 95);
-        // the blade leans outward, resting against the helmet like the reference.
-        .rotationEffect(.degrees(-8), anchor: .center)
+        .rotationEffect(.degrees(2), anchor: .center)
         .offset(x: 25.5 * u, y: 10.5 * u)
     }
 
@@ -654,6 +655,114 @@ struct MiniAvatarView: View {
                 .foregroundStyle(.videoSapphire)
                 .frame(width: 14 * u, height: 42 * u)
                 .shadow(color: .videoSapphire.opacity(0.85), radius: 4 * u)
+        case "weapon.chevron":
+            VStack(spacing: 0) {
+                ZStack {
+                    BladeShape()
+                        .fill(Color(red: 0.16, green: 0.15, blue: 0.18))
+                        .frame(width: 14 * u, height: 30 * u)
+                    // White chevron column up the dark blade, per the reference greatsword.
+                    VStack(spacing: 1.4 * u) {
+                        ChevronShape().fill(Color.white).frame(width: 8 * u, height: 4.2 * u)
+                        ChevronShape().fill(Color.white).frame(width: 8 * u, height: 4.2 * u)
+                        ChevronShape().fill(Color.white).frame(width: 8 * u, height: 4.2 * u)
+                        ChevronShape().fill(Color.white).frame(width: 8 * u, height: 4.2 * u)
+                    }
+                    .offset(y: 3.5 * u)
+                }
+                .frame(width: 14 * u, height: 30 * u)
+                .clipShape(BladeShape())
+                .overlay(BladeShape().stroke(steel, lineWidth: 1.8 * u))
+                .overlay(BladeShape().stroke(outline, lineWidth: 1 * u))
+                Capsule()
+                    .fill(steel)
+                    .overlay(Capsule().stroke(outline, lineWidth: 1.8 * u))
+                    .frame(width: 21 * u, height: 5 * u)
+                wrappedGrip(width: 6.5, height: 9.5)
+                ZStack {
+                    Circle()
+                        .fill(steel)
+                        .overlay(Circle().stroke(outline, lineWidth: 1.8 * u))
+                        .frame(width: 9.5 * u, height: 9.5 * u)
+                    Circle()
+                        .fill(steelDeep)
+                        .frame(width: 4 * u, height: 4 * u)
+                        .offset(y: -1 * u)
+                }
+            }
+        case "weapon.ruby":
+            VStack(spacing: 0) {
+                ZStack {
+                    BladeShape()
+                        .fill(Color.combatCrimson)
+                        .frame(width: 14 * u, height: 30 * u)
+                    Rectangle()
+                        .fill(Color.white.opacity(0.35))
+                        .frame(width: 3.4 * u, height: 21 * u)
+                        .offset(y: 2 * u)
+                }
+                .frame(width: 14 * u, height: 30 * u)
+                .clipShape(BladeShape())
+                .overlay(BladeShape().stroke(outline, lineWidth: 2.2 * u))
+                Capsule()
+                    .fill(steelDeep)
+                    .overlay(Capsule().stroke(outline, lineWidth: 1.8 * u))
+                    .frame(width: 21 * u, height: 5.5 * u)
+                wrappedGrip(width: 6, height: 9)
+                ZStack {
+                    RoundedRectangle(cornerRadius: 3 * u, style: .continuous)
+                        .fill(steelDeep)
+                        .overlay(RoundedRectangle(cornerRadius: 3 * u, style: .continuous).stroke(outline, lineWidth: 1.8 * u))
+                        .frame(width: 9.5 * u, height: 9.5 * u)
+                    Rectangle()
+                        .fill(outline)
+                        .frame(width: 3.2 * u, height: 3.2 * u)
+                        .rotationEffect(.degrees(45))
+                }
+            }
+        case "weapon.arcane":
+            VStack(spacing: 0) {
+                ZStack {
+                    BladeShape()
+                        .fill(Color(red: 0.72, green: 0.62, blue: 0.88))
+                        .frame(width: 15 * u, height: 32 * u)
+                    ChevronShape()
+                        .fill(Color.white)
+                        .frame(width: 9 * u, height: 9 * u)
+                        .offset(y: 8 * u)
+                }
+                .frame(width: 15 * u, height: 32 * u)
+                .clipShape(BladeShape())
+                .overlay(BladeShape().stroke(outline, lineWidth: 2.2 * u))
+                ZStack {
+                    Capsule()
+                        .fill(steelDeep)
+                        .overlay(Capsule().stroke(outline, lineWidth: 1.8 * u))
+                        .frame(width: 22 * u, height: 5 * u)
+                    guardCube(x: -10)
+                    guardCube(x: 10)
+                }
+                ZStack {
+                    Rectangle()
+                        .fill(outline)
+                        .frame(width: 6.5 * u, height: 9 * u)
+                    VStack(spacing: 2.6 * u) {
+                        Capsule().fill(steel).frame(width: 6.5 * u, height: 1.4 * u)
+                        Capsule().fill(steel).frame(width: 6.5 * u, height: 1.4 * u)
+                    }
+                }
+                .overlay(Rectangle().stroke(outline, lineWidth: 1.2 * u))
+                ZStack {
+                    Circle()
+                        .fill(Color(red: 0.22, green: 0.21, blue: 0.26))
+                        .overlay(Circle().stroke(outline, lineWidth: 1.8 * u))
+                        .frame(width: 9.5 * u, height: 9.5 * u)
+                    Image(systemName: "heart.fill")
+                        .resizable()
+                        .foregroundStyle(.white)
+                        .frame(width: 4 * u, height: 3.6 * u)
+                }
+            }
         default:
             ZStack {
                 Rectangle()
@@ -679,6 +788,104 @@ struct MiniAvatarView: View {
                     .overlay(Capsule().stroke(outline, lineWidth: 1.6 * u))
                     .frame(width: 4 * u, height: 10 * u)
                     .offset(y: 17 * u)
+            }
+        }
+    }
+
+    /// Black leather grip with light wrap lines, shared by the reference swords.
+    private func wrappedGrip(width: CGFloat, height: CGFloat) -> some View {
+        Rectangle()
+            .fill(outline)
+            .frame(width: width * u, height: height * u)
+            .overlay(
+                VStack(spacing: 2.2 * u) {
+                    ForEach(0..<3, id: \.self) { _ in
+                        Capsule()
+                            .fill(Color.white.opacity(0.22))
+                            .frame(width: (width - 1) * u, height: 1.1 * u)
+                    }
+                }
+            )
+            .overlay(Rectangle().stroke(outline, lineWidth: 1.2 * u))
+    }
+
+    private func guardCube(x: CGFloat) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 1.5 * u, style: .continuous)
+                .fill(steelDeep)
+                .overlay(RoundedRectangle(cornerRadius: 1.5 * u, style: .continuous).stroke(outline, lineWidth: 1.6 * u))
+                .frame(width: 5.5 * u, height: 7.5 * u)
+            Circle()
+                .fill(Color.white)
+                .frame(width: 1.8 * u, height: 1.8 * u)
+        }
+        .offset(x: x * u)
+    }
+
+    // MARK: Shield — strapped over the left arm
+
+    @ViewBuilder private var shieldLayer: some View {
+        if item(.shield) != nil {
+            Group {
+                if item(.shield)?.id == "shield.templar" {
+                    templarShield
+                } else {
+                    cruxShield
+                }
+            }
+            .rotationEffect(.degrees(-10))
+            .offset(x: -27 * u, y: 26 * u)
+            .transition(.scale(scale: 0.5).combined(with: .opacity))
+        }
+    }
+
+    /// Azure Aegis: gold-rimmed royal-blue heater shield with a gold cross.
+    private var cruxShield: some View {
+        ZStack {
+            HeaterShieldShape()
+                .fill(.questAmber)
+                .overlay(HeaterShieldShape().stroke(outline, lineWidth: 2.4 * u))
+            HeaterShieldShape()
+                .fill(Color(red: 0.16, green: 0.42, blue: 0.78))
+                .frame(width: 17 * u, height: 22 * u)
+                .offset(y: 1.5 * u)
+            shieldCross(.questAmber)
+        }
+        .frame(width: 22 * u, height: 27 * u)
+    }
+
+    /// Templar Bulwark: dark-gray rim, white field, black cross with red core.
+    private var templarShield: some View {
+        ZStack {
+            HeaterShieldShape()
+                .fill(Color(red: 0.45, green: 0.46, blue: 0.50))
+                .overlay(HeaterShieldShape().stroke(outline, lineWidth: 2.4 * u))
+            HeaterShieldShape()
+                .fill(Color.white)
+                .frame(width: 17.5 * u, height: 22.5 * u)
+                .offset(y: 1.5 * u)
+            shieldCross(outline, inner: .combatCrimson)
+        }
+        .frame(width: 22 * u, height: 27 * u)
+    }
+
+    private func shieldCross(_ color: Color, inner: Color? = nil) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 1.5 * u, style: .continuous)
+                .fill(color)
+                .frame(width: 4.5 * u, height: 17 * u)
+            RoundedRectangle(cornerRadius: 1.5 * u, style: .continuous)
+                .fill(color)
+                .frame(width: 12 * u, height: 4.5 * u)
+                .offset(y: -2.5 * u)
+            if let inner {
+                RoundedRectangle(cornerRadius: 1 * u, style: .continuous)
+                    .fill(inner)
+                    .frame(width: 2.4 * u, height: 13 * u)
+                RoundedRectangle(cornerRadius: 1 * u, style: .continuous)
+                    .fill(inner)
+                    .frame(width: 8.5 * u, height: 2.4 * u)
+                    .offset(y: -2.5 * u)
             }
         }
     }
@@ -831,6 +1038,46 @@ private struct BladeShape: Shape {
         path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
         path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
         path.addLine(to: CGPoint(x: rect.minX, y: rect.minY + rect.height * 0.26))
+        path.closeSubpath()
+        return path
+    }
+}
+
+/// Upward-pointing chevron band used on the Oathbreaker's blade and the Arcane Edge.
+private struct ChevronShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let h = rect.height
+        path.move(to: CGPoint(x: rect.minX, y: rect.minY + h * 0.5))
+        path.addLine(to: CGPoint(x: rect.midX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY + h * 0.5))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.midX, y: rect.minY + h * 0.5))
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
+        path.closeSubpath()
+        return path
+    }
+}
+
+/// Classic heater shield: gently arced top, sides curving to a bottom point.
+private struct HeaterShieldShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let w = rect.width
+        let h = rect.height
+        path.move(to: CGPoint(x: rect.minX + w * 0.04, y: rect.minY + h * 0.16))
+        path.addQuadCurve(
+            to: CGPoint(x: rect.maxX - w * 0.04, y: rect.minY + h * 0.16),
+            control: CGPoint(x: rect.midX, y: rect.minY - h * 0.02)
+        )
+        path.addQuadCurve(
+            to: CGPoint(x: rect.midX, y: rect.maxY),
+            control: CGPoint(x: rect.maxX - w * 0.01, y: rect.minY + h * 0.66)
+        )
+        path.addQuadCurve(
+            to: CGPoint(x: rect.minX + w * 0.04, y: rect.minY + h * 0.16),
+            control: CGPoint(x: rect.minX + w * 0.01, y: rect.minY + h * 0.66)
+        )
         path.closeSubpath()
         return path
     }

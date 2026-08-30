@@ -15,6 +15,7 @@ private enum ShopFilter: String, CaseIterable {
     case head = "Head"
     case armor = "Armor"
     case weapons = "Weapons"
+    case shields = "Shields"
     case pets = "Pets"
     case effects = "FX"
     case bundles = "Bundles"
@@ -43,6 +44,7 @@ struct ShopView: View {
             case .head: return c.type == .head
             case .armor: return c.type == .armor
             case .weapons: return c.type == .weapon
+            case .shields: return c.type == .shield
             case .pets: return c.type == .pet
             case .effects: return c.type == .effect
             case .bundles: return false
