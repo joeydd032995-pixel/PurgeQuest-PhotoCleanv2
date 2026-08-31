@@ -34,6 +34,9 @@ struct ShopView: View {
 
     private var hero: Hero? { heroes.first }
 
+    /// Currently equipped items, one per slot — the base outfit for tile previews.
+    private var equippedItems: [CosmeticItem] { cosmetics.filter { $0.isEquipped } }
+
     private var filtered: [CosmeticItem] {
         cosmetics.filter { c in
             switch filter {
@@ -63,7 +66,7 @@ struct ShopView: View {
                 } else {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                         ForEach(filtered) { item in
-                            CosmeticTile(item: item, gems: hero?.gems ?? 0) {
+                            CosmeticTile(item: item, gems: hero?.gems ?? 0, hero: hero, equipped: equippedItems) {
                                 purchase(item)
                             }
                         }
@@ -321,32 +324,27 @@ private struct IAPRow: View {
 private struct CosmeticTile: View {
     let item: CosmeticItem
     let gems: Int
+    let hero: Hero?
+    let equipped: [CosmeticItem]
     let onTap: () -> Void
+
+    /// Whether the mini avatar renders this slot; effects aren't drawn on the figure.
+    private var isWearable: Bool {
+        switch item.type {
+        case .skin, .head, .armor, .weapon, .shield, .pet: return true
+        case .effect: return false
+        }
+    }
+
+    /// The avatar's outfit with this tile's item swapped into its slot.
+    private var previewEquipped: [CosmeticItem] {
+        equipped.filter { $0.type != item.type } + [item]
+    }
 
     var body: some View {
         Button(action: onTap) {
             VStack(alignment: .leading, spacing: 10) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 14)
-                        .fill(LinearGradient(colors: [.dungeonStoneLight, .dungeonStone], startPoint: .top, endPoint: .bottom))
-                        .frame(height: 110)
-                    Image(systemName: item.iconName)
-                        .font(.system(size: 56, weight: .bold))
-                        .foregroundStyle(item.isVideoThemed ? AnyShapeStyle(Color.videoSapphire) : AnyShapeStyle(LinearGradient.amberGlow))
-                        .symbolRenderingMode(.hierarchical)
-                    if item.isEquipped {
-                        VStack {
-                            HStack {
-                                Spacer()
-                                Image(systemName: "checkmark.circle.fill")
-                                    .font(.title3)
-                                    .foregroundStyle(Color.gemEmerald)
-                                    .padding(8)
-                            }
-                            Spacer()
-                        }
-                    }
-                }
+                photoStage
                 Text(item.name)
                     .font(.subheadline.weight(.bold))
                     .foregroundStyle(.textPrimary)
@@ -369,6 +367,36 @@ private struct CosmeticTile: View {
             )
         }
         .buttonStyle(.plain)
+    }
+
+    // MARK: Photo stage
+
+    /// Wearable slots show a live mini-avatar preview wearing the item;
+    /// non-wearable slots keep the large symbol on the stone backdrop.
+    private var photoStage: some View {
+        RoundedRectangle(cornerRadius: 14)
+            .fill(LinearGradient(colors: [.dungeonStoneLight, .dungeonStone], startPoint: .top, endPoint: .bottom))
+            .frame(height: 110)
+            .overlay {
+                if let hero, isWearable {
+                    MiniAvatarView(hero: hero, equipped: previewEquipped, size: 150, isAnimated: false)
+                        .frame(width: 88, height: 104)
+                        .clipped()
+                } else {
+                    Image(systemName: item.iconName)
+                        .font(.system(size: 56, weight: .bold))
+                        .foregroundStyle(item.isVideoThemed ? AnyShapeStyle(Color.videoSapphire) : AnyShapeStyle(LinearGradient.amberGlow))
+                        .symbolRenderingMode(.hierarchical)
+                }
+            }
+            .overlay(alignment: .topTrailing) {
+                if item.isEquipped {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.title3)
+                        .foregroundStyle(Color.gemEmerald)
+                        .padding(8)
+                }
+            }
     }
 
     @ViewBuilder

@@ -17,6 +17,8 @@ struct MiniAvatarView: View {
     let equipped: [CosmeticItem]
     /// Size of the orb the figure is drawn for; the figure scales proportionally.
     var size: CGFloat = 210
+    /// Set to false for static previews (shop tiles) that shouldn't idle-bob.
+    var isAnimated: Bool = true
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var isBobbing = false
@@ -99,7 +101,7 @@ struct MiniAvatarView: View {
     }
 
     private func startBobbing() {
-        guard !reduceMotion, !isBobbing else { return }
+        guard isAnimated, !reduceMotion, !isBobbing else { return }
         withAnimation(.easeInOut(duration: 1.9).repeatForever(autoreverses: true)) {
             isBobbing = true
         }
