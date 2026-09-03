@@ -2,35 +2,35 @@
 //  Color+Theme.swift
 //  PurgeQuest
 //
-//  "Iron Vault" design system. Cool steel neutrals form the utility base;
-//  dungeon accents are reserved for gamified surfaces. No purple, neon,
-//  pastel, or rainbow tones anywhere.
+//  "Verdigris Deep" design system. Green-black vault neutrals form the
+//  utility base; dungeon accents are reserved for gamified surfaces.
+//  No purple, neon, pastel, or rainbow tones anywhere.
 //
 
 import SwiftUI
 
 extension Color {
-    // Iron Vault neutrals
-    static let dungeonVoid       = Color(red: 0.055, green: 0.063, blue: 0.075)   // canvas #0E1013
-    static let dungeonStone      = Color(red: 0.098, green: 0.110, blue: 0.129)   // surface #191C21
-    static let dungeonStoneLight = Color(red: 0.133, green: 0.149, blue: 0.176)   // raised surface #22262D
-    static let dungeonAsh        = Color(red: 0.169, green: 0.188, blue: 0.220)   // hairline border #2B3038
+    // Verdigris Deep neutrals
+    static let dungeonVoid       = Color(red: 0.047, green: 0.082, blue: 0.071)   // canvas #0C1512
+    static let dungeonStone      = Color(red: 0.078, green: 0.129, blue: 0.110)   // surface #14211C
+    static let dungeonStoneLight = Color(red: 0.106, green: 0.165, blue: 0.141)   // raised surface #1B2A24
+    static let dungeonAsh        = Color(red: 0.149, green: 0.216, blue: 0.188)   // hairline border #263730
 
     // Dungeon accents (gamified zones only)
-    static let questAmber        = Color(red: 0.788, green: 0.635, blue: 0.153)   // muted gold #C9A227
-    static let questAmberDeep    = Color(red: 0.561, green: 0.451, blue: 0.098)   // deep gold #8F7319
-    static let combatCrimson     = Color(red: 0.753, green: 0.333, blue: 0.290)   // brick #C0554A
-    static let combatCrimsonDeep = Color(red: 0.494, green: 0.200, blue: 0.173)   // deep brick #7E332C
-    static let gemEmerald        = Color(red: 0.369, green: 0.612, blue: 0.463)   // reward green #5E9C76
-    static let gemEmeraldDeep    = Color(red: 0.184, green: 0.361, blue: 0.259)   // deep green #2F5C42
-    /// Arcane accent (verdigris teal #4E9B8F). Historic name kept for compatibility.
-    static let xpViolet          = Color(red: 0.306, green: 0.608, blue: 0.561)
-    static let videoSapphire     = Color(red: 0.357, green: 0.529, blue: 0.627)   // steel blue #5B87A0
+    static let questAmber        = Color(red: 0.890, green: 0.702, blue: 0.255)   // treasure gold #E3B341
+    static let questAmberDeep    = Color(red: 0.659, green: 0.498, blue: 0.157)   // deep gold #A87F28
+    static let combatCrimson     = Color(red: 0.769, green: 0.357, blue: 0.306)   // brick #C45B4E
+    static let combatCrimsonDeep = Color(red: 0.561, green: 0.243, blue: 0.200)   // deep brick #8F3E33
+    static let gemEmerald        = Color(red: 0.239, green: 0.620, blue: 0.463)   // reward jade #3D9E76
+    static let gemEmeraldDeep    = Color(red: 0.141, green: 0.333, blue: 0.255)   // deep jade #245541
+    /// Arcane accent (verdigris jade #4FC49B). Historic name kept for compatibility.
+    static let xpViolet          = Color(red: 0.310, green: 0.769, blue: 0.608)
+    static let videoSapphire     = Color(red: 0.427, green: 0.608, blue: 0.710)   // steel blue #6D9BB5
 
     // Text
-    static let textPrimary       = Color(red: 0.925, green: 0.929, blue: 0.933)   // off-white
-    static let textSecondary     = Color(red: 0.604, green: 0.627, blue: 0.659)   // quiet gray
-    static let textTertiary      = Color(red: 0.427, green: 0.447, blue: 0.478)
+    static let textPrimary       = Color(red: 0.937, green: 0.949, blue: 0.937)   // off-white
+    static let textSecondary     = Color(red: 0.576, green: 0.651, blue: 0.612)   // quiet sage gray
+    static let textTertiary      = Color(red: 0.365, green: 0.435, blue: 0.396)
 }
 
 extension ShapeStyle where Self == Color {
@@ -55,7 +55,7 @@ extension ShapeStyle where Self == Color {
 // color with a hint of depth for progress fills and framed panels.
 extension LinearGradient {
     static let dungeonBackground = LinearGradient(
-        colors: [Color(red: 0.043, green: 0.051, blue: 0.063), .dungeonVoid],
+        colors: [Color(red: 0.031, green: 0.059, blue: 0.047), .dungeonVoid],
         startPoint: .top, endPoint: .bottom
     )
     static let amberGlow = LinearGradient(

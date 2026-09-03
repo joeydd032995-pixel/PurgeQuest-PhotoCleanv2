@@ -57,8 +57,8 @@ struct DailyQuestWidgetView: View {
 
     private var accent: Color {
         entry.snapshot.questIsVideo
-            ? Color(red: 0.357, green: 0.529, blue: 0.627)
-            : Color(red: 0.788, green: 0.635, blue: 0.153)
+            ? Color(red: 0.427, green: 0.608, blue: 0.710)
+            : Color(red: 0.890, green: 0.702, blue: 0.255)
     }
 
     private var small: some View {
@@ -89,7 +89,7 @@ struct DailyQuestWidgetView: View {
         }
         .containerBackground(for: .widget) {
             LinearGradient(
-                colors: [Color(red: 0.043, green: 0.051, blue: 0.063), Color(red: 0.098, green: 0.110, blue: 0.129)],
+                colors: [Color(red: 0.031, green: 0.059, blue: 0.047), Color(red: 0.078, green: 0.129, blue: 0.110)],
                 startPoint: .top, endPoint: .bottom
             )
         }
@@ -126,7 +126,7 @@ struct DailyQuestWidgetView: View {
                         Spacer()
                         Label("\(entry.snapshot.streakDays)", systemImage: "flame.fill")
                             .font(.caption.weight(.bold))
-                            .foregroundStyle(Color(red: 0.753, green: 0.333, blue: 0.290))
+                            .foregroundStyle(Color(red: 0.769, green: 0.357, blue: 0.306))
                     }
                     ProgressBar(progress: progress, tint: accent)
                         .frame(height: 7)
@@ -151,7 +151,7 @@ struct DailyQuestWidgetView: View {
         }
         .containerBackground(for: .widget) {
             LinearGradient(
-                colors: [Color(red: 0.04, green: 0.04, blue: 0.06), Color(red: 0.10, green: 0.09, blue: 0.13)],
+                colors: [Color(red: 0.031, green: 0.059, blue: 0.047), Color(red: 0.078, green: 0.129, blue: 0.110)],
                 startPoint: .top, endPoint: .bottom
             )
         }
@@ -189,12 +189,12 @@ struct StreakWidgetView: View {
             Text("STREAK")
                 .font(.system(size: 10, weight: .heavy, design: .rounded))
                 .tracking(0.8)
-                .foregroundStyle(Color(red: 0.753, green: 0.333, blue: 0.290))
+                .foregroundStyle(Color(red: 0.769, green: 0.357, blue: 0.306))
 
             HStack(alignment: .firstTextBaseline, spacing: 4) {
                 Image(systemName: "flame.fill")
                     .font(.title2.weight(.bold))
-                    .foregroundStyle(Color(red: 0.753, green: 0.333, blue: 0.290))
+                    .foregroundStyle(Color(red: 0.769, green: 0.357, blue: 0.306))
                 Text("\(entry.snapshot.streakDays)")
                     .font(.system(size: 38, weight: .black, design: .rounded))
                     .foregroundStyle(.primary)
@@ -216,7 +216,7 @@ struct StreakWidgetView: View {
             HStack(spacing: 4) {
                 Image(systemName: "diamond.fill")
                     .font(.caption2)
-                    .foregroundStyle(Color(red: 0.369, green: 0.612, blue: 0.463))
+                    .foregroundStyle(Color(red: 0.239, green: 0.620, blue: 0.463))
                 Text("\(entry.snapshot.gems)")
                     .font(.caption.monospacedDigit().weight(.bold))
                     .foregroundStyle(.primary)
@@ -224,7 +224,7 @@ struct StreakWidgetView: View {
         }
         .containerBackground(for: .widget) {
             LinearGradient(
-                colors: [Color(red: 0.098, green: 0.110, blue: 0.129), Color(red: 0.043, green: 0.051, blue: 0.063)],
+                colors: [Color(red: 0.078, green: 0.129, blue: 0.110), Color(red: 0.031, green: 0.059, blue: 0.047)],
                 startPoint: .top, endPoint: .bottom
             )
         }

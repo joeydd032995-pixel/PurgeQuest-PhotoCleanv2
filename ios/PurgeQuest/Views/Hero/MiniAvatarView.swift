@@ -35,16 +35,16 @@ struct MiniAvatarView: View {
 
     private var accent: Color { isKnight ? .questAmber : .xpViolet }
     private var skinTone: Color { Color(red: 0.95, green: 0.82, blue: 0.58) }
-    private var steel: Color { Color(red: 0.80, green: 0.82, blue: 0.86) }
-    private var steelDeep: Color { Color(red: 0.50, green: 0.52, blue: 0.58) }
+    private var steel: Color { Color(red: 0.78, green: 0.85, blue: 0.81) }
+    private var steelDeep: Color { Color(red: 0.47, green: 0.56, blue: 0.51) }
     /// Dark warm-gray dome of the reference helmet.
-    private var helmetDark: Color { Color(red: 0.31, green: 0.31, blue: 0.34) }
-    private var charcoal: Color { Color(red: 0.24, green: 0.23, blue: 0.27) }
+    private var helmetDark: Color { Color(red: 0.28, green: 0.33, blue: 0.30) }
+    private var charcoal: Color { Color(red: 0.21, green: 0.26, blue: 0.23) }
     private var leather: Color { Color(red: 0.42, green: 0.26, blue: 0.15) }
-    private var bootColor: Color { Color(red: 0.20, green: 0.19, blue: 0.23) }
-    private var mittColor: Color { Color(red: 0.33, green: 0.32, blue: 0.37) }
+    private var bootColor: Color { Color(red: 0.16, green: 0.22, blue: 0.19) }
+    private var mittColor: Color { Color(red: 0.30, green: 0.36, blue: 0.32) }
     private var wood: Color { Color(red: 0.55, green: 0.38, blue: 0.22) }
-    private var outline: Color { Color(red: 0.08, green: 0.07, blue: 0.09) }
+    private var outline: Color { Color(red: 0.06, green: 0.09, blue: 0.08) }
 
     /// Tunic color driven by the equipped skin; falls back to the archetype standard.
     private var tunicColor: Color {
@@ -52,8 +52,8 @@ struct MiniAvatarView: View {
         case "skin.iron": return steelDeep
         case "skin.embers": return Color(red: 0.72, green: 0.20, blue: 0.22)
         case "skin.archivist": return Color(red: 0.40, green: 0.31, blue: 0.22)
-        case "skin.warden": return Color(red: 0.26, green: 0.28, blue: 0.36)
-        default: return isKnight ? Color(red: 0.35, green: 0.35, blue: 0.40) : Color(red: 0.22, green: 0.44, blue: 0.41)
+        case "skin.warden": return Color(red: 0.24, green: 0.30, blue: 0.26)
+        default: return isKnight ? Color(red: 0.33, green: 0.37, blue: 0.34) : Color(red: 0.22, green: 0.44, blue: 0.41)
         }
     }
 
@@ -648,7 +648,7 @@ struct MiniAvatarView: View {
             VStack(spacing: 0) {
                 ZStack {
                     BladeShape()
-                        .fill(Color(red: 0.16, green: 0.15, blue: 0.18))
+                        .fill(Color(red: 0.14, green: 0.17, blue: 0.15))
                         .frame(width: 14 * u, height: 30 * u)
                     // White chevron column up the dark blade, per the reference greatsword.
                     VStack(spacing: 1.4 * u) {
@@ -743,7 +743,7 @@ struct MiniAvatarView: View {
                 .overlay(Rectangle().stroke(outline, lineWidth: 1.2 * u))
                 ZStack {
                     Circle()
-                        .fill(Color(red: 0.22, green: 0.21, blue: 0.26))
+                        .fill(Color(red: 0.19, green: 0.24, blue: 0.21))
                         .overlay(Circle().stroke(outline, lineWidth: 1.8 * u))
                         .frame(width: 9.5 * u, height: 9.5 * u)
                     Image(systemName: "heart.fill")
@@ -847,7 +847,7 @@ struct MiniAvatarView: View {
     private var templarShield: some View {
         ZStack {
             HeaterShieldShape()
-                .fill(Color(red: 0.45, green: 0.46, blue: 0.50))
+                .fill(Color(red: 0.43, green: 0.50, blue: 0.46))
                 .overlay(HeaterShieldShape().stroke(outline, lineWidth: 2.4 * u))
             HeaterShieldShape()
                 .fill(Color.white)
