@@ -21,8 +21,8 @@ struct CombatHUD: View {
                     Image(systemName: "xmark")
                         .font(.callout.weight(.bold))
                         .frame(width: 36, height: 36)
-                        .background(Circle().fill(Color.dungeonStone))
-                        .overlay(Circle().stroke(Color.dungeonAsh, lineWidth: 1))
+                        .background(RoundedRectangle(cornerRadius: 8).fill(Color.dungeonStone))
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.dungeonAsh, lineWidth: 1))
                         .foregroundStyle(.textPrimary)
                 }
                 .accessibilityLabel("Exit dungeon")
@@ -45,10 +45,9 @@ struct CombatHUD: View {
             .padding(.horizontal, 14)
             .padding(.vertical, 12)
             .background(
-                RoundedRectangle(cornerRadius: 18)
-                    .fill(Color.dungeonVoid.opacity(0.7))
-                    .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color.dungeonAsh, lineWidth: 1))
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 18))
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.dungeonVoid.opacity(0.88))
+                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.dungeonAsh, lineWidth: 1))
             )
         }
     }
@@ -68,9 +67,9 @@ struct CombatHUD: View {
         .frame(width: 76)
         .padding(.vertical, 6)
         .background(
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: 8)
                 .fill(Color.dungeonStone)
-                .overlay(RoundedRectangle(cornerRadius: 12).stroke(tint.opacity(0.5), lineWidth: 1))
+                .overlay(RoundedRectangle(cornerRadius: 8).stroke(tint.opacity(0.5), lineWidth: 1))
         )
     }
 }

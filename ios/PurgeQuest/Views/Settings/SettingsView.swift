@@ -27,9 +27,9 @@ struct SettingsView: View {
                     .font(.title.weight(.bold))
                     .foregroundStyle(.textPrimary)
 
-                section(title: "Combat") {
-                    toggleRow(title: "Include Videos", subtitle: "Battle photo and video monsters together", isOn: $appState.includeVideos)
-                    toggleRow(title: "Video Focus Mode", subtitle: "Video-only rooms — slay clips fastest", isOn: $appState.videoOnlyMode)
+                section(title: "Cleanup") {
+                    toggleRow(title: "Include Videos", subtitle: "Review photos and videos together", isOn: $appState.includeVideos)
+                    toggleRow(title: "Video Focus Mode", subtitle: "Video-only review sessions", isOn: $appState.videoOnlyMode)
                     Button(role: .destructive) {
                         confirmForgetSpared = true
                     } label: {
@@ -74,7 +74,7 @@ struct SettingsView: View {
                                 .font(.callout.weight(.semibold))
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 10)
-                                .background(Capsule().fill(Color.questAmber.opacity(0.15)).overlay(Capsule().stroke(Color.questAmber.opacity(0.4), lineWidth: 1)))
+                                .background(RoundedRectangle(cornerRadius: 8).fill(Color.questAmber.opacity(0.15)).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.questAmber.opacity(0.4), lineWidth: 1)))
                                 .foregroundStyle(.questAmber)
                         }
                     }
@@ -135,7 +135,8 @@ struct SettingsView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title.uppercased())
                 .font(.caption.weight(.heavy))
-                .foregroundStyle(.questAmber)
+                .tracking(0.6)
+                .foregroundStyle(.textSecondary)
                 .padding(.leading, 6)
             VStack(alignment: .leading, spacing: 10) {
                 content()
@@ -143,9 +144,9 @@ struct SettingsView: View {
             .padding(14)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: 12)
                     .fill(Color.dungeonStone)
-                    .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.dungeonAsh, lineWidth: 1))
+                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.dungeonAsh, lineWidth: 1))
             )
         }
     }
@@ -214,7 +215,7 @@ private struct HeroCardSheet: View {
                     Label("Share", systemImage: "square.and.arrow.up")
                         .font(.headline)
                         .padding(.vertical, 12).padding(.horizontal, 24)
-                        .background(Capsule().fill(LinearGradient.amberGlow))
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.questAmber))
                         .foregroundStyle(.dungeonVoid)
                 }
             } else {
@@ -240,14 +241,17 @@ private struct HeroCardArtwork: View {
     let hero: Hero
     var body: some View {
         VStack(spacing: 14) {
-            ZStack {
-                Circle().fill(LinearGradient.amberGlow).frame(width: 120, height: 120).blur(radius: 30)
-                Image(systemName: hero.heroClass.symbol)
-                    .font(.system(size: 70, weight: .bold))
-                    .foregroundStyle(LinearGradient.amberGlow)
-                    .symbolRenderingMode(.hierarchical)
-            }
-            Text(hero.name).font(.system(size: 30, weight: .black, design: .serif)).foregroundStyle(.textPrimary)
+            Image(systemName: hero.heroClass.symbol)
+                .font(.system(size: 56, weight: .bold))
+                .foregroundStyle(.questAmber)
+                .frame(width: 108, height: 108)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.dungeonStoneLight)
+                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.questAmber.opacity(0.6), lineWidth: 1.5))
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmber.opacity(0.3), lineWidth: 1).padding(3))
+                )
+            Text(hero.name).font(.dungeonTitle).foregroundStyle(.textPrimary)
             Text("\(hero.heroClass.displayName) · LV \(hero.level)").font(.headline).foregroundStyle(.textSecondary)
             HStack(spacing: 10) {
                 StatTile(icon: "internaldrive.fill", label: "Total freed",
@@ -260,15 +264,17 @@ private struct HeroCardArtwork: View {
                 StatTile(icon: "video.fill", label: "Videos", value: "\(hero.totalVideosPurged)", tint: .videoSapphire)
             }
             Text("PurgeQuest")
-                .font(.caption.weight(.heavy))
+                .font(.dungeonCaption.weight(.bold))
+                .tracking(1.2)
                 .foregroundStyle(.questAmber)
                 .padding(.top, 4)
         }
         .padding(20)
         .background(
-            RoundedRectangle(cornerRadius: 24)
-                .fill(LinearGradient(colors: [.dungeonStone, .dungeonVoid], startPoint: .top, endPoint: .bottom))
-                .overlay(RoundedRectangle(cornerRadius: 24).stroke(LinearGradient.amberGlow, lineWidth: 2))
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.dungeonStone)
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.questAmber.opacity(0.6), lineWidth: 1.5))
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmber.opacity(0.3), lineWidth: 1).padding(3))
         )
     }
 }

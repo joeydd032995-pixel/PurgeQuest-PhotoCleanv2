@@ -19,9 +19,8 @@ struct RoomSummaryView: View {
         ScrollView {
             VStack(spacing: 16) {
                 Text("Room Cleared")
-                    .font(.system(size: 36, weight: .black, design: .serif))
-                    .foregroundStyle(LinearGradient.amberGlow)
-                    .shadow(color: .questAmber.opacity(0.5), radius: 12)
+                    .font(.dungeonTitle)
+                    .foregroundStyle(.questAmber)
                     .padding(.top, 20)
 
                 lootSummary
@@ -33,7 +32,7 @@ struct RoomSummaryView: View {
             .padding(.horizontal, 16)
             .padding(.bottom, 24)
         }
-        .background(DungeonBackgroundView(intensity: 0.5))
+        .background(DungeonBackgroundView())
     }
 
     private var lootSummary: some View {
@@ -42,7 +41,7 @@ struct RoomSummaryView: View {
         return VStack(spacing: 10) {
             HStack(spacing: 10) {
                 StatTile(icon: "internaldrive.fill", label: "To free", value: label, tint: .gemEmerald)
-                StatTile(icon: "sparkle", label: "XP", value: "+\(estimatedXP)", tint: .questAmber)
+                StatTile(icon: "arrow.up.forward", label: "XP", value: "+\(estimatedXP)", tint: .questAmber)
                 StatTile(icon: "diamond.fill", label: "Gems", value: "+\(estimatedGems)", tint: .gemEmerald)
             }
             HStack(spacing: 10) {
@@ -53,12 +52,12 @@ struct RoomSummaryView: View {
                 HStack {
                     Image(systemName: "bolt.fill").foregroundStyle(.questAmber)
                     Text("Peak combo: \(combat.peakCombo)×")
-                        .font(.callout.weight(.semibold))
+                        .font(.callout.weight(.semibold).monospacedDigit())
                         .foregroundStyle(.textPrimary)
                     Spacer()
                 }
                 .padding(12)
-                .background(RoundedRectangle(cornerRadius: 14).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.dungeonAsh, lineWidth: 1)))
+                .background(RoundedRectangle(cornerRadius: 10).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1)))
             }
         }
     }
@@ -105,7 +104,7 @@ struct RoomSummaryView: View {
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(.questAmber)
                     .padding(10)
-                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.questAmber.opacity(0.12)).overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.questAmber.opacity(0.4), lineWidth: 1)))
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.questAmber.opacity(0.12)).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.questAmber.opacity(0.4), lineWidth: 1)))
             }
             Button {
                 confirming = true
@@ -113,21 +112,21 @@ struct RoomSummaryView: View {
                 HStack {
                     if combat.phase == .purging { ProgressView().tint(.dungeonVoid) }
                     Text("Confirm Purge")
-                        .font(.headline.weight(.heavy))
+                        .font(.dungeonHeader)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
-                .background(LinearGradient.crimsonGlow)
+                .background(Color.combatCrimson)
                 .foregroundStyle(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .shadow(color: .combatCrimson.opacity(0.5), radius: 12)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.combatCrimsonDeep, lineWidth: 1))
             }
             .disabled(combat.pendingPhotoCount + combat.pendingVideoCount == 0 || combat.phase == .purging)
 
             Button {
                 onContinue()
             } label: {
-                Text("Skip — keep all this room")
+                Text("Skip room, keep all items")
                     .font(.callout)
                     .foregroundStyle(.textSecondary)
             }
@@ -162,9 +161,9 @@ private struct DecisionTile: View {
                         }
                     }
                     .aspectRatio(1, contentMode: .fit)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
                     .overlay(
-                        RoundedRectangle(cornerRadius: 10)
+                        RoundedRectangle(cornerRadius: 8)
                             .stroke(decision.willDelete ? Color.combatCrimson : Color.dungeonAsh, lineWidth: 2)
                     )
                 if decision.item.kind == .video {
@@ -183,18 +182,17 @@ private struct DecisionTile: View {
                             Text(decision.item.formattedDuration)
                                 .font(.caption2.monospacedDigit().weight(.bold))
                                 .padding(.horizontal, 6).padding(.vertical, 2)
-                                .background(Capsule().fill(.black.opacity(0.7)))
+                                .background(RoundedRectangle(cornerRadius: 4).fill(.black.opacity(0.7)))
                                 .foregroundStyle(.white)
                         }
                     }
                     .padding(6)
                 }
                 if !decision.willDelete {
-                    RoundedRectangle(cornerRadius: 10).fill(Color.gemEmerald.opacity(0.35))
+                    RoundedRectangle(cornerRadius: 8).fill(Color.gemEmerald.opacity(0.35))
                     Image(systemName: "shield.fill")
                         .font(.title)
                         .foregroundStyle(.gemEmerald)
-                        .shadow(color: .black, radius: 3)
                 } else {
                     VStack {
                         Spacer()

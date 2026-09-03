@@ -9,6 +9,10 @@ import SwiftData
 @main
 struct PurgeQuestApp: App {
 
+    init() {
+        DungeonFont.registerAll()
+    }
+
     @State private var appState = AppState()
 
     let sharedModelContainer: ModelContainer = {

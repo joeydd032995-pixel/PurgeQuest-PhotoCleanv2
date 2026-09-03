@@ -16,7 +16,7 @@ enum PhotoLibraryError: Error, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .denied: return "PurgeQuest needs Photo Library access to find monsters in your camera roll."
-        case .limited: return "Limited Photo Library access — only the photos you allowed will appear."
+        case .limited: return "Limited Photo Library access. Only the photos you allowed will appear."
         case .fetchFailed: return "Could not load media from your library."
         case .deletionFailed(let m): return "Couldn't move items to Recently Deleted: \(m)"
         }

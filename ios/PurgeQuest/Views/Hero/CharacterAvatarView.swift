@@ -2,12 +2,13 @@
 //  CharacterAvatarView.swift
 //  PurgeQuest
 //
+//  The hero's avatar: a chibi mini-figure on a flat engraved-frame medallion,
+//  with small square-framed tags for each equipped wearable slot. Gear worn by
+//  the figure changes live with equipped items.
+//
 
 import SwiftUI
 
-/// The hero's layered avatar: a chibi mini-figure on a glowing stage inside the
-/// orb, with small badges for each equipped wearable slot orbiting the figure.
-/// Gear worn by the figure changes live with equipped items.
 struct CharacterAvatarView: View {
     let hero: Hero
     let equipped: [CosmeticItem]
@@ -24,27 +25,16 @@ struct CharacterAvatarView: View {
     var body: some View {
         ZStack {
             Circle()
-                .fill(LinearGradient(
-                    colors: [accent.opacity(0.7), .dungeonVoid.opacity(0.1)],
-                    startPoint: .top, endPoint: .bottom
-                ))
-                .frame(width: size + 110, height: size + 110)
-                .blur(radius: 45)
-                .opacity(0.65)
+                .fill(Color.dungeonStone.opacity(0.75))
+                .frame(width: size - 14, height: size - 14)
 
             Circle()
-                .strokeBorder(
-                    LinearGradient(
-                        colors: [accent, accent.opacity(0.25)],
-                        startPoint: .topLeading, endPoint: .bottomTrailing
-                    ),
-                    lineWidth: 2.5
-                )
+                .strokeBorder(accent.opacity(0.6), lineWidth: 2)
                 .frame(width: size, height: size)
 
             Circle()
-                .fill(Color.dungeonStone.opacity(0.75))
-                .frame(width: size - 14, height: size - 14)
+                .strokeBorder(accent.opacity(0.3), lineWidth: 1)
+                .frame(width: size - 8, height: size - 8)
 
             MiniAvatarView(hero: hero, equipped: equipped, size: size)
                 .frame(width: size * 0.62, height: size * 0.72)
@@ -70,19 +60,18 @@ struct CharacterAvatarView: View {
                     .offset(x: size * 0.48, y: size * 0.42)
             }
         }
-        .frame(width: size + 130, height: size + 110)
+        .frame(width: size + 120, height: size + 100)
     }
 
     private func badge(_ item: CosmeticItem, tint: Color) -> some View {
         Image(systemName: item.iconName)
-            .font(.system(size: 15, weight: .bold))
+            .font(.system(size: 14, weight: .bold))
             .foregroundStyle(tint)
-            .frame(width: 34, height: 34)
+            .frame(width: 32, height: 32)
             .background(
-                Circle()
+                RoundedRectangle(cornerRadius: 8)
                     .fill(Color.dungeonStoneLight)
-                    .overlay(Circle().stroke(tint.opacity(0.8), lineWidth: 1.5))
-                    .shadow(color: .black.opacity(0.5), radius: 6, y: 2)
+                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(tint.opacity(0.8), lineWidth: 1))
             )
             .accessibilityLabel("\(item.name) equipped")
     }

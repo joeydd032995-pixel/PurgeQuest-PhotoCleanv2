@@ -41,7 +41,7 @@ struct AchievementsView: View {
         return HStack {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Hall of Trophies")
-                    .font(.title.weight(.bold))
+                    .font(.dungeonTitle)
                     .foregroundStyle(.textPrimary)
                 Text("\(unlocked) of \(total) unlocked")
                     .font(.subheadline)
@@ -49,9 +49,15 @@ struct AchievementsView: View {
             }
             Spacer()
             Image(systemName: "trophy.fill")
-                .font(.system(size: 36))
-                .foregroundStyle(LinearGradient.amberGlow)
-                .shadow(color: .questAmber.opacity(0.5), radius: 10)
+                .font(.title2.weight(.bold))
+                .foregroundStyle(.questAmber)
+                .frame(width: 52, height: 52)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.dungeonStone)
+                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.questAmber.opacity(0.6), lineWidth: 1))
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmber.opacity(0.3), lineWidth: 1).padding(2))
+                )
         }
     }
 }
@@ -61,15 +67,15 @@ private struct AchievementCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            ZStack {
-                Circle()
-                    .fill(achievement.isUnlocked ? AnyShapeStyle(LinearGradient.amberGlow) : AnyShapeStyle(Color.dungeonStoneLight))
-                    .frame(width: 56, height: 56)
-                Image(systemName: achievement.iconName)
-                    .font(.title2.weight(.bold))
-                    .foregroundStyle(achievement.isUnlocked ? .dungeonVoid : .textSecondary)
-            }
-            .shadow(color: achievement.isUnlocked ? .questAmber.opacity(0.5) : .clear, radius: 12)
+            Image(systemName: achievement.isUnlocked ? "medal.fill" : achievement.iconName)
+                .font(.title2.weight(.bold))
+                .foregroundStyle(achievement.isUnlocked ? AnyShapeStyle(Color.questAmber) : AnyShapeStyle(Color.textSecondary))
+                .frame(width: 52, height: 52)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(achievement.isUnlocked ? Color.questAmber.opacity(0.14) : Color.dungeonStoneLight)
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(achievement.isUnlocked ? Color.questAmber.opacity(0.5) : Color.dungeonAsh, lineWidth: 1))
+                )
 
             Text(achievement.title)
                 .font(.subheadline.weight(.bold))
@@ -90,10 +96,10 @@ private struct AchievementCard: View {
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
-            RoundedRectangle(cornerRadius: 16)
+            RoundedRectangle(cornerRadius: 12)
                 .fill(Color.dungeonStone.opacity(achievement.isUnlocked ? 1.0 : 0.7))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 16)
+                    RoundedRectangle(cornerRadius: 12)
                         .stroke(achievement.isUnlocked ? Color.questAmber.opacity(0.7) : Color.dungeonAsh, lineWidth: 1)
                 )
         )

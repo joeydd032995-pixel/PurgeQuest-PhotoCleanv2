@@ -17,11 +17,10 @@ struct MiniAvatarView: View {
     let equipped: [CosmeticItem]
     /// Size of the orb the figure is drawn for; the figure scales proportionally.
     var size: CGFloat = 210
-    /// Set to false for static previews (shop tiles) that shouldn't idle-bob.
+    /// Set to false for static previews (armory tiles) that skip idle motion.
     var isAnimated: Bool = true
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var isBobbing = false
 
     /// Base design unit so every dimension scales with the orb size.
     private var u: CGFloat { size / 200 }
@@ -54,7 +53,7 @@ struct MiniAvatarView: View {
         case "skin.embers": return Color(red: 0.72, green: 0.20, blue: 0.22)
         case "skin.archivist": return Color(red: 0.40, green: 0.31, blue: 0.22)
         case "skin.warden": return Color(red: 0.26, green: 0.28, blue: 0.36)
-        default: return isKnight ? Color(red: 0.35, green: 0.35, blue: 0.40) : Color(red: 0.42, green: 0.28, blue: 0.68)
+        default: return isKnight ? Color(red: 0.35, green: 0.35, blue: 0.40) : Color(red: 0.22, green: 0.44, blue: 0.41)
         }
     }
 
@@ -84,10 +83,8 @@ struct MiniAvatarView: View {
                 .offset(y: 58 * u)
 
             figure
-                .offset(y: isBobbing ? -2.5 * u : 0)
         }
         .frame(width: 118 * u, height: 140 * u)
-        .onAppear { startBobbing() }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilitySummary)
     }
@@ -98,13 +95,6 @@ struct MiniAvatarView: View {
         }
         if worn.isEmpty { return "Hero figure, default gear" }
         return "Hero figure wearing \(worn.joined(separator: ", "))"
-    }
-
-    private func startBobbing() {
-        guard isAnimated, !reduceMotion, !isBobbing else { return }
-        withAnimation(.easeInOut(duration: 1.9).repeatForever(autoreverses: true)) {
-            isBobbing = true
-        }
     }
 
     // MARK: - Figure
@@ -248,7 +238,7 @@ struct MiniAvatarView: View {
             TaperedShape(topWidth: 0.55, bottomWidth: 1)
                 .fill(
                     item(.armor)?.id == "armor.arcanist"
-                        ? Color(red: 0.46, green: 0.30, blue: 0.76)
+                        ? Color(red: 0.20, green: 0.42, blue: 0.40)
                         : Color(red: 0.33, green: 0.25, blue: 0.17)
                 )
                 .overlay(TaperedShape(topWidth: 0.55, bottomWidth: 1).stroke(outline, lineWidth: 2.4 * u))
@@ -474,8 +464,8 @@ struct MiniAvatarView: View {
     private var starWizardHead: some View {
         ZStack {
             wizardHead
-            Image(systemName: "sparkle")
-                .font(.system(size: 9 * u, weight: .bold))
+            Image(systemName: "star.fill")
+                .font(.system(size: 8 * u, weight: .bold))
                 .foregroundStyle(.questAmber)
                 .offset(x: 8 * u, y: -32 * u)
         }
@@ -485,19 +475,19 @@ struct MiniAvatarView: View {
     private var wizardHat: some View {
         ZStack {
             Circle()
-                .fill(Color(red: 0.46, green: 0.30, blue: 0.76))
+                .fill(Color(red: 0.20, green: 0.42, blue: 0.40))
                 .frame(width: 9 * u, height: 9 * u)
                 .overlay(Circle().stroke(outline, lineWidth: 2 * u))
                 .offset(x: -5 * u, y: -44 * u)
 
             ConeShape()
-                .fill(Color(red: 0.52, green: 0.34, blue: 0.82))
+                .fill(Color(red: 0.26, green: 0.52, blue: 0.49))
                 .overlay(ConeShape().stroke(outline, lineWidth: 2.4 * u))
                 .frame(width: 54 * u, height: 36 * u)
                 .offset(y: -26 * u)
 
             Ellipse()
-                .fill(Color(red: 0.46, green: 0.30, blue: 0.76))
+                .fill(Color(red: 0.20, green: 0.42, blue: 0.40))
                 .overlay(Ellipse().stroke(outline, lineWidth: 2.4 * u))
                 .frame(width: 60 * u, height: 13 * u)
                 .offset(y: -9 * u)
@@ -598,7 +588,6 @@ struct MiniAvatarView: View {
                 .fill(.xpViolet)
                 .overlay(Circle().stroke(outline, lineWidth: 1.8 * u))
                 .frame(width: 9 * u, height: 9 * u)
-                .shadow(color: .xpViolet.opacity(0.8), radius: 3.5 * u)
             Capsule()
                 .fill(wood)
                 .overlay(Capsule().stroke(outline, lineWidth: 1.6 * u))
@@ -614,7 +603,6 @@ struct MiniAvatarView: View {
                     .fill(.xpViolet)
                     .overlay(Circle().stroke(outline, lineWidth: 2 * u))
                     .frame(width: 13 * u, height: 13 * u)
-                    .shadow(color: .xpViolet.opacity(0.8), radius: 4 * u)
                 Capsule()
                     .fill(wood)
                     .overlay(Capsule().stroke(outline, lineWidth: 1.8 * u))
@@ -656,7 +644,6 @@ struct MiniAvatarView: View {
                 .resizable()
                 .foregroundStyle(.videoSapphire)
                 .frame(width: 14 * u, height: 42 * u)
-                .shadow(color: .videoSapphire.opacity(0.85), radius: 4 * u)
         case "weapon.chevron":
             VStack(spacing: 0) {
                 ZStack {
@@ -726,7 +713,7 @@ struct MiniAvatarView: View {
             VStack(spacing: 0) {
                 ZStack {
                     BladeShape()
-                        .fill(Color(red: 0.72, green: 0.62, blue: 0.88))
+                        .fill(Color(red: 0.52, green: 0.68, blue: 0.66))
                         .frame(width: 15 * u, height: 32 * u)
                     ChevronShape()
                         .fill(Color.white)
@@ -848,7 +835,7 @@ struct MiniAvatarView: View {
                 .fill(.questAmber)
                 .overlay(HeaterShieldShape().stroke(outline, lineWidth: 2.4 * u))
             HeaterShieldShape()
-                .fill(Color(red: 0.16, green: 0.42, blue: 0.78))
+                .fill(Color(red: 0.20, green: 0.38, blue: 0.55))
                 .frame(width: 17 * u, height: 22 * u)
                 .offset(y: 1.5 * u)
             shieldCross(.questAmber)

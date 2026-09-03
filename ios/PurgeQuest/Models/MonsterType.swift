@@ -50,7 +50,7 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .duplicateDragon:   return "square.on.square"
         case .blurBeast:         return "drop.halffull"
         case .screenshotSpecter: return "rectangle.dashed"
-        case .lowQualityLich:    return "sparkle.magnifyingglass"
+        case .lowQualityLich:    return "minus.magnifyingglass"
         case .ancientArchive:    return "hourglass"
         case .darkWraith:        return "moon.stars.fill"
         case .videoVampire:      return "play.rectangle.fill"
@@ -119,7 +119,7 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
 
     var flavor: String {
         switch self {
-        case .duplicateDragon:   return "Twin scales gleam — slay one, the other vanishes."
+        case .duplicateDragon:   return "Twin scales gleam. Slay one, the other vanishes."
         case .blurBeast:         return "A smear of motion from a hand long forgotten."
         case .screenshotSpecter: return "Phantoms of UIs you no longer recall."
         case .lowQualityLich:    return "Drains your storage drop by drop."
@@ -127,11 +127,11 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .darkWraith:        return "Lurks in shadows where the light didn't reach."
         case .videoVampire:      return "Feeds on your gigabytes, frame by frame."
         case .longTakeLeviathan: return "An endless take. Massive HP. Massive loot."
-        case .shakyGhost:        return "Trembles erratically — strike before it slips away."
+        case .shakyGhost:        return "Trembles erratically. Strike before it slips away."
         case .boringBlooper:     return "Five seconds you'll never get back."
         case .memoryHogMinotaur: return "A behemoth of bloated bytes."
         case .timelapsePhantom:  return "Captured an entire afternoon. Probably."
-        case .corruptedCodec:    return "Fragmented frames — a glitch in the dungeon."
+        case .corruptedCodec:    return "Fragmented frames. A glitch in the dungeon."
         }
     }
 }

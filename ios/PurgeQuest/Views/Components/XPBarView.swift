@@ -2,6 +2,9 @@
 //  XPBarView.swift
 //  PurgeQuest
 //
+//  Flat progress bars with crisp borders. Motion is limited to a spring fill
+//  when the value actually changes.
+//
 
 import SwiftUI
 
@@ -15,7 +18,7 @@ struct XPBarView: View {
             if !compact {
                 HStack {
                     Text("LV \(level)")
-                        .font(.caption.weight(.heavy))
+                        .font(.dungeonCaption.weight(.bold))
                         .foregroundStyle(.questAmber)
                     Spacer()
                     Text("\(Int(progress * 100))%")
@@ -25,13 +28,12 @@ struct XPBarView: View {
             }
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
-                    Capsule()
-                        .fill(Color.dungeonStone)
-                        .overlay(Capsule().stroke(Color.dungeonAsh, lineWidth: 1))
-                    Capsule()
-                        .fill(LinearGradient.amberGlow)
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(Color.dungeonVoid)
+                        .overlay(RoundedRectangle(cornerRadius: 3).stroke(Color.dungeonAsh, lineWidth: 1))
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(Color.questAmber)
                         .frame(width: max(0, geo.size.width * progress))
-                        .shadow(color: .questAmber.opacity(0.7), radius: 6)
                         .animation(.spring(response: 0.6, dampingFraction: 0.8), value: progress)
                 }
             }
@@ -62,12 +64,12 @@ struct HPBarView: View {
             }
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
-                    Capsule().fill(Color.dungeonStone)
-                        .overlay(Capsule().stroke(Color.dungeonAsh, lineWidth: 1))
-                    Capsule()
-                        .fill(LinearGradient.crimsonGlow)
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(Color.dungeonVoid)
+                        .overlay(RoundedRectangle(cornerRadius: 3).stroke(Color.dungeonAsh, lineWidth: 1))
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(Color.combatCrimson)
                         .frame(width: Swift.max(0, geo.size.width * fraction))
-                        .shadow(color: .combatCrimson.opacity(0.7), radius: 5)
                         .animation(.spring(response: 0.5, dampingFraction: 0.7), value: fraction)
                 }
             }

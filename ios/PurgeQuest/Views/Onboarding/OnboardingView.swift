@@ -18,13 +18,12 @@ struct OnboardingView: View {
 
     var body: some View {
         ZStack {
-            DungeonBackgroundView(intensity: Double(pageIndex) / Double(totalPages - 1))
+            DungeonBackgroundView()
 
             VStack(spacing: 0) {
-                // Page indicators
                 HStack(spacing: 8) {
                     ForEach(0..<totalPages, id: \.self) { i in
-                        Capsule()
+                        RoundedRectangle(cornerRadius: 3)
                             .fill(i == pageIndex ? Color.questAmber : Color.dungeonAsh)
                             .frame(width: i == pageIndex ? 24 : 8, height: 6)
                             .animation(.spring(response: 0.4, dampingFraction: 0.7), value: pageIndex)
@@ -54,24 +53,21 @@ struct OnboardingView: View {
     private var introPage: some View {
         VStack(spacing: 24) {
             Spacer()
-            ZStack {
-                Circle()
-                    .fill(LinearGradient.amberGlow)
-                    .frame(width: 180, height: 180)
-                    .blur(radius: 60)
-                Image(systemName: "sword.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 140, height: 140)
-                    .foregroundStyle(LinearGradient.amberGlow)
-                    .symbolRenderingMode(.hierarchical)
-                    .shadow(color: .questAmber.opacity(0.6), radius: 20)
-            }
+            Image(systemName: "shield.lefthalf.filled")
+                .font(.system(size: 52, weight: .bold))
+                .foregroundStyle(.questAmber)
+                .frame(width: 112, height: 112)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.dungeonStone)
+                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.questAmber.opacity(0.6), lineWidth: 1))
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmber.opacity(0.3), lineWidth: 1).padding(3))
+                )
             VStack(spacing: 12) {
                 Text("PurgeQuest")
-                    .font(.system(size: 44, weight: .black, design: .serif))
+                    .font(.dungeonTitle)
                     .foregroundStyle(.textPrimary)
-                Text("Your Camera Roll is a Dungeon.\nPhotos and videos hide as monsters.\nWill you slay them all?")
+                Text("Your library is a dungeon.\nPhotos and videos hide as monsters.\nClear the depths and reclaim your storage.")
                     .font(.headline)
                     .foregroundStyle(.textSecondary)
                     .multilineTextAlignment(.center)
@@ -87,13 +83,12 @@ struct OnboardingView: View {
             Image(systemName: "photo.on.rectangle.angled")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 100, height: 100)
-                .foregroundStyle(LinearGradient.amberGlow)
-                .symbolRenderingMode(.hierarchical)
+                .frame(width: 84, height: 84)
+                .foregroundStyle(.questAmber)
             Text("Unlock the Dungeon")
-                .font(.title.weight(.bold))
+                .font(.dungeonHeader)
                 .foregroundStyle(.textPrimary)
-            Text("PurgeQuest needs Full Photo Library access to summon monsters from your photos AND videos. Items you choose to delete are moved to **Recently Deleted** in Photos — you can restore them for 30 days.")
+            Text("PurgeQuest needs full photo library access to review your photos and videos. Items you choose to delete are moved to **Recently Deleted** in Photos. You can restore them for 30 days.")
                 .font(.callout)
                 .foregroundStyle(.textSecondary)
                 .multilineTextAlignment(.center)
@@ -111,13 +106,14 @@ struct OnboardingView: View {
                 HStack {
                     if requestingPermission { ProgressView().tint(.dungeonVoid) }
                     Text(appState.photoAuthStatus == .notDetermined ? "Grant Photo Library Access" : "Update Permissions")
-                        .fontWeight(.bold)
+                        .font(.dungeonHeader)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
-                .background(LinearGradient.amberGlow, in: Capsule())
+                .background(Color.questAmber)
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmberDeep, lineWidth: 1))
+                .clipShape(RoundedRectangle(cornerRadius: 10))
                 .foregroundStyle(.dungeonVoid)
-                .shadow(color: .questAmber.opacity(0.5), radius: 16)
             }
             .padding(.horizontal, 24)
             .disabled(requestingPermission)
@@ -126,27 +122,27 @@ struct OnboardingView: View {
     }
 
     private var statusChip: some View {
-        let (text, tint): (String, Color) = {
+        let (text, symbol, tint): (String, String, Color) = {
             switch appState.photoAuthStatus {
-            case .authorized: return ("✓ Full access — ready to fight", .gemEmerald)
-            case .limited: return ("⚠ Limited access — some monsters won't appear", .questAmber)
-            case .denied, .restricted: return ("✗ Denied — open Settings to enable", .combatCrimson)
-            case .notDetermined: return ("Awaiting permission", .textSecondary)
-            @unknown default: return ("Unknown", .textSecondary)
+            case .authorized: return ("Full access", "checkmark.circle.fill", .gemEmerald)
+            case .limited: return ("Limited access. Some items won't appear", "exclamationmark.triangle.fill", .questAmber)
+            case .denied, .restricted: return ("Access denied. Open Settings to enable", "xmark.circle.fill", .combatCrimson)
+            case .notDetermined: return ("Awaiting permission", "circle.dashed", .textSecondary)
+            @unknown default: return ("Unknown", "questionmark.circle", .textSecondary)
             }
         }()
-        return Text(text)
+        return Label(text, systemImage: symbol)
             .font(.footnote.weight(.semibold))
             .padding(.horizontal, 14)
             .padding(.vertical, 8)
-            .background(Capsule().fill(tint.opacity(0.15)).overlay(Capsule().stroke(tint.opacity(0.5), lineWidth: 1)))
+            .background(RoundedRectangle(cornerRadius: 8).fill(tint.opacity(0.15)).overlay(RoundedRectangle(cornerRadius: 8).stroke(tint.opacity(0.5), lineWidth: 1)))
             .foregroundStyle(tint)
     }
 
     private var classPage: some View {
         VStack(spacing: 16) {
             Text("Choose Your Class")
-                .font(.title.weight(.bold))
+                .font(.dungeonTitle)
                 .foregroundStyle(.textPrimary)
                 .padding(.top, 24)
             Text("Each class grants a passive bonus.")
@@ -156,8 +152,8 @@ struct OnboardingView: View {
             TextField("Hero name", text: $heroName)
                 .textFieldStyle(.plain)
                 .padding(12)
-                .background(Color.dungeonStone, in: RoundedRectangle(cornerRadius: 12))
-                .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.dungeonAsh, lineWidth: 1))
+                .background(Color.dungeonStone, in: RoundedRectangle(cornerRadius: 10))
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
                 .padding(.horizontal, 24)
 
             ScrollView {
@@ -175,7 +171,7 @@ struct OnboardingView: View {
     private var characterPage: some View {
         VStack(spacing: 16) {
             Text("Choose Your Character")
-                .font(.title.weight(.bold))
+                .font(.dungeonTitle)
                 .foregroundStyle(.textPrimary)
                 .padding(.top, 24)
             Text("Who ventures into the dungeon?")
@@ -202,18 +198,19 @@ struct OnboardingView: View {
             HapticsService.shared.light()
         } label: {
             HStack(spacing: 16) {
-                ZStack {
-                    Circle()
-                        .fill(tint.opacity(0.25))
-                        .frame(width: 76, height: 76)
-                    Image(systemName: arch.symbol)
-                        .font(.system(size: 40, weight: .bold))
-                        .foregroundStyle(tint)
-                        .symbolRenderingMode(.hierarchical)
-                }
+                Image(systemName: arch.symbol)
+                    .font(.system(size: 32, weight: .bold))
+                    .foregroundStyle(tint)
+                    .frame(width: 64, height: 64)
+                    .background(
+                        Circle()
+                            .fill(tint.opacity(0.14))
+                            .overlay(Circle().stroke(tint.opacity(selected ? 0.8 : 0.4), lineWidth: 1.5))
+                            .overlay(Circle().stroke(tint.opacity(selected ? 0.4 : 0.2), lineWidth: 1).padding(4))
+                    )
                 VStack(alignment: .leading, spacing: 4) {
                     Text(arch.displayName)
-                        .font(.title3.weight(.heavy))
+                        .font(.dungeonHeader)
                         .foregroundStyle(.textPrimary)
                     Text(arch.tagline)
                         .font(.callout)
@@ -228,13 +225,12 @@ struct OnboardingView: View {
             }
             .padding(16)
             .background(
-                RoundedRectangle(cornerRadius: 18)
+                RoundedRectangle(cornerRadius: 12)
                     .fill(Color.dungeonStone)
                     .overlay(
-                        RoundedRectangle(cornerRadius: 18)
+                        RoundedRectangle(cornerRadius: 12)
                             .stroke(selected ? tint : Color.dungeonAsh, lineWidth: selected ? 2 : 1)
                     )
-                    .shadow(color: selected ? tint.opacity(0.35) : .clear, radius: 14)
             )
         }
         .buttonStyle(.plain)
@@ -254,8 +250,9 @@ struct OnboardingView: View {
                     .foregroundStyle(selected ? Color.dungeonVoid : Color.questAmber)
                     .frame(width: 48, height: 48)
                     .background(
-                        Circle().fill(selected ? AnyShapeStyle(LinearGradient.amberGlow) : AnyShapeStyle(Color.dungeonStoneLight))
+                        RoundedRectangle(cornerRadius: 10).fill(selected ? AnyShapeStyle(Color.questAmber) : AnyShapeStyle(Color.dungeonStoneLight))
                     )
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(selected ? Color.questAmberDeep : Color.dungeonAsh, lineWidth: 1))
                 VStack(alignment: .leading, spacing: 2) {
                     Text(hc.displayName)
                         .font(.headline)
@@ -271,9 +268,9 @@ struct OnboardingView: View {
             }
             .padding(12)
             .background(
-                RoundedRectangle(cornerRadius: 14)
+                RoundedRectangle(cornerRadius: 10)
                     .fill(Color.dungeonStone)
-                    .overlay(RoundedRectangle(cornerRadius: 14).stroke(selected ? Color.questAmber : Color.dungeonAsh, lineWidth: selected ? 2 : 1))
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(selected ? Color.questAmber : Color.dungeonAsh, lineWidth: selected ? 2 : 1))
             )
         }
         .buttonStyle(.plain)
@@ -282,30 +279,29 @@ struct OnboardingView: View {
     private var swipeTutorialPage: some View {
         VStack(spacing: 18) {
             Spacer()
-            Text("How to Fight")
-                .font(.title.weight(.bold))
+            Text("How to Review")
+                .font(.dungeonTitle)
                 .foregroundStyle(.textPrimary)
-            Text("Each monster appears as a card.\nSwipe to choose its fate.")
+            Text("Each item appears as a card.\nSwipe to choose its fate.")
                 .font(.callout)
                 .foregroundStyle(.textSecondary)
                 .multilineTextAlignment(.center)
 
-            // Animated demo
             DemoSwipeCard()
                 .frame(height: 320)
                 .padding(.horizontal, 30)
 
             HStack(spacing: 10) {
-                Label("Swipe ← to DELETE", systemImage: "arrow.left")
+                Label("Swipe left to delete", systemImage: "arrow.left")
                     .font(.callout.weight(.semibold))
                     .foregroundStyle(.combatCrimson)
                     .padding(.vertical, 8).padding(.horizontal, 12)
-                    .background(Capsule().fill(Color.combatCrimson.opacity(0.12)).overlay(Capsule().stroke(Color.combatCrimson.opacity(0.5), lineWidth: 1)))
-                Label("Swipe → to SPARE", systemImage: "arrow.right")
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.combatCrimson.opacity(0.12)).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.combatCrimson.opacity(0.5), lineWidth: 1)))
+                Label("Swipe right to spare", systemImage: "arrow.right")
                     .font(.callout.weight(.semibold))
                     .foregroundStyle(.gemEmerald)
                     .padding(.vertical, 8).padding(.horizontal, 12)
-                    .background(Capsule().fill(Color.gemEmerald.opacity(0.12)).overlay(Capsule().stroke(Color.gemEmerald.opacity(0.5), lineWidth: 1)))
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.gemEmerald.opacity(0.12)).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gemEmerald.opacity(0.5), lineWidth: 1)))
             }
             Spacer()
         }
@@ -326,15 +322,13 @@ struct OnboardingView: View {
             Button {
                 advance()
             } label: {
-                HStack(spacing: 6) {
-                    Text(pageIndex == totalPages - 1 ? "Enter the Dungeon" : "Continue")
-                    Image(systemName: "arrow.right")
-                }
-                .font(.headline)
-                .padding(.vertical, 12).padding(.horizontal, 18)
-                .background(LinearGradient.amberGlow, in: Capsule())
-                .foregroundStyle(.dungeonVoid)
-                .shadow(color: .questAmber.opacity(0.5), radius: 10)
+                Text(pageIndex == totalPages - 1 ? "Enter the Dungeon" : "Continue")
+                    .font(.dungeonHeader)
+                    .padding(.vertical, 12).padding(.horizontal, 18)
+                    .background(Color.questAmber)
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmberDeep, lineWidth: 1))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .foregroundStyle(.dungeonVoid)
             }
             .disabled(pageIndex == 1 && (appState.photoAuthStatus != .authorized && appState.photoAuthStatus != .limited))
             .opacity((pageIndex == 1 && (appState.photoAuthStatus != .authorized && appState.photoAuthStatus != .limited)) ? 0.4 : 1.0)
@@ -364,19 +358,19 @@ private struct DemoSwipeCard: View {
     var body: some View {
         ZStack {
             // Static placeholder card
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(LinearGradient(colors: [.dungeonStoneLight, .dungeonStone], startPoint: .top, endPoint: .bottom))
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.dungeonStoneLight)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 22, style: .continuous)
+                    RoundedRectangle(cornerRadius: 12)
                         .stroke(Color.questAmber.opacity(0.5), lineWidth: 1.5)
                 )
                 .overlay(
                     VStack(spacing: 12) {
                         Image(systemName: "drop.halffull")
-                            .font(.system(size: 70, weight: .bold))
-                            .foregroundStyle(LinearGradient.amberGlow)
+                            .font(.system(size: 60, weight: .bold))
+                            .foregroundStyle(.questAmber)
                         Text("Blur Beast")
-                            .font(.title2.weight(.bold))
+                            .font(.dungeonHeader)
                             .foregroundStyle(.textPrimary)
                         Text("4.2 MB · 3 yr ago")
                             .font(.caption)
@@ -385,7 +379,6 @@ private struct DemoSwipeCard: View {
                 )
                 .offset(x: offset)
                 .rotationEffect(.degrees(Double(offset / 20)))
-                .shadow(color: .black.opacity(0.5), radius: 18, y: 8)
                 .onAppear {
                     Task { await loop() }
                 }

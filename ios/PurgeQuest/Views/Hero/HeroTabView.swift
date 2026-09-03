@@ -46,7 +46,7 @@ struct HeroTabView: View {
 
             VStack(spacing: 4) {
                 Text(hero.name)
-                    .font(.title.weight(.bold))
+                    .font(.dungeonTitle)
                     .foregroundStyle(.textPrimary)
                 Text("\(hero.archetype.displayName) · \(hero.heroClass.displayName) · LV \(hero.level)")
                     .font(.subheadline)
@@ -60,22 +60,23 @@ struct HeroTabView: View {
                 GemCounterView(count: hero.gems)
                 HStack(spacing: 6) {
                     Image(systemName: "flame.fill")
-                        .foregroundStyle(LinearGradient.crimsonGlow)
+                        .foregroundStyle(.combatCrimson)
                     Text("\(hero.streakDays) day streak")
-                        .font(.callout.weight(.semibold))
+                        .font(.callout.weight(.semibold).monospacedDigit())
                         .foregroundStyle(.textPrimary)
                 }
                 .padding(.horizontal, 10).padding(.vertical, 6)
-                .background(Capsule().fill(Color.dungeonStone).overlay(Capsule().stroke(Color.combatCrimson.opacity(0.4), lineWidth: 1)))
+                .background(RoundedRectangle(cornerRadius: 8).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.combatCrimson.opacity(0.4), lineWidth: 1)))
             }
         }
         .padding(.vertical, 18)
         .padding(.horizontal, 16)
         .frame(maxWidth: .infinity)
         .background(
-            RoundedRectangle(cornerRadius: 22)
+            RoundedRectangle(cornerRadius: 12)
                 .fill(Color.dungeonStone.opacity(0.85))
-                .overlay(RoundedRectangle(cornerRadius: 22).stroke(hero.archetype == .knight ? Color.questAmber.opacity(0.5) : Color.xpViolet.opacity(0.5), lineWidth: 1))
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(hero.archetype == .knight ? Color.questAmber.opacity(0.5) : Color.xpViolet.opacity(0.5), lineWidth: 1))
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke((hero.archetype == .knight ? Color.questAmber : Color.xpViolet).opacity(0.25), lineWidth: 1).padding(2))
         )
     }
 
@@ -85,16 +86,16 @@ struct HeroTabView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text("Equipped Gear")
-                    .font(.title3.weight(.bold))
+                    .font(.dungeonHeader)
                     .foregroundStyle(.textPrimary)
                 Spacer()
                 Button {
                     appState.selectedTab = .shop
                 } label: {
-                    Label("Shop", systemImage: "cart.fill")
+                    Label("Armory", systemImage: "shield.lefthalf.filled")
                         .font(.callout.weight(.semibold))
                         .padding(.horizontal, 12).padding(.vertical, 7)
-                        .background(Capsule().fill(Color.questAmber.opacity(0.15)).overlay(Capsule().stroke(Color.questAmber.opacity(0.5), lineWidth: 1)))
+                        .background(RoundedRectangle(cornerRadius: 8).fill(Color.questAmber.opacity(0.15)).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.questAmber.opacity(0.5), lineWidth: 1)))
                         .foregroundStyle(.questAmber)
                 }
             }
@@ -115,13 +116,14 @@ struct HeroTabView: View {
                 .foregroundStyle(item != nil ? AnyShapeStyle(Color.questAmber) : AnyShapeStyle(Color.dungeonAsh))
                 .frame(width: 44, height: 44)
                 .background(
-                    RoundedRectangle(cornerRadius: 10)
+                    RoundedRectangle(cornerRadius: 8)
                         .fill(Color.dungeonStoneLight)
-                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.dungeonAsh, lineWidth: 1))
                 )
             VStack(alignment: .leading, spacing: 2) {
-                Text(slot.displayName)
-                    .font(.caption.weight(.heavy))
+                Text(slot.displayName.uppercased())
+                    .font(.caption2.weight(.semibold))
+                    .tracking(0.6)
                     .foregroundStyle(.textSecondary)
                 Text(item?.name ?? "Nothing equipped")
                     .font(.callout.weight(.semibold))
@@ -134,9 +136,9 @@ struct HeroTabView: View {
         }
         .padding(10)
         .background(
-            RoundedRectangle(cornerRadius: 14)
+            RoundedRectangle(cornerRadius: 10)
                 .fill(Color.dungeonStone)
-                .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.dungeonAsh, lineWidth: 1))
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
         )
         .contentShape(Rectangle())
         .onTapGesture { appState.selectedTab = .shop }
@@ -147,7 +149,7 @@ struct HeroTabView: View {
     private func lifetimeSection(_ hero: Hero) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Legend of \(hero.name)")
-                .font(.title3.weight(.bold))
+                .font(.dungeonHeader)
                 .foregroundStyle(.textPrimary)
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
                 StatTile(icon: "photo.fill", label: "Photos purged", value: "\(hero.totalPhotosPurged)", tint: .questAmber)

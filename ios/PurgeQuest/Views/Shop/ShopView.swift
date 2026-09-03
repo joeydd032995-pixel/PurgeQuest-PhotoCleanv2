@@ -99,8 +99,8 @@ struct ShopView: View {
     private var header: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Cosmetics Shop").font(.title.weight(.bold)).foregroundStyle(.textPrimary)
-                Text("Spend Storage Gems on flair. Gameplay always free.")
+                Text("Armory").font(.dungeonTitle).foregroundStyle(.textPrimary)
+                Text("Spend storage gems on gear. Core gameplay stays free.")
                     .font(.caption).foregroundStyle(.textSecondary)
             }
             Spacer()
@@ -112,7 +112,7 @@ struct ShopView: View {
                     Label("Restore", systemImage: "arrow.clockwise")
                         .font(.caption.weight(.bold))
                         .padding(.horizontal, 10).padding(.vertical, 6)
-                        .background(Capsule().stroke(Color.dungeonAsh, lineWidth: 1))
+                        .background(RoundedRectangle(cornerRadius: 8).stroke(Color.dungeonAsh, lineWidth: 1))
                         .foregroundStyle(.textSecondary)
                 }
             }
@@ -130,8 +130,8 @@ struct ShopView: View {
                             .font(.callout.weight(.semibold))
                             .padding(.horizontal, 14).padding(.vertical, 8)
                             .background(
-                                Capsule().fill(filter == f ? AnyShapeStyle(LinearGradient.amberGlow) : AnyShapeStyle(Color.dungeonStone))
-                                    .overlay(Capsule().stroke(filter == f ? Color.clear : Color.dungeonAsh, lineWidth: 1))
+                                RoundedRectangle(cornerRadius: 8).fill(filter == f ? AnyShapeStyle(Color.questAmber) : AnyShapeStyle(Color.dungeonStone))
+                                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(filter == f ? Color.questAmberDeep : Color.dungeonAsh, lineWidth: 1))
                             )
                             .foregroundStyle(filter == f ? .dungeonVoid : .textPrimary)
                     }
@@ -147,8 +147,8 @@ struct ShopView: View {
     private var storeKitSection: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 6) {
-                Image(systemName: "sparkles").foregroundStyle(.questAmber)
-                Text("Power Bundles")
+                Image(systemName: "seal.fill").foregroundStyle(.questAmber)
+                Text("Bundles")
                     .font(.headline.weight(.bold))
                     .foregroundStyle(.textPrimary)
                 Spacer()
@@ -156,7 +156,7 @@ struct ShopView: View {
                     ProgressView().controlSize(.small)
                 }
             }
-            Text("Optional, ethical IAPs. Speed-buy gem packs or unlock cosmetic bundles.")
+            Text("Optional gem packs and cosmetic bundles.")
                 .font(.caption).foregroundStyle(.textSecondary)
 
             if store.products.isEmpty && !store.isLoading {
@@ -165,7 +165,7 @@ struct ShopView: View {
                     .foregroundStyle(.textSecondary)
                     .padding(12)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.dungeonStone))
+                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.dungeonStone))
             } else {
                 VStack(spacing: 10) {
                     ForEach(store.products, id: \.id) { product in
@@ -257,7 +257,7 @@ private struct IAPRow: View {
         if product.id.contains("videoSlayer") { return "film.stack.fill" }
         if product.id.contains("aurora") { return "moon.haze.fill" }
         if product.id.contains("embers") { return "flame.fill" }
-        return "sparkles"
+        return "seal.fill"
     }
 
     private var accent: Color {
@@ -267,13 +267,14 @@ private struct IAPRow: View {
     var body: some View {
         HStack(spacing: 12) {
             ZStack {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(LinearGradient(colors: [.dungeonStoneLight, .dungeonStone], startPoint: .top, endPoint: .bottom))
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.dungeonStoneLight)
                 Image(systemName: symbol)
                     .font(.title2.weight(.bold))
                     .foregroundStyle(accent)
             }
             .frame(width: 52, height: 52)
+            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(product.displayName)
@@ -297,8 +298,8 @@ private struct IAPRow: View {
                 }
             } label: {
                 ZStack {
-                    Capsule()
-                        .fill(LinearGradient(colors: [accent, accent.opacity(0.7)], startPoint: .top, endPoint: .bottom))
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(accent)
                     if working || isPurchasing {
                         ProgressView().tint(.dungeonVoid)
                     } else {
@@ -309,14 +310,15 @@ private struct IAPRow: View {
                     }
                 }
                 .frame(width: 88, height: 36)
+                .overlay(RoundedRectangle(cornerRadius: 8).stroke(accent.opacity(0.6), lineWidth: 1))
             }
             .disabled(working || isPurchasing)
         }
         .padding(10)
         .background(
-            RoundedRectangle(cornerRadius: 14)
+            RoundedRectangle(cornerRadius: 10)
                 .fill(Color.dungeonStone)
-                .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.dungeonAsh, lineWidth: 1))
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
         )
     }
 }
@@ -358,11 +360,16 @@ private struct CosmeticTile: View {
             }
             .padding(12)
             .background(
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: 12)
                     .fill(Color.dungeonStone)
                     .overlay(
-                        RoundedRectangle(cornerRadius: 16)
+                        RoundedRectangle(cornerRadius: 12)
                             .stroke(item.isEquipped ? Color.gemEmerald.opacity(0.7) : Color.dungeonAsh, lineWidth: 1)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(item.isEquipped ? Color.gemEmerald.opacity(0.35) : Color.dungeonAsh.opacity(0.5), lineWidth: 1)
+                            .padding(2)
                     )
             )
         }
@@ -374,9 +381,13 @@ private struct CosmeticTile: View {
     /// Wearable slots show a live mini-avatar preview wearing the item;
     /// non-wearable slots keep the large symbol on the stone backdrop.
     private var photoStage: some View {
-        RoundedRectangle(cornerRadius: 14)
-            .fill(LinearGradient(colors: [.dungeonStoneLight, .dungeonStone], startPoint: .top, endPoint: .bottom))
+        RoundedRectangle(cornerRadius: 12)
+            .fill(Color.dungeonStoneLight)
             .frame(height: 110)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color.dungeonAsh, lineWidth: 1)
+            )
             .overlay {
                 if let hero, isWearable {
                     MiniAvatarView(hero: hero, equipped: previewEquipped, size: 150, isAnimated: false)
@@ -384,8 +395,8 @@ private struct CosmeticTile: View {
                         .clipped()
                 } else {
                     Image(systemName: item.iconName)
-                        .font(.system(size: 56, weight: .bold))
-                        .foregroundStyle(item.isVideoThemed ? AnyShapeStyle(Color.videoSapphire) : AnyShapeStyle(LinearGradient.amberGlow))
+                        .font(.system(size: 52, weight: .bold))
+                        .foregroundStyle(item.isVideoThemed ? AnyShapeStyle(Color.videoSapphire) : AnyShapeStyle(Color.questAmber))
                         .symbolRenderingMode(.hierarchical)
                 }
             }
@@ -405,13 +416,13 @@ private struct CosmeticTile: View {
             Label("Equipped", systemImage: "checkmark.seal.fill")
                 .font(.caption.weight(.bold))
                 .padding(.vertical, 6).padding(.horizontal, 10)
-                .background(Capsule().fill(Color.gemEmerald.opacity(0.18)).overlay(Capsule().stroke(Color.gemEmerald.opacity(0.5), lineWidth: 1)))
+                .background(RoundedRectangle(cornerRadius: 8).fill(Color.gemEmerald.opacity(0.18)).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gemEmerald.opacity(0.5), lineWidth: 1)))
                 .foregroundStyle(.gemEmerald)
         } else if item.isUnlocked {
             Text("Tap to equip")
                 .font(.caption.weight(.bold))
                 .padding(.vertical, 6).padding(.horizontal, 10)
-                .background(Capsule().fill(Color.questAmber.opacity(0.18)).overlay(Capsule().stroke(Color.questAmber.opacity(0.5), lineWidth: 1)))
+                .background(RoundedRectangle(cornerRadius: 8).fill(Color.questAmber.opacity(0.18)).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.questAmber.opacity(0.5), lineWidth: 1)))
                 .foregroundStyle(.questAmber)
         } else {
             HStack(spacing: 4) {
@@ -419,7 +430,7 @@ private struct CosmeticTile: View {
                 Text("\(item.priceGems)").font(.caption.monospacedDigit().weight(.bold))
             }
             .padding(.vertical, 6).padding(.horizontal, 10)
-            .background(Capsule().fill(gems >= item.priceGems ? Color.gemEmerald.opacity(0.18) : Color.dungeonStoneLight).overlay(Capsule().stroke(Color.gemEmerald.opacity(0.5), lineWidth: 1)))
+            .background(RoundedRectangle(cornerRadius: 8).fill(gems >= item.priceGems ? Color.gemEmerald.opacity(0.18) : Color.dungeonStoneLight).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gemEmerald.opacity(0.5), lineWidth: 1)))
             .foregroundStyle(gems >= item.priceGems ? .gemEmerald : .textSecondary)
         }
     }

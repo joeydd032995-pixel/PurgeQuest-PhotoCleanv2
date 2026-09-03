@@ -18,7 +18,6 @@ struct SwipeMediaCard: View {
     @State private var snapAway: CGSize? = nil
     @State private var dynamicFlavor: String? = nil
     @State private var showLivePreview: Bool = false
-    @State private var elitePulse: Bool = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
 
@@ -32,12 +31,15 @@ struct SwipeMediaCard: View {
             cardBody
                 .overlay(alignment: .topLeading) { deleteOverlay }
                 .overlay(alignment: .topTrailing) { spareOverlay }
-                .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 22, style: .continuous)
+                    RoundedRectangle(cornerRadius: 12)
                         .stroke(item.monsterType.accentColor.opacity(0.5), lineWidth: 1.5)
                 )
-                .shadow(color: .black.opacity(0.55), radius: 20, y: 12)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.black.opacity(0.6), lineWidth: 1)
+                )
         }
         .scaleEffect(isFront ? 1.0 : 0.94)
         .offset(x: snapAway?.width ?? dragOffset.width, y: snapAway?.height ?? dragOffset.height)
@@ -114,7 +116,6 @@ struct SwipeMediaCard: View {
                     Image(systemName: "play.circle.fill")
                         .font(.system(size: 70, weight: .bold))
                         .foregroundStyle(.white.opacity(0.85))
-                        .shadow(radius: 12)
                         .allowsHitTesting(false)
                 }
             }
@@ -132,7 +133,7 @@ struct SwipeMediaCard: View {
                     .lineLimit(1)
             }
             .padding(.horizontal, 10).padding(.vertical, 6)
-            .background(Capsule().fill(item.monsterType.accentColor.opacity(0.85)))
+            .background(RoundedRectangle(cornerRadius: 6).fill(item.monsterType.accentColor.opacity(0.85)))
             .foregroundStyle(.dungeonVoid)
             if item.monsterType.isElite {
                 eliteBadge
@@ -142,15 +143,15 @@ struct SwipeMediaCard: View {
                 Text(item.formattedDuration)
                     .font(.caption.monospacedDigit().weight(.bold))
                     .padding(.horizontal, 10).padding(.vertical, 6)
-                    .background(Capsule().fill(.black.opacity(0.7)))
+                    .background(RoundedRectangle(cornerRadius: 6).fill(.black.opacity(0.7)))
                     .foregroundStyle(.white)
             }
         }
         .padding(12)
     }
 
-    /// Small gold crown badge marking high-HP "boss" monsters — the foes a Purge
-    /// Knight earns bonus XP for slaying. Pulses gently unless Reduce Motion is on.
+    /// Small gold tag marking high-HP "boss" monsters — the foes a Purge
+    /// Knight earns bonus XP for slaying. Static; no pulse.
     private var eliteBadge: some View {
         HStack(spacing: 3) {
             Image(systemName: "crown.fill")
@@ -161,23 +162,8 @@ struct SwipeMediaCard: View {
         }
         .padding(.horizontal, 8).padding(.vertical, 5)
         .foregroundStyle(.dungeonVoid)
-        .background(
-            Capsule().fill(
-                LinearGradient(
-                    colors: [Color(red: 1.0, green: 0.86, blue: 0.45), .questAmberDeep],
-                    startPoint: .topLeading, endPoint: .bottomTrailing
-                )
-            )
-        )
-        .overlay(Capsule().stroke(.white.opacity(0.65), lineWidth: 0.6))
-        .shadow(color: .questAmber.opacity(elitePulse ? 0.85 : 0.35), radius: elitePulse ? 7 : 3)
-        .scaleEffect(elitePulse ? 1.05 : 1.0)
-        .onAppear {
-            guard !reduceMotion else { return }
-            withAnimation(.easeInOut(duration: 1.1).repeatForever(autoreverses: true)) {
-                elitePulse = true
-            }
-        }
+        .background(RoundedRectangle(cornerRadius: 6).fill(Color.questAmber))
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(.white.opacity(0.55), lineWidth: 0.6))
         .accessibilityHidden(true)
     }
 
@@ -204,13 +190,14 @@ struct SwipeMediaCard: View {
     private var deleteOverlay: some View {
         let strength = max(0, min(1, -dragOffset.width / commitThreshold))
         return ZStack {
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
+            RoundedRectangle(cornerRadius: 12)
                 .fill(Color.combatCrimson.opacity(0.45 * strength))
-            Text("⚔ DELETE")
-                .font(.system(size: 28, weight: .black))
+            Text("DELETE")
+                .font(.system(size: 26, weight: .black))
                 .foregroundStyle(.white)
                 .padding(10).padding(.horizontal, 6)
-                .background(Capsule().fill(LinearGradient.crimsonGlow))
+                .background(RoundedRectangle(cornerRadius: 8).fill(Color.combatCrimsonDeep))
+                .overlay(RoundedRectangle(cornerRadius: 8).stroke(.white.opacity(0.6), lineWidth: 1))
                 .rotationEffect(.degrees(-12))
                 .opacity(strength)
                 .scaleEffect(0.6 + strength * 0.5)
@@ -222,13 +209,14 @@ struct SwipeMediaCard: View {
     private var spareOverlay: some View {
         let strength = max(0, min(1, dragOffset.width / commitThreshold))
         return ZStack {
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
+            RoundedRectangle(cornerRadius: 12)
                 .fill(Color.gemEmerald.opacity(0.4 * strength))
-            Text("✦ SPARE")
-                .font(.system(size: 28, weight: .black))
+            Text("SPARE")
+                .font(.system(size: 26, weight: .black))
                 .foregroundStyle(.dungeonVoid)
                 .padding(10).padding(.horizontal, 6)
-                .background(Capsule().fill(LinearGradient.emeraldGlow))
+                .background(RoundedRectangle(cornerRadius: 8).fill(Color.gemEmeraldDeep))
+                .overlay(RoundedRectangle(cornerRadius: 8).stroke(.white.opacity(0.6), lineWidth: 1))
                 .rotationEffect(.degrees(12))
                 .opacity(strength)
                 .scaleEffect(0.6 + strength * 0.5)

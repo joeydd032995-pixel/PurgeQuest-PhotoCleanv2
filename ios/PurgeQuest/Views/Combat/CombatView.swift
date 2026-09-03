@@ -80,17 +80,17 @@ struct CombatView: View {
 
     private var emptyView: some View {
         VStack(spacing: 16) {
-            Image(systemName: "checkmark.seal.fill")
-                .font(.system(size: 80)).foregroundStyle(.gemEmerald)
-            Text("All clear, hero!")
-                .font(.title.weight(.bold)).foregroundStyle(.textPrimary)
-            Text("Your camera roll has no monsters to fight.\nReturn another day.")
+            Image(systemName: "checkmark.seal")
+                .font(.system(size: 64)).foregroundStyle(.gemEmerald)
+            Text("All clear")
+                .font(.dungeonTitle).foregroundStyle(.textPrimary)
+            Text("Your library has nothing to review right now.\nReturn another day.")
                 .font(.callout).foregroundStyle(.textSecondary).multilineTextAlignment(.center)
-            Button("Back to Dashboard") {
+            Button("Back to Library") {
                 exit()
             }
             .padding(.vertical, 12).padding(.horizontal, 24)
-            .background(Capsule().fill(LinearGradient.amberGlow))
+            .background(RoundedRectangle(cornerRadius: 10).fill(Color.questAmber))
             .foregroundStyle(.dungeonVoid)
         }
         .padding()
@@ -136,19 +136,21 @@ struct CombatView: View {
                     Label("DELETE", systemImage: "xmark")
                         .font(.headline.weight(.heavy))
                         .frame(maxWidth: .infinity).padding(.vertical, 14)
-                        .background(LinearGradient.crimsonGlow, in: Capsule())
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.combatCrimson))
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.combatCrimsonDeep, lineWidth: 1))
                         .foregroundStyle(.white)
                 }
-                .accessibilityHint("Mark monster for deletion")
+                .accessibilityHint("Mark this item for deletion")
 
                 Button { if let top = combat.topItem { combat.decideSpare(top, context: modelContext) } } label: {
                     Label("SPARE", systemImage: "shield.fill")
                         .font(.headline.weight(.heavy))
                         .frame(maxWidth: .infinity).padding(.vertical, 14)
-                        .background(LinearGradient.emeraldGlow, in: Capsule())
-                        .foregroundStyle(.dungeonVoid)
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.dungeonStoneLight))
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
+                        .foregroundStyle(.textPrimary)
                 }
-                .accessibilityHint("Spare this monster, take damage")
+                .accessibilityHint("Spare this item, take damage")
             }
             .padding(.horizontal, 16)
             .padding(.bottom, 14)
@@ -158,22 +160,28 @@ struct CombatView: View {
     private var sessionCompleteView: some View {
         VStack(spacing: 16) {
             Image(systemName: "trophy.fill")
-                .font(.system(size: 90))
-                .foregroundStyle(LinearGradient.amberGlow)
-                .shadow(color: .questAmber.opacity(0.6), radius: 20)
-            Text("Dungeon Complete!")
-                .font(.system(size: 36, weight: .black, design: .serif))
+                .font(.system(size: 56))
+                .foregroundStyle(.questAmber)
+                .frame(width: 116, height: 116)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.dungeonStone)
+                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.questAmber.opacity(0.6), lineWidth: 1))
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmber.opacity(0.3), lineWidth: 1).padding(3))
+                )
+            Text("Dungeon Complete")
+                .font(.dungeonTitle)
                 .foregroundStyle(.textPrimary)
             VStack(spacing: 8) {
                 summaryRow(label: "Photos purged", value: "\(combat.sessionPhotosDeleted)", tint: .questAmber)
                 summaryRow(label: "Videos purged", value: "\(combat.sessionVideosDeleted)", tint: .videoSapphire)
                 summaryRow(label: "Storage freed", value: ByteCountFormatter.string(fromByteCount: combat.sessionBytesFreed, countStyle: .file), tint: .gemEmerald)
-                summaryRow(label: "XP earned", value: "+\(combat.sessionXP)", tint: .questAmberDeep)
+                summaryRow(label: "XP earned", value: "+\(combat.sessionXP)", tint: .questAmber)
                 summaryRow(label: "Gems earned", value: "+\(combat.sessionGems)", tint: .gemEmerald)
                 summaryRow(label: "Peak combo", value: "\(combat.peakCombo)×", tint: .combatCrimson)
             }
             .padding()
-            .background(RoundedRectangle(cornerRadius: 18).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 18).stroke(Color.dungeonAsh, lineWidth: 1)))
+            .background(RoundedRectangle(cornerRadius: 12).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.dungeonAsh, lineWidth: 1)))
             .padding(.horizontal, 24)
 
             if combat.hasMoreItems, let hero = heroes.first {
@@ -181,26 +189,28 @@ struct CombatView: View {
                     combat.continueDeeper(hero: hero)
                 } label: {
                     Label("Continue Deeper", systemImage: "arrow.down.to.line.compact")
-                        .font(.headline.weight(.heavy))
+                        .font(.dungeonHeader)
                         .frame(maxWidth: .infinity).padding(.vertical, 14)
-                        .background(LinearGradient.emeraldGlow, in: Capsule())
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.questAmber))
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmberDeep, lineWidth: 1))
                         .foregroundStyle(.dungeonVoid)
                 }
-                .accessibilityHint("Start another run through the dungeon without returning to the dashboard")
+                .accessibilityHint("Start another pass without returning to the Library")
             }
 
-            Button("Return to Dashboard") {
+            Button("Return to Library") {
                 exit()
             }
             .font(.headline)
             .padding(.vertical, 14).padding(.horizontal, 28)
             .background(
-                Capsule().fill(
-                    combat.hasMoreItems
-                        ? AnyShapeStyle(Color.dungeonStone)
-                        : AnyShapeStyle(LinearGradient.amberGlow)
-                )
-                .overlay(Capsule().stroke(Color.dungeonAsh, lineWidth: combat.hasMoreItems ? 1 : 0))
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(
+                        combat.hasMoreItems
+                            ? AnyShapeStyle(Color.dungeonStone)
+                            : AnyShapeStyle(Color.questAmber)
+                    )
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: combat.hasMoreItems ? 1 : 0))
             )
             .foregroundStyle(combat.hasMoreItems ? Color.textPrimary : Color.dungeonVoid)
         }
@@ -218,12 +228,12 @@ struct CombatView: View {
     private func errorView(_ msg: String) -> some View {
         VStack(spacing: 16) {
             Image(systemName: "exclamationmark.triangle.fill")
-                .font(.system(size: 60)).foregroundStyle(.combatCrimson)
-            Text("Trouble in the dungeon").font(.title2.weight(.bold)).foregroundStyle(.textPrimary)
+                .font(.system(size: 48)).foregroundStyle(.combatCrimson)
+            Text("Something went wrong").font(.dungeonHeader).foregroundStyle(.textPrimary)
             Text(msg).font(.callout).foregroundStyle(.textSecondary).multilineTextAlignment(.center).padding(.horizontal, 24)
-            Button("Back to Dashboard") { exit() }
+            Button("Back to Library") { exit() }
                 .padding(.vertical, 12).padding(.horizontal, 22)
-                .background(Capsule().fill(Color.dungeonStone).overlay(Capsule().stroke(Color.dungeonAsh, lineWidth: 1)))
+                .background(RoundedRectangle(cornerRadius: 10).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1)))
                 .foregroundStyle(.textPrimary)
         }
     }

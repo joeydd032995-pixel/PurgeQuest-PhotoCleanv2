@@ -40,7 +40,7 @@ enum GameDataService {
     /// Full cosmetic catalog. Inserted on first launch and topped up on app updates
     /// so new wearables appear without wiping player progress.
     private static var cosmeticSeeds: [CosmeticItem] { [
-        CosmeticItem(id: "skin.iron",      name: "Iron Vestments",     subtitle: "Default armor — sturdy and bold.",     type: .skin,   iconName: "shield.lefthalf.filled", priceGems: 0,    isUnlocked: true),
+        CosmeticItem(id: "skin.iron",      name: "Iron Vestments",     subtitle: "Default armor. Sturdy and bold.",      type: .skin,   iconName: "shield.lefthalf.filled", priceGems: 0,    isUnlocked: true),
         CosmeticItem(id: "skin.embers",    name: "Ember Cloak",        subtitle: "Crimson flames trail your steps.",     type: .skin,   iconName: "flame.fill",             priceGems: 250),
         CosmeticItem(id: "skin.archivist", name: "Archivist Robes",    subtitle: "For the patient cataloguer.",          type: .skin,   iconName: "books.vertical.fill",    priceGems: 400),
         CosmeticItem(id: "skin.warden",    name: "Warden Guise",       subtitle: "Heavy plate of the deep vaults.",      type: .skin,   iconName: "person.crop.rectangle.stack.fill", priceGems: 550),
@@ -51,20 +51,20 @@ enum GameDataService {
         CosmeticItem(id: "armor.iron",     name: "Purge Plate",        subtitle: "Classic dungeon-crawler armor.",       type: .armor,  iconName: "tshirt.fill",            priceGems: 0,    isUnlocked: true),
         CosmeticItem(id: "armor.arcanist", name: "Arcanist Robes",     subtitle: "Flowing cloth humming with mana.",     type: .armor,  iconName: "moon.stars.fill",        priceGems: 450),
         CosmeticItem(id: "armor.dragonhide", name: "Dragonhide Cloak", subtitle: "Tailored from a slain Duplicate Dragon.", type: .armor, iconName: "lizard.fill",         priceGems: 800),
-        CosmeticItem(id: "weapon.shard",   name: "Crystal Shard",      subtitle: "Default weapon. Sharp and reliable.",  type: .weapon, iconName: "sparkle",                priceGems: 0,    isUnlocked: true),
+        CosmeticItem(id: "weapon.shard",   name: "Crystal Shard",      subtitle: "Default weapon. Sharp and reliable.",  type: .weapon, iconName: "rhombus.fill",           priceGems: 0,    isUnlocked: true),
         CosmeticItem(id: "weapon.reel",    name: "Film Reel Blade",    subtitle: "Slices videos with cinematic flair.",  type: .weapon, iconName: "film.fill",              priceGems: 600,  isVideoThemed: true),
         CosmeticItem(id: "weapon.gem",     name: "Gem Hammer",         subtitle: "+10% gem flair on critical hits.",     type: .weapon, iconName: "hammer.fill",            priceGems: 800),
         CosmeticItem(id: "weapon.staff",   name: "Archmage Staff",     subtitle: "Channels pure deletion magic.",        type: .weapon, iconName: "wand.and.stars",         priceGems: 500),
         CosmeticItem(id: "weapon.stormblade", name: "Storm Cleaver",   subtitle: "Crackles with dungeon lightning.",     type: .weapon, iconName: "bolt.fill",              priceGems: 700),
         CosmeticItem(id: "weapon.chevron", name: "Oathbreaker Greatsword", subtitle: "A chevron-edged blade of broken vows.", type: .weapon, iconName: "chevron.up.chevron.down", priceGems: 750),
         CosmeticItem(id: "weapon.ruby",    name: "Ruby Fang",              subtitle: "Crimson steel with a wicked point.",    type: .weapon, iconName: "diamond.fill",            priceGems: 700),
-        CosmeticItem(id: "weapon.arcane",  name: "Arcane Edge",            subtitle: "Mana-forged lavender longsword.",       type: .weapon, iconName: "wand.and.rays",           priceGems: 900),
+        CosmeticItem(id: "weapon.arcane",  name: "Arcane Edge",            subtitle: "Mana-forged verdigris longsword.",      type: .weapon, iconName: "wand.and.rays",           priceGems: 900),
         CosmeticItem(id: "shield.crux",    name: "Azure Aegis",            subtitle: "Gilded cross on royal blue.",           type: .shield, iconName: "shield.fill",             priceGems: 500),
         CosmeticItem(id: "shield.templar", name: "Templar Bulwark",        subtitle: "White field, scarlet cross, pure resolve.", type: .shield, iconName: "checkmark.shield.fill", priceGems: 850),
         CosmeticItem(id: "pet.familiar",   name: "Pixel Familiar",     subtitle: "A loyal companion of pure light.",     type: .pet,    iconName: "pawprint.fill",           priceGems: 350,  isUnlocked: true),
         CosmeticItem(id: "pet.reel",       name: "Reel Spirit",        subtitle: "A spectral film reel that hovers.",    type: .pet,    iconName: "video.circle.fill",      priceGems: 550,  isVideoThemed: true),
         CosmeticItem(id: "pet.owl",        name: "Nocturne Owl",       subtitle: "Watches the dungeon while you rest.",  type: .pet,    iconName: "bird.fill",              priceGems: 450),
-        CosmeticItem(id: "fx.sparks",      name: "Golden Sparks",      subtitle: "Default delete particle.",             type: .effect, iconName: "sparkles",               priceGems: 0,    isUnlocked: true),
+        CosmeticItem(id: "fx.sparks",      name: "Golden Sparks",      subtitle: "Default delete particle.",             type: .effect, iconName: "flame.fill",              priceGems: 0,    isUnlocked: true),
         CosmeticItem(id: "fx.filmstrip",   name: "Film Strip Burst",   subtitle: "Strips of film cascade on delete.",    type: .effect, iconName: "film.stack.fill",        priceGems: 450,  isVideoThemed: true),
         CosmeticItem(id: "fx.aurora",      name: "Aurora Trail",       subtitle: "Soft northern-light particles.",       type: .effect, iconName: "moon.haze.fill",         priceGems: 700)
     ] }

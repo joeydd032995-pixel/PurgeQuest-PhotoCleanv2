@@ -2,57 +2,59 @@
 //  SeasonalEventBanner.swift
 //  PurgeQuest
 //
+//  Static framed event banner. No shimmer, no pulsing symbols.
+//
 
 import SwiftUI
 
 struct SeasonalEventBanner: View {
     let event: SeasonalEvent
-    @State private var shimmer: Bool = false
 
     var body: some View {
         HStack(spacing: 14) {
-            ZStack {
-                Circle()
-                    .fill(LinearGradient(colors: [event.primary, event.secondary], startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .frame(width: 52, height: 52)
-                    .blur(radius: shimmer ? 6 : 2)
-                Image(systemName: event.symbol)
-                    .font(.title2.weight(.bold))
-                    .foregroundStyle(.white)
-                    .symbolEffect(.pulse, options: .repeating)
-            }
+            Image(systemName: event.symbol)
+                .font(.title2.weight(.bold))
+                .foregroundStyle(event.primary)
+                .frame(width: 44, height: 44)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(event.primary.opacity(0.12))
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(event.primary.opacity(0.5), lineWidth: 1))
+                )
+
             VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 6) {
                     Text("LIMITED EVENT")
-                        .font(.caption2.weight(.heavy))
+                        .font(.dungeonCaption)
+                        .tracking(0.8)
                         .padding(.horizontal, 6).padding(.vertical, 2)
-                        .background(Capsule().fill(event.primary.opacity(0.25)))
+                        .background(RoundedRectangle(cornerRadius: 4).fill(event.primary.opacity(0.18)))
                         .foregroundStyle(event.primary)
                     Text(event.name)
                         .font(.headline.weight(.bold))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.textPrimary)
                 }
                 Text(event.tagline)
                     .font(.caption)
-                    .foregroundStyle(.white.opacity(0.85))
+                    .foregroundStyle(.textSecondary)
                     .lineLimit(2)
             }
             Spacer(minLength: 0)
         }
-        .padding(14)
+        .padding(12)
         .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(LinearGradient(colors: [event.primary.opacity(0.25), event.secondary.opacity(0.18)], startPoint: .leading, endPoint: .trailing))
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.dungeonStone)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(event.primary.opacity(0.55), lineWidth: 1)
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(event.primary.opacity(0.5), lineWidth: 1)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(event.primary.opacity(0.25), lineWidth: 1)
+                        .padding(2)
                 )
         )
-        .onAppear {
-            withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) {
-                shimmer.toggle()
-            }
-        }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(event.name). \(event.tagline)")
     }

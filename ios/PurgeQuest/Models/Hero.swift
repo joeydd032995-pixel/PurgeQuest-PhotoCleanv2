@@ -29,7 +29,7 @@ enum CharacterArchetype: String, CaseIterable, Codable {
     var tagline: String {
         switch self {
         case .knight:   return "Steel, shield and stubborn courage."
-        case .magician: return "Spells, sparkles and storage sorcery."
+        case .magician: return "Sigils, spells and storage sorcery."
         }
     }
 }

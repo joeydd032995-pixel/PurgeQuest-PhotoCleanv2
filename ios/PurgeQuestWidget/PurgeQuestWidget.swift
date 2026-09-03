@@ -57,8 +57,8 @@ struct DailyQuestWidgetView: View {
 
     private var accent: Color {
         entry.snapshot.questIsVideo
-            ? Color(red: 0.32, green: 0.62, blue: 0.98)
-            : Color(red: 1.00, green: 0.74, blue: 0.21)
+            ? Color(red: 0.357, green: 0.529, blue: 0.627)
+            : Color(red: 0.788, green: 0.635, blue: 0.153)
     }
 
     private var small: some View {
@@ -89,7 +89,7 @@ struct DailyQuestWidgetView: View {
         }
         .containerBackground(for: .widget) {
             LinearGradient(
-                colors: [Color(red: 0.04, green: 0.04, blue: 0.06), Color(red: 0.10, green: 0.09, blue: 0.13)],
+                colors: [Color(red: 0.043, green: 0.051, blue: 0.063), Color(red: 0.098, green: 0.110, blue: 0.129)],
                 startPoint: .top, endPoint: .bottom
             )
         }
@@ -126,7 +126,7 @@ struct DailyQuestWidgetView: View {
                         Spacer()
                         Label("\(entry.snapshot.streakDays)", systemImage: "flame.fill")
                             .font(.caption.weight(.bold))
-                            .foregroundStyle(.orange)
+                            .foregroundStyle(Color(red: 0.753, green: 0.333, blue: 0.290))
                     }
                     ProgressBar(progress: progress, tint: accent)
                         .frame(height: 7)
@@ -136,7 +136,8 @@ struct DailyQuestWidgetView: View {
             VStack(spacing: 4) {
                 ZStack {
                     Circle()
-                        .fill(LinearGradient(colors: [accent.opacity(0.7), accent.opacity(0.2)], startPoint: .top, endPoint: .bottom))
+                        .fill(accent.opacity(0.15))
+                        .overlay(Circle().stroke(accent.opacity(0.6), lineWidth: 1.5))
                     Text("\(entry.snapshot.heroLevel)")
                         .font(.system(.title, design: .rounded).weight(.black))
                         .foregroundStyle(.white)
@@ -188,12 +189,12 @@ struct StreakWidgetView: View {
             Text("STREAK")
                 .font(.system(size: 10, weight: .heavy, design: .rounded))
                 .tracking(0.8)
-                .foregroundStyle(.orange)
+                .foregroundStyle(Color(red: 0.753, green: 0.333, blue: 0.290))
 
             HStack(alignment: .firstTextBaseline, spacing: 4) {
                 Image(systemName: "flame.fill")
                     .font(.title2.weight(.bold))
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(Color(red: 0.753, green: 0.333, blue: 0.290))
                 Text("\(entry.snapshot.streakDays)")
                     .font(.system(size: 38, weight: .black, design: .rounded))
                     .foregroundStyle(.primary)
@@ -215,7 +216,7 @@ struct StreakWidgetView: View {
             HStack(spacing: 4) {
                 Image(systemName: "diamond.fill")
                     .font(.caption2)
-                    .foregroundStyle(Color(red: 0.18, green: 0.85, blue: 0.55))
+                    .foregroundStyle(Color(red: 0.369, green: 0.612, blue: 0.463))
                 Text("\(entry.snapshot.gems)")
                     .font(.caption.monospacedDigit().weight(.bold))
                     .foregroundStyle(.primary)
@@ -223,7 +224,7 @@ struct StreakWidgetView: View {
         }
         .containerBackground(for: .widget) {
             LinearGradient(
-                colors: [Color(red: 0.10, green: 0.05, blue: 0.04), Color(red: 0.04, green: 0.04, blue: 0.06)],
+                colors: [Color(red: 0.098, green: 0.110, blue: 0.129), Color(red: 0.043, green: 0.051, blue: 0.063)],
                 startPoint: .top, endPoint: .bottom
             )
         }
@@ -330,9 +331,9 @@ private struct ProgressBar: View {
     var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .leading) {
-                Capsule().fill(.white.opacity(0.12))
-                Capsule()
-                    .fill(LinearGradient(colors: [tint, tint.opacity(0.6)], startPoint: .leading, endPoint: .trailing))
+                RoundedRectangle(cornerRadius: 2).fill(.white.opacity(0.12))
+                RoundedRectangle(cornerRadius: 2)
+                    .fill(tint)
                     .frame(width: max(4, geo.size.width * progress))
             }
         }

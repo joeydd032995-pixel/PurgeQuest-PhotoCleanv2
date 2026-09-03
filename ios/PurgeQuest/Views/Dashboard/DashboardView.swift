@@ -2,6 +2,9 @@
 //  DashboardView.swift
 //  PurgeQuest
 //
+//  Storage-first. The Library overview (recoverable space, media counts) leads;
+//  the hero strip and daily quests follow as framed dungeon panels.
+//
 
 import SwiftUI
 import SwiftData
@@ -11,20 +14,21 @@ struct DashboardView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var heroes: [Hero]
     @Query private var quests: [Quest]
+    @Query private var cosmetics: [CosmeticItem]
 
     @State private var libraryStats: LibraryStats = .init()
-    @State private var heroBob: Bool = false
 
     private var hero: Hero? { heroes.first }
+    private var equippedItems: [CosmeticItem] { cosmetics.filter { $0.isEquipped } }
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 18) {
-                heroHeader
+            VStack(alignment: .leading, spacing: 18) {
+                libraryOverview
                 if let event = SeasonalEventService.shared.activeEvent {
                     SeasonalEventBanner(event: event)
                 }
-                statsGrid
+                heroStrip
                 questsPanel
                 enterDungeonButton
                 Color.clear.frame(height: 16)
@@ -49,87 +53,39 @@ struct DashboardView: View {
         .onChange(of: quests.map(\.currentCount)) { _, _ in
             WidgetSnapshotService.write(hero: hero, quests: quests)
         }
-        .onAppear {
-            withAnimation(.easeInOut(duration: 2.5).repeatForever(autoreverses: true)) {
-                heroBob.toggle()
-            }
-        }
     }
 
-    private var heroHeader: some View {
-        VStack(spacing: 14) {
-            ZStack {
-                Circle()
-                    .fill(LinearGradient.amberGlow)
-                    .frame(width: 160, height: 160)
-                    .blur(radius: 50)
-                    .opacity(0.7)
-                Circle()
-                    .strokeBorder(LinearGradient.amberGlow, lineWidth: 2)
-                    .frame(width: 130, height: 130)
-                Image(systemName: hero?.heroClass.symbol ?? "shield.lefthalf.filled")
-                    .font(.system(size: 64, weight: .bold))
-                    .foregroundStyle(LinearGradient.amberGlow)
-                    .symbolRenderingMode(.hierarchical)
-                    .shadow(color: .questAmber.opacity(0.6), radius: 14)
-                    .offset(y: heroBob ? -4 : 4)
-            }
+    // MARK: - Library overview (utility surface)
 
-            VStack(spacing: 4) {
-                Text(hero?.name ?? "Hero")
-                    .font(.title.weight(.bold))
+    private var libraryOverview: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Library")
+                .font(.title.weight(.bold))
+                .foregroundStyle(.textPrimary)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(String(format: "%.1f GB", libraryStats.estimatedGB))
+                    .font(.system(size: 40, weight: .bold).monospacedDigit())
                     .foregroundStyle(.textPrimary)
-                Text("\(hero?.heroClass.displayName ?? "Purge Knight") · LV \(hero?.level ?? 1)")
+                Text("estimated recoverable space")
                     .font(.subheadline)
                     .foregroundStyle(.textSecondary)
             }
-
-            if let hero {
-                XPBarView(progress: hero.levelProgress, level: hero.level)
-                    .padding(.horizontal, 8)
-            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(16)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.dungeonStone)
+                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.dungeonAsh, lineWidth: 1))
+            )
 
             HStack(spacing: 10) {
-                GemCounterView(count: hero?.gems ?? 0)
-                streakChip
-            }
-        }
-        .padding(.vertical, 18)
-        .padding(.horizontal, 16)
-        .frame(maxWidth: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 22)
-                .fill(Color.dungeonStone.opacity(0.85))
-                .overlay(RoundedRectangle(cornerRadius: 22).stroke(Color.dungeonAsh, lineWidth: 1))
-        )
-    }
-
-    private var streakChip: some View {
-        HStack(spacing: 6) {
-            Image(systemName: "flame.fill")
-                .foregroundStyle(LinearGradient.crimsonGlow)
-                .symbolEffect(.pulse, options: .repeating)
-            Text("\(hero?.streakDays ?? 0) day streak")
-                .font(.callout.weight(.semibold))
-                .foregroundStyle(.textPrimary)
-        }
-        .padding(.horizontal, 10).padding(.vertical, 6)
-        .background(Capsule().fill(Color.dungeonStone).overlay(Capsule().stroke(Color.combatCrimson.opacity(0.4), lineWidth: 1)))
-    }
-
-    private var statsGrid: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text("Camera Roll Dungeon")
-                    .font(.title3.weight(.bold))
-                    .foregroundStyle(.textPrimary)
-                Spacer()
-            }
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
                 StatTile(icon: "photo.fill", label: "Photos", value: "\(libraryStats.photoCount)", tint: .questAmber)
                 StatTile(icon: "video.fill", label: "Videos", value: "\(libraryStats.videoCount)", tint: .videoSapphire)
-                StatTile(icon: "internaldrive.fill", label: "Estimated clutter", value: String(format: "%.1f GB", libraryStats.estimatedGB), tint: .gemEmerald)
-                StatTile(icon: "trophy.fill", label: "Total freed", value: formattedFreed, tint: .questAmberDeep)
+            }
+            HStack(spacing: 10) {
+                StatTile(icon: "internaldrive.fill", label: "Freed so far", value: formattedFreed, tint: .gemEmerald)
+                StatTile(icon: "flame.fill", label: "Day streak", value: "\(hero?.streakDays ?? 0)", tint: .combatCrimson)
             }
         }
     }
@@ -140,11 +96,63 @@ struct DashboardView: View {
         return String(format: "%.0f MB", mb)
     }
 
+    // MARK: - Hero strip (dungeon panel)
+
+    private var heroStrip: some View {
+        Group {
+            if let hero {
+                HStack(alignment: .center, spacing: 14) {
+                    ZStack {
+                        Circle()
+                            .fill(Color.dungeonStoneLight)
+                            .overlay(Circle().stroke(Color.questAmber.opacity(0.6), lineWidth: 1))
+                            .overlay(Circle().stroke(Color.questAmber.opacity(0.3), lineWidth: 1).padding(3))
+                        MiniAvatarView(hero: hero, equipped: equippedItems, size: 88)
+                            .frame(width: 52, height: 62)
+                            .clipped()
+                    }
+                    .frame(width: 68, height: 68)
+
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack(spacing: 8) {
+                            Text(hero.name)
+                                .font(.dungeonHeader)
+                                .foregroundStyle(.textPrimary)
+                            Text("LV \(hero.level)")
+                                .font(.caption.weight(.bold).monospacedDigit())
+                                .padding(.horizontal, 6).padding(.vertical, 2)
+                                .background(RoundedRectangle(cornerRadius: 4).fill(Color.questAmber.opacity(0.15)))
+                                .foregroundStyle(.questAmber)
+                        }
+                        Text("\(hero.archetype.displayName) · \(hero.heroClass.displayName)")
+                            .font(.caption)
+                            .foregroundStyle(.textSecondary)
+                        XPBarView(progress: hero.levelProgress, level: hero.level, compact: true)
+                    }
+
+                    Spacer()
+
+                    GemCounterView(count: hero.gems)
+                }
+                .padding(14)
+                .frame(maxWidth: .infinity)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.dungeonStone.opacity(0.85))
+                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.questAmber.opacity(0.35), lineWidth: 1))
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmber.opacity(0.18), lineWidth: 1).padding(2))
+                )
+            }
+        }
+    }
+
+    // MARK: - Quests (dungeon panel)
+
     private var questsPanel: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text("Daily Quests")
-                    .font(.title3.weight(.bold))
+                    .font(.dungeonHeader)
                     .foregroundStyle(.textPrimary)
                 Spacer()
                 Image(systemName: "scroll.fill").foregroundStyle(.questAmber)
@@ -154,7 +162,7 @@ struct DashboardView: View {
                     QuestRow(quest: q)
                 }
                 if quests.isEmpty {
-                    Text("Generating today's quests…")
+                    Text("Generating today's quests.")
                         .font(.callout).foregroundStyle(.textSecondary)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(12)
@@ -163,30 +171,26 @@ struct DashboardView: View {
         }
     }
 
+    // MARK: - CTA
+
     private var enterDungeonButton: some View {
         Button {
             HapticsService.shared.medium()
             appState.combatRequested = true
         } label: {
             HStack(spacing: 10) {
-                Image(systemName: "flame.fill")
+                Image(systemName: "shield.lefthalf.filled")
                 Text("Enter the Dungeon")
-                    .font(.title3.weight(.heavy))
-                Image(systemName: "arrow.right")
+                    .font(.dungeonHeader)
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 18)
-            .background(
-                ZStack {
-                    LinearGradient.amberGlow
-                    LinearGradient(colors: [.combatCrimsonDeep.opacity(0.4), .clear], startPoint: .bottom, endPoint: .top)
-                }
-            )
+            .padding(.vertical, 16)
+            .background(Color.questAmber)
             .foregroundStyle(.dungeonVoid)
-            .clipShape(RoundedRectangle(cornerRadius: 18))
-            .shadow(color: .questAmber.opacity(0.55), radius: 18)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmberDeep, lineWidth: 1))
         }
-        .accessibilityLabel("Enter the dungeon and start a combat session")
+        .accessibilityLabel("Enter the dungeon and start a cleanup session")
     }
 
     private func updateStreak() {
@@ -233,10 +237,9 @@ private struct QuestRow: View {
                         Image(systemName: "diamond.fill").font(.caption2)
                         Text("+\(quest.rewardGems)").font(.caption2.monospacedDigit().weight(.bold))
                     }.foregroundStyle(.gemEmerald)
-                    HStack(spacing: 4) {
-                        Image(systemName: "sparkle").font(.caption2)
-                        Text("+\(quest.rewardXP) XP").font(.caption2.monospacedDigit().weight(.bold))
-                    }.foregroundStyle(.questAmber)
+                    Text("+\(quest.rewardXP) XP")
+                        .font(.caption2.monospacedDigit().weight(.bold))
+                        .foregroundStyle(.questAmber)
                 }
             }
             ProgressView(value: quest.progressFraction)
@@ -247,10 +250,10 @@ private struct QuestRow: View {
         }
         .padding(12)
         .background(
-            RoundedRectangle(cornerRadius: 14)
+            RoundedRectangle(cornerRadius: 10)
                 .fill(Color.dungeonStone)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 14)
+                    RoundedRectangle(cornerRadius: 10)
                         .stroke(quest.completed ? Color.gemEmerald.opacity(0.6) : Color.dungeonAsh, lineWidth: 1)
                 )
         )

@@ -12,8 +12,7 @@ struct GemCounterView: View {
         HStack(spacing: 6) {
             Image(systemName: "diamond.fill")
                 .font(.caption.weight(.bold))
-                .foregroundStyle(LinearGradient.emeraldGlow)
-                .shadow(color: .gemEmerald.opacity(0.7), radius: 4)
+                .foregroundStyle(.gemEmerald)
             Text("\(count)")
                 .font(.callout.weight(.bold).monospacedDigit())
                 .foregroundStyle(.textPrimary)
@@ -22,9 +21,9 @@ struct GemCounterView: View {
         .padding(.horizontal, 10)
         .padding(.vertical, 6)
         .background(
-            Capsule()
+            RoundedRectangle(cornerRadius: 8)
                 .fill(Color.dungeonStone)
-                .overlay(Capsule().stroke(Color.gemEmerald.opacity(0.4), lineWidth: 1))
+                .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gemEmerald.opacity(0.4), lineWidth: 1))
         )
     }
 }
@@ -52,10 +51,10 @@ struct StatTile: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
         .background(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
+            RoundedRectangle(cornerRadius: 10)
                 .fill(Color.dungeonStone)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.dungeonAsh, lineWidth: 1)
                 )
         )
