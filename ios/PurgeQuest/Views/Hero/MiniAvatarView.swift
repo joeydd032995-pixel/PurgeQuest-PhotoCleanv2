@@ -53,6 +53,8 @@ struct MiniAvatarView: View {
         case "skin.embers": return Color(red: 0.72, green: 0.20, blue: 0.22)
         case "skin.archivist": return Color(red: 0.40, green: 0.31, blue: 0.22)
         case "skin.warden": return Color(red: 0.24, green: 0.30, blue: 0.26)
+        case "skin.wraithcloak": return Color(red: 0.16, green: 0.19, blue: 0.18)
+        case "skin.sandblade": return Color(red: 0.78, green: 0.66, blue: 0.45)
         default: return isKnight ? Color(red: 0.33, green: 0.37, blue: 0.34) : Color(red: 0.22, green: 0.44, blue: 0.41)
         }
     }
@@ -61,6 +63,7 @@ struct MiniAvatarView: View {
         switch item(.pet)?.id {
         case "pet.reel": return .videoSapphire
         case "pet.owl": return Color(red: 0.62, green: 0.46, blue: 0.28)
+        case "pet.beachSpirit": return Color(red: 0.45, green: 0.70, blue: 0.78)
         default: return .gemEmerald
         }
     }

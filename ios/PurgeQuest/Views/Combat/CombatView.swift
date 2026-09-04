@@ -65,6 +65,8 @@ struct CombatView: View {
             }
         case .sessionComplete:
             sessionCompleteView
+        case .defeated:
+            defeatedView
         case .error(let msg):
             errorView(msg)
         }
@@ -121,7 +123,9 @@ struct CombatView: View {
                         item: top,
                         isFront: true,
                         onDelete: { combat.decideDelete(top, hero: hero) },
-                        onSpare: { combat.decideSpare(top, context: modelContext) }
+                        onSpare: {
+                            if let hero = heroes.first { combat.decideSpare(top, hero: hero, context: modelContext) }
+                        }
                     )
                     .id(top.id)
                     .transition(.scale.combined(with: .opacity))
@@ -142,7 +146,7 @@ struct CombatView: View {
                 }
                 .accessibilityHint("Mark this item for deletion")
 
-                Button { if let top = combat.topItem { combat.decideSpare(top, context: modelContext) } } label: {
+                Button { if let top = combat.topItem, let hero = heroes.first { combat.decideSpare(top, hero: hero, context: modelContext) } } label: {
                     Label("SPARE", systemImage: "shield.fill")
                         .font(.headline.weight(.heavy))
                         .frame(maxWidth: .infinity).padding(.vertical, 14)
@@ -213,6 +217,61 @@ struct CombatView: View {
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: combat.hasMoreItems ? 1 : 0))
             )
             .foregroundStyle(combat.hasMoreItems ? Color.textPrimary : Color.dungeonVoid)
+        }
+        .padding()
+    }
+
+    private var defeatedView: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "heart.slash.fill")
+                .font(.system(size: 56))
+                .foregroundStyle(.combatCrimson)
+                .frame(width: 116, height: 116)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.dungeonStone)
+                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.combatCrimson.opacity(0.6), lineWidth: 1))
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.combatCrimson.opacity(0.3), lineWidth: 1).padding(3))
+                )
+            Text("Defeated")
+                .font(.dungeonTitle)
+                .foregroundStyle(.textPrimary)
+            Text("Your hero falls. The monsters remain in your library.")
+                .font(.callout).foregroundStyle(.textSecondary)
+                .multilineTextAlignment(.center)
+
+            VStack(spacing: 8) {
+                summaryRow(label: "Photos purged", value: "\(combat.sessionPhotosDeleted)", tint: .questAmber)
+                summaryRow(label: "Videos purged", value: "\(combat.sessionVideosDeleted)", tint: .videoSapphire)
+                summaryRow(label: "Storage freed", value: ByteCountFormatter.string(fromByteCount: combat.sessionBytesFreed, countStyle: .file), tint: .gemEmerald)
+                summaryRow(label: "XP earned", value: "+\(combat.sessionXP)", tint: .questAmber)
+            }
+            .padding()
+            .background(RoundedRectangle(cornerRadius: 12).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.dungeonAsh, lineWidth: 1)))
+            .padding(.horizontal, 24)
+
+            if let hero = heroes.first, hero.gems >= CombatViewModel.rallyCostGems {
+                Button {
+                    combat.rally(hero: hero, context: modelContext)
+                } label: {
+                    Label("Rally for \(CombatViewModel.rallyCostGems) Gems", systemImage: "diamond.fill")
+                        .font(.dungeonHeader)
+                        .frame(maxWidth: .infinity).padding(.vertical, 14)
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.questAmber))
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmberDeep, lineWidth: 1))
+                        .foregroundStyle(.dungeonVoid)
+                }
+                .padding(.horizontal, 24)
+                .accessibilityHint("Spend gems to fully heal and resume the room")
+            }
+
+            Button("Return to Library") {
+                exit()
+            }
+            .font(.headline)
+            .padding(.vertical, 14).padding(.horizontal, 28)
+            .background(RoundedRectangle(cornerRadius: 10).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1)))
+            .foregroundStyle(.textPrimary)
         }
         .padding()
     }

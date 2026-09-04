@@ -104,6 +104,9 @@ struct ContentView: View {
         }
         try? modelContext.save()
 
+        // Bring achievement progress in line with lifetime stats and the deletion log.
+        GameDataService.syncAchievements(hero: hero, in: modelContext)
+
         // Determine phase
         await appState.refreshPhotoAuth()
         try? await Task.sleep(for: .milliseconds(450))

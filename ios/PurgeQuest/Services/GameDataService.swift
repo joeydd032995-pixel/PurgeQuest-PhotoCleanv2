@@ -79,7 +79,16 @@ enum GameDataService {
         CosmeticItem(id: "pet.owl",        name: "Nocturne Owl",       subtitle: "Night watch. Never misses a duplicate.", type: .pet,    iconName: "bird.fill",              priceGems: 450),
         CosmeticItem(id: "fx.sparks",      name: "Golden Sparks",      subtitle: "Default delete burst.",                type: .effect, iconName: "flame.fill",              priceGems: 0,    isUnlocked: true),
         CosmeticItem(id: "fx.filmstrip",   name: "Film Strip Burst",   subtitle: "Video-themed burst on delete.",        type: .effect, iconName: "film.stack.fill",        priceGems: 450,  isVideoThemed: true),
-        CosmeticItem(id: "fx.aurora",      name: "Aurora Trail",       subtitle: "Cool-toned trail on delete.",          type: .effect, iconName: "moon.haze.fill",         priceGems: 700)
+        CosmeticItem(id: "fx.aurora",      name: "Aurora Trail",       subtitle: "Cool-toned trail on delete.",          type: .effect, iconName: "moon.haze.fill",         priceGems: 700),
+        // Seasonal exclusives. Seeded year-round so event screens can reference
+        // them; the Armory surfaces them when the matching event is live.
+        CosmeticItem(id: "skin.wraithcloak",    name: "Wraithcloak",     subtitle: "Ash-gray weave from the Phantom Purge.", type: .skin,   iconName: "moon.stars.fill",          priceGems: 600),
+        CosmeticItem(id: "skin.sandblade",      name: "Sandblade Garb",  subtitle: "Sun-bleached cloth for summer runs.",    type: .skin,   iconName: "sun.max.fill",             priceGems: 550),
+        CosmeticItem(id: "weapon.fireworkBlade", name: "Firework Blade", subtitle: "New Year steel with a bursting edge.",   type: .weapon, iconName: "fireworks",                priceGems: 750),
+        CosmeticItem(id: "pet.beachSpirit",     name: "Beach Spirit",    subtitle: "A wave-shaped companion that drifts.",   type: .pet,    iconName: "fish.fill",                 priceGems: 500),
+        CosmeticItem(id: "fx.spectral",         name: "Spectral Wisps",  subtitle: "Pale wisps rise on every delete.",       type: .effect, iconName: "ghost.fill",               priceGems: 600),
+        CosmeticItem(id: "fx.confetti",         name: "Confetti Vault",  subtitle: "New Year burst on every delete.",        type: .effect, iconName: "party.popper.fill",        priceGems: 550),
+        CosmeticItem(id: "fx.hearts",           name: "Heartbreak Trail", subtitle: "A Valentine trail follows the blade.",  type: .effect, iconName: "heart.fill",               priceGems: 550)
     ] }
 
     // MARK: - Achievements
@@ -103,6 +112,52 @@ enum GameDataService {
         ]
         for a in seeds { context.insert(a) }
         try? context.save()
+    }
+
+    /// Recomputes every stat-driven achievement from lifetime hero stats and the
+    /// deletion log. Called after each confirmed room and at app start, so progress
+    /// never depends on a single event firing.
+    static func syncAchievements(
+        hero: Hero,
+        in context: ModelContext,
+        videosDeletedThisRoom: Int = 0,
+        perfectRoom: Bool = false
+    ) {
+        let records = (try? context.fetch(FetchDescriptor<DeletedMediaRecord>())) ?? []
+        let dragons = records.filter { $0.monsterType == .duplicateDragon }.count
+        let longTakes = records.filter { $0.mediaKind == .video && $0.durationSeconds >= 600 }.count
+        let fiveYearsAgo = Calendar.current.date(byAdding: .year, value: -5, to: Date()) ?? Date()
+        let ancient = records.filter { record in
+            record.mediaKind == .photo && (record.creationDate ?? .distantFuture) < fiveYearsAgo
+        }.count
+
+        let progress: [String: Int] = [
+            "first.blood":       hero.totalPhotosPurged,
+            "scene.cut":         hero.totalVideosPurged,
+            "duplicate.slayer":  dragons,
+            "video.vault":       hero.totalVideosPurged,
+            "great.purge":       Int(hero.totalMBFreed.rounded()),
+            "long.take.term":    longTakes,
+            "combo.king":        hero.highestCombo,
+            "ancient.archivist": ancient,
+            "streak.warrior":    hero.streakDays,
+            "perfect.room":     perfectRoom ? 1 : 0,
+            "video.speedrun":    videosDeletedThisRoom >= 20 ? 1 : 0
+        ]
+
+        let all = (try? context.fetch(FetchDescriptor<Achievement>())) ?? []
+        var didChange = false
+        for ach in all {
+            guard let value = progress[ach.id] else { continue }
+            // Progress only ever rises; one-off conditions (perfect rooms) stay banked.
+            if value > ach.progress { ach.progress = value }
+            if !ach.isUnlocked && ach.progress >= ach.goal {
+                ach.isUnlocked = true
+                ach.unlockedAt = Date()
+                didChange = true
+            }
+        }
+        if didChange { try? context.save() }
     }
 
     // MARK: - Daily Quests

@@ -15,12 +15,14 @@ enum CombatPhase: Equatable {
     case roomSummary
     case purging
     case sessionComplete
+    case defeated
     case error(String)
 
     static func == (lhs: CombatPhase, rhs: CombatPhase) -> Bool {
         switch (lhs, rhs) {
         case (.loading, .loading), (.empty, .empty), (.fighting, .fighting),
-             (.roomSummary, .roomSummary), (.purging, .purging), (.sessionComplete, .sessionComplete):
+             (.roomSummary, .roomSummary), (.purging, .purging), (.sessionComplete, .sessionComplete),
+             (.defeated, .defeated):
             return true
         case (.error(let a), .error(let b)): return a == b
         default: return false
@@ -81,13 +83,29 @@ final class CombatViewModel {
     var spareFlashTrigger: Int = 0
     var screenShakeTrigger: Int = 0
 
+    // Session record — one row per dive, finalized when the run ends.
+    private var activeSession: CombatSession?
+    private var sessionContext: ModelContext?
+    private var roomsCompleted: Int = 0
+
     // MARK: - Setup
+
+    /// Gem cost to rally after defeat: restores full HP and resumes the room.
+    static let rallyCostGems: Int = 100
 
     func bootstrap(includeVideos: Bool, videoOnly: Bool, hero: Hero, context: ModelContext) async {
         phase = .loading
         heroCurrentHP = hero.maxHP
         heroMaxHP = hero.maxHP
+        hero.currentHP = hero.maxHP
         CombatLiveActivityService.shared.start(heroName: hero.name)
+
+        // Open a session record for this dive.
+        sessionContext = context
+        let session = CombatSession()
+        context.insert(session)
+        activeSession = session
+        roomsCompleted = 0
 
         // Resume progress: skip everything already swiped (spared) or purged, so
         // re-entering the dungeon continues where the last session left off.
@@ -123,6 +141,7 @@ final class CombatViewModel {
         let remaining = allItems.count - queueIndex
         if remaining <= 0 {
             phase = .sessionComplete
+            finalizeSession()
             return
         }
         let take = min(Self.roomSize, remaining)
@@ -132,6 +151,15 @@ final class CombatViewModel {
         pendingDecisions = []
         perfectRoom = true
         phase = .fighting
+    }
+
+    /// Stamps the session record with its end time. Idempotent — safe to call
+    /// from every exit path (complete, defeat, manual exit).
+    private func finalizeSession() {
+        guard let session = activeSession, session.endedAt == nil else { return }
+        session.roomsCompleted = roomsCompleted
+        session.endedAt = Date()
+        try? sessionContext?.save()
     }
 
     // MARK: - Combat actions
@@ -196,20 +224,48 @@ final class CombatViewModel {
         return (xp, gems)
     }
 
-    func decideSpare(_ item: MediaItem, context: ModelContext) {
+    func decideSpare(_ item: MediaItem, hero: Hero, context: ModelContext) {
         combo = 0
         perfectRoom = false
         let dmg = item.monsterType.attackDamage
         heroCurrentHP = max(0, heroCurrentHP - dmg)
+        hero.currentHP = heroCurrentHP
         pendingDecisions.append(PendingDecision(item: item, willDelete: false))
         // Persist the spare so this monster is skipped on every future dive.
         context.insert(SparedMediaRecord(assetIdentifier: item.id))
         try? context.save()
         spareFlashTrigger &+= 1
         screenShakeTrigger &+= 1
+        if heroCurrentHP <= 0 {
+            enterDefeat(context: context)
+            return
+        }
         HapticsService.shared.medium()
         pushLiveActivityUpdate()
         advance()
+    }
+
+    /// HP hit zero: the run ends here. The defeat screen offers a paid rally
+    /// (full heal, resume the room) or a retreat back to the Library.
+    private func enterDefeat(context: ModelContext) {
+        phase = .defeated
+        HapticsService.shared.warning()
+        finalizeSession()
+        CombatLiveActivityService.shared.end()
+        try? context.save()
+    }
+
+    /// Spends gems to fully heal and pick the run back up mid-room.
+    func rally(hero: Hero, context: ModelContext) {
+        guard phase == .defeated, hero.gems >= Self.rallyCostGems else { return }
+        hero.gems -= Self.rallyCostGems
+        heroCurrentHP = heroMaxHP
+        hero.currentHP = heroMaxHP
+        try? context.save()
+        phase = .fighting
+        HapticsService.shared.success()
+        CombatLiveActivityService.shared.start(heroName: hero.name)
+        pushLiveActivityUpdate()
     }
 
     private func advance() {
@@ -254,7 +310,9 @@ final class CombatViewModel {
                     assetIdentifier: item.id,
                     mediaKind: item.kind,
                     monsterType: item.monsterType,
-                    fileSizeBytes: item.estimatedBytes
+                    fileSizeBytes: item.estimatedBytes,
+                    durationSeconds: item.durationSeconds,
+                    creationDate: item.creationDate
                 )
                 context.insert(rec)
                 let mb = Double(item.estimatedBytes) / 1_048_576.0
@@ -262,6 +320,13 @@ final class CombatViewModel {
             }
             // Apply rewards to hero
             applyRewardsToHero(hero: hero)
+            let videosThisRoom = pendingDecisions.filter { $0.willDelete && $0.item.kind == .video }.count
+            GameDataService.syncAchievements(
+                hero: hero,
+                in: context,
+                videosDeletedThisRoom: videosThisRoom,
+                perfectRoom: perfectRoom
+            )
             try? context.save()
             HapticsService.shared.success()
             await proceedToNextRoom(hero: hero, context: context, quests: quests)
@@ -300,30 +365,31 @@ final class CombatViewModel {
         perfectRoom = true
         heroCurrentHP = heroMaxHP
         hero.currentHP = heroMaxHP
+        // Each dive gets its own session record; on-screen tallies keep rolling.
+        if let context = sessionContext {
+            finalizeSession()
+            let session = CombatSession()
+            context.insert(session)
+            activeSession = session
+            roomsCompleted = 0
+            try? context.save()
+        }
         loadNextRoom()
         pushLiveActivityUpdate()
     }
 
     func endSessionActivity() {
+        finalizeSession()
         CombatLiveActivityService.shared.end()
     }
 
     private func proceedToNextRoom(hero: Hero, context: ModelContext, quests: [Quest]) async {
-        if perfectRoom {
-            // Perfect room achievement bump
-            await MainActor.run {
-                if let ach = (try? context.fetch(FetchDescriptor<Achievement>(predicate: #Predicate { $0.id == "perfect.room" })))?.first {
-                    if !ach.isUnlocked {
-                        ach.progress = 1
-                        ach.isUnlocked = true
-                        ach.unlockedAt = Date()
-                    }
-                }
-            }
-        }
+        roomsCompleted += 1
+        activeSession?.roomsCompleted = roomsCompleted
         roomNumber += 1
         if roomNumber > Self.totalRoomsPerSession || queueIndex >= allItems.count {
             phase = .sessionComplete
+            finalizeSession()
             CombatLiveActivityService.shared.end()
             return
         }
@@ -361,6 +427,16 @@ final class CombatViewModel {
         sessionBytesFreed += roomBytes
         sessionPhotosDeleted += photos
         sessionVideosDeleted += videos
+
+        // Mirror the tallies onto the persisted session record.
+        if let session = activeSession {
+            session.photosDeleted += photos
+            session.videosDeleted += videos
+            session.bytesFreed += roomBytes
+            session.xpEarned += roomXP
+            session.gemsEarned += roomGems
+            session.peakCombo = max(session.peakCombo, peakCombo)
+        }
 
         // A single fat room can pop multiple levels; +10 max HP each, full heal on level-up.
         while hero.totalXP >= Hero.xpForLevel(hero.level + 1) {
