@@ -405,6 +405,14 @@ struct MiniAvatarView: View {
         ZStack {
             leg(x: -7)
             leg(x: 7)
+            if isKnight {
+                // Gold knee guards seated on the greaves.
+                ForEach([CGFloat(-1), CGFloat(1)], id: \.self) { side in
+                    lit(DiamondShape(), .questAmber, lineWidth: 1.3, metal: true)
+                        .frame(width: 5 * u, height: 5.5 * u)
+                        .offset(x: side * 7 * u, y: 35.5 * u)
+                }
+            }
             boot(x: -8)
             boot(x: 8)
         }
@@ -431,6 +439,12 @@ struct MiniAvatarView: View {
                 .fill(aoWash(height: 2.6, strength: 0.28))
                 .frame(width: 13 * u, height: 2.6 * u)
                 .offset(y: -2.6 * u)
+            // Gold strap ringing the boot's throat.
+            if isKnight {
+                lit(Capsule(), .questAmber, lineWidth: 1.1, metal: true)
+                    .frame(width: 12 * u, height: 1.8 * u)
+                    .offset(y: -3.8 * u)
+            }
             // Toe cap: a light kiss on the front edge where the key light lands.
             Ellipse()
                 .fill(Color.white.opacity(0.22))
@@ -497,13 +511,19 @@ struct MiniAvatarView: View {
                 )
 
             skinTrim
+            if isKnight && !isRobed {
+                knightChestPlate
+            }
             armorLayer
             belt
+            if isKnight && !isRobed {
+                hipTassets
+            }
 
-            // Collar dome: metal-ringed accent half-disc on the tunic's top edge.
-            orb(Circle(), accent, radius: 9, lineWidth: 2.0)
-                .frame(width: 17 * u, height: 17 * u)
-                .offset(y: -8 * u)
+            // Collar dome: steel neck ring for the knight, accent for the mage.
+            orb(Circle(), isKnight ? steelDeep : accent, radius: isKnight ? 7.5 : 9, lineWidth: 2.0)
+                .frame(width: (isKnight ? 14.0 : 17.0) * u, height: (isKnight ? 14.0 : 17.0) * u)
+                .offset(y: isKnight ? -8.5 * u : -8 * u)
             sheen(width: 8, height: 2.4, at: CGPoint(x: -2, y: -12), angle: -20, opacity: 0.6)
             NotchShape()
                 .fill(outline)
@@ -618,72 +638,99 @@ struct MiniAvatarView: View {
         }
     }
 
-    /// Gold chest plate worn over the tunic in the knight's default kit:
-    /// brushed treasure-gold metal with a center ridge, specular sweep, and
-    /// anchoring rivets.
-    private var goldChestPlate: some View {
-        let plate = RoundedRectangle(cornerRadius: 5 * u, style: .continuous)
+    /// Faceted chest plate with the round gold boss: the knight's default
+    /// armor face, tinted by the equipped skin like the tunic beneath it.
+    private var knightChestPlate: some View {
+        let plate = TaperedShape(topWidth: 0.86, bottomWidth: 0.98)
         return ZStack {
-            // Occlusion where the collar dome overhangs the plate.
-            castShadow(width: 20, height: 5, at: CGPoint(x: 0, y: -5), opacity: 0.3)
-            lit(plate, .questAmber, lineWidth: 2.0, metal: true)
-                .frame(width: 21 * u, height: 13.5 * u)
+            lit(plate, tunicColor.darker(0.28), lineWidth: 2.0, metal: true)
+                .frame(width: 26 * u, height: 17 * u)
                 .overlay(
-                    // Center ridge with a lit lip and shaded flank.
+                    // Pectoral seam with a lit upper lip.
                     VStack(spacing: 0) {
                         Rectangle()
-                            .fill(Color.white.opacity(0.30))
-                            .frame(width: 1.2 * u, height: 7 * u)
+                            .fill(Color.black.opacity(0.30))
+                            .frame(height: 1.1 * u)
                         Rectangle()
-                            .fill(Color.black.opacity(0.16))
-                            .frame(width: 2.2 * u, height: 2 * u)
+                            .fill(Color.white.opacity(0.16))
+                            .frame(height: 0.9 * u)
                     }
-                    .offset(y: -1 * u)
+                    .frame(width: 22 * u)
+                    .offset(y: -3.5 * u)
                     .allowsHitTesting(false)
                 )
                 .overlay(
-                    sheen(width: 12, height: 3, at: CGPoint(x: -2, y: -3.6), angle: -14, opacity: 0.55)
-                        .clipShape(plate)
-                )
-                .overlay(
-                    // Bottom edge darkening where the plate meets the tunic.
+                    // Collar occlusion under the neck ring.
                     Rectangle()
-                        .fill(Color.black.opacity(0.22))
-                        .frame(height: 1.6 * u)
-                        .frame(maxHeight: .infinity, alignment: .bottom)
+                        .fill(Color.black.opacity(0.30))
+                        .frame(height: 3.5 * u)
+                        .frame(maxHeight: .infinity, alignment: .top)
                         .clipShape(plate)
                         .allowsHitTesting(false)
                 )
-            // Rivets anchoring the plate to the leather underlayer.
-            ForEach([CGFloat(-1), CGFloat(1)], id: \.self) { side in
-                ZStack {
-                    Circle()
-                        .fill(Color.black.opacity(0.28))
-                        .frame(width: 3 * u, height: 3 * u)
-                        .offset(y: 0.3 * u)
-                    Circle()
-                        .fill(
-                            RadialGradient(
-                                stops: [
-                                    .init(color: Color.questAmber.lighter(0.55), location: 0),
-                                    .init(color: Color.questAmber, location: 0.55),
-                                    .init(color: Color.questAmber.darker(0.38), location: 1)
-                                ],
-                                center: UnitPoint(x: 0.35, y: 0.3),
-                                startRadius: 0,
-                                endRadius: 1.6 * u
-                            )
-                        )
-                        .frame(width: 2.2 * u, height: 2.2 * u)
-                    Circle()
-                        .fill(Color.white.opacity(0.8))
-                        .frame(width: 0.7 * u, height: 0.7 * u)
-                        .offset(x: -0.3 * u, y: -0.4 * u)
-                }
-                .offset(x: side * 8 * u, y: -2.5 * u)
+                .overlay(
+                    sheen(width: 10, height: 2.6, at: CGPoint(x: -4, y: -5), angle: -16, opacity: 0.45)
+                        .clipShape(plate)
+                )
+            // Round gold boss with its engraved ring.
+            ZStack {
+                Circle()
+                    .fill(Color.black.opacity(0.30))
+                    .frame(width: 15.5 * u, height: 15.5 * u)
+                    .offset(y: 0.6 * u)
+                orb(Circle(), .questAmber, radius: 7, lineWidth: 2.2)
+                    .frame(width: 14 * u, height: 14 * u)
+                Circle()
+                    .stroke(Color.questAmber.darker(0.3), lineWidth: 0.9 * u)
+                    .frame(width: 9.5 * u, height: 9.5 * u)
             }
+            .offset(y: 0.5 * u)
         }
-        .offset(y: -1.5 * u)
+        .offset(y: -2.5 * u)
+    }
+
+    /// Layered plate pauldron with a gold rim arc wrapping the lit edge —
+    /// the knight's default shoulder armor.
+    private func knightPauldron(side: CGFloat) -> some View {
+        ZStack {
+            castShadow(width: 12, height: 5, at: CGPoint(x: 0, y: 6), opacity: 0.28)
+            lit(Ellipse(), tunicColor.darker(0.28), lineWidth: 2.0, metal: true)
+                .frame(width: 14 * u, height: 11.5 * u)
+            Ellipse()
+                .trim(from: 0.52, to: 0.84)
+                .stroke(
+                    LinearGradient(
+                        colors: [Color.questAmber.lighter(0.5), Color.questAmber.darker(0.1)],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    ),
+                    style: StrokeStyle(lineWidth: 2.2 * u, lineCap: .round)
+                )
+                .frame(width: 14 * u, height: 11.5 * u)
+            sheen(width: 7, height: 2.2, at: CGPoint(x: side * -2.5, y: -3.2), angle: -18, opacity: 0.55)
+        }
+        .offset(x: side * 15.5 * u, y: -9.5 * u)
+    }
+
+    /// Angled hip tassets with gold-trimmed lower edges, worn over the legs.
+    private var hipTassets: some View {
+        ForEach([CGFloat(-1), CGFloat(1)], id: \.self) { side in
+            ZStack {
+                lit(TaperedShape(topWidth: 0.9, bottomWidth: 1), tunicColor.darker(0.28), lineWidth: 1.6, metal: true)
+                    .frame(width: 11 * u, height: 9.5 * u)
+                Rectangle()
+                    .fill(Color.questAmber.lighter(0.25))
+                    .frame(width: 8 * u, height: 1.1 * u)
+                    .offset(y: 3.1 * u)
+                Rectangle()
+                    .fill(Color.black.opacity(0.25))
+                    .frame(width: 8 * u, height: 0.9 * u)
+                    .offset(y: 4 * u)
+                sheen(width: 4, height: 1.6, at: CGPoint(x: side * -1.5, y: -2.5), angle: -12, opacity: 0.4)
+            }
+            .rotationEffect(.degrees(side * -13))
+            .offset(x: side * 7.5 * u, y: 14.5 * u)
+        }
     }
 
     @ViewBuilder private var armorLayer: some View {
@@ -698,22 +745,24 @@ struct MiniAvatarView: View {
             arcanistTrim
         default:
             if isKnight {
-                goldChestPlate
+                knightPauldron(side: -1)
+                knightPauldron(side: 1)
+            } else {
+                castShadow(width: 11, height: 5, at: CGPoint(x: -15, y: -5), opacity: 0.22)
+                castShadow(width: 11, height: 5, at: CGPoint(x: 15, y: -5), opacity: 0.22)
+                lit(Ellipse(), mittColor, lineWidth: 2.0)
+                    .frame(width: 12 * u, height: 10 * u)
+                    .overlay(
+                        Circle().fill(outline).frame(width: 2.4 * u, height: 2.4 * u).offset(y: 3 * u)
+                    )
+                    .offset(x: -15.5 * u, y: -9.5 * u)
+                lit(Ellipse(), mittColor, lineWidth: 2.0)
+                    .frame(width: 12 * u, height: 10 * u)
+                    .overlay(
+                        Circle().fill(outline).frame(width: 2.4 * u, height: 2.4 * u).offset(y: 3 * u)
+                    )
+                    .offset(x: 15.5 * u, y: -9.5 * u)
             }
-            castShadow(width: 11, height: 5, at: CGPoint(x: -15, y: -5), opacity: 0.22)
-            castShadow(width: 11, height: 5, at: CGPoint(x: 15, y: -5), opacity: 0.22)
-            lit(Ellipse(), mittColor, lineWidth: 2.0)
-                .frame(width: 12 * u, height: 10 * u)
-                .overlay(
-                    Circle().fill(outline).frame(width: 2.4 * u, height: 2.4 * u).offset(y: 3 * u)
-                )
-                .offset(x: -15.5 * u, y: -9.5 * u)
-            lit(Ellipse(), mittColor, lineWidth: 2.0)
-                .frame(width: 12 * u, height: 10 * u)
-                .overlay(
-                    Circle().fill(outline).frame(width: 2.4 * u, height: 2.4 * u).offset(y: 3 * u)
-                )
-                .offset(x: 15.5 * u, y: -9.5 * u)
         }
     }
 
@@ -1037,6 +1086,14 @@ struct MiniAvatarView: View {
                 .rotationEffect(.degrees(side * 30))
                 .offset(x: side * 3.5 * u, y: 3 * u)
 
+            if isKnight && !isRobed {
+                // Gold circlet ringing the upper arm.
+                lit(Capsule(), .questAmber, lineWidth: 1.2, metal: true)
+                    .frame(width: 6.2 * u, height: 2.2 * u)
+                    .rotationEffect(.degrees(side * 30))
+                    .offset(x: side * 3.5 * u, y: -2.6 * u)
+            }
+
             ZStack {
                 castShadow(width: 8, height: 4, at: CGPoint(x: side * -1.2, y: -5.4), opacity: 0.24)
                 orb(Circle(), mittColor, radius: 6, lineWidth: 2.0)
@@ -1075,7 +1132,7 @@ struct MiniAvatarView: View {
             hoodedHead
         default:
             if isKnight {
-                knightHelmet(dome: helmetDark, crest: .orange, band: false)
+                facetKnightHead
             } else {
                 wizardHead
             }
@@ -1099,29 +1156,23 @@ struct MiniAvatarView: View {
 
     private func eye(x: CGFloat) -> some View {
         ZStack {
-            Ellipse()
+            RoundedRectangle(cornerRadius: 3.2 * u, style: .continuous)
                 .fill(
-                    RadialGradient(
-                        colors: [Color(red: 0.14, green: 0.18, blue: 0.16), outline],
-                        center: UnitPoint(x: 0.4, y: 0.35),
-                        startRadius: 0,
-                        endRadius: 5.6 * u
+                    LinearGradient(
+                        colors: [Color(red: 0.16, green: 0.20, blue: 0.18), outline],
+                        startPoint: .top,
+                        endPoint: .bottom
                     )
                 )
-                .frame(width: 9.4 * u, height: 9.8 * u)
-            // Lower-lid reflected light keeps the eye reading as glass.
-            Ellipse()
-                .fill(Color.white.opacity(0.16))
-                .frame(width: 6 * u, height: 2.2 * u)
-                .offset(y: 3.1 * u)
+                .frame(width: 6 * u, height: 8.8 * u)
             Circle()
                 .fill(Color.white)
-                .frame(width: 2.9 * u, height: 2.9 * u)
-                .offset(x: 1.6 * u, y: -2 * u)
+                .frame(width: 2.5 * u, height: 2.5 * u)
+                .offset(x: 0.9 * u, y: -1.9 * u)
             Circle()
-                .fill(Color.white.opacity(0.42))
-                .frame(width: 1.4 * u, height: 1.4 * u)
-                .offset(x: -1.9 * u, y: 2 * u)
+                .fill(Color.white.opacity(0.45))
+                .frame(width: 1.2 * u, height: 1.2 * u)
+                .offset(x: -1 * u, y: 2.1 * u)
         }
         .offset(x: x * u)
     }
@@ -1134,7 +1185,7 @@ struct MiniAvatarView: View {
             shape
                 .fill(
                     RadialGradient(
-                        colors: [skinTone.lighter(0.18), skinTone, skinTone.darker(0.2)],
+                        colors: [skinTone.lighter(0.30), skinTone.lighter(0.08), skinTone.darker(0.12)],
                         center: UnitPoint(x: 0.38, y: 0.32),
                         startRadius: 0,
                         endRadius: 30 * u
@@ -1173,12 +1224,6 @@ struct MiniAvatarView: View {
             subsurfaceGlow(at: CGPoint(x: 9.5, y: 11))
             subsurfaceGlow(at: CGPoint(x: 0, y: 7), small: true)
 
-            // A small confident smile under the key light.
-            Capsule()
-                .fill(outline.opacity(0.9))
-                .frame(width: 3.6 * u, height: 1.3 * u)
-                .offset(y: 16.5 * u)
-
             eyes.offset(y: 6 * u)
         }
     }
@@ -1187,26 +1232,6 @@ struct MiniAvatarView: View {
     /// riveted band, and a shadowed face window.
     private func knightHelmet(dome: Color, crest: Crest, band: Bool) -> some View {
         ZStack {
-            // Signature gold ear points peeking past the dome's upper flanks.
-            ForEach([CGFloat(-1), CGFloat(1)], id: \.self) { side in
-                ZStack {
-                    lit(ConeShape(), accent, lineWidth: 1.4, metal: true)
-                        .frame(width: 9 * u, height: 13 * u)
-                    // Inner shade on the ear's shadow flank.
-                    ConeShape()
-                        .fill(Color.black.opacity(0.16))
-                        .frame(width: 5.5 * u, height: 8.5 * u)
-                        .offset(x: side * -1.1 * u, y: 1.5 * u)
-                    // Tip glint where the key light grazes the point.
-                    Circle()
-                        .fill(Color.white.opacity(0.75))
-                        .frame(width: 1.5 * u, height: 1.5 * u)
-                        .offset(x: side * -1.4 * u, y: -3.2 * u)
-                }
-                .rotationEffect(.degrees(side * 32))
-                .offset(x: side * 30 * u, y: -16 * u)
-            }
-
             switch crest {
             case .orange:
                 finCrest(color: .questAmber)
@@ -1389,6 +1414,137 @@ struct MiniAvatarView: View {
                 .offset(y: 0.5 * u)
         }
         .offset(x: x * u, y: -16 * u)
+    }
+
+    /// Default knight head: faceted charcoal dome with hard tonal planes and
+    /// seam grooves radiating from the crown, the two-lobed gold crest seated
+    /// on top, and the deep visor opening with its chevron brow.
+    private var facetKnightHead: some View {
+        let dome = helmetDark.darker(0.12)
+        let facetBands = LinearGradient(
+            stops: [
+                .init(color: .white.opacity(0.20), location: 0),
+                .init(color: .white.opacity(0.20), location: 0.30),
+                .init(color: .white.opacity(0.0), location: 0.301),
+                .init(color: .white.opacity(0.0), location: 0.58),
+                .init(color: .black.opacity(0.16), location: 0.581),
+                .init(color: .black.opacity(0.16), location: 1)
+            ],
+            startPoint: UnitPoint(x: 0.18, y: 0.06),
+            endPoint: UnitPoint(x: 0.72, y: 0.94)
+        )
+        let coolEdge = LinearGradient(
+            colors: [
+                Color(red: 0.72, green: 0.86, blue: 1.0).opacity(0.55),
+                Color(red: 0.72, green: 0.86, blue: 1.0).opacity(0.0)
+            ],
+            startPoint: .topLeading,
+            endPoint: UnitPoint(x: 0.6, y: 0.6)
+        )
+        let visorRim = LinearGradient(
+            stops: [
+                .init(color: helmetDark.lighter(0.35), location: 0),
+                .init(color: helmetDark.darker(0.22), location: 1)
+            ],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        return ZStack {
+            // Crest petals emerging from the crown, bases tucked behind the dome.
+            crestLobe(lean: -1)
+                .offset(x: -4.5 * u, y: -41 * u)
+            crestLobe(lean: 1)
+                .offset(x: 4.5 * u, y: -42 * u)
+            ZStack {
+                lit(FacetDomeShape(), dome, lineWidth: 2.6, metal: true)
+                // Hard facet bands: crisp tonal steps across the plates.
+                FacetDomeShape()
+                    .fill(facetBands)
+                    .allowsHitTesting(false)
+                // Seam grooves radiating from the crown.
+                Rectangle()
+                    .fill(Color.black.opacity(0.28))
+                    .frame(width: 1.1 * u, height: 30 * u)
+                    .offset(y: -16 * u)
+                Rectangle()
+                    .fill(Color.white.opacity(0.14))
+                    .frame(width: 0.7 * u, height: 30 * u)
+                    .offset(x: 0.8 * u, y: -16 * u)
+                Rectangle()
+                    .fill(Color.black.opacity(0.22))
+                    .frame(width: 1 * u, height: 24 * u)
+                    .rotationEffect(.degrees(32))
+                    .offset(x: -10 * u, y: -18 * u)
+                Rectangle()
+                    .fill(Color.black.opacity(0.22))
+                    .frame(width: 1 * u, height: 24 * u)
+                    .rotationEffect(.degrees(-32))
+                    .offset(x: 11 * u, y: -17 * u)
+                // Blue-white glints where the key light rakes the facets.
+                sheen(width: 9, height: 2.6, at: CGPoint(x: -14, y: -20), angle: -38, opacity: 0.65)
+                sheen(width: 5, height: 2, at: CGPoint(x: -20, y: -8), angle: -52, opacity: 0.5)
+                sheen(width: 6, height: 2.2, at: CGPoint(x: 16, y: -21), angle: 30, opacity: 0.4)
+            }
+            .frame(width: 76 * u, height: 72 * u)
+
+            // Crest seat: occlusion on the dome plus the steel collar.
+            castShadow(width: 18, height: 6, at: CGPoint(x: 0, y: -32.5), opacity: 0.3)
+            lit(Capsule(), steelDeep, lineWidth: 1.4, metal: true)
+                .frame(width: 13 * u, height: 4.5 * u)
+                .offset(y: -33.5 * u)
+
+            // Visor surround: bold dark rim framing the chevron opening.
+            FaceWindowShape()
+                .fill(visorRim)
+                .frame(width: 52.5 * u, height: 39.5 * u)
+                .overlay(
+                    FaceWindowShape()
+                        .stroke(coolEdge, lineWidth: 1.2 * u)
+                )
+                .overlay(FaceWindowShape().stroke(outline, lineWidth: 2.2 * u))
+                .offset(y: 10 * u)
+
+            faceWindow()
+        }
+    }
+
+    /// One gold petal of the two-lobed crest: stepped treasure-gold gradient,
+    /// lit ridge, tip glint, and a shaded flank, leaning away from its twin.
+    private func crestLobe(lean: CGFloat) -> some View {
+        ZStack {
+            CrestLobeShape()
+                .fill(
+                    LinearGradient(
+                        stops: [
+                            .init(color: Color.questAmber.lighter(0.55), location: 0),
+                            .init(color: Color.questAmber.lighter(0.2), location: 0.32),
+                            .init(color: Color.questAmber, location: 0.64),
+                            .init(color: Color.questAmber.darker(0.32), location: 1)
+                        ],
+                        startPoint: UnitPoint(x: 0.3, y: 0),
+                        endPoint: UnitPoint(x: 0.7, y: 1)
+                    )
+                )
+            // Shaded flank on the trailing side.
+            CrestLobeShape()
+                .fill(Color.black.opacity(0.15))
+                .frame(width: 5 * u, height: 14 * u)
+                .offset(x: lean * 2.6 * u)
+            // Lit ridge running the petal's length.
+            Capsule()
+                .fill(Color.white.opacity(0.35))
+                .frame(width: 1.2 * u, height: 8.5 * u)
+                .offset(x: lean * -1.4 * u, y: -1 * u)
+            // Tip glint.
+            Circle()
+                .fill(Color.white.opacity(0.85))
+                .frame(width: 1.8 * u, height: 1.8 * u)
+                .offset(x: lean * -0.8 * u, y: -4.8 * u)
+        }
+        .frame(width: 10 * u, height: 14 * u)
+        .clipShape(CrestLobeShape())
+        .overlay(CrestLobeShape().stroke(outline, lineWidth: 1.8 * u))
+        .rotationEffect(.degrees(lean * 13))
     }
 
     /// Magician head: radially lit face, blush, layered beard, pointed hat.
@@ -1770,6 +1926,20 @@ struct MiniAvatarView: View {
                     .fill(Color.white.opacity(0.28))
                     .frame(width: 0.8 * u, height: 21 * u)
                     .offset(x: 1.2 * u)
+                // Central ridge where the facets meet, catching the key light.
+                Rectangle()
+                    .fill(
+                        LinearGradient(
+                            stops: [
+                                .init(color: .white.opacity(0.55), location: 0),
+                                .init(color: .white.opacity(0.10), location: 0.7),
+                                .init(color: .white.opacity(0.35), location: 1)
+                            ],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+                    .frame(width: 1.1 * u, height: 26 * u)
                 // Thin bevel plus a secondary streak along the cutting edge.
                 Rectangle()
                     .fill(Color.white.opacity(0.34))
@@ -3049,6 +3219,62 @@ private struct ConeShape: Shape {
         )
         path.closeSubpath()
         return path
+    }
+}
+
+/// Faceted octagonal helmet dome with a rounded lower rim: the plate
+/// construction behind the default knight's hard-tonal facets.
+private struct FacetDomeShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var p = Path()
+        let w = rect.width
+        let h = rect.height
+        p.move(to: CGPoint(x: w * 0.50, y: 0))
+        p.addLine(to: CGPoint(x: w * 0.82, y: h * 0.10))
+        p.addLine(to: CGPoint(x: w * 0.97, y: h * 0.38))
+        p.addLine(to: CGPoint(x: w * 0.90, y: h * 0.72))
+        p.addQuadCurve(
+            to: CGPoint(x: w * 0.68, y: h * 0.97),
+            control: CGPoint(x: w * 0.82, y: h * 0.95)
+        )
+        p.addLine(to: CGPoint(x: w * 0.32, y: h * 0.97))
+        p.addQuadCurve(
+            to: CGPoint(x: w * 0.10, y: h * 0.72),
+            control: CGPoint(x: w * 0.18, y: h * 0.95)
+        )
+        p.addLine(to: CGPoint(x: w * 0.03, y: h * 0.38))
+        p.addLine(to: CGPoint(x: w * 0.18, y: h * 0.10))
+        p.closeSubpath()
+        return p
+    }
+}
+
+/// Teardrop petal with a pointed tip and rounded base: one lobe of the
+/// knight's two-lobed gold crest.
+private struct CrestLobeShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var p = Path()
+        let w = rect.width
+        let h = rect.height
+        p.move(to: CGPoint(x: rect.midX, y: rect.minY))
+        p.addQuadCurve(
+            to: CGPoint(x: rect.minX + w * 0.08, y: rect.minY + h * 0.70),
+            control: CGPoint(x: rect.minX + w * 0.02, y: rect.minY + h * 0.30)
+        )
+        p.addQuadCurve(
+            to: CGPoint(x: rect.midX, y: rect.maxY),
+            control: CGPoint(x: rect.minX + w * 0.18, y: rect.maxY)
+        )
+        p.addQuadCurve(
+            to: CGPoint(x: rect.maxX - w * 0.08, y: rect.minY + h * 0.70),
+            control: CGPoint(x: rect.maxX - w * 0.18, y: rect.maxY)
+        )
+        p.addQuadCurve(
+            to: CGPoint(x: rect.midX, y: rect.minY),
+            control: CGPoint(x: rect.maxX - w * 0.02, y: rect.minY + h * 0.30)
+        )
+        p.closeSubpath()
+        return p
     }
 }
 
