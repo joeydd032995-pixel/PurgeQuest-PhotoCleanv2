@@ -3,12 +3,14 @@
 //  PurgeQuest
 //
 //  Painted-sprite renderer for the hero mini figure. Every surface is drawn
-//  through a shared material pipeline: a consistent top-left key light with
-//  multi-stop base gradients, a rim highlight on the lit edge, a core shadow
-//  on the dark edge, and thin contour lines. Ambient occlusion bands sit under
-//  the helmet overhang, pauldrons, and collar; the ground uses a radial contact
-//  shadow. Gear (skin, head, armor, weapon, shield, pet, effect) recolors and
-//  re-equips the figure live, with one material pass per equipped piece.
+//  through a shared material pipeline: a top-left key light with stepped
+//  base gradients, a soft lower-right fill light, warm ground bounce on
+//  lower surfaces, a wrapping rim highlight, a core shadow on the dark edge,
+//  and thin contour lines. Metals add a brushed polish; leather adds grain;
+//  gems use radial catchlights with internal refraction. Ambient occlusion
+//  bands sit under the helmet overhang, pauldrons, and collar; the ground
+//  uses a tight radial contact shadow. Gear (skin, head, armor, weapon,
+//  shield, pet, effect) recolors and re-equips the figure live.
 //
 
 import SwiftUI
@@ -45,6 +47,8 @@ struct MiniAvatarView: View {
     private var mittColor: Color { Color(red: 0.30, green: 0.36, blue: 0.32) }
     private var wood: Color { Color(red: 0.55, green: 0.38, blue: 0.22) }
     private var outline: Color { Color(red: 0.06, green: 0.09, blue: 0.08) }
+    /// Warm ground-bounce light used on lower surfaces.
+    private var bounceWarm: Color { Color(red: 1.0, green: 0.86, blue: 0.64) }
 
     /// Tunic color driven by the equipped skin; falls back to the archetype standard.
     private var tunicColor: Color {
@@ -76,97 +80,264 @@ struct MiniAvatarView: View {
 
     // MARK: - Material pipeline
 
-    /// The core renderer: gradient base fill, rim light on the lit (upper-left)
-    /// edge, core shadow on the dark (lower-right) edge, then a contour line.
+    /// The core renderer: a stepped gradient base fill, a fill light from the
+    /// lower-right so dark flanks never flatten, a warm ground bounce on lower
+    /// surfaces, a wrapping rim highlight, a core shadow on the dark edge, and
+    /// the contour line. Metals add a brushed polish; leather adds grain.
     private func lit<S: Shape>(
         _ shape: S,
         _ base: Color,
         lineWidth: CGFloat = 1.8,
-        metal: Bool = false
+        metal: Bool = false,
+        grain: Bool = false
     ) -> some View {
         let fill = metal
             ? LinearGradient(
                 stops: [
-                    .init(color: base.lighter(0.55), location: 0),
-                    .init(color: base.lighter(0.12), location: 0.32),
-                    .init(color: base, location: 0.58),
-                    .init(color: base.darker(0.42), location: 1)
+                    .init(color: base.lighter(0.62), location: 0),
+                    .init(color: base.lighter(0.34), location: 0.16),
+                    .init(color: base.lighter(0.12), location: 0.36),
+                    .init(color: base, location: 0.56),
+                    .init(color: base.darker(0.24), location: 0.78),
+                    .init(color: base.darker(0.46), location: 1)
                 ],
-                startPoint: UnitPoint(x: 0.3, y: 0),
-                endPoint: UnitPoint(x: 0.7, y: 1)
+                startPoint: UnitPoint(x: 0.22, y: 0.04),
+                endPoint: UnitPoint(x: 0.74, y: 0.96)
             )
             : LinearGradient(
-                colors: [base.lighter(0.24), base, base.darker(0.2)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
+                stops: [
+                    .init(color: base.lighter(0.30), location: 0),
+                    .init(color: base.lighter(0.12), location: 0.26),
+                    .init(color: base, location: 0.54),
+                    .init(color: base.darker(0.14), location: 0.80),
+                    .init(color: base.darker(0.28), location: 1)
+                ],
+                startPoint: UnitPoint(x: 0.22, y: 0.04),
+                endPoint: UnitPoint(x: 0.78, y: 0.96)
             )
+        let fillLight = LinearGradient(
+            stops: [
+                .init(color: .white.opacity(0.0), location: 0),
+                .init(color: .white.opacity(0.09), location: 0.68),
+                .init(color: .white.opacity(0.15), location: 1)
+            ],
+            startPoint: UnitPoint(x: 0.30, y: 0.15),
+            endPoint: UnitPoint(x: 0.85, y: 0.95)
+        )
+        let bounce = LinearGradient(
+            stops: [
+                .init(color: bounceWarm.opacity(0.0), location: 0),
+                .init(color: bounceWarm.opacity(0.10), location: 0.82),
+                .init(color: bounceWarm.opacity(0.20), location: 1)
+            ],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        let polish = LinearGradient(
+            stops: [
+                .init(color: .white.opacity(0.05), location: 0.10),
+                .init(color: .black.opacity(0.03), location: 0.20),
+                .init(color: .white.opacity(0.045), location: 0.30),
+                .init(color: .black.opacity(0.03), location: 0.40),
+                .init(color: .white.opacity(0.04), location: 0.52),
+                .init(color: .black.opacity(0.03), location: 0.62),
+                .init(color: .white.opacity(0.035), location: 0.74),
+                .init(color: .black.opacity(0.03), location: 0.86),
+                .init(color: .white.opacity(0.03), location: 0.95)
+            ],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        let weave = LinearGradient(
+            stops: [
+                .init(color: .white.opacity(0.05), location: 0.15),
+                .init(color: .black.opacity(0.05), location: 0.32),
+                .init(color: .white.opacity(0.04), location: 0.48),
+                .init(color: .black.opacity(0.05), location: 0.64),
+                .init(color: .white.opacity(0.04), location: 0.80),
+                .init(color: .black.opacity(0.09), location: 0.97)
+            ],
+            startPoint: UnitPoint(x: 0.2, y: 0.2),
+            endPoint: UnitPoint(x: 0.8, y: 0.8)
+        )
+        let rim = LinearGradient(
+            stops: [
+                .init(color: .white.opacity(0.80), location: 0),
+                .init(color: .white.opacity(0.40), location: 0.30),
+                .init(color: .white.opacity(0.0), location: 0.56)
+            ],
+            startPoint: .topLeading,
+            endPoint: UnitPoint(x: 0.64, y: 0.60)
+        )
+        let coreShadow = LinearGradient(
+            stops: [
+                .init(color: .black.opacity(0.0), location: 0.36),
+                .init(color: .black.opacity(0.22), location: 0.70),
+                .init(color: .black.opacity(0.42), location: 1)
+            ],
+            startPoint: .top,
+            endPoint: .bottom
+        )
         return shape
             .fill(fill)
+            .overlay(shape.fill(fillLight).allowsHitTesting(false))
+            .overlay(shape.fill(bounce).allowsHitTesting(false))
+            .overlay(shape.fill(polish).opacity(metal ? 1 : 0).allowsHitTesting(false))
+            .overlay(shape.fill(weave).opacity(grain ? 1 : 0).allowsHitTesting(false))
+            .overlay(shape.stroke(rim, lineWidth: 1.6 * u).allowsHitTesting(false))
             .overlay(
                 shape.stroke(
                     LinearGradient(
-                        colors: [.white.opacity(0.55), .white.opacity(0.02)],
+                        stops: [
+                            .init(color: .white.opacity(0.9), location: 0),
+                            .init(color: .white.opacity(0.0), location: 0.35)
+                        ],
                         startPoint: .topLeading,
-                        endPoint: UnitPoint(x: 0.6, y: 0.6)
+                        endPoint: UnitPoint(x: 0.45, y: 0.45)
                     ),
-                    lineWidth: 1.1 * u
+                    lineWidth: 0.8 * u
                 )
+                .allowsHitTesting(false)
             )
-            .overlay(
-                shape.stroke(
-                    LinearGradient(
-                        colors: [.black.opacity(0.0), .black.opacity(0.32)],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    ),
-                    lineWidth: 1.5 * u
-                )
-            )
+            .overlay(shape.stroke(coreShadow, lineWidth: 1.6 * u).allowsHitTesting(false))
             .overlay(shape.stroke(outline, lineWidth: lineWidth * u))
     }
 
-    /// Spherical material for orbs, gems, and domes: a radial catchlight
-    /// offset toward the key light.
+    /// Spherical material for orbs, gems, and domes: a stepped radial body
+    /// light offset toward the key, a secondary internal refraction plane,
+    /// a subtle chromatic edge, and a crisp catchlight with a satellite glint.
     private func orb<S: Shape>(_ shape: S, _ base: Color, radius: CGFloat, lineWidth: CGFloat = 1.8) -> some View {
-        shape
+        let body = RadialGradient(
+            colors: [
+                base.lighter(0.62),
+                base.lighter(0.30),
+                base,
+                base.darker(0.20),
+                base.darker(0.48)
+            ],
+            center: UnitPoint(x: 0.34, y: 0.28),
+            startRadius: 0,
+            endRadius: radius * u
+        )
+        let chroma = LinearGradient(
+            colors: [
+                Color(red: 1.0, green: 0.94, blue: 0.80).opacity(0.5),
+                Color(red: 0.72, green: 0.86, blue: 1.0).opacity(0.42)
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+        let glint = max(1.2, radius * 0.24)
+        return shape
+            .fill(body)
+            .overlay(
+                shape.fill(
+                    LinearGradient(
+                        colors: [Color(white: 1.0).opacity(0.0), Color(white: 1.0).opacity(0.14)],
+                        startPoint: UnitPoint(x: 0.4, y: 0.3),
+                        endPoint: UnitPoint(x: 0.9, y: 0.95)
+                    )
+                )
+                .allowsHitTesting(false)
+            )
+            .overlay(shape.stroke(chroma, lineWidth: 0.9 * u).allowsHitTesting(false))
+            .overlay(shape.stroke(outline, lineWidth: lineWidth * u))
+            .overlay(
+                ZStack {
+                    Ellipse()
+                        .fill(
+                            RadialGradient(
+                                colors: [.white.opacity(0.95), .white.opacity(0.0)],
+                                center: .center,
+                                startRadius: 0,
+                                endRadius: glint * u
+                            )
+                        )
+                        .frame(width: glint * 2.4 * u, height: glint * 1.7 * u)
+                    Circle()
+                        .fill(Color.white.opacity(0.5))
+                        .frame(width: glint * 0.5 * u, height: glint * 0.5 * u)
+                        .offset(x: glint * 1.3 * u, y: glint * 0.9 * u)
+                }
+                .offset(x: -radius * 0.26 * u, y: -radius * 0.3 * u)
+                .allowsHitTesting(false)
+            )
+    }
+
+    /// A two-lobe specular streak: a broad soft wash under a narrow bright
+    /// core, used on metal surfaces.
+    private func sheen(width: CGFloat, height: CGFloat, at point: CGPoint, angle: Double = 36, opacity: Double = 0.45) -> some View {
+        ZStack {
+            Capsule()
+                .fill(
+                    LinearGradient(
+                        colors: [.white.opacity(opacity * 0.4), .white.opacity(0)],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .frame(width: width * 1.6 * u, height: height * 1.9 * u)
+            Capsule()
+                .fill(
+                    LinearGradient(
+                        colors: [.white.opacity(opacity), .white.opacity(0)],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .frame(width: width * u, height: height * u)
+        }
+        .rotationEffect(.degrees(angle))
+        .offset(x: point.x * u, y: point.y * u)
+    }
+
+    /// Soft ambient-occlusion wash fading downward from an overhang. Fill a
+    /// shape with it, or frame and clip it to the receiving surface.
+    private func aoWash(height: CGFloat, strength: Double = 0.30) -> LinearGradient {
+        LinearGradient(
+            stops: [
+                .init(color: .black.opacity(strength), location: 0),
+                .init(color: .black.opacity(strength * 0.45), location: 0.5),
+                .init(color: .black.opacity(0), location: 1)
+            ],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+    }
+
+    /// A small soft dark ellipse cast onto the surface beneath an overhang.
+    private func castShadow(width: CGFloat, height: CGFloat, at point: CGPoint, opacity: Double = 0.25) -> some View {
+        Ellipse()
             .fill(
                 RadialGradient(
-                    colors: [base.lighter(0.5), base, base.darker(0.4)],
-                    center: UnitPoint(x: 0.35, y: 0.3),
+                    colors: [.black.opacity(opacity), .black.opacity(0)],
+                    center: .center,
                     startRadius: 0,
-                    endRadius: radius * u
-                )
-            )
-            .overlay(
-                shape.stroke(
-                    LinearGradient(
-                        colors: [.white.opacity(0.5), .black.opacity(0.3)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    ),
-                    lineWidth: 1.2 * u
-                )
-            )
-            .overlay(shape.stroke(outline, lineWidth: lineWidth * u))
-    }
-
-    /// A soft diagonal specular streak used on metal surfaces.
-    private func sheen(width: CGFloat, height: CGFloat, at point: CGPoint, angle: Double = 36, opacity: Double = 0.45) -> some View {
-        Capsule()
-            .fill(
-                LinearGradient(
-                    colors: [.white.opacity(opacity), .white.opacity(0)],
-                    startPoint: .leading,
-                    endPoint: .trailing
+                    endRadius: max(width, height) * u / 2
                 )
             )
             .frame(width: width * u, height: height * u)
-            .rotationEffect(.degrees(angle))
             .offset(x: point.x * u, y: point.y * u)
+            .allowsHitTesting(false)
     }
 
-    /// Ambient occlusion is drawn inline per surface (helmet brim, tunic top),
-    /// so no shared helper is needed here.
+    /// A soft warm patch faking subsurface scattering on skin.
+    private func subsurfaceGlow(at point: CGPoint, small: Bool = false) -> some View {
+        let w: CGFloat = small ? 7 : 11
+        let h: CGFloat = small ? 4 : 5.5
+        return Ellipse()
+            .fill(
+                RadialGradient(
+                    colors: [skinTone.lighter(0.30).opacity(0.45), skinTone.lighter(0.30).opacity(0.0)],
+                    center: .center,
+                    startRadius: 0,
+                    endRadius: w * u / 2
+                )
+            )
+            .frame(width: w * u, height: h * u)
+            .offset(x: point.x * u, y: point.y * u)
+            .allowsHitTesting(false)
+    }
 
     // MARK: - Body
 
@@ -180,19 +351,19 @@ struct MiniAvatarView: View {
         .accessibilityLabel(accessibilitySummary)
     }
 
-    /// Radial contact shadow: denser at the feet, feathering out to nothing.
+    /// Radial contact shadow: dense and tight at the feet, feathering out.
     private var groundShadow: some View {
         Ellipse()
             .fill(
                 RadialGradient(
-                    colors: [.black.opacity(0.5), .black.opacity(0.0)],
+                    colors: [.black.opacity(0.55), .black.opacity(0.0)],
                     center: .center,
                     startRadius: 0,
-                    endRadius: 34 * u
+                    endRadius: 30 * u
                 )
             )
-            .frame(width: 64 * u, height: 14 * u)
-            .offset(y: 57 * u)
+            .frame(width: 56 * u, height: 12 * u)
+            .offset(y: 57.5 * u)
     }
 
     private var accessibilitySummary: String {
@@ -254,6 +425,11 @@ struct MiniAvatarView: View {
         )
         return ZStack {
             lit(shape, bootColor, lineWidth: 2.0)
+            // Ankle occlusion where the boot meets the greave.
+            Rectangle()
+                .fill(aoWash(height: 2.6, strength: 0.28))
+                .frame(width: 13 * u, height: 2.6 * u)
+                .offset(y: -2.6 * u)
             // Toe cap: a light kiss on the front edge where the key light lands.
             Ellipse()
                 .fill(Color.white.opacity(0.22))
@@ -298,15 +474,25 @@ struct MiniAvatarView: View {
                             Rectangle()
                                 .fill(
                                     LinearGradient(
-                                        colors: [.black.opacity(0.22), .black.opacity(0.0)],
+                                        colors: [.black.opacity(0.32), .black.opacity(0.0)],
                                         startPoint: .top,
-                                        endPoint: UnitPoint(x: 0.5, y: 0.35)
+                                        endPoint: UnitPoint(x: 0.5, y: 0.42)
                                     )
                                 )
-                                .frame(height: 9 * u)
+                                .frame(height: 10 * u)
                                 .frame(maxHeight: .infinity, alignment: .top)
                         )
                         .allowsHitTesting(false)
+                )
+                .overlay(
+                    // Lit ridges between the fold shades.
+                    HStack(spacing: 9 * u) {
+                        Capsule().fill(Color.white.opacity(0.10)).frame(width: 1.2 * u, height: 15 * u)
+                        Capsule().fill(Color.white.opacity(0.10)).frame(width: 1.2 * u, height: 15 * u)
+                    }
+                    .offset(x: 1.5 * u, y: 2 * u)
+                    .clipShape(TaperedShape(topWidth: 0.78, bottomWidth: 1))
+                    .allowsHitTesting(false)
                 )
 
             skinTrim
@@ -333,12 +519,29 @@ struct MiniAvatarView: View {
             TaperedShape(topWidth: 0.9, bottomWidth: 1)
                 .fill(
                     LinearGradient(
-                        colors: [.combatCrimson.darker(0.15), .combatCrimson],
+                        stops: [
+                            .init(color: .combatCrimson.lighter(0.18), location: 0),
+                            .init(color: .combatCrimson, location: 0.45),
+                            .init(color: .combatCrimson.darker(0.28), location: 1)
+                        ],
                         startPoint: .top,
                         endPoint: .bottom
                     )
                 )
                 .frame(width: 26.5 * u, height: 5 * u)
+                .overlay(
+                    // Heat-scale stitching ticks along the band.
+                    HStack(spacing: 3 * u) {
+                        ForEach(0..<6, id: \.self) { _ in
+                            Rectangle()
+                                .fill(outline.opacity(0.35))
+                                .frame(width: 0.8 * u, height: 3.2 * u)
+                        }
+                    }
+                    .offset(y: -0.6 * u)
+                    .clipShape(TaperedShape(topWidth: 0.9, bottomWidth: 1))
+                    .allowsHitTesting(false)
+                )
                 .offset(y: 9.5 * u)
         }
         if item(.skin)?.id == "skin.sandblade" {
@@ -349,12 +552,30 @@ struct MiniAvatarView: View {
                     Rectangle()
                         .fill(
                             LinearGradient(
-                                colors: [Color(red: 0.93, green: 0.87, blue: 0.72), Color(red: 0.84, green: 0.76, blue: 0.58)],
+                                stops: [
+                                    .init(color: Color(red: 0.95, green: 0.89, blue: 0.75), location: 0),
+                                    .init(color: Color(red: 0.88, green: 0.80, blue: 0.63), location: 0.55),
+                                    .init(color: Color(red: 0.78, green: 0.69, blue: 0.50), location: 1)
+                                ],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
                         )
                         .frame(width: 5 * u, height: 32 * u)
+                        .overlay(
+                            // Edge darkening along the sash's trailing side.
+                            Rectangle()
+                                .fill(Color.black.opacity(0.18))
+                                .frame(width: 0.8 * u)
+                                .frame(maxHeight: .infinity, alignment: .trailing)
+                        )
+                        .overlay(
+                            // A lit ridge along its leading side.
+                            Capsule()
+                                .fill(Color.white.opacity(0.25))
+                                .frame(width: 0.8 * u)
+                                .frame(maxHeight: .infinity, alignment: .leading)
+                        )
                         .rotationEffect(.degrees(28))
                 )
                 .clipShape(TaperedShape(topWidth: 0.78, bottomWidth: 1))
@@ -371,10 +592,21 @@ struct MiniAvatarView: View {
     }
 
     private var capsuleRib: some View {
-        let highlight = Color.white.opacity(0.12)
-        let shade = Color.black.opacity(0.18)
+        let highlight = Color.white.opacity(0.14)
+        let shade = Color.black.opacity(0.20)
         let ribWidth = 20 * u
         return ZStack {
+            // Occlusion above each rib where the plate catches the chest.
+            Capsule()
+                .fill(
+                    LinearGradient(
+                        colors: [.black.opacity(0.18), .black.opacity(0.0)],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
+                .frame(width: ribWidth, height: 2.2 * u)
+                .offset(y: -1.8 * u)
             Capsule()
                 .fill(highlight)
                 .frame(width: ribWidth, height: 1.6 * u)
@@ -396,6 +628,8 @@ struct MiniAvatarView: View {
         case "armor.arcanist":
             arcanistTrim
         default:
+            castShadow(width: 11, height: 5, at: CGPoint(x: -14, y: -5), opacity: 0.22)
+            castShadow(width: 11, height: 5, at: CGPoint(x: 14, y: -5), opacity: 0.22)
             lit(Ellipse(), mittColor, lineWidth: 2.0)
                 .frame(width: 12 * u, height: 10 * u)
                 .overlay(
@@ -414,11 +648,16 @@ struct MiniAvatarView: View {
     /// Purge Plate pauldron: two stacked steel plates with a riveted lower rim.
     private func ironPauldron(x: CGFloat) -> some View {
         ZStack {
+            castShadow(width: 13, height: 5, at: CGPoint(x: 0, y: 6.5), opacity: 0.3)
             lit(Ellipse(), steelDeep, lineWidth: 2.0, metal: true)
                 .frame(width: 12.5 * u, height: 10.5 * u)
             lit(Ellipse(), steel, lineWidth: 1.4, metal: true)
                 .frame(width: 9 * u, height: 7 * u)
                 .offset(x: x < 0 ? -1 * u : 1 * u, y: -2 * u)
+            Circle()
+                .fill(Color.black.opacity(0.24))
+                .frame(width: 3.4 * u, height: 3.4 * u)
+                .offset(y: 3.6 * u)
             Circle()
                 .fill(outline)
                 .frame(width: 2.2 * u, height: 2.2 * u)
@@ -448,15 +687,35 @@ struct MiniAvatarView: View {
         let plateHeight = size * 0.72 * u
         let shineWidth = size * 0.62 * u
         let shineHeight = size * 0.4 * u
-        return lit(Ellipse(), tint, lineWidth: 1.4)
-            .frame(width: plateWidth, height: plateHeight)
-            .overlay(
-                Ellipse()
-                    .stroke(Color.white.opacity(0.3), lineWidth: 0.9 * u)
-                    .frame(width: shineWidth, height: shineHeight)
-                    .offset(y: -size * 0.1 * u)
-            )
-            .offset(x: point.x * u, y: point.y * u)
+        return ZStack {
+            // Layering shadow: each scale casts onto the one below it.
+            Ellipse()
+                .fill(
+                    RadialGradient(
+                        colors: [.black.opacity(0.28), .black.opacity(0.0)],
+                        center: .center,
+                        startRadius: 0,
+                        endRadius: plateWidth / 2
+                    )
+                )
+                .frame(width: plateWidth * 1.1, height: plateHeight * 0.7)
+                .offset(y: plateHeight * 0.5)
+            lit(Ellipse(), tint, lineWidth: 1.4)
+                .frame(width: plateWidth, height: plateHeight)
+                .overlay(
+                    Ellipse()
+                        .stroke(Color.white.opacity(0.3), lineWidth: 0.9 * u)
+                        .frame(width: shineWidth, height: shineHeight)
+                        .offset(y: -size * 0.1 * u)
+                )
+                .overlay(
+                    Circle()
+                        .fill(Color.white.opacity(0.5))
+                        .frame(width: size * 0.12 * u, height: size * 0.12 * u)
+                        .offset(x: -size * 0.18 * u, y: -size * 0.16 * u)
+                )
+        }
+        .offset(x: point.x * u, y: point.y * u)
     }
 
     /// Arcanist trim: jade edging down the robe plus a rune emblem.
@@ -496,6 +755,10 @@ struct MiniAvatarView: View {
                 .frame(width: 8 * u, height: 8 * u)
                 .offset(y: 5 * u)
             DiamondShape()
+                .fill(Color.white.opacity(0.20))
+                .frame(width: 3.2 * u, height: 3.2 * u)
+                .offset(x: -0.9 * u, y: 4.4 * u)
+            DiamondShape()
                 .fill(Color.white.opacity(0.75))
                 .frame(width: 2.2 * u, height: 2.2 * u)
                 .offset(x: -0.8 * u, y: 4.2 * u)
@@ -504,7 +767,7 @@ struct MiniAvatarView: View {
 
     private var belt: some View {
         ZStack {
-            lit(Rectangle(), leather, lineWidth: 1.5)
+            lit(Rectangle(), leather, lineWidth: 1.5, grain: true)
                 .frame(width: 28 * u, height: 6 * u)
                 .overlay(
                     // Stitch line along the belt's top edge.
@@ -512,6 +775,13 @@ struct MiniAvatarView: View {
                         .fill(Color.white.opacity(0.14))
                         .frame(width: 26 * u, height: 0.9 * u)
                         .offset(y: -1.9 * u)
+                )
+                .overlay(
+                    // Edge darkening grounds the strap.
+                    Rectangle()
+                        .fill(Color.black.opacity(0.24))
+                        .frame(height: 1.1 * u)
+                        .frame(maxHeight: .infinity, alignment: .bottom)
                 )
                 .offset(y: 8 * u)
             lit(Capsule(), .questAmber, lineWidth: 1.6, metal: true)
@@ -532,7 +802,12 @@ struct MiniAvatarView: View {
             TaperedShape(topWidth: 0.55, bottomWidth: 1)
                 .fill(
                     LinearGradient(
-                        colors: [robeColor.lighter(0.2), robeColor, robeColor.darker(0.3)],
+                        stops: [
+                            .init(color: robeColor.lighter(0.28), location: 0),
+                            .init(color: robeColor, location: 0.45),
+                            .init(color: robeColor.darker(0.12), location: 0.75),
+                            .init(color: robeColor.darker(0.34), location: 1)
+                        ],
                         startPoint: .topLeading,
                         endPoint: .bottom
                     )
@@ -542,12 +817,48 @@ struct MiniAvatarView: View {
                     TaperedShape(topWidth: 0.55, bottomWidth: 1)
                         .stroke(
                             LinearGradient(
-                                colors: [.white.opacity(0.25), .white.opacity(0.0)],
+                                stops: [
+                                    .init(color: .white.opacity(0.4), location: 0),
+                                    .init(color: .white.opacity(0.0), location: 0.5)
+                                ],
                                 startPoint: .topLeading,
                                 endPoint: .center
                             ),
                             lineWidth: 1 * u
                         )
+                )
+                .overlay(
+                    // Quiet vertical cloth folds down the robe.
+                    TaperedShape(topWidth: 0.55, bottomWidth: 1)
+                        .fill(
+                            LinearGradient(
+                                stops: [
+                                    .init(color: .black.opacity(0.0), location: 0.1),
+                                    .init(color: .black.opacity(0.14), location: 0.3),
+                                    .init(color: .black.opacity(0.0), location: 0.45),
+                                    .init(color: .black.opacity(0.10), location: 0.68),
+                                    .init(color: .black.opacity(0.0), location: 0.82)
+                                ],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .allowsHitTesting(false)
+                )
+                .overlay(
+                    // Hem occlusion along the robe's bottom edge.
+                    TaperedShape(topWidth: 0.55, bottomWidth: 1)
+                        .fill(
+                            LinearGradient(
+                                stops: [
+                                    .init(color: .black.opacity(0.0), location: 0),
+                                    .init(color: .black.opacity(0.22), location: 1)
+                                ],
+                                startPoint: UnitPoint(x: 0.5, y: 0.72),
+                                endPoint: .bottom
+                            )
+                        )
+                        .allowsHitTesting(false)
                 )
                 .frame(width: 44 * u, height: 40 * u)
                 .offset(y: 24 * u)
@@ -555,12 +866,31 @@ struct MiniAvatarView: View {
             TaperedShape(topWidth: 0.62, bottomWidth: 1.12)
                 .fill(
                     LinearGradient(
-                        colors: [Color(red: 0.13, green: 0.16, blue: 0.15), Color(red: 0.09, green: 0.11, blue: 0.10)],
+                        stops: [
+                            .init(color: Color(red: 0.15, green: 0.18, blue: 0.17), location: 0),
+                            .init(color: Color(red: 0.12, green: 0.15, blue: 0.14), location: 0.45),
+                            .init(color: Color(red: 0.08, green: 0.10, blue: 0.09), location: 1)
+                        ],
                         startPoint: .top,
                         endPoint: .bottom
                     )
                 )
                 .overlay(TaperedShape(topWidth: 0.62, bottomWidth: 1.12).stroke(outline, lineWidth: 2.2 * u))
+                .overlay(
+                    // Lit edge catching the key light on the cloak's shoulder.
+                    TaperedShape(topWidth: 0.62, bottomWidth: 1.12)
+                        .stroke(
+                            LinearGradient(
+                                stops: [
+                                    .init(color: .white.opacity(0.35), location: 0),
+                                    .init(color: .white.opacity(0.0), location: 0.5)
+                                ],
+                                startPoint: .topLeading,
+                                endPoint: .center
+                            ),
+                            lineWidth: 1 * u
+                        )
+                )
                 .overlay(
                     // Ash weave: faint horizontal threads.
                     TaperedShape(topWidth: 0.62, bottomWidth: 1.12)
@@ -568,14 +898,32 @@ struct MiniAvatarView: View {
                             LinearGradient(
                                 stops: [
                                     .init(color: .white.opacity(0.0), location: 0),
-                                    .init(color: .white.opacity(0.06), location: 0.4),
+                                    .init(color: .white.opacity(0.09), location: 0.4),
                                     .init(color: .white.opacity(0.0), location: 0.55),
-                                    .init(color: .white.opacity(0.05), location: 0.8)
+                                    .init(color: .white.opacity(0.07), location: 0.8)
                                 ],
                                 startPoint: .top,
                                 endPoint: .bottom
                             )
                         )
+                )
+                .overlay(
+                    // Hanging folds under the shoulders.
+                    TaperedShape(topWidth: 0.62, bottomWidth: 1.12)
+                        .fill(
+                            LinearGradient(
+                                stops: [
+                                    .init(color: .black.opacity(0.0), location: 0.08),
+                                    .init(color: .black.opacity(0.30), location: 0.30),
+                                    .init(color: .black.opacity(0.0), location: 0.48),
+                                    .init(color: .black.opacity(0.22), location: 0.72),
+                                    .init(color: .black.opacity(0.0), location: 0.88)
+                                ],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .allowsHitTesting(false)
                 )
                 .frame(width: 48 * u, height: 42 * u)
                 .offset(y: 26 * u)
@@ -607,10 +955,18 @@ struct MiniAvatarView: View {
         ZStack {
             lit(Capsule(), tunicColor.darker(0.12), lineWidth: 1.1)
                 .frame(width: 4.2 * u, height: 14 * u)
+                .overlay(
+                    // Elbow fold catching a soft shade mid-sleeve.
+                    Capsule()
+                        .fill(Color.black.opacity(0.15))
+                        .frame(width: 3.4 * u, height: 1.1 * u)
+                        .offset(y: 3.4 * u)
+                )
                 .rotationEffect(.degrees(side * 30))
                 .offset(x: side * 3.5 * u, y: 3 * u)
 
             ZStack {
+                castShadow(width: 8, height: 4, at: CGPoint(x: side * -1.2, y: -5.4), opacity: 0.24)
                 orb(Circle(), mittColor, radius: 5.5, lineWidth: 2.0)
                 // Knuckle crease on the lit side.
                 Capsule()
@@ -713,12 +1069,12 @@ struct MiniAvatarView: View {
                     Rectangle()
                         .fill(
                             LinearGradient(
-                                colors: [.black.opacity(0.3), .black.opacity(0.0)],
+                                colors: [.black.opacity(0.4), .black.opacity(0.0)],
                                 startPoint: .top,
                                 endPoint: .bottom
                             )
                         )
-                        .frame(height: 12 * u)
+                        .frame(height: 13 * u)
                         .frame(maxHeight: .infinity, alignment: .top)
                         .clipShape(shape)
                 )
@@ -734,6 +1090,11 @@ struct MiniAvatarView: View {
                 .fill(Color.combatCrimson.opacity(0.1))
                 .frame(width: 7 * u, height: 4 * u)
                 .offset(x: 13 * u, y: 14 * u)
+
+            // Subsurface warmth: light scattering under the eyes and nose bridge.
+            subsurfaceGlow(at: CGPoint(x: -9.5, y: 11))
+            subsurfaceGlow(at: CGPoint(x: 9.5, y: 11))
+            subsurfaceGlow(at: CGPoint(x: 0, y: 7), small: true)
 
             eyes.offset(y: 6 * u)
         }
@@ -756,29 +1117,99 @@ struct MiniAvatarView: View {
                 Ellipse()
                     .fill(
                         EllipticalGradient(
-                            colors: [dome.lighter(0.5), dome, dome.darker(0.45)],
-                            center: UnitPoint(x: 0.36, y: 0.26),
+                            stops: [
+                                .init(color: dome.lighter(0.55), location: 0),
+                                .init(color: dome.lighter(0.28), location: 0.18),
+                                .init(color: dome, location: 0.42),
+                                .init(color: dome.darker(0.18), location: 0.66),
+                                .init(color: dome.darker(0.48), location: 1)
+                            ],
+                            center: UnitPoint(x: 0.34, y: 0.24),
                             startRadiusFraction: 0,
-                            endRadiusFraction: 0.85
+                            endRadiusFraction: 0.88
                         )
                     )
+                    .overlay(
+                        // Fill light from the lower-right keeps the dark flank alive.
+                        Ellipse()
+                            .fill(
+                                LinearGradient(
+                                    stops: [
+                                        .init(color: .white.opacity(0.0), location: 0),
+                                        .init(color: .white.opacity(0.10), location: 0.7),
+                                        .init(color: .white.opacity(0.16), location: 1)
+                                    ],
+                                    startPoint: UnitPoint(x: 0.35, y: 0.25),
+                                    endPoint: UnitPoint(x: 0.85, y: 0.9)
+                                )
+                            )
+                            .allowsHitTesting(false)
+                    )
+                    .overlay(
+                        // Brushed polish bands across the dome.
+                        Ellipse()
+                            .fill(
+                                LinearGradient(
+                                    stops: [
+                                        .init(color: .white.opacity(0.05), location: 0.2),
+                                        .init(color: .black.opacity(0.03), location: 0.3),
+                                        .init(color: .white.opacity(0.04), location: 0.44),
+                                        .init(color: .black.opacity(0.03), location: 0.56),
+                                        .init(color: .white.opacity(0.035), location: 0.7),
+                                        .init(color: .black.opacity(0.03), location: 0.84)
+                                    ],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            )
+                            .allowsHitTesting(false)
+                    )
+                    .overlay(
+                        // Warm bounce off the ground onto the dome's underside.
+                        Ellipse()
+                            .fill(
+                                LinearGradient(
+                                    stops: [
+                                        .init(color: bounceWarm.opacity(0.0), location: 0),
+                                        .init(color: bounceWarm.opacity(0.16), location: 1)
+                                    ],
+                                    startPoint: UnitPoint(x: 0.5, y: 0.6),
+                                    endPoint: .bottom
+                                )
+                            )
+                            .allowsHitTesting(false)
+                    )
                     .overlay(Ellipse().stroke(outline, lineWidth: 2.6 * u))
-                // Rim light sweeping the lit shoulder of the dome.
+                // Rim light: a soft spread under a clean bright core.
                 Ellipse()
-                    .trim(from: 0.02, to: 0.38)
+                    .trim(from: 0.02, to: 0.40)
                     .stroke(
                         LinearGradient(
-                            colors: [.white.opacity(0.7), .white.opacity(0.0)],
+                            colors: [.white.opacity(0.35), .white.opacity(0.0)],
                             startPoint: .topLeading,
                             endPoint: .trailing
                         ),
-                        style: StrokeStyle(lineWidth: 2.2 * u, lineCap: .round)
+                        style: StrokeStyle(lineWidth: 3.2 * u, lineCap: .round)
+                    )
+                    .rotationEffect(.degrees(-12))
+                Ellipse()
+                    .trim(from: 0.02, to: 0.36)
+                    .stroke(
+                        LinearGradient(
+                            colors: [.white.opacity(0.95), .white.opacity(0.0)],
+                            startPoint: .topLeading,
+                            endPoint: .trailing
+                        ),
+                        style: StrokeStyle(lineWidth: 1.6 * u, lineCap: .round)
                     )
                     .rotationEffect(.degrees(-12))
                 sheen(width: 15, height: 4.5, at: CGPoint(x: 15, y: -20), opacity: 0.5)
                 sheen(width: 8, height: 3.2, at: CGPoint(x: 6, y: -26), opacity: 0.4)
             }
             .frame(width: 70 * u, height: 66 * u)
+
+            // Crest base occlusion where the fin meets the dome.
+            castShadow(width: 20, height: 7, at: CGPoint(x: 2, y: -29), opacity: 0.28)
 
             if band {
                 lit(
@@ -826,16 +1257,29 @@ struct MiniAvatarView: View {
 
     private func bandRivet(x: CGFloat) -> some View {
         ZStack {
+            // Seat occlusion around the rivet head.
+            Circle()
+                .fill(Color.black.opacity(0.25))
+                .frame(width: 3.8 * u, height: 3.8 * u)
+                .offset(y: 0.3 * u)
             Circle()
                 .fill(
                     RadialGradient(
-                        colors: [steel.lighter(0.4), steel.darker(0.3)],
+                        stops: [
+                            .init(color: steel.lighter(0.5), location: 0),
+                            .init(color: steel, location: 0.55),
+                            .init(color: steel.darker(0.35), location: 1)
+                        ],
                         center: UnitPoint(x: 0.35, y: 0.3),
                         startRadius: 0,
                         endRadius: 2 * u
                     )
                 )
                 .frame(width: 2.8 * u, height: 2.8 * u)
+            Circle()
+                .fill(Color.white.opacity(0.8))
+                .frame(width: 0.8 * u, height: 0.8 * u)
+                .offset(x: -0.4 * u, y: -0.5 * u)
             Circle()
                 .fill(outline.opacity(0.6))
                 .frame(width: 1 * u, height: 1 * u)
@@ -863,6 +1307,10 @@ struct MiniAvatarView: View {
                 .offset(y: 5 * u)
 
             eyes.offset(y: 2 * u)
+
+            subsurfaceGlow(at: CGPoint(x: -10, y: 7))
+            subsurfaceGlow(at: CGPoint(x: 10, y: 7))
+            subsurfaceGlow(at: CGPoint(x: 0, y: 2), small: true)
 
             // Cheek blush under the key light.
             Ellipse()
@@ -902,12 +1350,16 @@ struct MiniAvatarView: View {
                     .offset(x: 6 * u, y: 12 * u)
             }
 
-            // Beard: a shaded volume with a bright crown where light lands.
+            // Beard: a shaded volume with a bright crown and side comb folds.
             ZStack {
                 Ellipse()
                     .fill(
                         LinearGradient(
-                            colors: [Color(white: 0.96), Color(white: 0.72)],
+                            stops: [
+                                .init(color: Color(white: 0.97), location: 0),
+                                .init(color: Color(white: 0.86), location: 0.45),
+                                .init(color: Color(white: 0.68), location: 1)
+                            ],
                             startPoint: .top,
                             endPoint: .bottom
                         )
@@ -918,9 +1370,22 @@ struct MiniAvatarView: View {
                     .frame(width: 14 * u, height: 5 * u)
                     .offset(y: -5 * u)
                 Capsule()
+                    .fill(Color(white: 0.58).opacity(0.55))
+                    .frame(width: 1.2 * u, height: 8 * u)
+                    .offset(x: -5 * u, y: 2.5 * u)
+                Capsule()
+                    .fill(Color(white: 0.58).opacity(0.55))
+                    .frame(width: 1.2 * u, height: 8 * u)
+                    .offset(x: 5 * u, y: 2.5 * u)
+                Capsule()
                     .fill(Color(white: 0.6).opacity(0.6))
                     .frame(width: 1.4 * u, height: 9 * u)
                     .offset(y: 3 * u)
+                // Warm bounce off the ground into the beard's underside.
+                Ellipse()
+                    .fill(bounceWarm.opacity(0.16))
+                    .frame(width: 16 * u, height: 3.5 * u)
+                    .offset(y: 7.5 * u)
             }
             .frame(width: 27 * u, height: 20 * u)
             .offset(y: 22 * u)
@@ -985,10 +1450,23 @@ struct MiniAvatarView: View {
                         .frame(width: 52 * u, height: 8 * u)
                         .offset(y: -2 * u)
                 )
+                .overlay(
+                    // Underside occlusion where the brim shades the crown.
+                    Ellipse()
+                        .fill(Color.black.opacity(0.2))
+                        .frame(width: 52 * u, height: 4.5 * u)
+                        .offset(y: 3 * u)
+                )
                 .offset(y: -9 * u)
 
             lit(Rectangle(), .questAmber, lineWidth: 1.3, metal: true)
                 .frame(width: 24 * u, height: 5 * u)
+                .overlay(
+                    HStack(spacing: 8 * u) {
+                        Circle().fill(Color(white: 0.95).opacity(0.8)).frame(width: 1 * u, height: 1 * u)
+                        Circle().fill(Color(white: 0.95).opacity(0.8)).frame(width: 1 * u, height: 1 * u)
+                    }
+                )
                 .offset(y: -15 * u)
         }
     }
@@ -1000,16 +1478,41 @@ struct MiniAvatarView: View {
                 Circle()
                     .fill(
                         RadialGradient(
-                            colors: [charcoal.lighter(0.28), charcoal, charcoal.darker(0.4)],
+                            stops: [
+                                .init(color: charcoal.lighter(0.34), location: 0),
+                                .init(color: charcoal, location: 0.4),
+                                .init(color: charcoal.darker(0.18), location: 0.72),
+                                .init(color: charcoal.darker(0.45), location: 1)
+                            ],
                             center: UnitPoint(x: 0.36, y: 0.28),
                             startRadius: 0,
                             endRadius: 36 * u
                         )
                     )
                     .overlay(Circle().stroke(outline, lineWidth: 2.6 * u))
+                // Hanging cloth folds under the crown.
                 Circle()
-                    .trim(from: 0.02, to: 0.36)
-                    .stroke(Color.white.opacity(0.28), style: StrokeStyle(lineWidth: 2 * u, lineCap: .round))
+                    .fill(
+                        LinearGradient(
+                            stops: [
+                                .init(color: .black.opacity(0.0), location: 0.12),
+                                .init(color: .black.opacity(0.16), location: 0.34),
+                                .init(color: .black.opacity(0.0), location: 0.52),
+                                .init(color: .black.opacity(0.12), location: 0.74),
+                                .init(color: .black.opacity(0.0), location: 0.9)
+                            ],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                // Rim light: soft spread under a bright core.
+                Circle()
+                    .trim(from: 0.02, to: 0.38)
+                    .stroke(Color.white.opacity(0.35), style: StrokeStyle(lineWidth: 2.6 * u, lineCap: .round))
+                    .rotationEffect(.degrees(-12))
+                Circle()
+                    .trim(from: 0.02, to: 0.32)
+                    .stroke(Color.white.opacity(0.7), style: StrokeStyle(lineWidth: 1.2 * u, lineCap: .round))
                     .rotationEffect(.degrees(-12))
             }
             .frame(width: 62 * u, height: 62 * u)
@@ -1038,6 +1541,13 @@ struct MiniAvatarView: View {
                 )
                 .frame(width: 34 * u, height: 34 * u)
                 .offset(y: 9 * u)
+                .overlay(
+                    // Faint brow shadow deepening the V of the hood.
+                    Ellipse()
+                        .fill(Color.black.opacity(0.25))
+                        .frame(width: 22 * u, height: 7 * u)
+                        .offset(y: -12 * u)
+                )
 
             // Pale eyes read through the shadow.
             ZStack {
@@ -1094,26 +1604,41 @@ struct MiniAvatarView: View {
                     .fill(
                         LinearGradient(
                             stops: [
-                                .init(color: steelDeep, location: 0),
+                                .init(color: steelDeep.darker(0.15), location: 0),
+                                .init(color: steelDeep, location: 0.22),
                                 .init(color: steel, location: 0.45),
-                                .init(color: steel.lighter(0.25), location: 0.62),
-                                .init(color: steelDeep.darker(0.25), location: 1)
+                                .init(color: steel.lighter(0.28), location: 0.6),
+                                .init(color: steel, location: 0.78),
+                                .init(color: steelDeep.darker(0.3), location: 1)
                             ],
                             startPoint: .leading,
                             endPoint: .trailing
                         )
                     )
                     .frame(width: 14 * u, height: 30 * u)
-                // Fuller: the dark center groove.
+                // Fuller groove with light fall-off on its lit lip.
                 Rectangle()
                     .fill(
                         LinearGradient(
-                            colors: [steelDeep.darker(0.4), steelDeep.darker(0.15)],
+                            stops: [
+                                .init(color: .black.opacity(0.30), location: 0),
+                                .init(color: .black.opacity(0.12), location: 0.45),
+                                .init(color: .black.opacity(0.26), location: 1)
+                            ],
                             startPoint: .top,
                             endPoint: .bottom
                         )
                     )
                     .frame(width: 1.6 * u, height: 22 * u)
+                Rectangle()
+                    .fill(Color.white.opacity(0.28))
+                    .frame(width: 0.8 * u, height: 21 * u)
+                    .offset(x: 1.2 * u)
+                // Thin bevel plus a secondary streak along the cutting edge.
+                Rectangle()
+                    .fill(Color.white.opacity(0.34))
+                    .frame(width: 0.9 * u, height: 25 * u)
+                    .offset(x: 5.1 * u)
                 sheen(width: 2.6, height: 19, at: CGPoint(x: 2.6, y: -1), angle: 0, opacity: 0.65)
             }
             .frame(width: 14 * u, height: 30 * u)
@@ -1121,9 +1646,14 @@ struct MiniAvatarView: View {
             .overlay(BladeShape().stroke(outline, lineWidth: 2 * u))
             lit(Rectangle(), .questAmber, lineWidth: 1.6, metal: true)
                 .frame(width: 20 * u, height: 6 * u)
-            lit(Rectangle(), leather, lineWidth: 1.5)
+                .overlay(
+                    DiamondShape()
+                        .fill(Color.questAmber.lighter(0.45))
+                        .frame(width: 2.4 * u, height: 2.4 * u)
+                )
+            lit(Rectangle(), leather, lineWidth: 1.5, grain: true)
                 .frame(width: 6 * u, height: 9 * u)
-            lit(Rectangle(), Color(red: 0.30, green: 0.18, blue: 0.10), lineWidth: 1.4)
+            lit(Rectangle(), Color(red: 0.30, green: 0.18, blue: 0.10), lineWidth: 1.4, grain: true)
                 .frame(width: 6 * u, height: 3.5 * u)
         }
     }
@@ -1138,7 +1668,12 @@ struct MiniAvatarView: View {
                         .stroke(Color.white.opacity(0.4), lineWidth: 0.9 * u)
                         .frame(width: 12 * u, height: 12 * u)
                 )
-            lit(Capsule(), wood, lineWidth: 1.4)
+                .overlay(
+                    Circle()
+                        .stroke(Color.white.opacity(0.15), lineWidth: 0.7 * u)
+                        .frame(width: 14.5 * u, height: 14.5 * u)
+                )
+            lit(Capsule(), wood, lineWidth: 1.4, grain: true)
                 .frame(width: 4 * u, height: 32 * u)
                 .overlay(
                     // Grain lines.
@@ -1165,8 +1700,15 @@ struct MiniAvatarView: View {
                     claw(x: -5.5, angle: -32)
                     claw(x: 5.5, angle: 32)
                 }
-                lit(Capsule(), wood, lineWidth: 1.6)
+                lit(Capsule(), wood, lineWidth: 1.6, grain: true)
                     .frame(width: 4.5 * u, height: 42 * u)
+                    .overlay(
+                        // Occlusion under the overhanging orb head.
+                        Rectangle()
+                            .fill(aoWash(height: 4, strength: 0.32))
+                            .frame(width: 4.5 * u, height: 4 * u)
+                            .frame(maxHeight: .infinity, alignment: .top)
+                    )
                     .overlay(
                         VStack(spacing: 9 * u) {
                             Rectangle().fill(Color.black.opacity(0.22)).frame(width: 1.1 * u, height: 6 * u)
@@ -1174,7 +1716,7 @@ struct MiniAvatarView: View {
                             Rectangle().fill(Color.black.opacity(0.22)).frame(width: 1.1 * u, height: 6 * u)
                         }
                     )
-                lit(Rectangle(), leather, lineWidth: 1.4)
+                lit(Rectangle(), leather, lineWidth: 1.4, grain: true)
                     .frame(width: 5.5 * u, height: 4 * u)
             }
         case "weapon.gem":
@@ -1194,10 +1736,27 @@ struct MiniAvatarView: View {
                     lit(Rectangle(), .questAmber, lineWidth: 1.2, metal: true)
                         .frame(width: 3.4 * u, height: 11 * u)
                         .offset(x: 6.5 * u)
+                    Circle()
+                        .fill(Color.white.opacity(0.55))
+                        .frame(width: 1.1 * u, height: 1.1 * u)
+                        .offset(x: -6.5 * u, y: -3.4 * u)
+                    Circle()
+                        .fill(Color.white.opacity(0.55))
+                        .frame(width: 1.1 * u, height: 1.1 * u)
+                        .offset(x: 6.5 * u, y: -3.4 * u)
+                    DiamondShape()
+                        .fill(Color.black.opacity(0.4))
+                        .frame(width: 8.4 * u, height: 8.4 * u)
+                        .offset(y: 0.5 * u)
                     DiamondShape()
                         .fill(
                             RadialGradient(
-                                colors: [.questAmber.lighter(0.5), .questAmber, .questAmber.darker(0.35)],
+                                stops: [
+                                    .init(color: .questAmber.lighter(0.6), location: 0),
+                                    .init(color: .questAmber.lighter(0.2), location: 0.4),
+                                    .init(color: .questAmber, location: 0.68),
+                                    .init(color: .questAmber.darker(0.4), location: 1)
+                                ],
                                 center: UnitPoint(x: 0.4, y: 0.3),
                                 startRadius: 0,
                                 endRadius: 5 * u
@@ -1205,16 +1764,29 @@ struct MiniAvatarView: View {
                         )
                         .overlay(DiamondShape().stroke(outline, lineWidth: 1.1 * u))
                         .frame(width: 6.5 * u, height: 6.5 * u)
+                        .overlay(
+                            DiamondShape()
+                                .fill(Color.white.opacity(0.25))
+                                .frame(width: 2 * u, height: 2 * u)
+                                .offset(x: -0.8 * u, y: -0.9 * u)
+                        )
                 }
-                lit(Capsule(), wood, lineWidth: 1.6)
+                lit(Capsule(), wood, lineWidth: 1.6, grain: true)
                     .frame(width: 4.5 * u, height: 32 * u)
+                    .overlay(
+                        // Occlusion under the overhanging hammer head.
+                        Rectangle()
+                            .fill(aoWash(height: 4, strength: 0.32))
+                            .frame(width: 4.5 * u, height: 4 * u)
+                            .frame(maxHeight: .infinity, alignment: .top)
+                    )
                     .overlay(
                         VStack(spacing: 6 * u) {
                             Rectangle().fill(Color.black.opacity(0.22)).frame(width: 1.1 * u, height: 5 * u)
                             Rectangle().fill(Color.black.opacity(0.22)).frame(width: 1.1 * u, height: 5 * u)
                         }
                     )
-                lit(Rectangle(), leather, lineWidth: 1.3)
+                lit(Rectangle(), leather, lineWidth: 1.3, grain: true)
                     .frame(width: 6 * u, height: 3.5 * u)
             }
         case "weapon.reel":
@@ -1245,9 +1817,24 @@ struct MiniAvatarView: View {
                             .frame(width: 8 * u, height: 20 * u, alignment: .top)
                             .clipped()
                     )
+                    .overlay(
+                        // Cutting-edge bevel cropped to the blade silhouette.
+                        Rectangle()
+                            .fill(Color.white.opacity(0.35))
+                            .frame(width: 0.9 * u, height: 15 * u)
+                            .offset(x: 2.4 * u)
+                            .frame(width: 8 * u, height: 20 * u)
+                            .clipShape(BladeShape())
+                            .allowsHitTesting(false)
+                    )
                 lit(Rectangle(), .questAmber, lineWidth: 1.3, metal: true)
                     .frame(width: 15 * u, height: 4 * u)
-                lit(Rectangle(), charcoal, lineWidth: 1.3)
+                    .overlay(
+                        Circle()
+                            .fill(Color.white.opacity(0.5))
+                            .frame(width: 1 * u, height: 1 * u)
+                    )
+                lit(Rectangle(), charcoal, lineWidth: 1.3, grain: true)
                     .frame(width: 5 * u, height: 8 * u)
             }
         case "weapon.stormblade":
@@ -1258,10 +1845,12 @@ struct MiniAvatarView: View {
                         .fill(
                             LinearGradient(
                                 stops: [
-                                    .init(color: Color.videoSapphire.darker(0.35), location: 0),
+                                    .init(color: Color.videoSapphire.darker(0.42), location: 0),
+                                    .init(color: Color.videoSapphire.darker(0.12), location: 0.28),
                                     .init(color: .videoSapphire, location: 0.5),
-                                    .init(color: .videoSapphire.lighter(0.35), location: 0.7),
-                                    .init(color: Color.videoSapphire.darker(0.3), location: 1)
+                                    .init(color: .videoSapphire.lighter(0.38), location: 0.66),
+                                    .init(color: .videoSapphire, location: 0.82),
+                                    .init(color: Color.videoSapphire.darker(0.34), location: 1)
                                 ],
                                 startPoint: .leading,
                                 endPoint: .trailing
@@ -1279,6 +1868,14 @@ struct MiniAvatarView: View {
                         )
                         .frame(width: 7 * u, height: 19 * u)
                         .offset(y: 2 * u)
+                    Rectangle()
+                        .fill(Color.white.opacity(0.30))
+                        .frame(width: 1 * u, height: 27 * u)
+                        .offset(x: 6.2 * u)
+                    Rectangle()
+                        .fill(Color.black.opacity(0.25))
+                        .frame(width: 1.2 * u, height: 27 * u)
+                        .offset(x: -6.4 * u)
                 }
                 .frame(width: 16 * u, height: 32 * u)
                 .clipShape(BladeShape())
@@ -1297,9 +1894,11 @@ struct MiniAvatarView: View {
                         .fill(
                             LinearGradient(
                                 stops: [
-                                    .init(color: Color(red: 0.1, green: 0.12, blue: 0.11), location: 0),
-                                    .init(color: Color(red: 0.16, green: 0.19, blue: 0.17), location: 0.55),
-                                    .init(color: Color(red: 0.08, green: 0.1, blue: 0.09), location: 1)
+                                    .init(color: Color(red: 0.13, green: 0.15, blue: 0.14), location: 0),
+                                    .init(color: Color(red: 0.18, green: 0.21, blue: 0.19), location: 0.3),
+                                    .init(color: Color(red: 0.14, green: 0.17, blue: 0.15), location: 0.55),
+                                    .init(color: Color(red: 0.20, green: 0.24, blue: 0.22), location: 0.7),
+                                    .init(color: Color(red: 0.07, green: 0.09, blue: 0.08), location: 1)
                                 ],
                                 startPoint: .leading,
                                 endPoint: .trailing
@@ -1320,6 +1919,10 @@ struct MiniAvatarView: View {
                         }
                     }
                     .offset(y: 3.5 * u)
+                    Rectangle()
+                        .fill(steel.opacity(0.4))
+                        .frame(width: 0.9 * u, height: 25 * u)
+                        .offset(x: 5.2 * u)
                 }
                 .frame(width: 14 * u, height: 30 * u)
                 .clipShape(BladeShape())
@@ -1338,10 +1941,12 @@ struct MiniAvatarView: View {
                         .fill(
                             LinearGradient(
                                 stops: [
-                                    .init(color: Color.combatCrimson.darker(0.45), location: 0),
+                                    .init(color: Color.combatCrimson.darker(0.5), location: 0),
+                                    .init(color: Color.combatCrimson.darker(0.15), location: 0.25),
                                     .init(color: .combatCrimson, location: 0.45),
-                                    .init(color: .combatCrimson.lighter(0.3), location: 0.62),
-                                    .init(color: Color.combatCrimson.darker(0.35), location: 1)
+                                    .init(color: .combatCrimson.lighter(0.32), location: 0.6),
+                                    .init(color: .combatCrimson, location: 0.78),
+                                    .init(color: Color.combatCrimson.darker(0.4), location: 1)
                                 ],
                                 startPoint: .leading,
                                 endPoint: .trailing
@@ -1358,6 +1963,14 @@ struct MiniAvatarView: View {
                         )
                         .frame(width: 2.8 * u, height: 22 * u)
                         .offset(x: 2.4 * u, y: 1 * u)
+                    Rectangle()
+                        .fill(Color.white.opacity(0.45))
+                        .frame(width: 1.1 * u, height: 24 * u)
+                        .offset(x: 3.8 * u, y: 1 * u)
+                    Rectangle()
+                        .fill(Color.white.opacity(0.28))
+                        .frame(width: 0.9 * u, height: 26 * u)
+                        .offset(x: 5.4 * u)
                 }
                 .frame(width: 14 * u, height: 30 * u)
                 .clipShape(BladeShape())
@@ -1374,9 +1987,17 @@ struct MiniAvatarView: View {
                     )
                     .frame(width: 9.5 * u, height: 9.5 * u)
                     DiamondShape()
+                        .fill(Color.black.opacity(0.35))
+                        .frame(width: 4.6 * u, height: 4.6 * u)
+                        .offset(y: 0.3 * u)
+                    DiamondShape()
                         .fill(
                             RadialGradient(
-                                colors: [.combatCrimson.lighter(0.5), .combatCrimson.darker(0.3)],
+                                stops: [
+                                    .init(color: .combatCrimson.lighter(0.55), location: 0),
+                                    .init(color: .combatCrimson, location: 0.55),
+                                    .init(color: .combatCrimson.darker(0.4), location: 1)
+                                ],
                                 center: UnitPoint(x: 0.4, y: 0.3),
                                 startRadius: 0,
                                 endRadius: 4 * u
@@ -1393,10 +2014,12 @@ struct MiniAvatarView: View {
                         .fill(
                             LinearGradient(
                                 stops: [
-                                    .init(color: Color(red: 0.38, green: 0.54, blue: 0.52), location: 0),
-                                    .init(color: Color(red: 0.52, green: 0.68, blue: 0.66), location: 0.5),
-                                    .init(color: Color(red: 0.62, green: 0.78, blue: 0.74), location: 0.68),
-                                    .init(color: Color(red: 0.3, green: 0.44, blue: 0.42), location: 1)
+                                    .init(color: Color(red: 0.34, green: 0.50, blue: 0.48), location: 0),
+                                    .init(color: Color(red: 0.46, green: 0.62, blue: 0.60), location: 0.28),
+                                    .init(color: Color(red: 0.56, green: 0.72, blue: 0.70), location: 0.5),
+                                    .init(color: Color(red: 0.66, green: 0.82, blue: 0.78), location: 0.64),
+                                    .init(color: Color(red: 0.48, green: 0.64, blue: 0.62), location: 0.82),
+                                    .init(color: Color(red: 0.28, green: 0.42, blue: 0.40), location: 1)
                                 ],
                                 startPoint: .leading,
                                 endPoint: .trailing
@@ -1413,6 +2036,13 @@ struct MiniAvatarView: View {
                         )
                         .frame(width: 9 * u, height: 9 * u)
                         .offset(y: 8 * u)
+                    Rectangle()
+                        .fill(Color.black.opacity(0.2))
+                        .frame(width: 1.6 * u, height: 22 * u)
+                    Rectangle()
+                        .fill(Color.white.opacity(0.3))
+                        .frame(width: 0.9 * u, height: 27 * u)
+                        .offset(x: 5.6 * u)
                 }
                 .frame(width: 15 * u, height: 32 * u)
                 .clipShape(BladeShape())
@@ -1436,6 +2066,17 @@ struct MiniAvatarView: View {
                 ZStack {
                     orb(Circle(), Color(red: 0.19, green: 0.24, blue: 0.21), radius: 5, lineWidth: 1.6)
                         .frame(width: 9.5 * u, height: 9.5 * u)
+                        .overlay(
+                            Circle()
+                                .fill(
+                                    RadialGradient(
+                                        colors: [Color.combatCrimson.opacity(0.4), Color.combatCrimson.opacity(0.0)],
+                                        center: .center,
+                                        startRadius: 0,
+                                        endRadius: 5 * u
+                                    )
+                                )
+                        )
                     Image(systemName: "heart.fill")
                         .resizable()
                         .foregroundStyle(
@@ -1458,9 +2099,12 @@ struct MiniAvatarView: View {
                         .fill(
                             LinearGradient(
                                 stops: [
-                                    .init(color: steelDeep.darker(0.2), location: 0),
-                                    .init(color: steel.lighter(0.2), location: 0.5),
-                                    .init(color: steelDeep.darker(0.25), location: 1)
+                                    .init(color: steelDeep.darker(0.28), location: 0),
+                                    .init(color: steelDeep, location: 0.26),
+                                    .init(color: steel.lighter(0.16), location: 0.5),
+                                    .init(color: steel.lighter(0.3), location: 0.62),
+                                    .init(color: steelDeep.darker(0.1), location: 0.82),
+                                    .init(color: steelDeep.darker(0.3), location: 1)
                                 ],
                                 startPoint: .leading,
                                 endPoint: .trailing
@@ -1477,6 +2121,10 @@ struct MiniAvatarView: View {
                         )
                         .frame(width: 2.4 * u, height: 21 * u)
                         .offset(x: 2.2 * u)
+                    Rectangle()
+                        .fill(Color.white.opacity(0.3))
+                        .frame(width: 0.9 * u, height: 25 * u)
+                        .offset(x: 5.2 * u)
                 }
                 .frame(width: 14 * u, height: 30 * u)
                 .clipShape(BladeShape())
@@ -1512,6 +2160,10 @@ struct MiniAvatarView: View {
                         .fill(Color.black.opacity(0.18))
                         .frame(width: 3.4 * u, height: 19 * u)
                         .offset(x: 3.4 * u, y: 0.5 * u)
+                    CrystalShape()
+                        .fill(Color.white.opacity(0.10))
+                        .frame(width: 8 * u, height: 21 * u)
+                        .offset(x: 0.6 * u, y: -0.5 * u)
                     DiamondShape()
                         .fill(Color.white.opacity(0.75))
                         .frame(width: 2.6 * u, height: 2.6 * u)
@@ -1519,32 +2171,57 @@ struct MiniAvatarView: View {
                 }
                 .frame(width: 12 * u, height: 22 * u)
                 .clipShape(CrystalShape())
+                .overlay(
+                    CrystalShape()
+                        .stroke(
+                            LinearGradient(
+                                colors: [
+                                    Color(red: 1.0, green: 0.94, blue: 0.80).opacity(0.5),
+                                    Color(red: 0.72, green: 0.86, blue: 1.0).opacity(0.45)
+                                ],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            lineWidth: 0.9 * u
+                        )
+                )
                 .overlay(CrystalShape().stroke(outline, lineWidth: 1.8 * u))
                 lit(Rectangle(), .questAmber, lineWidth: 1.4, metal: true)
                     .frame(width: 9 * u, height: 3.5 * u)
-                lit(Capsule(), wood, lineWidth: 1.3)
+                lit(Capsule(), wood, lineWidth: 1.3, grain: true)
                     .frame(width: 4 * u, height: 10 * u)
             }
         }
     }
 
     private func sprocketHole(angle: Double) -> some View {
-        Circle()
-            .fill(Color.black.opacity(0.4))
-            .frame(width: 2.4 * u, height: 2.4 * u)
-            .offset(y: -4.6 * u)
-            .rotationEffect(.degrees(angle))
+        ZStack {
+            // Machined rim catching light around each punch.
+            Circle()
+                .fill(Color.white.opacity(0.18))
+                .frame(width: 3.0 * u, height: 3.0 * u)
+                .offset(y: 0.2 * u)
+            Circle()
+                .fill(Color.black.opacity(0.45))
+                .frame(width: 2.4 * u, height: 2.4 * u)
+        }
+        .offset(y: -4.6 * u)
+        .rotationEffect(.degrees(angle))
     }
 
     private func claw(x: CGFloat, angle: Double) -> some View {
-        Capsule()
-            .fill(
-                LinearGradient(
-                    colors: [steel.lighter(0.3), steelDeep.darker(0.2)],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
+        let prong = LinearGradient(
+            colors: [steel.lighter(0.3), steelDeep.darker(0.2)],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        let microHighlight = Capsule()
+            .fill(Color.white.opacity(0.35))
+            .frame(width: 0.7 * u, height: 2.2 * u)
+            .offset(x: -0.4 * u, y: -1.2 * u)
+        return Capsule()
+            .fill(prong)
+            .overlay(microHighlight)
             .frame(width: 2 * u, height: 7 * u)
             .rotationEffect(.degrees(angle))
             .offset(x: x * u, y: -1.5 * u)
@@ -1555,6 +2232,16 @@ struct MiniAvatarView: View {
     /// and crimson rays with bright tips.
     private var sparkBurst: some View {
         ZStack {
+            Circle()
+                .fill(
+                    RadialGradient(
+                        colors: [Color.questAmber.opacity(0.28), Color.questAmber.opacity(0.0)],
+                        center: .center,
+                        startRadius: 0,
+                        endRadius: 9 * u
+                    )
+                )
+                .frame(width: 18 * u, height: 18 * u)
             sparkRay(angle: -90, color: .questAmber, length: 8)
             sparkRay(angle: -55, color: .gemEmerald, length: 6.5)
             sparkRay(angle: -125, color: .gemEmerald, length: 6.5)
@@ -1581,10 +2268,11 @@ struct MiniAvatarView: View {
             .offset(y: -(length / 2 + 2.5) * u)
     }
 
-    /// Black leather grip with lit wrap lines, shared by the reference swords.
+    /// Black leather grip with lit wrap lines, grain ticks, and edge
+    /// darkening, shared by the reference swords.
     private func wrappedGrip(width: CGFloat, height: CGFloat) -> some View {
         Rectangle()
-            .fill(outline)
+            .fill(Color(white: 0.14))
             .frame(width: width * u, height: height * u)
             .overlay(
                 VStack(spacing: 2.2 * u) {
@@ -1600,6 +2288,30 @@ struct MiniAvatarView: View {
                             .frame(width: (width - 1) * u, height: 1.1 * u)
                     }
                 }
+            )
+            .overlay(
+                // Leather grain ticks between the wraps.
+                VStack(spacing: 2.2 * u) {
+                    ForEach(0..<3, id: \.self) { _ in
+                        HStack(spacing: 1.6 * u) {
+                            Rectangle().fill(Color.white.opacity(0.10)).frame(width: 1 * u, height: 0.8 * u)
+                            Rectangle().fill(Color.white.opacity(0.10)).frame(width: 1 * u, height: 0.8 * u)
+                            Rectangle().fill(Color.white.opacity(0.10)).frame(width: 1 * u, height: 0.8 * u)
+                        }
+                    }
+                }
+                .offset(x: 0.8 * u)
+            )
+            .overlay(
+                // Edge darkening keeps the grip reading as a cylinder.
+                Rectangle()
+                    .fill(
+                        LinearGradient(
+                            colors: [.black.opacity(0.45), .black.opacity(0.0), .black.opacity(0.45)],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
             )
             .overlay(Rectangle().stroke(outline, lineWidth: 1.2 * u))
     }
@@ -1657,7 +2369,12 @@ struct MiniAvatarView: View {
             HeaterShieldShape()
                 .fill(
                     LinearGradient(
-                        colors: [Color(red: 0.24, green: 0.43, blue: 0.62), Color(red: 0.14, green: 0.28, blue: 0.44)],
+                        stops: [
+                            .init(color: Color(red: 0.30, green: 0.50, blue: 0.70), location: 0),
+                            .init(color: Color(red: 0.24, green: 0.43, blue: 0.62), location: 0.38),
+                            .init(color: Color(red: 0.19, green: 0.36, blue: 0.54), location: 0.66),
+                            .init(color: Color(red: 0.12, green: 0.25, blue: 0.41), location: 1)
+                        ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
@@ -1670,7 +2387,7 @@ struct MiniAvatarView: View {
                         .fill(
                             LinearGradient(
                                 stops: [
-                                    .init(color: .white.opacity(0.16), location: 0),
+                                    .init(color: .white.opacity(0.18), location: 0),
                                     .init(color: .white.opacity(0.0), location: 0.5)
                                 ],
                                 startPoint: .topLeading,
@@ -1680,8 +2397,43 @@ struct MiniAvatarView: View {
                         .frame(width: 17 * u, height: 22 * u)
                         .offset(y: 1.5 * u)
                 )
+                .overlay(
+                    // Narrow secondary lobe hugging the lit flank.
+                    Capsule()
+                        .fill(
+                            LinearGradient(
+                                colors: [.white.opacity(0.16), .white.opacity(0.0)],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .frame(width: 4.5 * u, height: 15 * u)
+                        .rotationEffect(.degrees(-16))
+                        .offset(x: -3.5 * u, y: 0.5 * u)
+                        .frame(width: 17 * u, height: 22 * u)
+                        .clipShape(HeaterShieldShape())
+                        .offset(y: 1.5 * u)
+                        .allowsHitTesting(false)
+                )
+                .overlay(
+                    // Inner rim occlusion along the lower shell.
+                    HeaterShieldShape()
+                        .stroke(
+                            LinearGradient(
+                                stops: [
+                                    .init(color: .black.opacity(0.0), location: 0.35),
+                                    .init(color: .black.opacity(0.30), location: 1)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            ),
+                            lineWidth: 1.6 * u
+                        )
+                        .frame(width: 20 * u, height: 25 * u)
+                )
                 .overlay(HeaterShieldShape().stroke(outline.opacity(0.7), lineWidth: 1 * u))
                 .offset(y: 0)
+            castShadow(width: 14, height: 18, at: CGPoint(x: 0.8, y: 1.4), opacity: 0.18)
             embossedCross(.questAmber)
             shieldRivet(CGPoint(x: -7, y: -5))
             shieldRivet(CGPoint(x: 7, y: -5))
@@ -1696,7 +2448,12 @@ struct MiniAvatarView: View {
             HeaterShieldShape()
                 .fill(
                     LinearGradient(
-                        colors: [Color(white: 0.98), Color(white: 0.82)],
+                        stops: [
+                            .init(color: Color(white: 1.0), location: 0),
+                            .init(color: Color(white: 0.95), location: 0.35),
+                            .init(color: Color(white: 0.87), location: 0.68),
+                            .init(color: Color(white: 0.77), location: 1)
+                        ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
@@ -1718,7 +2475,23 @@ struct MiniAvatarView: View {
                         .frame(width: 17.5 * u, height: 22.5 * u)
                         .offset(y: 1.5 * u)
                 )
+                .overlay(
+                    HeaterShieldShape()
+                        .stroke(
+                            LinearGradient(
+                                stops: [
+                                    .init(color: .black.opacity(0.0), location: 0.35),
+                                    .init(color: .black.opacity(0.25), location: 1)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            ),
+                            lineWidth: 1.6 * u
+                        )
+                        .frame(width: 20.5 * u, height: 25.5 * u)
+                )
                 .overlay(HeaterShieldShape().stroke(outline.opacity(0.7), lineWidth: 1 * u))
+            castShadow(width: 14, height: 18, at: CGPoint(x: 0.8, y: 1.4), opacity: 0.15)
             embossedCross(outline, inner: .combatCrimson)
             shieldRivet(CGPoint(x: -7, y: -5))
             shieldRivet(CGPoint(x: 7, y: -5))
@@ -1740,16 +2513,31 @@ struct MiniAvatarView: View {
             RoundedRectangle(cornerRadius: 1.5 * u, style: .continuous)
                 .fill(
                     LinearGradient(
-                        colors: [color.lighter(0.2), color],
+                        stops: [
+                            .init(color: color.lighter(0.30), location: 0),
+                            .init(color: color, location: 0.5),
+                            .init(color: color.darker(0.20), location: 1)
+                        ],
                         startPoint: .top,
                         endPoint: .bottom
                     )
                 )
                 .frame(width: 4.5 * u, height: 17 * u)
+                .overlay(
+                    // Lit bevel along the vertical arm's leading edge.
+                    Rectangle()
+                        .fill(Color.white.opacity(0.2))
+                        .frame(width: 0.8 * u)
+                        .frame(maxHeight: .infinity, alignment: .leading)
+                )
             RoundedRectangle(cornerRadius: 1.5 * u, style: .continuous)
                 .fill(
                     LinearGradient(
-                        colors: [color.lighter(0.2), color],
+                        stops: [
+                            .init(color: color.lighter(0.30), location: 0),
+                            .init(color: color, location: 0.5),
+                            .init(color: color.darker(0.20), location: 1)
+                        ],
                         startPoint: .leading,
                         endPoint: .trailing
                     )
@@ -1770,10 +2558,19 @@ struct MiniAvatarView: View {
 
     private func shieldRivet(_ point: CGPoint) -> some View {
         ZStack {
+            // Seat occlusion around the rivet head.
+            Circle()
+                .fill(Color.black.opacity(0.28))
+                .frame(width: 3.6 * u, height: 3.6 * u)
+                .offset(y: 0.4 * u)
             Circle()
                 .fill(
                     RadialGradient(
-                        colors: [Color(white: 0.95), Color(white: 0.55)],
+                        stops: [
+                            .init(color: Color(white: 0.98), location: 0),
+                            .init(color: Color(white: 0.8), location: 0.55),
+                            .init(color: Color(white: 0.5), location: 1)
+                        ],
                         center: UnitPoint(x: 0.35, y: 0.3),
                         startRadius: 0,
                         endRadius: 2 * u
@@ -1781,9 +2578,13 @@ struct MiniAvatarView: View {
                 )
                 .frame(width: 2.6 * u, height: 2.6 * u)
             Circle()
+                .fill(Color.white.opacity(0.85))
+                .frame(width: 0.7 * u, height: 0.7 * u)
+                .offset(x: -0.4 * u, y: -0.5 * u)
+            Circle()
                 .fill(outline.opacity(0.5))
                 .frame(width: 0.9 * u, height: 0.9 * u)
-                .offset(y: 0.5 * u)
+                .offset(y: 0.6 * u)
         }
         .offset(x: point.x * u, y: point.y * u)
     }
@@ -1911,11 +2712,29 @@ struct MiniAvatarView: View {
                     )
                     .frame(width: 8 * u, height: 7 * u)
                     .offset(y: 4 * u)
+                // Chest feather chevrons.
+                VStack(spacing: 1.4 * u) {
+                    ChevronShape()
+                        .fill(Color.black.opacity(0.14))
+                        .frame(width: 5.5 * u, height: 2 * u)
+                        .rotationEffect(.degrees(180))
+                    ChevronShape()
+                        .fill(Color.black.opacity(0.12))
+                        .frame(width: 4.2 * u, height: 1.6 * u)
+                        .rotationEffect(.degrees(180))
+                }
+                .offset(y: 4 * u)
                 owlEye(x: -3.6)
                 owlEye(x: 3.6)
                 Image(systemName: "arrowtriangle.down.fill")
                     .font(.system(size: 4 * u, weight: .bold))
-                    .foregroundStyle(Color.questAmber)
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [Color.questAmber.lighter(0.3), Color.questAmber.darker(0.2)],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
                     .offset(y: 2.5 * u)
             }
         case "pet.reel":
@@ -1926,7 +2745,14 @@ struct MiniAvatarView: View {
                 Circle()
                     .stroke(Color.white.opacity(0.45), lineWidth: 1 * u)
                     .frame(width: 10 * u, height: 10 * u)
+                Circle()
+                    .stroke(Color.white.opacity(0.18), lineWidth: 0.7 * u)
+                    .frame(width: 7.2 * u, height: 7.2 * u)
                 Circle().fill(outline).frame(width: 3.4 * u, height: 3.4 * u)
+                Circle()
+                    .fill(Color.white.opacity(0.6))
+                    .frame(width: 1 * u, height: 1 * u)
+                    .offset(x: -0.6 * u, y: -0.6 * u)
                 sprocketHole(angle: 0)
                 sprocketHole(angle: 120)
                 sprocketHole(angle: 240)
@@ -1939,11 +2765,17 @@ struct MiniAvatarView: View {
                 orb(Circle(), petColor, radius: 8.5, lineWidth: 2.0)
                     .frame(width: 15 * u, height: 15 * u)
                 Capsule()
-                    .fill(Color.white.opacity(0.75))
+                    .fill(Color.white.opacity(0.8))
                     .frame(width: 10 * u, height: 2.6 * u)
                     .offset(y: -4.5 * u)
+                Capsule()
+                    .fill(Color.white.opacity(0.6))
+                    .frame(width: 5.5 * u, height: 1.6 * u)
+                    .offset(x: -2 * u, y: -6.3 * u)
                 Circle().fill(outline).frame(width: 2.6 * u, height: 2.6 * u).offset(x: -3 * u, y: -0.5 * u)
                 Circle().fill(outline).frame(width: 2.6 * u, height: 2.6 * u).offset(x: 3 * u, y: -0.5 * u)
+                Circle().fill(Color.white.opacity(0.7)).frame(width: 0.8 * u, height: 0.8 * u).offset(x: -3.6 * u, y: -1.1 * u)
+                Circle().fill(Color.white.opacity(0.7)).frame(width: 0.8 * u, height: 0.8 * u).offset(x: 2.4 * u, y: -1.1 * u)
             }
         default:
             // Pixel Familiar: shaded dome, ears, curling tail.
@@ -1956,8 +2788,17 @@ struct MiniAvatarView: View {
                     .frame(width: 9 * u, height: 2 * u)
                     .rotationEffect(.degrees(24))
                     .offset(x: 8 * u, y: 6 * u)
+                Capsule()
+                    .fill(Color.white.opacity(0.18))
+                    .frame(width: 5 * u, height: 0.8 * u)
+                    .rotationEffect(.degrees(24))
+                    .offset(x: 8.4 * u, y: 5.4 * u)
                 orb(Circle(), petColor, radius: 8.5, lineWidth: 2.0)
                     .frame(width: 15 * u, height: 15 * u)
+                Ellipse()
+                    .fill(Color.white.opacity(0.16))
+                    .frame(width: 7 * u, height: 4 * u)
+                    .offset(y: 4.2 * u)
                 Circle().fill(outline).frame(width: 2.8 * u, height: 2.8 * u).offset(x: -3.2 * u, y: -1 * u)
                 Circle().fill(outline).frame(width: 2.8 * u, height: 2.8 * u).offset(x: 3.2 * u, y: -1 * u)
                 Circle().fill(Color.white).frame(width: 1 * u, height: 1 * u).offset(x: -2.6 * u, y: -1.8 * u)
@@ -1996,7 +2837,11 @@ struct MiniAvatarView: View {
             .resizable()
             .foregroundStyle(
                 LinearGradient(
-                    colors: [petColor.lighter(0.15), petColor.darker(0.3)],
+                    stops: [
+                        .init(color: petColor.lighter(0.2), location: 0),
+                        .init(color: petColor, location: 0.5),
+                        .init(color: petColor.darker(0.35), location: 1)
+                    ],
                     startPoint: .top,
                     endPoint: .bottom
                 )
