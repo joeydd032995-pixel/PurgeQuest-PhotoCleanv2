@@ -73,27 +73,34 @@ extension MiniAvatarView {
 
     // MARK: - Default weapons
 
-    /// Default knight blade: chunky steel with a fuller and gold guard.
+    /// Default knight blade: wide steel with a lit edge, dark fuller,
+    /// chunky gold guard, wrapped grip, and a heavy pommel.
     var simpleSword: some View {
         VStack(spacing: 0) {
-            cel(BladeShape(), steel, lineWidth: 2.2, shift: 1.6)
-                .frame(width: 13 * u, height: 30 * u)
-                .overlay(
-                    ZStack {
-                        Rectangle().fill(steelDeep.darker(0.20))
-                            .frame(width: 1.8 * u, height: 19 * u)
-                        Rectangle().fill(Color.white.opacity(0.55))
-                            .frame(width: 1 * u, height: 19 * u)
-                            .offset(x: -2.6 * u)
-                    }
-                    .offset(y: -3 * u)
-                )
-            cel(Rectangle(), .questAmber, lineWidth: 2.0, shift: 1.2)
-                .frame(width: 20 * u, height: 6 * u)
-            celFlat(Capsule(), leatherDark, lineWidth: 1.8)
-                .frame(width: 6 * u, height: 9 * u)
-            cel(Circle(), .questAmber, lineWidth: 1.8, shift: 1.0)
-                .frame(width: 7 * u, height: 7 * u)
+            ZStack {
+                cel(BladeShape(), steel, lineWidth: 2.4, shift: 1.8)
+                    .frame(width: 17 * u, height: 34 * u)
+                Rectangle().fill(Color.white.opacity(0.65))
+                    .frame(width: 2.4 * u, height: 21 * u)
+                    .offset(x: -3.8 * u, y: -4 * u)
+                Rectangle().fill(steelDeep.darker(0.25))
+                    .frame(width: 2 * u, height: 19 * u)
+                    .offset(x: 2.8 * u, y: -2.5 * u)
+            }
+            cel(Capsule(), .questAmber, lineWidth: 2.2, shift: 1.4)
+                .frame(width: 26 * u, height: 7 * u)
+            ZStack {
+                celFlat(Capsule(), leatherDark, lineWidth: 1.8)
+                    .frame(width: 7 * u, height: 11 * u)
+                ForEach(0..<3, id: \.self) { i in
+                    Capsule()
+                        .fill(leatherDark.lighter(0.28))
+                        .frame(width: 7 * u, height: 1.4 * u)
+                        .offset(y: (CGFloat(i) - 1) * 3.2 * u)
+                }
+            }
+            cel(Circle(), .questAmber, lineWidth: 2.0, shift: 1.1)
+                .frame(width: 9 * u, height: 9 * u)
         }
     }
 

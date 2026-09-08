@@ -32,13 +32,13 @@ extension MiniAvatarView {
     /// Chunky eye: dark oval with one big catchlight.
     var heroEye: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 3 * u, style: .continuous)
+            RoundedRectangle(cornerRadius: 3.5 * u, style: .continuous)
                 .fill(outline)
-                .frame(width: 6.5 * u, height: 9 * u)
+                .frame(width: 7.5 * u, height: 10.5 * u)
             Circle()
                 .fill(Color.white)
-                .frame(width: 2.8 * u, height: 2.8 * u)
-                .offset(x: -1 * u, y: -2.2 * u)
+                .frame(width: 3.2 * u, height: 3.2 * u)
+                .offset(x: -1.1 * u, y: -2.6 * u)
         }
     }
 
@@ -49,42 +49,48 @@ extension MiniAvatarView {
             .offset(y: 27 * u)
     }
 
-    /// Twin gold crest lobes with their steel seat collar.
+    /// Twin gold crest lobes rooted in the dome, splaying outward.
     var knightCrest: some View {
         ZStack {
-            celFlat(Capsule(), steelDeep, lineWidth: 1.6)
-                .frame(width: 15 * u, height: 5 * u)
-            cel(CrestLobeShape(), .questAmber, lineWidth: 2.0, shift: 1.1)
-                .frame(width: 10 * u, height: 15 * u)
-                .rotationEffect(.degrees(-18))
-                .offset(x: -4.5 * u, y: -6 * u)
-            cel(CrestLobeShape(), .questAmber, lineWidth: 2.0, shift: 1.1)
-                .frame(width: 10 * u, height: 15 * u)
-                .rotationEffect(.degrees(18))
-                .offset(x: 4.5 * u, y: -6 * u)
+            cel(CrestLobeShape(), .questAmber, lineWidth: 2.0, shift: 1.2)
+                .frame(width: 12 * u, height: 26 * u)
+                .rotationEffect(.degrees(-16))
+                .offset(x: -7.5 * u, y: -26 * u)
+            cel(CrestLobeShape(), .questAmber, lineWidth: 2.0, shift: 1.2)
+                .frame(width: 12 * u, height: 26 * u)
+                .rotationEffect(.degrees(16))
+                .offset(x: 7.5 * u, y: -26 * u)
         }
-        .offset(y: -25 * u)
     }
 
     // MARK: - Knight heads
 
-    /// Default knight: big round steel dome, deep visor, twin gold crest.
+    /// Default knight: full steel enclosure — dome, brow band, visor slot,
+    /// chin plate — with the crest rooted in the dome itself.
     var knightHead: some View {
         ZStack {
             knightCrest
             cel(Circle(), steel, lineWidth: 2.6, shift: 2.0)
-                .frame(width: 58 * u, height: 53 * u)
+                .frame(width: 62 * u, height: 57 * u)
+            // Brow band shading the visor opening.
+            celFlat(Capsule(), steelDeep, lineWidth: 1.4)
+                .frame(width: 40 * u, height: 5 * u)
+                .offset(y: -9 * u)
             ZStack {
                 celFlat(FaceWindowShape(), helmetDark, lineWidth: 2.2)
-                    .frame(width: 46 * u, height: 32 * u)
+                    .frame(width: 42 * u, height: 26 * u)
                 face
             }
-            .offset(y: -4 * u)
-            // Chin rivets.
+            .offset(y: 3 * u)
+            // Chin plate closing the helmet below the visor.
+            cel(Capsule(), steel, lineWidth: 2.2, shift: 1.2)
+                .frame(width: 46 * u, height: 13 * u)
+                .offset(y: 20 * u)
+            // Cheek rivets flanking the visor.
             ForEach([CGFloat(-1), CGFloat(1)], id: \.self) { side in
                 celFlat(Circle(), .questAmber, lineWidth: 1.2)
-                    .frame(width: 3 * u, height: 3 * u)
-                    .offset(x: side * 15 * u, y: 15 * u)
+                    .frame(width: 3.4 * u, height: 3.4 * u)
+                    .offset(x: side * 18 * u, y: 7 * u)
             }
             neckRing
         }
@@ -95,21 +101,21 @@ extension MiniAvatarView {
         ZStack {
             ZStack(alignment: .top) {
                 FaceWindowShape().fill(skinTone)
-                Rectangle().fill(skinShade.opacity(0.5)).frame(height: 5 * u)
+                Rectangle().fill(skinShade.opacity(0.5)).frame(height: 4.5 * u)
             }
-            .frame(width: 41 * u, height: 27 * u)
+            .frame(width: 38 * u, height: 22 * u)
             .clipShape(FaceWindowShape())
             .overlay(FaceWindowShape().stroke(outline, lineWidth: 1.4 * u))
             HStack(spacing: 7 * u) {
                 heroEye
                 heroEye
             }
-            .offset(y: -1 * u)
-            HStack(spacing: 15 * u) {
+            .offset(y: -0.5 * u)
+            HStack(spacing: 14 * u) {
                 Circle().fill(skinShade.opacity(0.45)).frame(width: 4.5 * u, height: 3 * u)
                 Circle().fill(skinShade.opacity(0.45)).frame(width: 4.5 * u, height: 3 * u)
             }
-            .offset(y: 6.5 * u)
+            .offset(y: 6 * u)
         }
     }
 
