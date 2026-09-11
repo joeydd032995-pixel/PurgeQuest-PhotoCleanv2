@@ -22,6 +22,24 @@ struct MiniAvatarView: View {
     var size: CGFloat = 210
     /// Set to false for static previews (armory tiles) that skip gear transitions.
     var isAnimated: Bool = true
+    /// The hero's resolved identity (skin, face, hair, expression). A draft
+    /// appearance can be passed for live editor previews; otherwise it decodes
+    /// from the hero record once per view.
+    let identity: HeroAppearance
+
+    init(
+        hero: Hero,
+        equipped: [CosmeticItem],
+        size: CGFloat = 210,
+        isAnimated: Bool = true,
+        appearance: HeroAppearance? = nil
+    ) {
+        self.hero = hero
+        self.equipped = equipped
+        self.size = size
+        self.isAnimated = isAnimated
+        self.identity = appearance ?? hero.appearance
+    }
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -47,8 +65,10 @@ struct MiniAvatarView: View {
     var bootColor: Color { Color(red: 0.17, green: 0.23, blue: 0.20) }
     var mittColor: Color { Color(red: 0.33, green: 0.40, blue: 0.36) }
     var wood: Color { Color(red: 0.58, green: 0.40, blue: 0.22) }
-    var skinTone: Color { Color(red: 0.97, green: 0.81, blue: 0.56) }
-    var skinShade: Color { Color(red: 0.84, green: 0.64, blue: 0.40) }
+    /// Skin tone driven by the hero's saved identity.
+    var skinTone: Color { identity.skinTone.color }
+    var skinShade: Color { skinTone.darker(0.16) }
+    var hairColor: Color { identity.hairColor.color }
     var hatColor: Color { Color(red: 0.20, green: 0.42, blue: 0.38) }
 
     /// Tunic color driven by the equipped skin; falls back to the archetype standard.

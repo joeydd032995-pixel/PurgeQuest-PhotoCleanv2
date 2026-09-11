@@ -87,6 +87,9 @@ final class Hero {
     var equippedSkinID: String?
     var archetypeRaw: String = CharacterArchetype.knight.rawValue
     var createdAt: Date
+    /// JSON-encoded HeroAppearance. nil or corrupt data decodes to the
+    /// designed default for the archetype.
+    var appearanceData: Data?
 
     var heroClass: HeroClass {
         get { HeroClass(rawValue: heroClassRaw) ?? .purgeKnight }
@@ -96,6 +99,13 @@ final class Hero {
     var archetype: CharacterArchetype {
         get { CharacterArchetype(rawValue: archetypeRaw) ?? .knight }
         set { archetypeRaw = newValue.rawValue }
+    }
+
+    /// The hero's saved identity. Always decodes to a valid look, even for
+    /// records written before this field existed.
+    var appearance: HeroAppearance {
+        get { HeroAppearance.decode(appearanceData, for: archetype) }
+        set { appearanceData = newValue.encoded() }
     }
 
     init(
@@ -120,6 +130,7 @@ final class Hero {
         self.highestCombo = 0
         self.equippedSkinID = nil
         self.createdAt = Date()
+        self.appearanceData = nil
     }
 
     /// XP needed to reach a given level (cumulative).

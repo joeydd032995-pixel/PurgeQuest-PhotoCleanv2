@@ -13,6 +13,8 @@ struct HeroTabView: View {
 
     private var hero: Hero? { heroes.first }
 
+    @State private var showForge: Bool = false
+
     /// Items currently equipped, one per wearable slot.
     private var equippedItems: [CosmeticItem] {
         cosmetics.filter { $0.isEquipped }
@@ -53,6 +55,22 @@ struct HeroTabView: View {
                     .foregroundStyle(.textSecondary)
             }
 
+            Button {
+                HapticsService.shared.light()
+                showForge = true
+            } label: {
+                Label("Forge Hero", systemImage: "hammer.fill")
+                    .font(.callout.weight(.bold))
+                    .frame(maxWidth: .infinity, minHeight: 44)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.questAmber.opacity(0.15))
+                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmber.opacity(0.6), lineWidth: 1))
+                    )
+                    .foregroundStyle(.questAmber)
+            }
+            .accessibilityLabel("Open the hero forge to customize your hero's look")
+
             XPBarView(progress: hero.levelProgress, level: hero.level)
                 .padding(.horizontal, 8)
 
@@ -78,6 +96,9 @@ struct HeroTabView: View {
                 .overlay(RoundedRectangle(cornerRadius: 12).stroke(hero.archetype == .knight ? Color.questAmber.opacity(0.5) : Color.xpViolet.opacity(0.5), lineWidth: 1))
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke((hero.archetype == .knight ? Color.questAmber : Color.xpViolet).opacity(0.25), lineWidth: 1).padding(2))
         )
+        .fullScreenCover(isPresented: $showForge) {
+            HeroForgeView(hero: hero)
+        }
     }
 
     // MARK: - Equipped gear

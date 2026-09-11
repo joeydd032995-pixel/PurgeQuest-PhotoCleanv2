@@ -224,3 +224,93 @@ struct WispShape: Shape {
         }
     }
 }
+
+/// Hair cap: dome top with a scalloped fringe across the brow.
+struct HairCapShape: Shape {
+    var fringeDepth: CGFloat = 0.32
+
+    func path(in rect: CGRect) -> Path {
+        var p = Path()
+        p.move(to: CGPoint(x: rect.minX, y: rect.maxY))
+        p.addQuadCurve(
+            to: CGPoint(x: rect.midX, y: rect.minY),
+            control: CGPoint(x: rect.minX, y: rect.minY)
+        )
+        p.addQuadCurve(
+            to: CGPoint(x: rect.maxX, y: rect.maxY),
+            control: CGPoint(x: rect.maxX, y: rect.minY)
+        )
+        let teeth = 4
+        let step = rect.width / CGFloat(teeth)
+        for i in 0..<teeth {
+            let x1 = rect.maxX - step * CGFloat(i)
+            let x2 = rect.maxX - step * CGFloat(i + 1)
+            p.addQuadCurve(
+                to: CGPoint(x: x2, y: rect.maxY),
+                control: CGPoint(x: (x1 + x2) / 2, y: rect.maxY - rect.height * fringeDepth)
+            )
+        }
+        p.closeSubpath()
+        return p
+    }
+}
+
+/// Hair swept to one side with a longer fall past the brow.
+struct HairSweptShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var p = Path()
+        p.move(to: CGPoint(x: rect.minX, y: rect.maxY * 0.85))
+        p.addQuadCurve(
+            to: CGPoint(x: rect.midX, y: rect.minY),
+            control: CGPoint(x: rect.minX, y: rect.minY)
+        )
+        p.addQuadCurve(
+            to: CGPoint(x: rect.maxX, y: rect.maxY * 0.55),
+            control: CGPoint(x: rect.maxX, y: rect.minY)
+        )
+        p.addQuadCurve(
+            to: CGPoint(x: rect.maxX - rect.width * 0.18, y: rect.maxY),
+            control: CGPoint(x: rect.maxX - rect.width * 0.02, y: rect.maxY * 0.75)
+        )
+        p.addQuadCurve(
+            to: CGPoint(x: rect.midX, y: rect.maxY * 0.55),
+            control: CGPoint(x: rect.maxX - rect.width * 0.38, y: rect.maxY * 0.72)
+        )
+        p.addQuadCurve(
+            to: CGPoint(x: rect.minX + rect.width * 0.10, y: rect.maxY * 0.75),
+            control: CGPoint(x: rect.midX - rect.width * 0.12, y: rect.maxY * 0.45)
+        )
+        p.closeSubpath()
+        return p
+    }
+}
+
+/// Mouth arc. Default curves into a smile; flipped, a frown.
+struct SmileShape: Shape {
+    var flip: Bool = false
+
+    func path(in rect: CGRect) -> Path {
+        let dir: CGFloat = flip ? -1 : 1
+        return Path { p in
+            p.move(to: CGPoint(x: rect.minX, y: rect.midY - dir * rect.height * 0.12))
+            p.addQuadCurve(
+                to: CGPoint(x: rect.maxX, y: rect.midY - dir * rect.height * 0.12),
+                control: CGPoint(x: rect.midX, y: rect.midY + dir * rect.height)
+            )
+        }
+    }
+}
+
+/// Vertical heraldic banner with a notched tail.
+struct BannerShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        Path { p in
+            p.move(to: CGPoint(x: rect.minX, y: rect.minY))
+            p.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
+            p.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - rect.height * 0.14))
+            p.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
+            p.addLine(to: CGPoint(x: rect.minX, y: rect.maxY - rect.height * 0.14))
+            p.closeSubpath()
+        }
+    }
+}

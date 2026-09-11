@@ -2,9 +2,11 @@
 //  MiniAvatar+Heads.swift
 //  PurgeQuest
 //
-//  Head models for the chunky hero figure: the knight dome, cosmetic helms,
-//  wizard hats, and the shadow hood. All faces share the same eye style so
-//  the cast reads as one family.
+//  Head models for the chunky hero figure: the bare identity head (default),
+//  cosmetic helms, wizard hats, and the shadow hood. Every head draws the
+//  hero's saved identity through MiniAvatar+Identity.swift — helmets and
+//  hats show the face through their openings with hair peeking out, so gear
+//  never erases the character underneath.
 //
 
 import SwiftUI
@@ -22,25 +24,11 @@ extension MiniAvatarView {
         case "head.dragoncrest": dragonHelmet
         case "head.starhat": starWizardHead
         case "head.hood": hoodedHead
-        default:
-            if isKnight { knightHead } else { wizardHead }
+        default: identityHead
         }
     }
 
     // MARK: - Shared pieces
-
-    /// Chunky eye: dark oval with one big catchlight.
-    var heroEye: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 3.5 * u, style: .continuous)
-                .fill(outline)
-                .frame(width: 7.5 * u, height: 10.5 * u)
-            Circle()
-                .fill(Color.white)
-                .frame(width: 3.2 * u, height: 3.2 * u)
-                .offset(x: -1.1 * u, y: -2.6 * u)
-        }
-    }
 
     /// Neck ring seating the head onto the torso.
     var neckRing: some View {
@@ -50,7 +38,7 @@ extension MiniAvatarView {
     }
 
     /// Twin gold crest lobes rooted in the dome, splaying outward.
-    var knightCrest: some View {
+    var helmCrest: some View {
         ZStack {
             cel(CrestLobeShape(), .questAmber, lineWidth: 2.0, shift: 1.2)
                 .frame(width: 12 * u, height: 26 * u)
@@ -63,30 +51,41 @@ extension MiniAvatarView {
         }
     }
 
-    // MARK: - Knight heads
-
-    /// Default knight: full steel enclosure — dome, brow band, visor slot,
-    /// chin plate — with the crest rooted in the dome itself.
-    var knightHead: some View {
+    /// Face opening shared by both helms: skin through the window, brim
+    /// shadow, identity face, and bangs at the top edge.
+    var helmFaceWindow: some View {
         ZStack {
-            knightCrest
+            FaceWindowShape().fill(skinTone)
+            ZStack(alignment: .top) {
+                Color.clear
+                Rectangle().fill(Color.black.opacity(0.15))
+                    .frame(height: 6 * u)
+            }
+            identityFace(browY: -2, eyeY: 4, mouthY: 11, blushY: 7)
+            helmBangs
+        }
+        .frame(width: 42 * u, height: 32 * u)
+        .clipShape(FaceWindowShape())
+        .overlay(FaceWindowShape().stroke(outline, lineWidth: 2 * u))
+    }
+
+    // MARK: - Cosmetic helms
+
+    /// Iron Helm: full steel dome with the twin gold crest and the hero's
+    /// face showing through the visor window.
+    var ironHelmet: some View {
+        ZStack {
+            helmCrest
             cel(Circle(), steel, lineWidth: 2.6, shift: 2.0)
                 .frame(width: 62 * u, height: 57 * u)
-            // Brow band shading the visor opening.
             celFlat(Capsule(), steelDeep, lineWidth: 1.4)
                 .frame(width: 40 * u, height: 5 * u)
                 .offset(y: -9 * u)
-            ZStack {
-                celFlat(FaceWindowShape(), helmetDark, lineWidth: 2.2)
-                    .frame(width: 42 * u, height: 26 * u)
-                face
-            }
-            .offset(y: 3 * u)
-            // Chin plate closing the helmet below the visor.
+            helmFaceWindow
+                .offset(y: 2 * u)
             cel(Capsule(), steel, lineWidth: 2.2, shift: 1.2)
                 .frame(width: 46 * u, height: 13 * u)
                 .offset(y: 20 * u)
-            // Cheek rivets flanking the visor.
             ForEach([CGFloat(-1), CGFloat(1)], id: \.self) { side in
                 celFlat(Circle(), .questAmber, lineWidth: 1.2)
                     .frame(width: 3.4 * u, height: 3.4 * u)
@@ -96,74 +95,8 @@ extension MiniAvatarView {
         }
     }
 
-    /// Pale eye set into a dark visor slit, for the faceless helms.
-    func visorEye(_ tint: Color) -> some View {
-        ZStack {
-            Ellipse().fill(tint)
-                .frame(width: 7.5 * u, height: 8.5 * u)
-            Circle().fill(outline)
-                .frame(width: 3 * u, height: 3 * u)
-                .offset(x: 0.5 * u, y: 0.8 * u)
-        }
-    }
-
-    /// Skin plate inside the visor: hard brim shadow, eyes, blush.
-    var face: some View {
-        ZStack {
-            ZStack(alignment: .top) {
-                FaceWindowShape().fill(skinTone)
-                Rectangle().fill(skinShade.opacity(0.5)).frame(height: 4.5 * u)
-            }
-            .frame(width: 38 * u, height: 22 * u)
-            .clipShape(FaceWindowShape())
-            .overlay(FaceWindowShape().stroke(outline, lineWidth: 1.4 * u))
-            HStack(spacing: 7 * u) {
-                heroEye
-                heroEye
-            }
-            .offset(y: -0.5 * u)
-            HStack(spacing: 14 * u) {
-                Circle().fill(skinShade.opacity(0.45)).frame(width: 4.5 * u, height: 3 * u)
-                Circle().fill(skinShade.opacity(0.45)).frame(width: 4.5 * u, height: 3 * u)
-            }
-            .offset(y: 6 * u)
-        }
-    }
-
-    /// Iron Helm: full steel dome, watchful visor slit, riveted gold band.
-    var ironHelmet: some View {
-        ZStack {
-            cel(Circle(), steel, lineWidth: 2.6, shift: 2.0)
-                .frame(width: 62 * u, height: 57 * u)
-            // Brow ridge shading the visor.
-            celFlat(Capsule(), steelDeep, lineWidth: 1.4)
-                .frame(width: 42 * u, height: 4.5 * u)
-                .offset(y: -10 * u)
-            ZStack {
-                Capsule()
-                    .fill(helmetDark)
-                    .frame(width: 40 * u, height: 15 * u)
-                    .overlay(Capsule().stroke(outline, lineWidth: 2 * u))
-                HStack(spacing: 10 * u) {
-                    visorEye(steelLight)
-                    visorEye(steelLight)
-                }
-            }
-            .offset(y: 1 * u)
-            celFlat(Capsule(), .questAmber, lineWidth: 1.8)
-                .frame(width: 44 * u, height: 4.5 * u)
-                .offset(y: 15 * u)
-            ForEach([CGFloat(-1), CGFloat(0), CGFloat(1)], id: \.self) { x in
-                Circle()
-                    .fill(outline.opacity(0.55))
-                    .frame(width: 1.8 * u, height: 1.8 * u)
-                    .offset(x: x * 13 * u, y: 15 * u)
-            }
-            neckRing
-        }
-    }
-
-    /// Dragoncrest Helm: gold dome, crimson fin crest, watchful visor slit.
+    /// Dragoncrest Helm: gold dome, crimson fin crest, and the hero's face
+    /// through the visor window.
     var dragonHelmet: some View {
         ZStack {
             cel(FinShape(), .combatCrimson, lineWidth: 2.2, shift: 1.4)
@@ -171,41 +104,24 @@ extension MiniAvatarView {
                 .offset(x: -1 * u, y: -27 * u)
             cel(Circle(), .questAmber, lineWidth: 2.6, shift: 2.0)
                 .frame(width: 62 * u, height: 57 * u)
-            // Brow ridge shading the visor.
             celFlat(Capsule(), Color.questAmber.darker(0.30), lineWidth: 1.4)
-                .frame(width: 42 * u, height: 4.5 * u)
-                .offset(y: -10 * u)
-            ZStack {
-                Capsule()
-                    .fill(helmetDark)
-                    .frame(width: 40 * u, height: 15 * u)
-                    .overlay(Capsule().stroke(outline, lineWidth: 2 * u))
-                HStack(spacing: 10 * u) {
-                    visorEye(Color.questAmber)
-                    visorEye(Color.questAmber)
-                }
-            }
-            .offset(y: 1 * u)
+                .frame(width: 40 * u, height: 5 * u)
+                .offset(y: -9 * u)
+            helmFaceWindow
+                .offset(y: 2 * u)
+            cel(Capsule(), Color.questAmber.darker(0.12), lineWidth: 2.2, shift: 1.2)
+                .frame(width: 46 * u, height: 13 * u)
+                .offset(y: 20 * u)
             ForEach([CGFloat(-1), CGFloat(1)], id: \.self) { side in
                 celFlat(ScaleShape(), Color.questAmber.darker(0.22), lineWidth: 1.2)
                     .frame(width: 8 * u, height: 5 * u)
-                    .offset(x: side * 15 * u, y: 13 * u)
+                    .offset(x: side * 19 * u, y: -2 * u)
             }
-            celFlat(Capsule(), Color(red: 0.62, green: 0.46, blue: 0.18), lineWidth: 1.6)
-                .frame(width: 17 * u, height: 5 * u)
-                .offset(y: 27 * u)
+            neckRing
         }
     }
 
     // MARK: - Wizard heads
-
-    var wizardHead: some View {
-        ZStack {
-            wizardFaceGroup
-            wizardHat(starred: false)
-            neckRing
-        }
-    }
 
     var starWizardHead: some View {
         ZStack {
@@ -215,26 +131,14 @@ extension MiniAvatarView {
         }
     }
 
-    /// Round face, white beard, chunky mustache.
+    /// Round face with the hero's identity features, white beard, and chunky
+    /// mustache. Bangs peek out under the hat brim.
     var wizardFaceGroup: some View {
         ZStack {
-            ZStack(alignment: .top) {
-                Circle().fill(skinTone)
-                Rectangle().fill(skinShade.opacity(0.45)).frame(height: 6 * u)
-            }
-            .frame(width: 47 * u, height: 46 * u)
-            .clipShape(Circle())
-            .overlay(Circle().stroke(outline, lineWidth: 2.6 * u))
-            HStack(spacing: 7 * u) {
-                heroEye
-                heroEye
-            }
-            .offset(y: -6 * u)
-            HStack(spacing: 24 * u) {
-                Circle().fill(skinShade.opacity(0.45)).frame(width: 5 * u, height: 3.2 * u)
-                Circle().fill(skinShade.opacity(0.45)).frame(width: 5 * u, height: 3.2 * u)
-            }
-            .offset(y: 3 * u)
+            cel(Circle(), skinTone, lineWidth: 2.6, shift: 2.0)
+                .frame(width: 48 * u, height: 46 * u)
+            identityFace(browY: -3, eyeY: 2, mouthY: 8, blushY: 5, showsMouth: false)
+            wizardBangs
             beard
             HStack(spacing: 1 * u) {
                 Capsule().fill(Color(white: 0.90))
