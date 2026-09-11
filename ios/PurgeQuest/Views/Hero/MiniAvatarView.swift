@@ -85,7 +85,9 @@ struct MiniAvatarView: View {
 
     /// Chunky cel fill: flat base tone, a hard-edged light band toward the
     /// top-left key light, a hard-edged dark band on the lower right, and a
-    /// thick uniform outline. `shift` scales the band widths for small parts.
+    /// thick uniform outline. Bands are clipped inside the silhouette so no
+    /// fill ever bleeds past the outline, and band offsets and outline width
+    /// keep a minimum absolute size so shading stays readable on small tiles.
     func cel<S: Shape>(
         _ shape: S,
         _ base: Color,
@@ -94,21 +96,25 @@ struct MiniAvatarView: View {
         dark: Color? = nil,
         light: Color? = nil
     ) -> some View {
-        ZStack {
-            shape.fill(light ?? base.lighter(0.26))
+        let lightShift = max(shift * u, 1.0)
+        let darkShiftX = max(shift * 1.9 * u, 1.7)
+        let darkShiftY = max(shift * 2.3 * u, 2.1)
+        return ZStack {
+            shape.fill(light ?? base.lighter(0.30))
             shape.fill(base)
-                .offset(x: shift * u, y: shift * 1.2 * u)
-            shape.fill(dark ?? base.darker(0.34))
-                .offset(x: shift * 1.9 * u, y: shift * 2.3 * u)
+                .offset(x: lightShift, y: lightShift * 1.2)
+            shape.fill(dark ?? base.darker(0.38))
+                .offset(x: darkShiftX, y: darkShiftY)
         }
-        .overlay(shape.stroke(outline, lineWidth: lineWidth * u))
+        .clipShape(shape)
+        .overlay(shape.stroke(outline, lineWidth: max(lineWidth * u, 1.3)))
     }
 
     /// Two-tone flat fill for tiny details that cannot fit three bands.
     func celFlat<S: Shape>(_ shape: S, _ base: Color, lineWidth: CGFloat = 2.0) -> some View {
         shape
             .fill(base)
-            .overlay(shape.stroke(outline, lineWidth: lineWidth * u))
+            .overlay(shape.stroke(outline, lineWidth: max(lineWidth * u, 1.1)))
     }
 
     // MARK: - Body

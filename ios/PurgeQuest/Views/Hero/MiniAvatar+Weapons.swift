@@ -16,34 +16,46 @@ extension MiniAvatarView {
     /// Spare mace in the off hand when the knight has no shield equipped.
     @ViewBuilder var maceLayer: some View {
         if isKnight && item(.shield) == nil {
-            VStack(spacing: 1 * u) {
-                ZStack {
-                    ForEach(0..<6, id: \.self) { i in
-                        cel(ConeShape(), steelDeep, lineWidth: 1.4, shift: 0.9)
-                            .frame(width: 4 * u, height: 6 * u)
-                            .offset(y: -7.5 * u)
-                            .rotationEffect(.degrees(Double(i) * 60))
+            ZStack {
+                VStack(spacing: 1 * u) {
+                    ZStack {
+                        ForEach(0..<6, id: \.self) { i in
+                            cel(ConeShape(), steelDeep, lineWidth: 1.4, shift: 0.9)
+                                .frame(width: 4 * u, height: 6 * u)
+                                .offset(y: -7.5 * u)
+                                .rotationEffect(.degrees(Double(i) * 60))
+                        }
+                        cel(Circle(), steel, lineWidth: 2.0, shift: 1.3)
+                            .frame(width: 13 * u, height: 13 * u)
                     }
-                    cel(Circle(), steel, lineWidth: 2.0, shift: 1.3)
-                        .frame(width: 13 * u, height: 13 * u)
+                    celFlat(Capsule(), .questAmber, lineWidth: 1.4)
+                        .frame(width: 5.5 * u, height: 3 * u)
+                    celFlat(Capsule(), leatherDark, lineWidth: 1.6)
+                        .frame(width: 4 * u, height: 13 * u)
+                    celFlat(Capsule(), .questAmber, lineWidth: 1.4)
+                        .frame(width: 5.5 * u, height: 3 * u)
                 }
-                celFlat(Capsule(), .questAmber, lineWidth: 1.4)
-                    .frame(width: 5.5 * u, height: 3 * u)
-                celFlat(Capsule(), leatherDark, lineWidth: 1.6)
-                    .frame(width: 4 * u, height: 13 * u)
-                celFlat(Capsule(), .questAmber, lineWidth: 1.4)
-                    .frame(width: 5.5 * u, height: 3 * u)
+                // Gripping hand over the haft so the mace reads as held.
+                cel(Circle(), mittColor, lineWidth: 2.0, shift: 1.0)
+                    .frame(width: 9 * u, height: 8.5 * u)
+                    .offset(y: 14 * u)
             }
-            .rotationEffect(.degrees(-26))
-            .offset(x: -25.5 * u, y: 15 * u)
+            .rotationEffect(.degrees(-30))
+            .offset(x: -26.5 * u, y: 9 * u)
             .transition(.scale(scale: 0.5).combined(with: .opacity))
         }
     }
 
     var weaponLayer: some View {
-        weaponModel
-            .rotationEffect(.degrees(2))
-            .offset(x: 25.5 * u, y: 10.5 * u)
+        ZStack {
+            weaponModel
+            // Gripping hand drawn over the hilt so the weapon reads as held.
+            cel(Circle(), mittColor, lineWidth: 2.0, shift: 1.0)
+                .frame(width: 9 * u, height: 8.5 * u)
+                .offset(y: weaponGripY * u)
+        }
+        .rotationEffect(.degrees(14))
+        .offset(x: 26 * u, y: 4 * u)
     }
 
     @ViewBuilder var weaponModel: some View {
@@ -54,6 +66,16 @@ extension MiniAvatarView {
             simpleSword
         } else {
             simpleWand
+        }
+    }
+
+    /// Where the hand sits along the held weapon, in design units from center.
+    var weaponGripY: CGFloat {
+        switch item(.weapon)?.id {
+        case "weapon.gem", "weapon.staff": return 9
+        case "weapon.stormblade", "weapon.ruby", "weapon.fireworkBlade": return 13.5
+        case "weapon.reel": return 16
+        default: return 15
         }
     }
 

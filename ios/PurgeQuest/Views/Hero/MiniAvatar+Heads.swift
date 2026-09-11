@@ -96,6 +96,17 @@ extension MiniAvatarView {
         }
     }
 
+    /// Pale eye set into a dark visor slit, for the faceless helms.
+    func visorEye(_ tint: Color) -> some View {
+        ZStack {
+            Ellipse().fill(tint)
+                .frame(width: 7.5 * u, height: 8.5 * u)
+            Circle().fill(outline)
+                .frame(width: 3 * u, height: 3 * u)
+                .offset(x: 0.5 * u, y: 0.8 * u)
+        }
+    }
+
     /// Skin plate inside the visor: hard brim shadow, eyes, blush.
     var face: some View {
         ZStack {
@@ -119,47 +130,66 @@ extension MiniAvatarView {
         }
     }
 
-    /// Iron Helm: full steel dome, brow arc, dark slit, riveted gold band.
+    /// Iron Helm: full steel dome, watchful visor slit, riveted gold band.
     var ironHelmet: some View {
         ZStack {
             cel(Circle(), steel, lineWidth: 2.6, shift: 2.0)
-                .frame(width: 58 * u, height: 53 * u)
-            Circle()
-                .trim(from: 0.58, to: 0.92)
-                .stroke(steelLight, style: StrokeStyle(lineWidth: 2.5 * u, lineCap: .round))
-                .frame(width: 46 * u, height: 41 * u)
-                .offset(y: -6 * u)
-            celFlat(Capsule(), outline, lineWidth: 1.4)
-                .frame(width: 34 * u, height: 6.5 * u)
-                .offset(y: -6 * u)
+                .frame(width: 62 * u, height: 57 * u)
+            // Brow ridge shading the visor.
+            celFlat(Capsule(), steelDeep, lineWidth: 1.4)
+                .frame(width: 42 * u, height: 4.5 * u)
+                .offset(y: -10 * u)
+            ZStack {
+                Capsule()
+                    .fill(helmetDark)
+                    .frame(width: 40 * u, height: 15 * u)
+                    .overlay(Capsule().stroke(outline, lineWidth: 2 * u))
+                HStack(spacing: 10 * u) {
+                    visorEye(steelLight)
+                    visorEye(steelLight)
+                }
+            }
+            .offset(y: 1 * u)
             celFlat(Capsule(), .questAmber, lineWidth: 1.8)
                 .frame(width: 44 * u, height: 4.5 * u)
-                .offset(y: 8 * u)
+                .offset(y: 15 * u)
             ForEach([CGFloat(-1), CGFloat(0), CGFloat(1)], id: \.self) { x in
                 Circle()
                     .fill(outline.opacity(0.55))
                     .frame(width: 1.8 * u, height: 1.8 * u)
-                    .offset(x: x * 13 * u, y: 8 * u)
+                    .offset(x: x * 13 * u, y: 15 * u)
             }
             neckRing
         }
     }
 
-    /// Dragoncrest Helm: gold dome, crimson fin crest, scale etching.
+    /// Dragoncrest Helm: gold dome, crimson fin crest, watchful visor slit.
     var dragonHelmet: some View {
         ZStack {
             cel(FinShape(), .combatCrimson, lineWidth: 2.2, shift: 1.4)
                 .frame(width: 20 * u, height: 18 * u)
                 .offset(x: -1 * u, y: -27 * u)
             cel(Circle(), .questAmber, lineWidth: 2.6, shift: 2.0)
-                .frame(width: 58 * u, height: 53 * u)
-            celFlat(Capsule(), outline, lineWidth: 1.4)
-                .frame(width: 34 * u, height: 6.5 * u)
-                .offset(y: -6 * u)
+                .frame(width: 62 * u, height: 57 * u)
+            // Brow ridge shading the visor.
+            celFlat(Capsule(), Color.questAmber.darker(0.30), lineWidth: 1.4)
+                .frame(width: 42 * u, height: 4.5 * u)
+                .offset(y: -10 * u)
+            ZStack {
+                Capsule()
+                    .fill(helmetDark)
+                    .frame(width: 40 * u, height: 15 * u)
+                    .overlay(Capsule().stroke(outline, lineWidth: 2 * u))
+                HStack(spacing: 10 * u) {
+                    visorEye(Color.questAmber)
+                    visorEye(Color.questAmber)
+                }
+            }
+            .offset(y: 1 * u)
             ForEach([CGFloat(-1), CGFloat(1)], id: \.self) { side in
                 celFlat(ScaleShape(), Color.questAmber.darker(0.22), lineWidth: 1.2)
                     .frame(width: 8 * u, height: 5 * u)
-                    .offset(x: side * 13 * u, y: 4 * u)
+                    .offset(x: side * 15 * u, y: 13 * u)
             }
             celFlat(Capsule(), Color(red: 0.62, green: 0.46, blue: 0.18), lineWidth: 1.6)
                 .frame(width: 17 * u, height: 5 * u)
