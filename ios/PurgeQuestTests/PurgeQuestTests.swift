@@ -120,4 +120,128 @@ struct HeroAppearanceTests {
         #expect(HeroAppearance.gearTier(maxEquippedPrice: 900, hasPremium: false) == .mythic)
         #expect(HeroAppearance.gearTier(maxEquippedPrice: 0, hasPremium: true) == .mythic)
     }
+
+    // MARK: - Schema 2 migration
+
+    @Test func defaultsCarryNoArmorDyeOnCurrentSchema() {
+        #expect(HeroAppearance.default(for: .knight).armorDye == .none)
+        #expect(HeroAppearance.default(for: .knight).schemaVersion == 2)
+    }
+
+    @Test func schemaOneRecordMigratesForwardWithoutTraitLoss() throws {
+        // A save written by schema 1 must keep every trait and gain the
+        // default None armor dye.
+        let legacy = HeroAppearance.LegacyV1(
+            schemaVersion: 1,
+            skinTone: .ebony,
+            faceShape: .round,
+            eyeStyle: .gentle,
+            eyeColor: .ember,
+            browStyle: .stern,
+            mouthStyle: .frown,
+            hairStyle: .long,
+            hairColor: .sapphire,
+            expression: .weary,
+            backdropStyle: .medallion
+        )
+        let data = try JSONEncoder().encode(legacy)
+
+        let migrated = HeroAppearance.decode(data, for: .knight)
+        #expect(migrated.schemaVersion == HeroAppearance.currentSchemaVersion)
+        #expect(migrated.skinTone == .ebony)
+        #expect(migrated.faceShape == .round)
+        #expect(migrated.eyeStyle == .gentle)
+        #expect(migrated.eyeColor == .ember)
+        #expect(migrated.browStyle == .stern)
+        #expect(migrated.mouthStyle == .frown)
+        #expect(migrated.hairStyle == .long)
+        #expect(migrated.hairColor == .sapphire)
+        #expect(migrated.expression == .weary)
+        #expect(migrated.backdropStyle == .medallion)
+        #expect(migrated.armorDye == .none)
+    }
+
+    @Test func schemaTwoRoundTripPreservesArmorDye() {
+        var look = HeroAppearance.default(for: .magician)
+        look.armorDye = .verdigris
+        let decoded = HeroAppearance.decode(look.encoded(), for: .magician)
+        #expect(decoded == look)
+    }
+
+    @Test func draftArmorDyeEditLeavesHeroUntouchedUntilSave() throws {
+        let container = try makeContainer()
+        let context = ModelContext(container)
+        let hero = Hero()
+        hero.appearance = .default(for: .knight)
+        context.insert(hero)
+        try context.save()
+
+        var draft = hero.appearance
+        draft.armorDye = .gilded
+        #expect(hero.appearance.armorDye == .none)
+
+        hero.appearance = draft
+        try context.save()
+        #expect(hero.appearance.armorDye == .gilded)
+
+        let relaunchedContext = ModelContext(container)
+        let fetched = try relaunchedContext.fetch(FetchDescriptor<Hero>())
+        #expect(fetched.first?.appearance.armorDye == .gilded)
+    }
+
+    // MARK: - Expression presets
+
+    @Test func presetsMapToMatchedCombinations() {
+        #expect(ExpressionPreset.valor.expression == .calm)
+        #expect(ExpressionPreset.valor.browStyle == .steady)
+        #expect(ExpressionPreset.valor.mouthStyle == .smile)
+
+        #expect(ExpressionPreset.battleFrenzy.expression == .fierce)
+        #expect(ExpressionPreset.battleFrenzy.browStyle == .fierce)
+        #expect(ExpressionPreset.battleFrenzy.mouthStyle == .grin)
+
+        #expect(ExpressionPreset.triumph.expression == .happy)
+        #expect(ExpressionPreset.triumph.browStyle == .steady)
+        #expect(ExpressionPreset.triumph.mouthStyle == .grin)
+
+        #expect(ExpressionPreset.exhausted.expression == .weary)
+        #expect(ExpressionPreset.exhausted.browStyle == .worried)
+        #expect(ExpressionPreset.exhausted.mouthStyle == .neutral)
+    }
+
+    @Test func presetApplyAndMatchesRoundTrip() {
+        var look = HeroAppearance.default(for: .knight)
+        #expect(!ExpressionPreset.battleFrenzy.matches(look))
+
+        ExpressionPreset.battleFrenzy.apply(to: &look)
+        #expect(ExpressionPreset.battleFrenzy.matches(look))
+        #expect(look.expression == .fierce)
+
+        // Presets only touch expression, brows, and mouth — identity survives.
+        #expect(look.skinTone == HeroAppearance.default(for: .knight).skinTone)
+        #expect(look.hairColor == HeroAppearance.default(for: .knight).hairColor)
+    }
+
+    // MARK: - Achievement gating
+
+    @Test func dyeGatingMapsToExpectedAchievements() {
+        #expect(HairColor.gilded.requiredAchievementID == "great.purge")
+        #expect(HairColor.verdigris.requiredAchievementID == "duplicate.slayer")
+        #expect(HairColor.crimson.requiredAchievementID == "combo.king")
+        #expect(HairColor.bone.requiredAchievementID == "video.vault")
+        #expect(HairColor.bark.requiredAchievementID == nil)
+
+        #expect(EyeColor.gilded.requiredAchievementID == "great.purge")
+        #expect(EyeColor.crimson.requiredAchievementID == "combo.king")
+        #expect(EyeColor.slate.requiredAchievementID == nil)
+
+        #expect(ArmorDye.gilded.requiredAchievementID == "great.purge")
+        #expect(ArmorDye.bone.requiredAchievementID == "video.vault")
+        #expect(ArmorDye.none.requiredAchievementID == nil)
+    }
+
+    @Test func titanBladeGateUsesStreakWarrior() {
+        #expect(DyeGate.titanWeaponAchievementID == "streak.warrior")
+        #expect(DyeGate.requirementText(for: "streak.warrior") == "Requires Streak Warrior")
+    }
 }

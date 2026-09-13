@@ -18,6 +18,7 @@ private enum ShopFilter: String, CaseIterable {
     case shields = "Shields"
     case pets = "Pets"
     case effects = "FX"
+    case upgrades = "Upgrades"
     case bundles = "Bundles"
 }
 
@@ -25,6 +26,7 @@ struct ShopView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: [SortDescriptor(\CosmeticItem.priceGems)]) private var cosmetics: [CosmeticItem]
     @Query private var heroes: [Hero]
+    @Query private var achievements: [Achievement]
 
     @State private var filter: ShopFilter = .all
     @State private var purchaseError: String?
@@ -33,6 +35,11 @@ struct ShopView: View {
     @State private var store = StoreKitService.shared
 
     private var hero: Hero? { heroes.first }
+
+    /// Whether the Titan Blade's gating achievement has been earned.
+    private var titanGateUnlocked: Bool {
+        achievements.first { $0.id == DyeGate.titanWeaponAchievementID }?.isUnlocked ?? false
+    }
 
     /// Currently equipped items, one per slot — the base outfit for tile previews.
     private var equippedItems: [CosmeticItem] { cosmetics.filter { $0.isEquipped } }
@@ -50,6 +57,7 @@ struct ShopView: View {
             case .shields: return c.type == .shield
             case .pets: return c.type == .pet
             case .effects: return c.type == .effect
+            case .upgrades: return c.type == .upgrade
             case .bundles: return false
             }
         }
@@ -66,7 +74,13 @@ struct ShopView: View {
                 } else {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                         ForEach(filtered) { item in
-                            CosmeticTile(item: item, gems: hero?.gems ?? 0, hero: hero, equipped: equippedItems) {
+                            CosmeticTile(
+                                item: item,
+                                gems: hero?.gems ?? 0,
+                                hero: hero,
+                                equipped: equippedItems,
+                                isGateLocked: item.type == .upgrade && !titanGateUnlocked
+                            ) {
                                 purchase(item)
                             }
                         }
@@ -183,6 +197,29 @@ struct ShopView: View {
 
     private func purchase(_ item: CosmeticItem) {
         guard let hero else { return }
+
+        // Permanent upgrades: ownership lives on the hero record, never in
+        // the equip slots. The Titan Blade needs its achievement earned first.
+        if item.type == .upgrade {
+            guard !item.isUnlocked else { return }
+            guard titanGateUnlocked else {
+                purchaseError = "Earn the Streak Warrior achievement (7-day streak) to buy the Titan Blade."
+                HapticsService.shared.warning()
+                return
+            }
+            if hero.gems >= item.priceGems {
+                hero.gems -= item.priceGems
+                item.isUnlocked = true
+                hero.titanWeaponUnlocked = true
+                HapticsService.shared.comboBurst()
+            } else {
+                purchaseError = "You need \(item.priceGems - hero.gems) more gems."
+                HapticsService.shared.warning()
+            }
+            try? modelContext.save()
+            return
+        }
+
         if item.isUnlocked {
             for c in cosmetics where c.type == item.type { c.isEquipped = false }
             item.isEquipped = true
@@ -328,13 +365,14 @@ private struct CosmeticTile: View {
     let gems: Int
     let hero: Hero?
     let equipped: [CosmeticItem]
+    var isGateLocked: Bool = false
     let onTap: () -> Void
 
-    /// Whether the mini avatar renders this slot; effects aren't drawn on the figure.
+    /// Whether the mini avatar renders this slot; effects and upgrades aren't drawn on the figure.
     private var isWearable: Bool {
         switch item.type {
         case .skin, .head, .armor, .weapon, .shield, .pet: return true
-        case .effect: return false
+        case .effect, .upgrade: return false
         }
     }
 
@@ -412,7 +450,24 @@ private struct CosmeticTile: View {
 
     @ViewBuilder
     private var priceTag: some View {
-        if item.isEquipped {
+        if item.type == .upgrade {
+            if item.isUnlocked {
+                Label("Owned", systemImage: "checkmark.seal.fill")
+                    .font(.caption.weight(.bold))
+                    .padding(.vertical, 6).padding(.horizontal, 10)
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.gemEmerald.opacity(0.18)).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gemEmerald.opacity(0.5), lineWidth: 1)))
+                    .foregroundStyle(.gemEmerald)
+            } else if isGateLocked {
+                Label(DyeGate.requirementText(for: DyeGate.titanWeaponAchievementID), systemImage: "lock.fill")
+                    .font(.caption.weight(.bold))
+                    .lineLimit(1)
+                    .padding(.vertical, 6).padding(.horizontal, 10)
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.dungeonStoneLight).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.dungeonAsh, lineWidth: 1)))
+                    .foregroundStyle(.textSecondary)
+            } else {
+                priceChip
+            }
+        } else if item.isEquipped {
             Label("Equipped", systemImage: "checkmark.seal.fill")
                 .font(.caption.weight(.bold))
                 .padding(.vertical, 6).padding(.horizontal, 10)
@@ -425,13 +480,17 @@ private struct CosmeticTile: View {
                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.questAmber.opacity(0.18)).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.questAmber.opacity(0.5), lineWidth: 1)))
                 .foregroundStyle(.questAmber)
         } else {
-            HStack(spacing: 4) {
-                Image(systemName: "diamond.fill").font(.caption2)
-                Text("\(item.priceGems)").font(.caption.monospacedDigit().weight(.bold))
-            }
-            .padding(.vertical, 6).padding(.horizontal, 10)
-            .background(RoundedRectangle(cornerRadius: 8).fill(gems >= item.priceGems ? Color.gemEmerald.opacity(0.18) : Color.dungeonStoneLight).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gemEmerald.opacity(0.5), lineWidth: 1)))
-            .foregroundStyle(gems >= item.priceGems ? .gemEmerald : .textSecondary)
+            priceChip
         }
+    }
+
+    private var priceChip: some View {
+        HStack(spacing: 4) {
+            Image(systemName: "diamond.fill").font(.caption2)
+            Text("\(item.priceGems)").font(.caption.monospacedDigit().weight(.bold))
+        }
+        .padding(.vertical, 6).padding(.horizontal, 10)
+        .background(RoundedRectangle(cornerRadius: 8).fill(gems >= item.priceGems ? Color.gemEmerald.opacity(0.18) : Color.dungeonStoneLight).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gemEmerald.opacity(0.5), lineWidth: 1)))
+        .foregroundStyle(gems >= item.priceGems ? .gemEmerald : .textSecondary)
     }
 }

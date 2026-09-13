@@ -14,17 +14,19 @@ enum CosmeticType: String, CaseIterable, Codable {
     case shield
     case pet
     case effect
+    case upgrade
 
     /// Human-friendly slot name shown in the Hero tab.
     var displayName: String {
         switch self {
-        case .skin:   return "Skin"
-        case .head:   return "Head"
-        case .armor:  return "Armor"
-        case .weapon: return "Weapon"
-        case .shield: return "Shield"
-        case .pet:    return "Pet"
-        case .effect: return "FX"
+        case .skin:    return "Skin"
+        case .head:    return "Head"
+        case .armor:   return "Armor"
+        case .weapon:  return "Weapon"
+        case .shield:  return "Shield"
+        case .pet:     return "Pet"
+        case .effect:  return "FX"
+        case .upgrade: return "Upgrade"
         }
     }
 }

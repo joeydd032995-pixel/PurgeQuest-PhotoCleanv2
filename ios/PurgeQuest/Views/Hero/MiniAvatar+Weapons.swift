@@ -46,13 +46,18 @@ extension MiniAvatarView {
         }
     }
 
+    /// Titan Blade upgrade: doubles the held weapon while the gripping hand
+    /// stays life-size and tracks the scaled hilt.
+    var weaponScale: CGFloat { hero.titanWeaponUnlocked ? 2 : 1 }
+
     var weaponLayer: some View {
         ZStack {
             weaponModel
+                .scaleEffect(weaponScale)
             // Gripping hand drawn over the hilt so the weapon reads as held.
             cel(Circle(), mittColor, lineWidth: 2.0, shift: 1.0)
                 .frame(width: 9 * u, height: 8.5 * u)
-                .offset(y: weaponGripY * u)
+                .offset(y: weaponGripY * weaponScale * u)
         }
         .rotationEffect(.degrees(14))
         .offset(x: 26 * u, y: 4 * u)

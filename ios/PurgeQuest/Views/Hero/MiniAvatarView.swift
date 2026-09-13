@@ -84,6 +84,13 @@ struct MiniAvatarView: View {
         }
     }
 
+    /// Outfit cloth color with the saved armor dye blended in, so light and
+    /// dark cel bands shift together and the tint reads as dyed fabric.
+    var outfitColor: Color {
+        guard identity.armorDye != .none else { return tunicColor }
+        return tunicColor.blended(with: identity.armorDye.color, amount: 0.55)
+    }
+
     var petColor: Color {
         switch item(.pet)?.id {
         case "pet.reel": return .videoSapphire
@@ -252,16 +259,16 @@ struct MiniAvatarView: View {
         ZStack {
             if isRobed {
                 // Full robe column covering the top of the legs.
-                cel(TaperedShape(topWidth: 0.88, bottomWidth: 1.25), tunicColor, lineWidth: 2.4)
+                cel(TaperedShape(topWidth: 0.88, bottomWidth: 1.25), outfitColor, lineWidth: 2.4)
                     .frame(width: 36 * u, height: 40 * u)
                     .offset(y: 18 * u)
                 // Center pleat.
                 Rectangle()
-                    .fill(tunicColor.darker(0.30))
+                    .fill(outfitColor.darker(0.30))
                     .frame(width: 1.2 * u, height: 30 * u)
                     .offset(y: 21 * u)
             } else {
-                cel(TaperedShape(topWidth: 0.82, bottomWidth: 1), tunicColor, lineWidth: 2.4)
+                cel(TaperedShape(topWidth: 0.82, bottomWidth: 1), outfitColor, lineWidth: 2.4)
                     .frame(width: 33 * u, height: 26 * u)
                     .offset(y: 12 * u)
             }
@@ -337,12 +344,12 @@ struct MiniAvatarView: View {
                 .frame(width: 46 * u, height: 52 * u)
                 .offset(y: 16 * u)
         } else if isRobed {
-            cel(TaperedShape(topWidth: 0.9, bottomWidth: 1.05), tunicColor.darker(0.14), lineWidth: 2.2, shift: 1.6)
+            cel(TaperedShape(topWidth: 0.9, bottomWidth: 1.05), outfitColor.darker(0.14), lineWidth: 2.2, shift: 1.6)
                 .frame(width: 40 * u, height: 42 * u)
                 .offset(y: 16 * u)
         } else if isKnight {
             // Short half-cape behind the shoulders.
-            cel(TaperedShape(topWidth: 0.95, bottomWidth: 1.1), tunicColor.darker(0.18), lineWidth: 2.2, shift: 1.5)
+            cel(TaperedShape(topWidth: 0.95, bottomWidth: 1.1), outfitColor.darker(0.18), lineWidth: 2.2, shift: 1.5)
                 .frame(width: 40 * u, height: 26 * u)
                 .offset(y: 8 * u)
         }
@@ -357,7 +364,7 @@ struct MiniAvatarView: View {
         ZStack {
             cel(
                 Capsule(),
-                isKnight && !isRobed ? steelDeep : tunicColor,
+                isKnight && !isRobed ? steelDeep : outfitColor,
                 lineWidth: 2.0,
                 shift: 1.2
             )
@@ -386,7 +393,7 @@ struct MiniAvatarView: View {
                 .frame(width: 22 * u, height: 4.5 * u)
                 .offset(y: -5 * u)
             ForEach([CGFloat(-1), CGFloat(1)], id: \.self) { side in
-                cel(Circle(), tunicColor.darker(0.10), lineWidth: 1.8, shift: 1.0)
+                cel(Circle(), outfitColor.darker(0.10), lineWidth: 1.8, shift: 1.0)
                     .frame(width: 11 * u, height: 9.5 * u)
                     .offset(x: side * 17 * u, y: 1.5 * u)
             }

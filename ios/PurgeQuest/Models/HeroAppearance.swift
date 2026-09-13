@@ -65,6 +65,7 @@ nonisolated enum EyeStyle: String, CaseIterable, Codable {
 }
 
 /// Iris colors. No purple: the palette stays inside the Verdigris world.
+/// Achievement-gated dyes sit after the free colors.
 nonisolated enum EyeColor: String, CaseIterable, Codable {
     case bark
     case moss
@@ -72,6 +73,9 @@ nonisolated enum EyeColor: String, CaseIterable, Codable {
     case ember
     case sapphire
     case slate
+    case gilded
+    case verdigris
+    case crimson
 
     var displayName: String {
         switch self {
@@ -81,6 +85,9 @@ nonisolated enum EyeColor: String, CaseIterable, Codable {
         case .ember:     return "Ember"
         case .sapphire:  return "Sapphire"
         case .slate:     return "Slate"
+        case .gilded:    return "Gilded"
+        case .verdigris: return "Verdigris"
+        case .crimson:   return "Crimson"
         }
     }
 }
@@ -138,7 +145,8 @@ nonisolated enum HairStyle: String, CaseIterable, Codable {
     }
 }
 
-/// Hair colors: naturals plus fantasy dyes.
+/// Hair colors: naturals plus fantasy dyes. Achievement-gated dyes sit
+/// after the free colors.
 nonisolated enum HairColor: String, CaseIterable, Codable {
     case bark
     case raven
@@ -148,17 +156,45 @@ nonisolated enum HairColor: String, CaseIterable, Codable {
     case ember
     case sapphire
     case ash
+    case gilded
+    case verdigris
+    case crimson
+    case bone
 
     var displayName: String {
         switch self {
-        case .bark:     return "Bark"
-        case .raven:    return "Raven"
-        case .wheat:    return "Wheat"
-        case .rust:     return "Rust"
-        case .jade:     return "Jade Dye"
-        case .ember:    return "Ember Dye"
-        case .sapphire: return "Sapphire Dye"
-        case .ash:      return "Ash"
+        case .bark:      return "Bark"
+        case .raven:     return "Raven"
+        case .wheat:     return "Wheat"
+        case .rust:      return "Rust"
+        case .jade:      return "Jade Dye"
+        case .ember:     return "Ember Dye"
+        case .sapphire:  return "Sapphire Dye"
+        case .ash:       return "Ash"
+        case .gilded:    return "Gilded Dye"
+        case .verdigris: return "Verdigris Dye"
+        case .crimson:   return "Crimson Dye"
+        case .bone:      return "Bone Dye"
+        }
+    }
+}
+
+/// Outfit dyes that tint the worn armor's cloth and plating. Every family
+/// except None unlocks through an achievement.
+nonisolated enum ArmorDye: String, CaseIterable, Codable {
+    case none
+    case gilded
+    case verdigris
+    case crimson
+    case bone
+
+    var displayName: String {
+        switch self {
+        case .none:      return "None"
+        case .gilded:    return "Gilded"
+        case .verdigris: return "Verdigris"
+        case .crimson:   return "Crimson"
+        case .bone:      return "Bone"
         }
     }
 }
@@ -177,6 +213,65 @@ nonisolated enum Expression: String, CaseIterable, Codable {
         case .happy:  return "Happy"
         case .weary:  return "Weary"
         }
+    }
+}
+
+/// One-tap looks that set a matched expression, brows, and mouth together.
+/// Presets edit the draft like any other trait, so Cancel still discards.
+nonisolated enum ExpressionPreset: String, CaseIterable, Codable {
+    case valor
+    case battleFrenzy
+    case triumph
+    case exhausted
+
+    var displayName: String {
+        switch self {
+        case .valor:        return "Valor"
+        case .battleFrenzy: return "Battle Frenzy"
+        case .triumph:      return "Triumph"
+        case .exhausted:    return "Exhausted"
+        }
+    }
+
+    var expression: Expression {
+        switch self {
+        case .valor:        return .calm
+        case .battleFrenzy: return .fierce
+        case .triumph:      return .happy
+        case .exhausted:    return .weary
+        }
+    }
+
+    var browStyle: BrowStyle {
+        switch self {
+        case .valor:        return .steady
+        case .battleFrenzy: return .fierce
+        case .triumph:      return .steady
+        case .exhausted:    return .worried
+        }
+    }
+
+    var mouthStyle: MouthStyle {
+        switch self {
+        case .valor:        return .smile
+        case .battleFrenzy: return .grin
+        case .triumph:      return .grin
+        case .exhausted:    return .neutral
+        }
+    }
+
+    /// Applies the full preset to a draft look.
+    func apply(to look: inout HeroAppearance) {
+        look.expression = expression
+        look.browStyle = browStyle
+        look.mouthStyle = mouthStyle
+    }
+
+    /// Whether a look already carries this preset's full combination.
+    func matches(_ look: HeroAppearance) -> Bool {
+        look.expression == expression
+            && look.browStyle == browStyle
+            && look.mouthStyle == mouthStyle
     }
 }
 
@@ -208,7 +303,7 @@ nonisolated enum GearTier: String, CaseIterable, Codable {
 /// The full saved identity of a hero. Equipped gear is stored separately and
 /// renders over this identity.
 nonisolated struct HeroAppearance: Equatable, Codable {
-    static let currentSchemaVersion = 1
+    static let currentSchemaVersion = 2
 
     var schemaVersion: Int
     var skinTone: SkinTone
@@ -221,6 +316,7 @@ nonisolated struct HeroAppearance: Equatable, Codable {
     var hairColor: HairColor
     var expression: Expression
     var backdropStyle: BackdropStyle
+    var armorDye: ArmorDye
 
     init(
         schemaVersion: Int = HeroAppearance.currentSchemaVersion,
@@ -233,7 +329,8 @@ nonisolated struct HeroAppearance: Equatable, Codable {
         hairStyle: HairStyle,
         hairColor: HairColor,
         expression: Expression,
-        backdropStyle: BackdropStyle
+        backdropStyle: BackdropStyle,
+        armorDye: ArmorDye = .none
     ) {
         self.schemaVersion = schemaVersion
         self.skinTone = skinTone
@@ -246,6 +343,39 @@ nonisolated struct HeroAppearance: Equatable, Codable {
         self.hairColor = hairColor
         self.expression = expression
         self.backdropStyle = backdropStyle
+        self.armorDye = armorDye
+    }
+
+    /// Mirror of the schema-1 record shape, used to migrate older saves
+    /// forward without losing any trait.
+    nonisolated struct LegacyV1: Codable {
+        var schemaVersion: Int
+        var skinTone: SkinTone
+        var faceShape: FaceShape
+        var eyeStyle: EyeStyle
+        var eyeColor: EyeColor
+        var browStyle: BrowStyle
+        var mouthStyle: MouthStyle
+        var hairStyle: HairStyle
+        var hairColor: HairColor
+        var expression: Expression
+        var backdropStyle: BackdropStyle
+
+        var migrated: HeroAppearance {
+            HeroAppearance(
+                schemaVersion: HeroAppearance.currentSchemaVersion,
+                skinTone: skinTone,
+                faceShape: faceShape,
+                eyeStyle: eyeStyle,
+                eyeColor: eyeColor,
+                browStyle: browStyle,
+                mouthStyle: mouthStyle,
+                hairStyle: hairStyle,
+                hairColor: hairColor,
+                expression: expression,
+                backdropStyle: backdropStyle
+            )
+        }
     }
 
     /// The designed default look per archetype, so a fresh or broken record
@@ -289,17 +419,21 @@ nonisolated struct HeroAppearance: Equatable, Codable {
     }
 
     /// Safe decode: any missing key, unknown value, corrupt bytes, or future
-    /// schema falls back to the archetype default. Decoding a known schema
-    /// that is merely older succeeds because every field is required.
+    /// schema falls back to the archetype default. Schema-1 records migrate
+    /// forward with every trait preserved (gaining the default None armor
+    /// dye); only a partially-written legacy record falls all the way back.
     static func decode(_ data: Data?, for archetype: CharacterArchetype) -> HeroAppearance {
         guard let data, !data.isEmpty else { return .default(for: archetype) }
-        guard let decoded = try? JSONDecoder().decode(HeroAppearance.self, from: data) else {
-            return .default(for: archetype)
+        if let decoded = try? JSONDecoder().decode(HeroAppearance.self, from: data) {
+            guard decoded.schemaVersion <= HeroAppearance.currentSchemaVersion else {
+                return .default(for: archetype)
+            }
+            return decoded
         }
-        guard decoded.schemaVersion <= HeroAppearance.currentSchemaVersion else {
-            return .default(for: archetype)
+        if let legacy = try? JSONDecoder().decode(LegacyV1.self, from: data) {
+            return legacy.migrated
         }
-        return decoded
+        return .default(for: archetype)
     }
 
     /// Maps equipped gear value to a plaque tier.

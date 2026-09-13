@@ -88,7 +88,10 @@ enum GameDataService {
         CosmeticItem(id: "pet.beachSpirit",     name: "Beach Spirit",    subtitle: "A wave-shaped companion that drifts.",   type: .pet,    iconName: "fish.fill",                 priceGems: 500),
         CosmeticItem(id: "fx.spectral",         name: "Spectral Wisps",  subtitle: "Pale wisps rise on every delete.",       type: .effect, iconName: "ghost.fill",               priceGems: 600),
         CosmeticItem(id: "fx.confetti",         name: "Confetti Vault",  subtitle: "New Year burst on every delete.",        type: .effect, iconName: "party.popper.fill",        priceGems: 550),
-        CosmeticItem(id: "fx.hearts",           name: "Heartbreak Trail", subtitle: "A Valentine trail follows the blade.",  type: .effect, iconName: "heart.fill",               priceGems: 550)
+        CosmeticItem(id: "fx.hearts",           name: "Heartbreak Trail", subtitle: "A Valentine trail follows the blade.",  type: .effect, iconName: "heart.fill",               priceGems: 550),
+        // Permanent character upgrades. Ownership lives on the hero record;
+        // the Titan Blade additionally requires an earned achievement.
+        CosmeticItem(id: "upgrade.titanBlade",  name: "Titan Blade",     subtitle: "Doubles the size of your held weapon.",  type: .upgrade, iconName: "arrow.up.left.and.arrow.down.right", priceGems: 3000)
     ] }
 
     // MARK: - Achievements

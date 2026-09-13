@@ -26,7 +26,7 @@ protocol ForgeSwatch: Hashable {
 
 /// Forge categories, in display order.
 enum ForgeCategory: String, CaseIterable, Identifiable {
-    case skin, face, eyes, brows, mouth, hair, expression, backdrop
+    case skin, face, eyes, brows, mouth, hair, expression, armorDye, backdrop
 
     var id: String { rawValue }
 
@@ -39,6 +39,7 @@ enum ForgeCategory: String, CaseIterable, Identifiable {
         case .mouth: return "Mouth"
         case .hair: return "Hair"
         case .expression: return "Mood"
+        case .armorDye: return "Armor Dye"
         case .backdrop: return "Backdrop"
         }
     }
@@ -52,6 +53,7 @@ enum ForgeCategory: String, CaseIterable, Identifiable {
         case .mouth: return "mouth"
         case .hair: return "comb"
         case .expression: return "theatermasks"
+        case .armorDye: return "paintpalette.fill"
         case .backdrop: return "rectangle.inset.filled"
         }
     }
@@ -63,10 +65,13 @@ struct HeroForgeView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Query private var cosmetics: [CosmeticItem]
+    @Query private var achievements: [Achievement]
 
     @State private var draft: HeroAppearance
     @State private var category: ForgeCategory = .skin
     @State private var showStripPreview: Bool = false
+    /// Requirement text shown after tapping a locked dye.
+    @State private var lockMessage: String?
 
     init(hero: Hero) {
         self.hero = hero
@@ -97,6 +102,7 @@ struct HeroForgeView: View {
                         preview
                         contextToggle
                         categoryBar
+                        lockBanner
                         optionArea
                         Color.clear.frame(height: 8)
                     }
@@ -237,18 +243,64 @@ struct HeroForgeView: View {
             optionSection("Face shape", options: FaceShape.allCases, selected: draft.faceShape) { draft.faceShape = $0 }
         case .eyes:
             optionSection("Eye style", options: EyeStyle.allCases, selected: draft.eyeStyle) { draft.eyeStyle = $0 }
-            swatchSection("Eye color", options: EyeColor.allCases, selected: draft.eyeColor) { draft.eyeColor = $0 }
+            swatchSection(
+                "Eye color",
+                options: EyeColor.allCases,
+                selected: draft.eyeColor,
+                lockInfo: { lockRequirement($0.requiredAchievementID) }
+            ) { draft.eyeColor = $0 }
         case .brows:
             optionSection("Brow style", options: BrowStyle.allCases, selected: draft.browStyle) { draft.browStyle = $0 }
         case .mouth:
             optionSection("Mouth", options: MouthStyle.allCases, selected: draft.mouthStyle) { draft.mouthStyle = $0 }
         case .hair:
             optionSection("Hair style", options: HairStyle.allCases, selected: draft.hairStyle) { draft.hairStyle = $0 }
-            swatchSection("Hair color", options: HairColor.allCases, selected: draft.hairColor) { draft.hairColor = $0 }
+            swatchSection(
+                "Hair color",
+                options: HairColor.allCases,
+                selected: draft.hairColor,
+                lockInfo: { lockRequirement($0.requiredAchievementID) }
+            ) { draft.hairColor = $0 }
         case .expression:
+            presetSection("Expression presets")
             optionSection("Mood", options: Expression.allCases, selected: draft.expression) { draft.expression = $0 }
+        case .armorDye:
+            swatchSection(
+                "Armor dye",
+                options: ArmorDye.allCases,
+                selected: draft.armorDye,
+                lockInfo: { lockRequirement($0.requiredAchievementID) }
+            ) { draft.armorDye = $0 }
         case .backdrop:
             optionSection("Backdrop", options: BackdropStyle.allCases, selected: draft.backdropStyle) { draft.backdropStyle = $0 }
+        }
+    }
+
+    /// The achievement id gating a dye, or nil when the dye is free or the
+    /// achievement has already been earned.
+    private func lockRequirement(_ achievementID: String?) -> String? {
+        guard let achievementID else { return nil }
+        let unlocked = achievements.first { $0.id == achievementID }?.isUnlocked ?? false
+        return unlocked ? nil : achievementID
+    }
+
+    @ViewBuilder private var lockBanner: some View {
+        if let lockMessage {
+            HStack(spacing: 8) {
+                Image(systemName: "lock.fill")
+                    .font(.caption.weight(.bold))
+                Text(lockMessage)
+                    .font(.caption.weight(.semibold))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(10)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.dungeonStone)
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
+            )
+            .foregroundStyle(.textSecondary)
+            .transition(.opacity.combined(with: .move(edge: .top)))
         }
     }
 
@@ -278,17 +330,40 @@ struct HeroForgeView: View {
         }
     }
 
+    /// Presets apply a matched expression + brows + mouth in one tap; they
+    /// edit the draft like any other trait, so Cancel still discards.
+    private func presetSection(_ title: String) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            sectionTitle(title)
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                ForEach(ExpressionPreset.allCases, id: \.self) { preset in
+                    optionButton(preset, isSelected: preset.matches(draft)) {
+                        HapticsService.shared.light()
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                            preset.apply(to: &draft)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private func swatchSection<T: ForgeSwatch>(
         _ title: String,
         options: [T],
         selected: T,
+        lockInfo: ((T) -> String?)? = nil,
         onSelect: @escaping (T) -> Void
     ) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             sectionTitle(title)
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 64), spacing: 10)], spacing: 12) {
                 ForEach(options, id: \.self) { option in
-                    swatchButton(option, isSelected: selected == option) {
+                    swatchButton(
+                        option,
+                        isSelected: selected == option,
+                        lockedRequirement: lockInfo?(option)
+                    ) {
                         select(option, apply: onSelect)
                     }
                 }
@@ -340,15 +415,40 @@ struct HeroForgeView: View {
     private func swatchButton<T: ForgeSwatch>(
         _ option: T,
         isSelected: Bool,
+        lockedRequirement: String? = nil,
         action: @escaping () -> Void
     ) -> some View {
-        Button(action: action) {
+        Button {
+            if let requirement = lockedRequirement {
+                HapticsService.shared.warning()
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                    lockMessage = DyeGate.requirementText(for: requirement)
+                }
+            } else {
+                action()
+            }
+        } label: {
             VStack(spacing: 6) {
                 ZStack {
                     Circle()
                         .fill(option.color)
                         .frame(width: 46, height: 46)
                         .overlay(Circle().stroke(Color.black.opacity(0.35), lineWidth: 1))
+                        .opacity(lockedRequirement == nil ? 1 : 0.35)
+                    if let requirement = lockedRequirement {
+                        Image(systemName: "lock.fill")
+                            .font(.callout.weight(.bold))
+                            .foregroundStyle(.textPrimary)
+                            .shadow(color: .black.opacity(0.6), radius: 1)
+                            .accessibilityHidden(true)
+                        Text(DyeGate.achievementTitle(for: requirement))
+                            .font(.system(size: 8, weight: .bold))
+                            .lineLimit(2)
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.textSecondary)
+                            .frame(width: 50)
+                            .offset(y: 16)
+                    }
                     if isSelected {
                         Circle()
                             .strokeBorder(Color.questAmber, lineWidth: 3)
@@ -362,13 +462,17 @@ struct HeroForgeView: View {
                 .frame(width: 54, height: 54)
                 Text(option.displayName)
                     .font(.caption2.weight(.semibold))
-                    .foregroundStyle(.textSecondary)
+                    .foregroundStyle(lockedRequirement == nil ? AnyShapeStyle(.textSecondary) : AnyShapeStyle(Color.dungeonAsh))
                     .lineLimit(1)
             }
             .frame(minWidth: 56, minHeight: 68)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("\(option.displayName) tone")
+        .accessibilityLabel(
+            lockedRequirement == nil
+                ? "\(option.displayName) tone"
+                : "\(option.displayName), locked. \(DyeGate.requirementText(for: lockedRequirement!))"
+        )
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
@@ -415,6 +519,7 @@ struct HeroForgeView: View {
         HapticsService.shared.light()
         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
             apply(value)
+            lockMessage = nil
         }
     }
 
@@ -438,6 +543,7 @@ struct HeroForgeView: View {
 extension SkinTone: ForgeSwatch {}
 extension EyeColor: ForgeSwatch {}
 extension HairColor: ForgeSwatch {}
+extension ArmorDye: ForgeSwatch {}
 
 extension FaceShape: ForgeOption {
     var forgeName: String { displayName }
@@ -506,6 +612,18 @@ extension Expression: ForgeOption {
         case .fierce: return "flame.fill"
         case .happy: return "sun.max.fill"
         case .weary: return "moon.zzz.fill"
+        }
+    }
+}
+
+extension ExpressionPreset: ForgeOption {
+    var forgeName: String { displayName }
+    var forgeSymbol: String {
+        switch self {
+        case .valor:        return "shield.fill"
+        case .battleFrenzy: return "flame.fill"
+        case .triumph:      return "trophy.fill"
+        case .exhausted:    return "moon.zzz.fill"
         }
     }
 }

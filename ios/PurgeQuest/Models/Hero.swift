@@ -90,6 +90,8 @@ final class Hero {
     /// JSON-encoded HeroAppearance. nil or corrupt data decodes to the
     /// designed default for the archetype.
     var appearanceData: Data?
+    /// Permanent Titan Blade upgrade: doubles the size of the held weapon.
+    var titanWeaponUnlocked: Bool = false
 
     var heroClass: HeroClass {
         get { HeroClass(rawValue: heroClassRaw) ?? .purgeKnight }
@@ -131,6 +133,7 @@ final class Hero {
         self.equippedSkinID = nil
         self.createdAt = Date()
         self.appearanceData = nil
+        self.titanWeaponUnlocked = false
     }
 
     /// XP needed to reach a given level (cumulative).
