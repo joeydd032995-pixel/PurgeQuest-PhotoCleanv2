@@ -83,6 +83,12 @@ final class CombatViewModel {
     var spareFlashTrigger: Int = 0
     var screenShakeTrigger: Int = 0
 
+    // Duplicate group encounters keyed by representative asset ID
+    var groupsByID: [String: DuplicateGroup] = [:]
+
+    // Dungeon theme for this dive — presentation and weighting only.
+    var theme: DungeonTheme = .wildGallery
+
     // Session record — one row per dive, finalized when the run ends.
     private var activeSession: CombatSession?
     private var sessionContext: ModelContext?
@@ -132,7 +138,11 @@ final class CombatViewModel {
         }
         let thumbSize = CGSize(width: 600, height: 600)
         let items = await svc.buildMediaItems(from: fresh, thumbSize: thumbSize)
-        self.allItems = items
+        let batch = await classifyAndGroup(items, context: context)
+        self.groupsByID = batch.groups
+        self.theme = batch.theme
+        self.allItems = batch.queueItems
+        BestiaryService.recordEncounters(for: batch.allItems, context: context)
         self.queueIndex = 0
         loadNextRoom()
     }
@@ -232,7 +242,7 @@ final class CombatViewModel {
         hero.currentHP = heroCurrentHP
         pendingDecisions.append(PendingDecision(item: item, willDelete: false))
         // Persist the spare so this monster is skipped on every future dive.
-        context.insert(SparedMediaRecord(assetIdentifier: item.id))
+        context.insert(SparedMediaRecord(assetIdentifier: item.id, monsterType: item.monsterType))
         try? context.save()
         spareFlashTrigger &+= 1
         screenShakeTrigger &+= 1
@@ -242,6 +252,61 @@ final class CombatViewModel {
         }
         HapticsService.shared.medium()
         pushLiveActivityUpdate()
+        advance()
+    }
+
+    /// The duplicate group this asset represents, if any.
+    func group(for item: MediaItem) -> DuplicateGroup? {
+        groupsByID[item.id]
+    }
+
+    /// True when the top encounter is a duplicate group card.
+    var topItemIsGroup: Bool {
+        guard let top = topItem else { return false }
+        return groupsByID[top.id] != nil
+    }
+
+    /// Confirms explicit per-copy decisions for a duplicate group encounter.
+    /// The suggested survivor is never auto-applied — each copy the player
+    /// marked for deletion is recorded individually, and every spare persists
+    /// a record so the copies never resurface.
+    func commitGroupDecisions(_ group: DuplicateGroup, decisions: [String: Bool], hero: Hero, context: ModelContext) {
+        var slays = 0
+        var spares = 0
+        for member in group.members {
+            if decisions[member.id] ?? false {
+                combo += 1
+                peakCombo = max(peakCombo, combo)
+                hero.highestCombo = max(hero.highestCombo, peakCombo)
+                let earned = reward(for: member, hero: hero, combo: combo)
+                pendingDecisions.append(
+                    PendingDecision(item: member, willDelete: true, xpReward: earned.xp, gemReward: earned.gems)
+                )
+                slays += 1
+            } else {
+                pendingDecisions.append(PendingDecision(item: member, willDelete: false))
+                context.insert(SparedMediaRecord(assetIdentifier: member.id, monsterType: member.monsterType))
+                spares += 1
+            }
+        }
+        if slays > 0 {
+            deleteFlashTrigger &+= 1
+            HapticsService.shared.light()
+            if combo > 0 && combo % 5 == 0 { HapticsService.shared.comboBurst() }
+        }
+        if spares > 0 {
+            perfectRoom = false
+            heroCurrentHP = max(0, heroCurrentHP - group.monsterType.attackDamage)
+            hero.currentHP = heroCurrentHP
+            spareFlashTrigger &+= 1
+            screenShakeTrigger &+= 1
+        }
+        try? context.save()
+        pushLiveActivityUpdate()
+        if heroCurrentHP <= 0 {
+            enterDefeat(context: context)
+            return
+        }
         advance()
     }
 
@@ -274,6 +339,106 @@ final class CombatViewModel {
             phase = .roomSummary
             HapticsService.shared.success()
         }
+    }
+
+    // MARK: - Classification pipeline
+
+    private struct ClassifiedBatch {
+        let allItems: [MediaItem]
+        let queueItems: [MediaItem]
+        let groups: [String: DuplicateGroup]
+        let theme: DungeonTheme
+    }
+
+    /// Runs the two-stage duplicate pipeline and the metadata classifier,
+    /// folds clusters into single group encounters, picks the dungeon theme,
+    /// and orders the queue so the theme's family leads (presentation only —
+    /// ordering never changes what the player may decide).
+    private func classifyAndGroup(_ items: [MediaItem], context: ModelContext) async -> ClassifiedBatch {
+        let cached = MediaFingerprintStore.loadCached(in: context)
+
+        var fingerprints: [MediaFingerprint] = []
+        fingerprints.reserveCapacity(items.count)
+        for item in items {
+            let dHash = cached[item.id]?.dHash ?? item.thumbnail.flatMap(MediaFingerprinter.dHash)
+            fingerprints.append(MediaFingerprint(
+                assetID: item.id,
+                byteSize: item.estimatedBytes,
+                pixelWidth: item.pixelWidth,
+                pixelHeight: item.pixelHeight,
+                durationSeconds: item.durationSeconds,
+                creationDate: item.creationDate,
+                isFavorite: item.isFavorite,
+                isScreenshot: item.isScreenshot,
+                hasEdits: item.hasEdits,
+                isScreenRecording: item.isScreenRecording,
+                dHash: dHash,
+                sharpness: item.sharpness,
+                contentHash: cached[item.id]?.contentHash
+            ))
+        }
+
+        // Stage A confirmation: hash metadata-equal candidates only (bounded IO).
+        let alreadyHashed = Set(cached.compactMap { $0.value.contentHash == nil ? nil : $0.key })
+        let candidateIDs = DuplicateDetectionEngine.metadataExactCandidates(in: fingerprints)
+            .flatMap { $0.map(\.assetID) }
+            .filter { !alreadyHashed.contains($0) }
+        for id in candidateIDs.prefix(80) {
+            guard let index = fingerprints.firstIndex(where: { $0.assetID == id }),
+                  let asset = PHAsset.fetchAssets(withLocalIdentifiers: [id], options: nil).firstObject,
+                  let hash = await PhotoLibraryService.shared.contentHash(for: asset) else { continue }
+            fingerprints[index] = fingerprints[index].withContentHash(hash)
+        }
+        MediaFingerprintStore.persist(fingerprints, in: context)
+
+        let library = MonsterClassifier.classify(items: items, fingerprints: fingerprints)
+        var classified = items
+        for i in classified.indices {
+            if let c = library.classifications[classified[i].id] {
+                classified[i].classification = c
+                classified[i].monsterType = c.monsterType
+            }
+        }
+        let byID = Dictionary(uniqueKeysWithValues: classified.map { ($0.id, $0) })
+
+        // Fold clusters into one group encounter each (representative = oldest).
+        var groups: [String: DuplicateGroup] = [:]
+        var nonRepresentatives = Set<String>()
+        for cluster in library.clusters where cluster.memberIDs.count >= 2 {
+            let members = cluster.memberIDs.compactMap { byID[$0] }
+            guard let representative = members.first else { continue }
+            groups[representative.id] = DuplicateGroup(
+                representativeID: representative.id,
+                members: members,
+                survivorID: library.recommendedSurvivorIDs[representative.id]
+            )
+            nonRepresentatives.formUnion(cluster.memberIDs.dropFirst())
+        }
+
+        // Theme from composition, with duplicate share raised by cluster membership.
+        var composition = DungeonThemeEngine.composition(for: classified)
+        if !classified.isEmpty {
+            composition.duplicateShare = Double(nonRepresentatives.count) / Double(classified.count)
+        }
+        let theme = DungeonThemeEngine.theme(for: composition)
+
+        // Stable partition: the theme's family leads the encounter queue.
+        var themed: [MediaItem] = []
+        var rest: [MediaItem] = []
+        for item in classified where !nonRepresentatives.contains(item.id) {
+            if DungeonThemeEngine.isThemed(item, theme: theme) {
+                themed.append(item)
+            } else {
+                rest.append(item)
+            }
+        }
+
+        return ClassifiedBatch(
+            allItems: classified,
+            queueItems: themed + rest,
+            groups: groups,
+            theme: theme
+        )
     }
 
     func toggleDecision(for id: String) {

@@ -17,6 +17,7 @@ struct DashboardView: View {
     @Query private var cosmetics: [CosmeticItem]
 
     @State private var libraryStats: LibraryStats = .init()
+    @State private var scoutedTheme: DungeonTheme? = nil
 
     private var hero: Hero? { heroes.first }
     private var equippedItems: [CosmeticItem] { cosmetics.filter { $0.isEquipped } }
@@ -29,6 +30,7 @@ struct DashboardView: View {
                     SeasonalEventBanner(event: event)
                 }
                 heroStrip
+                themeStrip
                 questsPanel
                 enterDungeonButton
                 Color.clear.frame(height: 16)
@@ -40,6 +42,7 @@ struct DashboardView: View {
         .background(DungeonBackgroundView())
         .task {
             libraryStats = PhotoLibraryService.shared.fetchLibraryStats()
+            scoutedTheme = DungeonThemeEngine.theme(for: PhotoLibraryService.shared.fetchLibraryComposition())
             updateStreak()
             SeasonalEventService.shared.refresh()
             WidgetSnapshotService.write(hero: hero, quests: quests)
@@ -143,6 +146,40 @@ struct DashboardView: View {
                         .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmber.opacity(0.18), lineWidth: 1).padding(2))
                 )
             }
+        }
+    }
+
+    // MARK: - Dungeon theme (auto-scouted)
+
+    @ViewBuilder
+    private var themeStrip: some View {
+        if let theme = scoutedTheme {
+            HStack(spacing: 12) {
+                Image(systemName: theme.symbol)
+                    .font(.headline.weight(.bold))
+                    .foregroundStyle(theme.tintColor)
+                    .frame(width: 40, height: 40)
+                    .background(RoundedRectangle(cornerRadius: 9).fill(Color.dungeonStoneLight))
+                    .overlay(RoundedRectangle(cornerRadius: 9).stroke(theme.tintColor.opacity(0.5), lineWidth: 1))
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("NEXT DIVE · \(theme.displayName)")
+                        .font(.dungeonCaption.weight(.bold))
+                        .foregroundStyle(.textPrimary)
+                    Text(theme.tagline)
+                        .font(.caption)
+                        .foregroundStyle(.textSecondary)
+                        .lineLimit(2)
+                }
+                Spacer()
+            }
+            .padding(12)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.dungeonStone.opacity(0.85))
+                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(theme.tintColor.opacity(0.35), lineWidth: 1))
+            )
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Next dive: \(theme.displayName). \(theme.tagline)")
         }
     }
 

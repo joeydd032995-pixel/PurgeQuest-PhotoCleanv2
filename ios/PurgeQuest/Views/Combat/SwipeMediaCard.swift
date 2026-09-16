@@ -168,12 +168,32 @@ struct SwipeMediaCard: View {
     }
 
     private var bottomMetaBar: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 5) {
             Text("“\(dynamicFlavor ?? item.monsterType.flavor)”")
                 .font(.callout.italic())
                 .foregroundStyle(.white.opacity(0.95))
                 .lineLimit(3)
                 .animation(.easeInOut(duration: 0.25), value: dynamicFlavor)
+            // "Why did this appear?" — plain-language reason from the classifier.
+            if let why = item.classification?.whyText {
+                HStack(alignment: .top, spacing: 5) {
+                    Image(systemName: "questionmark.circle.fill")
+                        .font(.caption2.weight(.bold))
+                        .foregroundStyle(.white.opacity(0.7))
+                    Text(why)
+                        .font(.caption2.weight(.semibold))
+                        .foregroundStyle(.white.opacity(0.92))
+                        .lineLimit(2)
+                }
+            }
+            if item.classification?.requiresCarefulReview == true {
+                Label("Review carefully", systemImage: "eye.fill")
+                    .font(.caption2.weight(.black))
+                    .padding(.horizontal, 8).padding(.vertical, 4)
+                    .background(RoundedRectangle(cornerRadius: 6).fill(Color.questAmber.opacity(0.92)))
+                    .foregroundStyle(.dungeonVoid)
+                    .accessibilityHint("This monster deserves a close look before deciding")
+            }
             HStack(spacing: 8) {
                 Label(item.formattedSize, systemImage: "internaldrive.fill")
                     .font(.caption2.weight(.bold))

@@ -68,6 +68,10 @@ struct ContentView: View {
                 .tabItem { Label("Hero", systemImage: "figure.fencing") }
                 .tag(MainTab.hero)
 
+            NavigationStack { BestiaryView() }
+                .tabItem { Label("Bestiary", systemImage: "book.closed.fill") }
+                .tag(MainTab.bestiary)
+
             NavigationStack { ShopView() }
                 .tabItem { Label("Armory", systemImage: "shield.lefthalf.filled") }
                 .tag(MainTab.shop)

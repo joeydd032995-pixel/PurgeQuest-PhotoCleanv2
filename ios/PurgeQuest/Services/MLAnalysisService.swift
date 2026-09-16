@@ -2,8 +2,10 @@
 //  MLAnalysisService.swift
 //  PurgeQuest
 //
-//  Lightweight on-device classifier that turns a PHAsset + thumbnail into a MonsterType.
-//  TODO: Replace heuristics with CoreML BlurClassifier.mlmodel + VideoQualityScorer.mlmodel.
+//  Lightweight on-device signal extractors. Classification (which monster a
+//  signal summons) lives in MonsterClassifier; this file only measures.
+//  TODO: Replace the blur/luminance heuristics with CoreML
+//  BlurClassifier.mlmodel + VideoQualityScorer.mlmodel when available.
 //
 
 import Foundation
@@ -14,69 +16,19 @@ import Vision
 
 enum MLAnalysisService {
 
-    nonisolated static func classifyPhoto(asset: PHAsset, thumbnail: UIImage?) -> MonsterType {
-        // Ancient Archive — over 3 years old
-        if let date = asset.creationDate,
-           let years = Calendar.current.dateComponents([.year], from: date, to: Date()).year,
-           years >= 3 {
-            return .ancientArchive
-        }
-        // Screenshot detection: media subtype flag is the canonical signal
-        if asset.mediaSubtypes.contains(.photoScreenshot) {
-            return .screenshotSpecter
-        }
-        // Heuristic blur / dark detection on the thumbnail (cheap)
-        if let thumb = thumbnail {
-            if isLikelyBlurry(image: thumb) { return .blurBeast }
-            if averageLuminance(image: thumb) < 0.18 { return .darkWraith }
-        }
-        // Tall narrow ratio = often a screenshot-y photo from the web
-        let ratio = Double(asset.pixelWidth) / max(1.0, Double(asset.pixelHeight))
-        if ratio < 0.6 { return .lowQualityLich }
-        // Default
-        return .blurBeast
-    }
+    // MARK: - Signal extractors
 
-    nonisolated static func classifyVideo(asset: PHAsset, estimatedBytes: Int64) -> MonsterType {
-        let duration = asset.duration
-
-        // Timelapse / slow-mo
-        if asset.playbackStyle == .videoLooping || asset.mediaSubtypes.contains(.videoTimelapse) {
-            return .timelapsePhantom
-        }
-        if asset.mediaSubtypes.contains(.videoHighFrameRate) {
-            return .timelapsePhantom
-        }
-        // Memory hog: > 500MB
-        if estimatedBytes > 500_000_000 {
-            return .memoryHogMinotaur
-        }
-        // Long take: > 2 minutes
-        if duration > 120 {
-            return .longTakeLeviathan
-        }
-        // Boring blooper: < 5s
-        if duration > 0 && duration < 5 {
-            return .boringBlooper
-        }
-        // Heuristic: large-ish + medium duration => video vampire
-        if estimatedBytes > 100_000_000 {
-            return .videoVampire
-        }
-        // TODO: Integrate motion/shake analysis via AVFoundation + Vision feature points
-        return .shakyGhost
-    }
-
-    // MARK: - Heuristics
-
-    /// Laplacian-variance-style blur estimate on a downsampled thumbnail.
-    nonisolated static func isLikelyBlurry(image: UIImage) -> Bool {
-        guard let cg = image.cgImage else { return false }
+    /// Laplacian variance on a downsampled thumbnail — higher means sharper.
+    nonisolated static func sharpnessVariance(image: UIImage) -> Double {
+        guard let cg = image.cgImage else { return 100 }
         let target = CGSize(width: 80, height: 80)
-        guard let scaled = downsample(cgImage: cg, to: target) else { return false }
-        let variance = laplacianVariance(cgImage: scaled)
-        // Empirical threshold; lower variance => blurrier.
-        return variance < 9.0
+        guard let scaled = downsample(cgImage: cg, to: target) else { return 100 }
+        return laplacianVariance(cgImage: scaled)
+    }
+
+    /// Blur estimate on a downsampled thumbnail.
+    nonisolated static func isLikelyBlurry(image: UIImage) -> Bool {
+        sharpnessVariance(image: image) < 9.0
     }
 
     nonisolated static func averageLuminance(image: UIImage) -> Double {

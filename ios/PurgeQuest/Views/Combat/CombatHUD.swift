@@ -12,6 +12,7 @@ struct CombatHUD: View {
     let roomNumber: Int
     let totalRooms: Int
     let remaining: Int
+    var themeName: String? = nil
     let onExit: () -> Void
 
     var body: some View {
@@ -36,6 +37,12 @@ struct CombatHUD: View {
                         Text("· \(remaining) remaining")
                             .font(.caption)
                             .foregroundStyle(.textSecondary)
+                        if let themeName {
+                            Text("· \(themeName)")
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(.questAmber)
+                                .lineLimit(1)
+                        }
                         Spacer()
                     }
                 }

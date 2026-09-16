@@ -100,6 +100,11 @@ struct CombatView: View {
 
     private var fightingView: some View {
         VStack(spacing: 12) {
+            if combat.roomNumber == 1 {
+                themeBanner
+                    .padding(.horizontal, 14)
+                    .padding(.top, 8)
+            }
             CombatHUD(
                 heroHP: combat.heroCurrentHP,
                 heroMaxHP: combat.heroMaxHP,
@@ -107,10 +112,11 @@ struct CombatView: View {
                 roomNumber: combat.roomNumber,
                 totalRooms: CombatViewModel.totalRoomsPerSession,
                 remaining: combat.roomRemaining,
+                themeName: combat.theme.displayName,
                 onExit: { exit() }
             )
             .padding(.horizontal, 14)
-            .padding(.top, 8)
+            .padding(.top, combat.roomNumber == 1 ? 0 : 8)
 
             ZStack {
                 if let next = combat.nextItem {
@@ -119,46 +125,89 @@ struct CombatView: View {
                         .padding(.vertical, 28)
                 }
                 if let top = combat.topItem, let hero = heroes.first {
-                    SwipeMediaCard(
-                        item: top,
-                        isFront: true,
-                        onDelete: { combat.decideDelete(top, hero: hero) },
-                        onSpare: {
-                            if let hero = heroes.first { combat.decideSpare(top, hero: hero, context: modelContext) }
+                    if let group = combat.group(for: top) {
+                        DuplicateGroupCard(group: group) { decisions in
+                            combat.commitGroupDecisions(group, decisions: decisions, hero: hero, context: modelContext)
                         }
-                    )
-                    .id(top.id)
-                    .transition(.scale.combined(with: .opacity))
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 16)
+                        .id(top.id)
+                        .transition(.scale.combined(with: .opacity))
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 16)
+                    } else {
+                        SwipeMediaCard(
+                            item: top,
+                            isFront: true,
+                            onDelete: { combat.decideDelete(top, hero: hero) },
+                            onSpare: {
+                                if let hero = heroes.first { combat.decideSpare(top, hero: hero, context: modelContext) }
+                            }
+                        )
+                        .id(top.id)
+                        .transition(.scale.combined(with: .opacity))
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 16)
+                    }
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-            HStack(spacing: 16) {
-                Button { if let top = combat.topItem, let hero = heroes.first { combat.decideDelete(top, hero: hero) } } label: {
-                    Label("DELETE", systemImage: "xmark")
-                        .font(.headline.weight(.heavy))
-                        .frame(maxWidth: .infinity).padding(.vertical, 14)
-                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.combatCrimson))
-                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.combatCrimsonDeep, lineWidth: 1))
-                        .foregroundStyle(.white)
-                }
-                .accessibilityHint("Mark this item for deletion")
+            // Duplicate groups resolve through their own per-copy controls.
+            if !combat.topItemIsGroup {
+                HStack(spacing: 16) {
+                    Button { if let top = combat.topItem, let hero = heroes.first { combat.decideDelete(top, hero: hero) } } label: {
+                        Label("DELETE", systemImage: "xmark")
+                            .font(.headline.weight(.heavy))
+                            .frame(maxWidth: .infinity).padding(.vertical, 14)
+                            .background(RoundedRectangle(cornerRadius: 10).fill(Color.combatCrimson))
+                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.combatCrimsonDeep, lineWidth: 1))
+                            .foregroundStyle(.white)
+                    }
+                    .accessibilityHint("Mark this item for deletion")
 
-                Button { if let top = combat.topItem, let hero = heroes.first { combat.decideSpare(top, hero: hero, context: modelContext) } } label: {
-                    Label("SPARE", systemImage: "shield.fill")
-                        .font(.headline.weight(.heavy))
-                        .frame(maxWidth: .infinity).padding(.vertical, 14)
-                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.dungeonStoneLight))
-                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
-                        .foregroundStyle(.textPrimary)
+                    Button { if let top = combat.topItem, let hero = heroes.first { combat.decideSpare(top, hero: hero, context: modelContext) } } label: {
+                        Label("SPARE", systemImage: "shield.fill")
+                            .font(.headline.weight(.heavy))
+                            .frame(maxWidth: .infinity).padding(.vertical, 14)
+                            .background(RoundedRectangle(cornerRadius: 10).fill(Color.dungeonStoneLight))
+                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
+                            .foregroundStyle(.textPrimary)
+                    }
+                    .accessibilityHint("Spare this item, take damage")
                 }
-                .accessibilityHint("Spare this item, take damage")
+                .padding(.horizontal, 16)
+                .padding(.bottom, 14)
             }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 14)
         }
+    }
+
+    /// Dive-start banner naming the auto-detected dungeon theme.
+    private var themeBanner: some View {
+        HStack(spacing: 10) {
+            Image(systemName: combat.theme.symbol)
+                .font(.headline.weight(.bold))
+                .foregroundStyle(combat.theme.tintColor)
+                .frame(width: 34, height: 34)
+                .background(RoundedRectangle(cornerRadius: 8).fill(Color.dungeonStone))
+                .overlay(RoundedRectangle(cornerRadius: 8).stroke(combat.theme.tintColor.opacity(0.5), lineWidth: 1))
+            VStack(alignment: .leading, spacing: 2) {
+                Text(combat.theme.displayName)
+                    .font(.dungeonCaption.weight(.bold))
+                    .foregroundStyle(.textPrimary)
+                Text(combat.theme.tagline)
+                    .font(.caption2)
+                    .foregroundStyle(.textSecondary)
+                    .lineLimit(1)
+            }
+            Spacer()
+        }
+        .padding(10)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.dungeonVoid.opacity(0.85))
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(combat.theme.tintColor.opacity(0.45), lineWidth: 1))
+        )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Dungeon theme: \(combat.theme.displayName). \(combat.theme.tagline)")
     }
 
     private var sessionCompleteView: some View {

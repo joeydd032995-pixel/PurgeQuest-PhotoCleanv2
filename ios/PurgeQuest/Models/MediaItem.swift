@@ -2,6 +2,9 @@
 //  MediaItem.swift
 //  PurgeQuest
 //
+//  Unified, in-memory model for a fetched photo or video, paired with its
+//  monster classification and the cheap signals the classifier relies on.
+//
 
 import Foundation
 import Photos
@@ -19,10 +22,23 @@ struct MediaItem: Identifiable, Equatable {
     let isFavorite: Bool
     let playbackStyle: Int           // PHAsset.PlaybackStyle.rawValue
 
-    var monsterType: MonsterType
+    // Cheap explainability signals captured at fetch time.
+    var isScreenshot: Bool = false
+    var hasEdits: Bool = false
+    var isScreenRecording: Bool = false
+    var isLivePhoto: Bool = false
+    var isLooping: Bool = false
+    var isHighFrameRate: Bool = false
+    var sharpness: Double? = nil     // Laplacian variance of the thumbnail
+    var luminance: Double? = nil     // Average thumbnail luminance
+
+    var monsterType: MonsterType = .blurBeast
+    var classification: MonsterClassification? = nil
     var thumbnail: UIImage?
 
     static func == (lhs: MediaItem, rhs: MediaItem) -> Bool { lhs.id == rhs.id }
+
+    var longEdge: Int { max(pixelWidth, pixelHeight) }
 
     var formattedSize: String {
         ByteCountFormatter.string(fromByteCount: estimatedBytes, countStyle: .file)
