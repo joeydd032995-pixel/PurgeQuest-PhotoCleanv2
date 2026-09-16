@@ -34,7 +34,7 @@ struct CharacterAvatarView: View {
     var body: some View {
         ZStack {
             backdrop
-            MiniAvatarView(hero: hero, equipped: equipped, size: size, appearance: appearance)
+            HeroSpriteView(hero: hero, appearance: appearance, equipped: equipped, size: size * 0.8)
                 .frame(width: size * 0.62, height: size * 0.72)
 
             if let head = equipped.first(where: { $0.type == .head }) {
@@ -106,7 +106,7 @@ struct CharacterAvatarView: View {
                             .stroke(accent.opacity(0.25), lineWidth: 1)
                             .padding(4)
                     )
-                Image(systemName: hero.archetype.symbol)
+                Image(systemName: hero.race.symbol)
                     .font(.system(size: size * 0.14, weight: .bold))
                     .foregroundStyle(accent.opacity(0.35))
                     .offset(y: size * 0.28)

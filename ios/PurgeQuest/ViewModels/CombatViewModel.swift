@@ -221,15 +221,15 @@ final class CombatViewModel {
         let multiplier = max(1, min(combo / 5 + 1, 3))
 
         var xp = item.monsterType.xpReward * multiplier
-        if hero.heroClass == .archivist, item.kind == .photo { xp = Int(Double(xp) * 1.20) }
-        if hero.heroClass == .cinematographer, item.kind == .video { xp = Int(Double(xp) * 1.20) }
-        if hero.heroClass == .purgeKnight, item.monsterType.isElite { xp = Int(Double(xp) * 1.30) }
+        let classBonus = hero.heroClass.xpMultiplier(photo: item.kind == .photo, monsterType: item.monsterType)
+        if classBonus > 1.0 { xp = Int(Double(xp) * classBonus) }
         let seasonalBonus = SeasonalEventService.shared.xpMultiplier(for: item.monsterType)
         if seasonalBonus > 1.0 { xp = Int(Double(xp) * seasonalBonus) }
 
         let mb = Double(item.estimatedBytes) / 1_048_576.0
         var gems = Int(mb.rounded()) * multiplier
-        if hero.heroClass == .digitalHermit { gems = Int(Double(gems) * 1.10) }
+        let gemBonus = hero.heroClass.gemMultiplier
+        if gemBonus > 1.0 { gems = Int(Double(gems) * gemBonus) }
 
         return (xp, gems)
     }

@@ -52,7 +52,8 @@ enum GameDataService {
 
     /// Full cosmetic catalog. Inserted on first launch and topped up on app updates
     /// so new wearables appear without wiping player progress.
-    private static var cosmeticSeeds: [CosmeticItem] { [
+    private static var cosmeticSeeds: [CosmeticItem] {
+        let base: [CosmeticItem] = [
         CosmeticItem(id: "skin.iron",      name: "Iron Vestments",     subtitle: "Default armor. Sturdy and bold.",      type: .skin,   iconName: "shield.lefthalf.filled", priceGems: 0,    isUnlocked: true),
         CosmeticItem(id: "skin.embers",    name: "Ember Cloak",        subtitle: "Heat-treated weave. Pairs with ember headgear.", type: .skin, iconName: "flame.fill",             priceGems: 250),
         CosmeticItem(id: "skin.archivist", name: "Archivist Robes",    subtitle: "Catalog-grade cloth for methodical purges.", type: .skin, iconName: "books.vertical.fill",    priceGems: 400),
@@ -91,8 +92,15 @@ enum GameDataService {
         CosmeticItem(id: "fx.hearts",           name: "Heartbreak Trail", subtitle: "A Valentine trail follows the blade.",  type: .effect, iconName: "heart.fill",               priceGems: 550),
         // Permanent character upgrades. Ownership lives on the hero record;
         // the Titan Blade additionally requires an earned achievement.
-        CosmeticItem(id: "upgrade.titanBlade",  name: "Titan Blade",     subtitle: "Doubles the size of your held weapon.",  type: .upgrade, iconName: "arrow.up.left.and.arrow.down.right", priceGems: 3000)
-    ] }
+        CosmeticItem(id: "upgrade.titanBlade",  name: "Titan Blade",     subtitle: "Doubles the size of your held weapon.",  type: .upgrade, iconName: "arrow.up.left.and.arrow.down.right", priceGems: 3000),
+        ]
+        // Race gear: 40 staves, 40 shields, each race's signature weapon, and
+        // the nine race armor sets. Seeded alongside the classic cosmetics so
+        // everything shares one economy and nothing is ever lost once owned.
+        return base + GearCatalog.cosmeticSeeds
+    }
+
+    /// Base cosmetic catalog (icon-only classics + seasonal + upgrades).
 
     // MARK: - Achievements
 

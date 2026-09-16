@@ -2,6 +2,12 @@
 //  OnboardingView.swift
 //  PurgeQuest
 //
+//  Six-step onboarding: intro, photo permission, race picker (nine
+//  illustrated races), class picker (17 variants grouped by discipline),
+//  appearance customization (paint job + core recolors), and the swipe
+//  tutorial. Choices persist via UserDefaults and land on the hero record
+//  at first bootstrap.
+//
 
 import SwiftUI
 import Photos
@@ -10,11 +16,13 @@ struct OnboardingView: View {
     @Environment(AppState.self) private var appState
     @State private var pageIndex: Int = 0
     @State private var requestingPermission: Bool = false
-    @State private var selectedClass: HeroClass = .purgeKnight
-    @State private var selectedArchetype: CharacterArchetype = .knight
+    @State private var selectedRace: HeroRace = .valkyrie
+    @State private var selectedClass: HeroClass = .paladinHoly
     @State private var heroName: String = ""
+    @State private var draftLook: HeroAppearance = .default(for: .valkyrie)
+    @State private var previewHero: Hero = Hero()
 
-    private let totalPages = 5
+    private let totalPages = 6
 
     var body: some View {
         ZStack {
@@ -34,9 +42,10 @@ struct OnboardingView: View {
                 TabView(selection: $pageIndex) {
                     introPage.tag(0)
                     permissionPage.tag(1)
-                    classPage.tag(2)
-                    characterPage.tag(3)
-                    swipeTutorialPage.tag(4)
+                    racePage.tag(2)
+                    classPage.tag(3)
+                    lookPage.tag(4)
+                    swipeTutorialPage.tag(5)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .animation(.easeInOut, value: pageIndex)
@@ -139,110 +148,118 @@ struct OnboardingView: View {
             .foregroundStyle(tint)
     }
 
+    // MARK: Race page
+
+    private var racePage: some View {
+        VStack(spacing: 14) {
+            Text("Choose Your Race")
+                .font(.dungeonTitle)
+                .foregroundStyle(.textPrimary)
+                .padding(.top, 20)
+            Text("Nine illustrated races. Three paint jobs each.")
+                .font(.callout)
+                .foregroundStyle(.textSecondary)
+
+            ScrollView {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: 12)], spacing: 12) {
+                    ForEach(HeroRace.allCases, id: \.self) { race in
+                        raceCard(race)
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 4)
+            }
+        }
+    }
+
+    private func raceCard(_ race: HeroRace) -> some View {
+        let selected = selectedRace == race
+        return Button {
+            HapticsService.shared.light()
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                selectedRace = race
+                selectedClass = race.recommendedClass
+                draftLook = .default(for: race)
+            }
+        } label: {
+            VStack(spacing: 8) {
+                HeroSpriteView(hero: previewHero, appearance: .default(for: race), size: 104, isAnimated: false)
+                    .frame(height: 104)
+                Text(race.displayName)
+                    .font(.headline)
+                    .foregroundStyle(.textPrimary)
+                Text(race.tagline)
+                    .font(.caption)
+                    .foregroundStyle(.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+            }
+            .padding(12)
+            .frame(maxWidth: .infinity)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.dungeonStone)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(selected ? race.accent : Color.dungeonAsh, lineWidth: selected ? 2 : 1)
+                    )
+            )
+            .overlay(alignment: .topTrailing) {
+                if selected {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.title3)
+                        .foregroundStyle(race.accent)
+                        .padding(8)
+                }
+            }
+        }
+        .buttonStyle(.plain)
+    }
+
+    // MARK: Class page
+
     private var classPage: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 14) {
             Text("Choose Your Class")
                 .font(.dungeonTitle)
                 .foregroundStyle(.textPrimary)
-                .padding(.top, 24)
-            Text("Each class grants a passive bonus.")
-                .font(.callout)
-                .foregroundStyle(.textSecondary)
+                .padding(.top, 20)
 
             TextField("Hero name", text: $heroName)
                 .textFieldStyle(.plain)
                 .padding(12)
                 .background(Color.dungeonStone, in: RoundedRectangle(cornerRadius: 10))
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
-                .padding(.horizontal, 24)
+                .padding(.horizontal, 20)
 
             ScrollView {
-                VStack(spacing: 10) {
-                    ForEach(HeroClass.allCases, id: \.self) { hc in
-                        classRow(hc)
+                VStack(spacing: 16) {
+                    ForEach(HeroDiscipline.allCases, id: \.self) { discipline in
+                        VStack(alignment: .leading, spacing: 8) {
+                            Label(discipline.displayName, systemImage: discipline.symbol)
+                                .font(.caption.weight(.bold))
+                                .tracking(0.8)
+                                .foregroundStyle(.textSecondary)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            ForEach(HeroClass.allCases.filter { $0.discipline == discipline }, id: \.self) { hc in
+                                classRow(hc)
+                            }
+                        }
                     }
                 }
                 .padding(.horizontal, 20)
-                .padding(.top, 6)
+                .padding(.top, 4)
             }
         }
-    }
-
-    private var characterPage: some View {
-        VStack(spacing: 16) {
-            Text("Choose Your Character")
-                .font(.dungeonTitle)
-                .foregroundStyle(.textPrimary)
-                .padding(.top, 24)
-            Text("Who ventures into the dungeon?")
-                .font(.callout)
-                .foregroundStyle(.textSecondary)
-
-            VStack(spacing: 14) {
-                ForEach(CharacterArchetype.allCases, id: \.self) { arch in
-                    characterCard(arch)
-                }
-            }
-            .padding(.horizontal, 24)
-            Spacer()
-        }
-    }
-
-    private func characterCard(_ arch: CharacterArchetype) -> some View {
-        let selected = selectedArchetype == arch
-        let tint: Color = arch == .knight ? .questAmber : .xpViolet
-        return Button {
-            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                selectedArchetype = arch
-            }
-            HapticsService.shared.light()
-        } label: {
-            HStack(spacing: 16) {
-                Image(systemName: arch.symbol)
-                    .font(.system(size: 32, weight: .bold))
-                    .foregroundStyle(tint)
-                    .frame(width: 64, height: 64)
-                    .background(
-                        Circle()
-                            .fill(tint.opacity(0.14))
-                            .overlay(Circle().stroke(tint.opacity(selected ? 0.8 : 0.4), lineWidth: 1.5))
-                            .overlay(Circle().stroke(tint.opacity(selected ? 0.4 : 0.2), lineWidth: 1).padding(4))
-                    )
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(arch.displayName)
-                        .font(.dungeonHeader)
-                        .foregroundStyle(.textPrimary)
-                    Text(arch.tagline)
-                        .font(.callout)
-                        .foregroundStyle(.textSecondary)
-                }
-                Spacer()
-                if selected {
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.title3)
-                        .foregroundStyle(tint)
-                }
-            }
-            .padding(16)
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.dungeonStone)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(selected ? tint : Color.dungeonAsh, lineWidth: selected ? 2 : 1)
-                    )
-            )
-        }
-        .buttonStyle(.plain)
     }
 
     private func classRow(_ hc: HeroClass) -> some View {
         let selected = selectedClass == hc
         return Button {
+            HapticsService.shared.light()
             withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
                 selectedClass = hc
             }
-            HapticsService.shared.light()
         } label: {
             HStack(spacing: 14) {
                 Image(systemName: hc.symbol)
@@ -274,6 +291,106 @@ struct OnboardingView: View {
             )
         }
         .buttonStyle(.plain)
+    }
+
+    // MARK: Look page
+
+    private var lookPage: some View {
+        VStack(spacing: 14) {
+            Text("Shape Your Look")
+                .font(.dungeonTitle)
+                .foregroundStyle(.textPrimary)
+                .padding(.top, 20)
+
+            HeroSpriteView(hero: previewHero, appearance: draftLook, size: 190)
+                .frame(height: 190)
+
+            ScrollView {
+                VStack(spacing: 16) {
+                    paintChips
+                    swatchRow("Skin tone", Array(SkinTone.allCases), selection: draftLook.skinTone) { draftLook.skinTone = $0 }
+                    swatchRow("Hair color", Array(HairColor.allCases), selection: draftLook.hairColor) { draftLook.hairColor = $0 }
+                    swatchRow("Armor dye", Array(ArmorDye.allCases), selection: draftLook.armorDye) { draftLook.armorDye = $0 }
+                    Text("Deep customization lives in the Hero Forge after onboarding.")
+                        .font(.caption2)
+                        .foregroundStyle(.textTertiary)
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 4)
+            }
+        }
+    }
+
+    private var paintChips: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("PAINT JOB")
+                .font(.caption.weight(.bold))
+                .tracking(0.8)
+                .foregroundStyle(.textSecondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            HStack(spacing: 10) {
+                ForEach([1, 2, 3], id: \.self) { variant in
+                    Button {
+                        HapticsService.shared.light()
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                            draftLook.paintVariant = variant
+                        }
+                    } label: {
+                        Text("Paint \(variant)")
+                            .font(.callout.weight(.semibold))
+                            .padding(.vertical, 9)
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(draftLook.paintVariant == variant ? AnyShapeStyle(Color.questAmber) : AnyShapeStyle(Color.dungeonStone))
+                                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(draftLook.paintVariant == variant ? Color.questAmberDeep : Color.dungeonAsh, lineWidth: 1))
+                            )
+                            .foregroundStyle(draftLook.paintVariant == variant ? AnyShapeStyle(.dungeonVoid) : AnyShapeStyle(.textPrimary))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+    }
+
+    private func swatchRow<T: ForgeSwatch>(
+        _ title: String,
+        _ options: [T],
+        selection: T,
+        onSelect: @escaping (T) -> Void
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title.uppercased())
+                .font(.caption.weight(.bold))
+                .tracking(0.8)
+                .foregroundStyle(.textSecondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 10) {
+                    ForEach(options, id: \.self) { option in
+                        Button {
+                            HapticsService.shared.light()
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { onSelect(option) }
+                        } label: {
+                            Circle()
+                                .fill(option.color)
+                                .frame(width: 40, height: 40)
+                                .overlay(Circle().stroke(Color.black.opacity(0.35), lineWidth: 1))
+                                .overlay(
+                                    Circle().strokeBorder(
+                                        selection == option ? Color.questAmber : Color.clear,
+                                        lineWidth: 3
+                                    )
+                                )
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(option.displayName)
+                        .accessibilityAddTraits(selection == option ? .isSelected : [])
+                    }
+                }
+                .padding(.horizontal, 2)
+            }
+        }
     }
 
     private var swipeTutorialPage: some View {
@@ -339,9 +456,14 @@ struct OnboardingView: View {
         if pageIndex < totalPages - 1 {
             withAnimation { pageIndex += 1 }
         } else {
-            // Persist hero choices via UserDefaults; the actual Hero is created lazily.
+            // Persist hero choices via UserDefaults; the hero is created lazily
+            // and applies them (plus the drafted look) at first bootstrap.
             UserDefaults.standard.set(selectedClass.rawValue, forKey: "pq.selectedClass")
-            UserDefaults.standard.set(selectedArchetype.rawValue, forKey: "pq.archetype")
+            UserDefaults.standard.set(selectedRace.rawValue, forKey: "pq.race")
+            draftLook.race = selectedRace
+            if let data = try? JSONEncoder().encode(draftLook) {
+                UserDefaults.standard.set(data, forKey: "pq.appearanceDraft")
+            }
             let trimmed = heroName.trimmingCharacters(in: .whitespaces)
             UserDefaults.standard.set(trimmed.isEmpty ? "Hero" : trimmed, forKey: "pq.heroName")
             appState.completeOnboarding()

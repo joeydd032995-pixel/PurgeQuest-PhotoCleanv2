@@ -34,36 +34,168 @@ enum CharacterArchetype: String, CaseIterable, Codable {
     }
 }
 
-enum HeroClass: String, CaseIterable, Codable {
-    case archivist
-    case cinematographer
-    case purgeKnight
-    case digitalHermit
+/// The three class disciplines, shown as groups in pickers.
+enum HeroDiscipline: String, CaseIterable, Codable {
+    case melee
+    case ranged
+    case magic
 
     var displayName: String {
         switch self {
-        case .archivist:       return "Archivist"
-        case .cinematographer: return "Cinematographer"
-        case .purgeKnight:     return "Purge Knight"
-        case .digitalHermit:   return "Digital Hermit"
+        case .melee:  return "Melee"
+        case .ranged: return "Ranged"
+        case .magic:  return "Magic"
         }
     }
 
     var symbol: String {
         switch self {
-        case .archivist:       return "books.vertical.fill"
-        case .cinematographer: return "video.fill"
-        case .purgeKnight:     return "shield.lefthalf.filled"
-        case .digitalHermit:   return "moon.stars.fill"
+        case .melee:  return "sword.fill"
+        case .ranged: return "target"
+        case .magic:  return "wand.and.stars"
+        }
+    }
+}
+
+/// The playable class roster: 17 variants across three disciplines.
+/// Each class grants a passive XP or gem bonus applied at purge time.
+enum HeroClass: String, CaseIterable, Codable {
+    // Melee
+    case paladinHoly
+    case paladinUnholy
+    case warriorBlood
+    case warriorShadow
+    case roguePoison
+    case rogueAssassin
+    // Ranged
+    case hunter
+    case windrunner
+    case voidstalker
+    // Magic
+    case mageIce
+    case mageInferno
+    case priestPlague
+    case priestDivine
+    case shamanEarth
+    case shamanWind
+    case shamanFire
+    case shamanWater
+
+    var discipline: HeroDiscipline {
+        switch self {
+        case .paladinHoly, .paladinUnholy, .warriorBlood, .warriorShadow, .roguePoison, .rogueAssassin:
+            return .melee
+        case .hunter, .windrunner, .voidstalker:
+            return .ranged
+        case .mageIce, .mageInferno, .priestPlague, .priestDivine, .shamanEarth, .shamanWind, .shamanFire, .shamanWater:
+            return .magic
+        }
+    }
+
+    var displayName: String {
+        switch self {
+        case .paladinHoly:    return "Holy Paladin"
+        case .paladinUnholy:  return "Unholy Paladin"
+        case .warriorBlood:   return "Blood Warrior"
+        case .warriorShadow:  return "Shadow Warrior"
+        case .roguePoison:    return "Poison Rogue"
+        case .rogueAssassin:  return "Assassin"
+        case .hunter:         return "Hunter"
+        case .windrunner:     return "Windrunner"
+        case .voidstalker:    return "Voidstalker"
+        case .mageIce:        return "Ice Mage"
+        case .mageInferno:    return "Inferno Mage"
+        case .priestPlague:   return "Plague Priest"
+        case .priestDivine:   return "Divine Battle Priest"
+        case .shamanEarth:    return "Earth Shaman"
+        case .shamanWind:     return "Wind Shaman"
+        case .shamanFire:     return "Fire Shaman"
+        case .shamanWater:    return "Water Shaman"
+        }
+    }
+
+    var symbol: String {
+        switch self {
+        case .paladinHoly:    return "shield.lefthalf.filled"
+        case .paladinUnholy:  return "flame.fill"
+        case .warriorBlood:   return "drop.fill"
+        case .warriorShadow:  return "moon.fill"
+        case .roguePoison:    return "sparkles"
+        case .rogueAssassin:  return "burst.fill"
+        case .hunter:         return "leaf.fill"
+        case .windrunner:     return "wind"
+        case .voidstalker:    return "theatermasks.fill"
+        case .mageIce:        return "snowflake"
+        case .mageInferno:    return "flame.fill"
+        case .priestPlague:   return "cross.vial.fill"
+        case .priestDivine:   return "sun.max.fill"
+        case .shamanEarth:    return "mountain.2.fill"
+        case .shamanWind:     return "wind"
+        case .shamanFire:     return "flame.fill"
+        case .shamanWater:    return "drop.fill"
         }
     }
 
     var perkDescription: String {
         switch self {
-        case .archivist:       return "+20% XP from photo monsters"
-        case .cinematographer: return "+20% XP from video monsters"
-        case .purgeKnight:     return "+30% XP from elite monsters"
-        case .digitalHermit:   return "+10% Gem multiplier"
+        case .paladinHoly:    return "+30% XP from elite monsters"
+        case .paladinUnholy:  return "+25% XP from Glitchborn monsters"
+        case .warriorBlood:   return "+20% XP from Clutter Undead"
+        case .warriorShadow:  return "+20% XP from Storage Behemoths"
+        case .roguePoison:    return "+20% XP from uncommon monsters"
+        case .rogueAssassin:  return "+25% XP from common monsters"
+        case .hunter:         return "+20% XP from photo monsters"
+        case .windrunner:     return "+20% XP from video monsters"
+        case .voidstalker:    return "+15% Gem multiplier"
+        case .mageIce:        return "+20% XP from Archive Relics"
+        case .mageInferno:    return "+20% XP from rare monsters"
+        case .priestPlague:   return "+20% XP from Duplicate Dragons"
+        case .priestDivine:   return "+20% XP from elite monsters"
+        case .shamanEarth:    return "+10% Gem multiplier"
+        case .shamanWind:     return "+20% XP from Video Phantoms"
+        case .shamanFire:     return "+20% XP from uncommon monsters"
+        case .shamanWater:    return "+15% Gem multiplier"
+        }
+    }
+
+    /// Maps pre-overhaul class raw values to their new equivalents so old
+    /// saves keep an equivalent perk.
+    static func legacyClass(forRaw raw: String) -> HeroClass? {
+        switch raw {
+        case "purgeKnight":     return .paladinHoly
+        case "archivist":       return .priestDivine
+        case "cinematographer": return .windrunner
+        case "digitalHermit":   return .shamanEarth
+        default:                return nil
+        }
+    }
+
+    /// XP multiplier for a purge. `photo` is true for photo monsters.
+    func xpMultiplier(photo: Bool, monsterType: MonsterType) -> Double {
+        switch self {
+        case .hunter:          return photo ? 1.20 : 1.0
+        case .windrunner:      return photo ? 1.0 : 1.20
+        case .paladinHoly:     return monsterType.isElite ? 1.30 : 1.0
+        case .priestDivine:    return monsterType.isElite ? 1.20 : 1.0
+        case .paladinUnholy:   return monsterType.family == .glitchborn ? 1.25 : 1.0
+        case .warriorBlood:    return monsterType.family == .clutterUndead ? 1.20 : 1.0
+        case .warriorShadow:   return monsterType.family == .storageBehemoths ? 1.20 : 1.0
+        case .mageIce:         return monsterType.family == .archiveRelics ? 1.20 : 1.0
+        case .shamanWind:      return monsterType.family == .videoPhantoms ? 1.20 : 1.0
+        case .priestPlague:    return monsterType.family == .duplicateDragons ? 1.20 : 1.0
+        case .rogueAssassin:   return monsterType.rarity == .common ? 1.25 : 1.0
+        case .roguePoison, .shamanFire: return monsterType.rarity == .uncommon ? 1.20 : 1.0
+        case .mageInferno:     return monsterType.rarity == .rare ? 1.20 : 1.0
+        default:               return 1.0
+        }
+    }
+
+    /// Gem multiplier applied to purge rewards.
+    var gemMultiplier: Double {
+        switch self {
+        case .voidstalker, .shamanWater: return 1.15
+        case .shamanEarth:               return 1.10
+        default:                         return 1.0
         }
     }
 }
@@ -94,13 +226,29 @@ final class Hero {
     var titanWeaponUnlocked: Bool = false
 
     var heroClass: HeroClass {
-        get { HeroClass(rawValue: heroClassRaw) ?? .purgeKnight }
+        get {
+            HeroClass(rawValue: heroClassRaw)
+                ?? HeroClass.legacyClass(forRaw: heroClassRaw)
+                ?? .paladinHoly
+        }
         set { heroClassRaw = newValue.rawValue }
     }
 
     var archetype: CharacterArchetype {
         get { CharacterArchetype(rawValue: archetypeRaw) ?? .knight }
         set { archetypeRaw = newValue.rawValue }
+    }
+
+    /// The hero's illustrated race. Stored inside the appearance record;
+    /// falls back to the legacy archetype's designed default.
+    var race: HeroRace {
+        get { appearance.race ?? HeroRace(legacyArchetype: archetype) }
+        set {
+            var look = appearance
+            look.race = newValue
+            if look.paintVariant < 1 || look.paintVariant > 3 { look.paintVariant = 1 }
+            appearance = look
+        }
     }
 
     /// The hero's saved identity. Always decodes to a valid look, even for
@@ -112,7 +260,7 @@ final class Hero {
 
     init(
         name: String = "Hero",
-        heroClass: HeroClass = .purgeKnight,
+        heroClass: HeroClass = .paladinHoly,
         archetype: CharacterArchetype = .knight
     ) {
         self.id = UUID()

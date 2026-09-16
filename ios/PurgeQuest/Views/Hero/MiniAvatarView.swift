@@ -149,7 +149,14 @@ struct MiniAvatarView: View {
     var body: some View {
         ZStack {
             groundShadow
-            figure
+            HeroSpriteView(
+                hero: hero,
+                appearance: identity,
+                equipped: equipped,
+                size: 132 * u,
+                isAnimated: isAnimated
+            )
+            .frame(width: 112 * u, height: 132 * u, alignment: .bottom)
         }
         .frame(width: 118 * u, height: 140 * u)
         .accessibilityElement(children: .ignore)

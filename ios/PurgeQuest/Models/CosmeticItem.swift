@@ -10,6 +10,8 @@ enum CosmeticType: String, CaseIterable, Codable {
     case skin
     case head
     case armor
+    case legs
+    case hands
     case weapon
     case shield
     case pet
@@ -20,8 +22,10 @@ enum CosmeticType: String, CaseIterable, Codable {
     var displayName: String {
         switch self {
         case .skin:    return "Skin"
-        case .head:    return "Head"
-        case .armor:   return "Armor"
+        case .head:    return "Helm"
+        case .armor:   return "Chest"
+        case .legs:    return "Legs"
+        case .hands:   return "Hands"
         case .weapon:  return "Weapon"
         case .shield:  return "Shield"
         case .pet:     return "Pet"
@@ -43,12 +47,19 @@ final class CosmeticItem {
     var isVideoThemed: Bool
     var isUnlocked: Bool
     var isEquipped: Bool
+    /// Sprite render kind for gear-backed items (sword/bow/staff); nil for
+    /// icon-only cosmetics and armor pieces.
+    var gearKindRaw: String? = nil
 
     var type: CosmeticType {
         CosmeticType(rawValue: typeRaw) ?? .skin
     }
 
-    init(id: String, name: String, subtitle: String, type: CosmeticType, iconName: String, priceGems: Int, isPremium: Bool = false, isVideoThemed: Bool = false, isUnlocked: Bool = false) {
+    var gearKind: GearKind? {
+        gearKindRaw.flatMap(GearKind.init(rawValue:))
+    }
+
+    init(id: String, name: String, subtitle: String, type: CosmeticType, iconName: String, priceGems: Int, isPremium: Bool = false, isVideoThemed: Bool = false, isUnlocked: Bool = false, gearKind: GearKind? = nil) {
         self.id = id
         self.name = name
         self.subtitle = subtitle
@@ -59,5 +70,6 @@ final class CosmeticItem {
         self.isVideoThemed = isVideoThemed
         self.isUnlocked = isUnlocked
         self.isEquipped = false
+        self.gearKindRaw = gearKind?.rawValue
     }
 }

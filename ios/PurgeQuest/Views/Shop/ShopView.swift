@@ -15,7 +15,10 @@ private enum ShopFilter: String, CaseIterable {
     case head = "Head"
     case armor = "Armor"
     case weapons = "Weapons"
+    case staves = "Staves"
+    case blades = "Blades & Bows"
     case shields = "Shields"
+    case armorSets = "Armor Sets"
     case pets = "Pets"
     case effects = "FX"
     case upgrades = "Upgrades"
@@ -54,7 +57,12 @@ struct ShopView: View {
             case .head: return c.type == .head
             case .armor: return c.type == .armor
             case .weapons: return c.type == .weapon
+            case .staves: return c.gearKind == .staff
+            case .blades: return c.type == .weapon && c.gearKind != .staff
             case .shields: return c.type == .shield
+            case .armorSets:
+                return c.id.hasPrefix("armor.")
+                    && (c.type == .head || c.type == .armor || c.type == .legs || c.type == .hands)
             case .pets: return c.type == .pet
             case .effects: return c.type == .effect
             case .upgrades: return c.type == .upgrade
@@ -371,7 +379,7 @@ private struct CosmeticTile: View {
     /// Whether the mini avatar renders this slot; effects and upgrades aren't drawn on the figure.
     private var isWearable: Bool {
         switch item.type {
-        case .skin, .head, .armor, .weapon, .shield, .pet: return true
+        case .skin, .head, .armor, .legs, .hands, .weapon, .shield, .pet: return true
         case .effect, .upgrade: return false
         }
     }

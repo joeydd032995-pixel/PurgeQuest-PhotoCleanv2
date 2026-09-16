@@ -127,7 +127,7 @@ struct DashboardView: View {
                                 .background(RoundedRectangle(cornerRadius: 4).fill(Color.questAmber.opacity(0.15)))
                                 .foregroundStyle(.questAmber)
                         }
-                        Text("\(hero.archetype.displayName) · \(hero.heroClass.displayName)")
+                        Text("\(hero.race.displayName) · \(hero.heroClass.displayName)")
                             .font(.caption)
                             .foregroundStyle(.textSecondary)
                         XPBarView(progress: hero.levelProgress, level: hero.level, compact: true)

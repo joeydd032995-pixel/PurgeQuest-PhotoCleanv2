@@ -26,12 +26,14 @@ protocol ForgeSwatch: Hashable {
 
 /// Forge categories, in display order.
 enum ForgeCategory: String, CaseIterable, Identifiable {
-    case skin, face, eyes, brows, mouth, hair, expression, armorDye, backdrop
+    case race, paint, skin, face, eyes, brows, mouth, hair, expression, armorDye, backdrop
 
     var id: String { rawValue }
 
     var displayName: String {
         switch self {
+        case .race: return "Race"
+        case .paint: return "Paint Job"
         case .skin: return "Skin"
         case .face: return "Face"
         case .eyes: return "Eyes"
@@ -46,6 +48,8 @@ enum ForgeCategory: String, CaseIterable, Identifiable {
 
     var symbol: String {
         switch self {
+        case .race: return "person.2.fill"
+        case .paint: return "paintbrush.fill"
         case .skin: return "person.fill"
         case .face: return "smiley"
         case .eyes: return "eye.fill"
@@ -81,7 +85,7 @@ struct HeroForgeView: View {
     private var equippedItems: [CosmeticItem] { cosmetics.filter { $0.isEquipped } }
 
     private var isDirty: Bool { draft != hero.appearance }
-    private var isDefaultLook: Bool { draft == .default(for: hero.archetype) }
+    private var isDefaultLook: Bool { draft == .default(for: hero.race) }
 
     private var tier: GearTier {
         HeroAppearance.gearTier(
@@ -237,8 +241,13 @@ struct HeroForgeView: View {
 
     @ViewBuilder private var optionArea: some View {
         switch category {
+        case .race:
+            raceSection
+        case .paint:
+            paintSection
         case .skin:
             swatchSection("Skin tone", options: SkinTone.allCases, selected: draft.skinTone) { draft.skinTone = $0 }
+            hueSlider("Custom skin hue", value: draft.skinHueShift) { draft.skinHueShift = HeroAppearance.clampedHue($0) }
         case .face:
             optionSection("Face shape", options: FaceShape.allCases, selected: draft.faceShape) { draft.faceShape = $0 }
         case .eyes:
@@ -249,6 +258,7 @@ struct HeroForgeView: View {
                 selected: draft.eyeColor,
                 lockInfo: { lockRequirement($0.requiredAchievementID) }
             ) { draft.eyeColor = $0 }
+            hueSlider("Custom eye hue", value: draft.eyeHueShift) { draft.eyeHueShift = HeroAppearance.clampedHue($0) }
         case .brows:
             optionSection("Brow style", options: BrowStyle.allCases, selected: draft.browStyle) { draft.browStyle = $0 }
         case .mouth:
@@ -261,6 +271,7 @@ struct HeroForgeView: View {
                 selected: draft.hairColor,
                 lockInfo: { lockRequirement($0.requiredAchievementID) }
             ) { draft.hairColor = $0 }
+            hueSlider("Custom hair hue", value: draft.hairHueShift) { draft.hairHueShift = HeroAppearance.clampedHue($0) }
         case .expression:
             presetSection("Expression presets")
             optionSection("Mood", options: Expression.allCases, selected: draft.expression) { draft.expression = $0 }
@@ -301,6 +312,102 @@ struct HeroForgeView: View {
             )
             .foregroundStyle(.textSecondary)
             .transition(.opacity.combined(with: .move(edge: .top)))
+        }
+    }
+
+    // MARK: - Race, paint, and hue sections
+
+    private var raceSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            sectionTitle("Race")
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 96), spacing: 10)], spacing: 12) {
+                ForEach(HeroRace.allCases, id: \.self) { race in
+                    Button {
+                        select(race) { draft.race = $0 }
+                    } label: {
+                        VStack(spacing: 6) {
+                            HeroSpriteView(hero: hero, appearance: .default(for: race), size: 76)
+                                .frame(height: 76)
+                            Text(race.displayName)
+                                .font(.caption2.weight(.semibold))
+                                .lineLimit(1)
+                                .foregroundStyle(.textSecondary)
+                        }
+                        .padding(.vertical, 10)
+                        .frame(maxWidth: .infinity)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(draft.race == race ? AnyShapeStyle(Color.questAmber.opacity(0.16)) : AnyShapeStyle(Color.dungeonStone))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(draft.race == race ? Color.questAmber : Color.dungeonAsh, lineWidth: draft.race == race ? 1.5 : 1)
+                                )
+                        )
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("\(race.displayName) race")
+                    .accessibilityAddTraits(draft.race == race ? .isSelected : [])
+                }
+            }
+        }
+    }
+
+    private var paintSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            sectionTitle("Paint job")
+            HStack(spacing: 10) {
+                ForEach([1, 2, 3], id: \.self) { variant in
+                    Button {
+                        select(variant) { draft.paintVariant = $0 }
+                    } label: {
+                        VStack(spacing: 6) {
+                            HeroSpriteView(hero: hero, appearance: paintPreview(variant), size: 84)
+                                .frame(height: 84)
+                            Text("Paint \(variant)")
+                                .font(.caption2.weight(.semibold))
+                                .foregroundStyle(.textSecondary)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 8)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(draft.paintVariant == variant ? AnyShapeStyle(Color.questAmber.opacity(0.16)) : AnyShapeStyle(Color.dungeonStone))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(draft.paintVariant == variant ? Color.questAmber : Color.dungeonAsh, lineWidth: draft.paintVariant == variant ? 1.5 : 1)
+                                )
+                        )
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Paint job \(variant)")
+                    .accessibilityAddTraits(draft.paintVariant == variant ? .isSelected : [])
+                }
+            }
+        }
+    }
+
+    /// A preview copy of the draft with just the paint variant swapped.
+    private func paintPreview(_ variant: Int) -> HeroAppearance {
+        var look = draft
+        look.paintVariant = variant
+        return look
+    }
+
+    /// A -180°...180° hue slider bound to one appearance shift.
+    private func hueSlider(_ title: String, value: Double, onChange: @escaping (Double) -> Void) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            sectionTitle(title)
+            Slider(
+                value: Binding(get: { value }, set: { onChange($0) }),
+                in: -1...1
+            )
+            HStack {
+                Text("-180°").font(.caption2).foregroundStyle(.textTertiary)
+                Spacer()
+                Text("0°").font(.caption2).foregroundStyle(.textTertiary)
+                Spacer()
+                Text("+180°").font(.caption2).foregroundStyle(.textTertiary)
+            }
         }
     }
 
@@ -526,7 +633,7 @@ struct HeroForgeView: View {
     private func resetToDefault() {
         HapticsService.shared.heavy()
         withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-            draft = .default(for: hero.archetype)
+            draft = .default(for: hero.race)
         }
     }
 

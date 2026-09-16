@@ -2,11 +2,12 @@
 //  HeroAppearance.swift
 //  PurgeQuest
 //
-//  The hero's customizable identity: skin, face, eyes, brows, mouth, hair,
-//  expression, and backdrop. A versioned value type that is saved alongside
-//  the hero. Anything missing, corrupt, or written by a newer schema decodes
-//  to the designed default for the hero's archetype, so no player can end up
-//  with a blank or broken avatar.
+//  The hero's customizable identity: race, paint variant, skin/eye/hair
+//  hue shifts, face traits, expression, and backdrop. A versioned value
+//  type that is saved alongside the hero. Decoding is lenient: any missing
+//  key, unknown value, corrupt bytes, or older schema decodes to a designed
+//  default, so no player can end up with a blank or broken avatar. Newer
+//  fields (race, paint variant, hue shifts) default sensibly for pre-v3 saves.
 //
 
 import Foundation
@@ -303,9 +304,18 @@ nonisolated enum GearTier: String, CaseIterable, Codable {
 /// The full saved identity of a hero. Equipped gear is stored separately and
 /// renders over this identity.
 nonisolated struct HeroAppearance: Equatable, Codable {
-    static let currentSchemaVersion = 2
+    static let currentSchemaVersion = 3
 
     var schemaVersion: Int
+    /// The hero's race. nil on pre-v3 saves; falls back to the legacy
+    /// archetype's designed default at read time.
+    var race: HeroRace?
+    /// Pre-painted art variant (1...3) shipped with each race pack.
+    var paintVariant: Int
+    /// Custom hue sliders, -1...1 mapping to ±180° of hue rotation.
+    var skinHueShift: Double
+    var eyeHueShift: Double
+    var hairHueShift: Double
     var skinTone: SkinTone
     var faceShape: FaceShape
     var eyeStyle: EyeStyle
@@ -320,6 +330,11 @@ nonisolated struct HeroAppearance: Equatable, Codable {
 
     init(
         schemaVersion: Int = HeroAppearance.currentSchemaVersion,
+        race: HeroRace? = nil,
+        paintVariant: Int = 1,
+        skinHueShift: Double = 0,
+        eyeHueShift: Double = 0,
+        hairHueShift: Double = 0,
         skinTone: SkinTone,
         faceShape: FaceShape,
         eyeStyle: EyeStyle,
@@ -333,6 +348,11 @@ nonisolated struct HeroAppearance: Equatable, Codable {
         armorDye: ArmorDye = .none
     ) {
         self.schemaVersion = schemaVersion
+        self.race = race
+        self.paintVariant = paintVariant
+        self.skinHueShift = skinHueShift
+        self.eyeHueShift = eyeHueShift
+        self.hairHueShift = hairHueShift
         self.skinTone = skinTone
         self.faceShape = faceShape
         self.eyeStyle = eyeStyle
@@ -346,69 +366,95 @@ nonisolated struct HeroAppearance: Equatable, Codable {
         self.armorDye = armorDye
     }
 
-    /// Mirror of the schema-1 record shape, used to migrate older saves
-    /// forward without losing any trait.
-    nonisolated struct LegacyV1: Codable {
-        var schemaVersion: Int
-        var skinTone: SkinTone
-        var faceShape: FaceShape
-        var eyeStyle: EyeStyle
-        var eyeColor: EyeColor
-        var browStyle: BrowStyle
-        var mouthStyle: MouthStyle
-        var hairStyle: HairStyle
-        var hairColor: HairColor
-        var expression: Expression
-        var backdropStyle: BackdropStyle
+    private enum CodingKeys: String, CodingKey {
+        case schemaVersion, race, paintVariant
+        case skinHueShift, eyeHueShift, hairHueShift
+        case skinTone, faceShape, eyeStyle, eyeColor, browStyle, mouthStyle
+        case hairStyle, hairColor, expression, backdropStyle, armorDye
+    }
 
-        var migrated: HeroAppearance {
-            HeroAppearance(
-                schemaVersion: HeroAppearance.currentSchemaVersion,
-                skinTone: skinTone,
-                faceShape: faceShape,
-                eyeStyle: eyeStyle,
-                eyeColor: eyeColor,
-                browStyle: browStyle,
-                mouthStyle: mouthStyle,
-                hairStyle: hairStyle,
-                hairColor: hairColor,
-                expression: expression,
-                backdropStyle: backdropStyle
+    /// Lenient decode: every field falls back to its designed default when
+    /// missing or corrupt, so schema-1 and schema-2 records decode in place
+    /// with all traits preserved.
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        schemaVersion = (try? c.decodeIfPresent(Int.self, forKey: .schemaVersion)) ?? HeroAppearance.currentSchemaVersion
+        race = (try? c.decodeIfPresent(HeroRace.self, forKey: .race)) ?? nil
+        paintVariant = (try? c.decodeIfPresent(Int.self, forKey: .paintVariant)) ?? 1
+        skinHueShift = (try? c.decodeIfPresent(Double.self, forKey: .skinHueShift)) ?? 0
+        eyeHueShift = (try? c.decodeIfPresent(Double.self, forKey: .eyeHueShift)) ?? 0
+        hairHueShift = (try? c.decodeIfPresent(Double.self, forKey: .hairHueShift)) ?? 0
+        skinTone = (try? c.decodeIfPresent(SkinTone.self, forKey: .skinTone)) ?? .sandstone
+        faceShape = (try? c.decodeIfPresent(FaceShape.self, forKey: .faceShape)) ?? .boulder
+        eyeStyle = (try? c.decodeIfPresent(EyeStyle.self, forKey: .eyeStyle)) ?? .bright
+        eyeColor = (try? c.decodeIfPresent(EyeColor.self, forKey: .eyeColor)) ?? .bark
+        browStyle = (try? c.decodeIfPresent(BrowStyle.self, forKey: .browStyle)) ?? .steady
+        mouthStyle = (try? c.decodeIfPresent(MouthStyle.self, forKey: .mouthStyle)) ?? .smile
+        hairStyle = (try? c.decodeIfPresent(HairStyle.self, forKey: .hairStyle)) ?? .short
+        hairColor = (try? c.decodeIfPresent(HairColor.self, forKey: .hairColor)) ?? .bark
+        expression = (try? c.decodeIfPresent(Expression.self, forKey: .expression)) ?? .calm
+        backdropStyle = (try? c.decodeIfPresent(BackdropStyle.self, forKey: .backdropStyle)) ?? .plaque
+        armorDye = (try? c.decodeIfPresent(ArmorDye.self, forKey: .armorDye)) ?? .none
+    }
+
+    /// Clamps a hue slider into its storage range.
+    static func clampedHue(_ value: Double) -> Double {
+        min(max(value, -1), 1)
+    }
+
+    /// The designed default look for a race, so a fresh or broken record
+    /// still shows an intentional character.
+    static func `default`(for race: HeroRace) -> HeroAppearance {
+        switch race.palette {
+        case .bone:
+            return HeroAppearance(
+                race: race,
+                skinTone: .moonlit,
+                faceShape: .boulder,
+                eyeStyle: .keen,
+                eyeColor: .sapphire,
+                browStyle: .stern,
+                mouthStyle: .neutral,
+                hairStyle: .bald,
+                hairColor: .bone,
+                expression: .fierce,
+                backdropStyle: .plaque
+            )
+        case .stone:
+            return HeroAppearance(
+                race: race,
+                skinTone: .ashen,
+                faceShape: .boulder,
+                eyeStyle: .bright,
+                eyeColor: .moss,
+                browStyle: .steady,
+                mouthStyle: .neutral,
+                hairStyle: .bald,
+                hairColor: .ash,
+                expression: .calm,
+                backdropStyle: .plaque
+            )
+        case .flesh:
+            let knightish = race == .valkyrie || race == .skeletonCrusader
+            return HeroAppearance(
+                race: race,
+                skinTone: knightish ? .sandstone : .honey,
+                faceShape: knightish ? .boulder : .nimble,
+                eyeStyle: .bright,
+                eyeColor: knightish ? .bark : .jade,
+                browStyle: .steady,
+                mouthStyle: knightish ? .smile : .grin,
+                hairStyle: knightish ? .short : .swept,
+                hairColor: knightish ? .bark : .raven,
+                expression: .calm,
+                backdropStyle: .plaque
             )
         }
     }
 
-    /// The designed default look per archetype, so a fresh or broken record
-    /// still shows an intentional character.
+    /// Back-compat: maps a legacy archetype to its designed race default.
     static func `default`(for archetype: CharacterArchetype) -> HeroAppearance {
-        switch archetype {
-        case .knight:
-            return HeroAppearance(
-                skinTone: .sandstone,
-                faceShape: .boulder,
-                eyeStyle: .bright,
-                eyeColor: .bark,
-                browStyle: .steady,
-                mouthStyle: .smile,
-                hairStyle: .short,
-                hairColor: .bark,
-                expression: .calm,
-                backdropStyle: .plaque
-            )
-        case .magician:
-            return HeroAppearance(
-                skinTone: .honey,
-                faceShape: .nimble,
-                eyeStyle: .bright,
-                eyeColor: .jade,
-                browStyle: .steady,
-                mouthStyle: .grin,
-                hairStyle: .swept,
-                hairColor: .raven,
-                expression: .calm,
-                backdropStyle: .plaque
-            )
-        }
+        .default(for: HeroRace(legacyArchetype: archetype))
     }
 
     /// Encoded for storage on the hero record.
@@ -419,21 +465,17 @@ nonisolated struct HeroAppearance: Equatable, Codable {
     }
 
     /// Safe decode: any missing key, unknown value, corrupt bytes, or future
-    /// schema falls back to the archetype default. Schema-1 records migrate
-    /// forward with every trait preserved (gaining the default None armor
-    /// dye); only a partially-written legacy record falls all the way back.
+    /// schema falls back to the archetype default. Older schemas decode
+    /// in place via the lenient decoder, preserving every trait.
     static func decode(_ data: Data?, for archetype: CharacterArchetype) -> HeroAppearance {
         guard let data, !data.isEmpty else { return .default(for: archetype) }
-        if let decoded = try? JSONDecoder().decode(HeroAppearance.self, from: data) {
-            guard decoded.schemaVersion <= HeroAppearance.currentSchemaVersion else {
-                return .default(for: archetype)
-            }
-            return decoded
+        guard let decoded = try? JSONDecoder().decode(HeroAppearance.self, from: data) else {
+            return .default(for: archetype)
         }
-        if let legacy = try? JSONDecoder().decode(LegacyV1.self, from: data) {
-            return legacy.migrated
+        guard decoded.schemaVersion <= HeroAppearance.currentSchemaVersion else {
+            return .default(for: archetype)
         }
-        return .default(for: archetype)
+        return decoded
     }
 
     /// Maps equipped gear value to a plaque tier.

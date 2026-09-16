@@ -50,7 +50,7 @@ struct HeroTabView: View {
                 Text(hero.name)
                     .font(.dungeonTitle)
                     .foregroundStyle(.textPrimary)
-                Text("\(hero.archetype.displayName) · \(hero.heroClass.displayName) · LV \(hero.level)")
+                Text("\(hero.race.displayName) · \(hero.heroClass.displayName) · LV \(hero.level)")
                     .font(.subheadline)
                     .foregroundStyle(.textSecondary)
             }
@@ -93,8 +93,8 @@ struct HeroTabView: View {
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color.dungeonStone.opacity(0.85))
-                .overlay(RoundedRectangle(cornerRadius: 12).stroke(hero.archetype == .knight ? Color.questAmber.opacity(0.5) : Color.xpViolet.opacity(0.5), lineWidth: 1))
-                .overlay(RoundedRectangle(cornerRadius: 10).stroke((hero.archetype == .knight ? Color.questAmber : Color.xpViolet).opacity(0.25), lineWidth: 1).padding(2))
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(hero.race.accent.opacity(0.5), lineWidth: 1))
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(hero.race.accent.opacity(0.25), lineWidth: 1).padding(2))
         )
         .fullScreenCover(isPresented: $showForge) {
             HeroForgeView(hero: hero)

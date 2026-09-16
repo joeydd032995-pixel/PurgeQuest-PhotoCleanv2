@@ -241,18 +241,10 @@ private struct HeroCardArtwork: View {
     let hero: Hero
     var body: some View {
         VStack(spacing: 14) {
-            Image(systemName: hero.heroClass.symbol)
-                .font(.system(size: 56, weight: .bold))
-                .foregroundStyle(.questAmber)
-                .frame(width: 108, height: 108)
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.dungeonStoneLight)
-                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.questAmber.opacity(0.6), lineWidth: 1.5))
-                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmber.opacity(0.3), lineWidth: 1).padding(3))
-                )
+            HeroSpriteView(hero: hero, size: 170)
+                .frame(height: 170)
             Text(hero.name).font(.dungeonTitle).foregroundStyle(.textPrimary)
-            Text("\(hero.heroClass.displayName) · LV \(hero.level)").font(.headline).foregroundStyle(.textSecondary)
+            Text("\(hero.race.displayName) · \(hero.heroClass.displayName) · LV \(hero.level)").font(.headline).foregroundStyle(.textSecondary)
             HStack(spacing: 10) {
                 StatTile(icon: "internaldrive.fill", label: "Total freed",
                          value: hero.totalMBFreed >= 1024 ? String(format: "%.1f GB", hero.totalMBFreed / 1024) : String(format: "%.0f MB", hero.totalMBFreed),

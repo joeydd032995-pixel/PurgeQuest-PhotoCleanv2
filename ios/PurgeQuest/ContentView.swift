@@ -95,9 +95,19 @@ struct ContentView: View {
 
         // Hero — apply onboarding choices if first launch
         let hero = GameDataService.loadOrCreateHero(in: modelContext)
-        if let className = UserDefaults.standard.string(forKey: "pq.selectedClass"),
-           let cls = HeroClass(rawValue: className) {
-            hero.heroClass = cls
+        if let className = UserDefaults.standard.string(forKey: "pq.selectedClass") {
+            let cls = HeroClass(rawValue: className) ?? HeroClass.legacyClass(forRaw: className)
+            if let cls { hero.heroClass = cls }
+        }
+        if let raceRaw = UserDefaults.standard.string(forKey: "pq.race"),
+           let race = HeroRace(rawValue: raceRaw) {
+            hero.race = race
+        }
+        // Apply the look drafted during onboarding once, then clear it so
+        // later Forge edits always win.
+        if let lookData = UserDefaults.standard.data(forKey: "pq.appearanceDraft") {
+            hero.appearance = HeroAppearance.decode(lookData, for: hero.archetype)
+            UserDefaults.standard.removeObject(forKey: "pq.appearanceDraft")
         }
         if let archetypeRaw = UserDefaults.standard.string(forKey: "pq.archetype"),
            let archetype = CharacterArchetype(rawValue: archetypeRaw) {
