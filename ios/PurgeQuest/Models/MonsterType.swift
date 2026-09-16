@@ -43,16 +43,24 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
     case fourKKraken
     case gigabyteGorgon
 
-    // MARK: Video Phantoms (existing + stage 2)
+    // MARK: Video Phantoms (existing + stage 2 + stage 3)
     case videoVampire
     case shakyGhost
     case boringBlooper
     case timelapsePhantom
     case pocketPoltergeist
     case screenRecordingShade
+    case framedPhantom
+    case flickerWraith
 
-    // MARK: Glitchborn (existing; stage 4 expands this family)
+    // MARK: Glitchborn (stage 4 expands this family)
     case corruptedCodec
+    case nullPortrait
+    case staticHusk
+
+    // MARK: Clutter Undead (stage 5 — Vision/OCR creatures)
+    case tomeWraith
+    case sigilSpecter
 
     var displayName: String {
         switch self {
@@ -82,7 +90,13 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .timelapsePhantom:    return "Timelapse Phantom"
         case .pocketPoltergeist:   return "Pocket Poltergeist"
         case .screenRecordingShade:return "Screen Recording Shade"
+        case .framedPhantom:       return "Framed Phantom"
+        case .flickerWraith:       return "Flicker Wraith"
         case .corruptedCodec:      return "Corrupted Codec"
+        case .nullPortrait:        return "Null Portrait"
+        case .staticHusk:          return "Static Husk"
+        case .tomeWraith:          return "Tome Wraith"
+        case .sigilSpecter:        return "Sigil Specter"
         }
     }
 
@@ -114,7 +128,13 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .timelapsePhantom:    return "timelapse"
         case .pocketPoltergeist:   return "timer"
         case .screenRecordingShade:return "record.circle"
+        case .framedPhantom:       return "photo.stack.fill"
+        case .flickerWraith:       return "bolt.fill"
         case .corruptedCodec:      return "exclamationmark.triangle.fill"
+        case .nullPortrait:        return "person.crop.circle.badge.exclamationmark"
+        case .staticHusk:          return "tv.slash"
+        case .tomeWraith:          return "doc.text.fill"
+        case .sigilSpecter:        return "qrcode"
         }
     }
 
@@ -123,7 +143,8 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .perfectPairWyrmling, .duplicateDragon, .burstHydra, .cloneChimera,
              .screenshotTwin, .downloadDrake, .albumEcho, .hoardHydra,
              .blurBeast, .screenshotSpecter, .lowQualityLich, .darkWraith,
-             .thumbGoblin, .livePhotoLycan, .ancientArchive, .panoramaColossus:
+             .thumbGoblin, .livePhotoLycan, .ancientArchive, .panoramaColossus,
+             .nullPortrait, .staticHusk, .tomeWraith, .sigilSpecter:
             return .photo
         default:
             return .video
@@ -136,7 +157,7 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
              .screenshotTwin, .downloadDrake, .albumEcho, .hoardHydra:
             return .duplicateDragons
         case .blurBeast, .screenshotSpecter, .lowQualityLich, .darkWraith,
-             .thumbGoblin, .livePhotoLycan:
+             .thumbGoblin, .livePhotoLycan, .tomeWraith, .sigilSpecter:
             return .clutterUndead
         case .ancientArchive:
             return .archiveRelics
@@ -144,9 +165,9 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
              .fourKKraken, .gigabyteGorgon:
             return .storageBehemoths
         case .videoVampire, .shakyGhost, .boringBlooper, .timelapsePhantom,
-             .pocketPoltergeist, .screenRecordingShade:
+             .pocketPoltergeist, .screenRecordingShade, .framedPhantom, .flickerWraith:
             return .videoPhantoms
-        case .corruptedCodec:
+        case .corruptedCodec, .nullPortrait, .staticHusk:
             return .glitchborn
         }
     }
@@ -155,15 +176,17 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         switch self {
         case .duplicateDragon, .gigabyteGorgon:              return .legendary
         case .hoardHydra, .fourKKraken, .longTakeLeviathan,
-             .memoryHogMinotaur, .corruptedCodec:            return .elite
+             .memoryHogMinotaur, .corruptedCodec, .staticHusk,
+             .sigilSpecter:                                  return .elite
         case .burstHydra, .cloneChimera, .ancientArchive,
              .panoramaColossus, .videoVampire:               return .rare
         case .screenshotTwin, .downloadDrake, .albumEcho, .screenshotSpecter,
              .darkWraith, .livePhotoLycan, .timelapsePhantom,
-             .screenRecordingShade:                          return .uncommon
+             .screenRecordingShade, .flickerWraith, .nullPortrait,
+             .tomeWraith:                                    return .uncommon
         case .perfectPairWyrmling, .blurBeast, .lowQualityLich,
              .thumbGoblin, .shakyGhost, .boringBlooper,
-             .pocketPoltergeist:                             return .common
+             .pocketPoltergeist, .framedPhantom:             return .common
         }
     }
 
@@ -171,7 +194,8 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         switch self {
         case .duplicateDragon, .gigabyteGorgon, .longTakeLeviathan, .memoryHogMinotaur: return 3
         case .hoardHydra, .fourKKraken, .burstHydra, .cloneChimera,
-             .ancientArchive, .videoVampire, .panoramaColossus, .corruptedCodec:        return 2
+             .ancientArchive, .videoVampire, .panoramaColossus, .corruptedCodec,
+             .nullPortrait, .staticHusk, .sigilSpecter:                      return 2
         default: return 1
         }
     }
@@ -196,6 +220,12 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .timelapsePhantom:    return 45
         case .screenRecordingShade:return 40
         case .corruptedCodec:      return 40
+        case .staticHusk:          return 45
+        case .sigilSpecter:        return 45
+        case .flickerWraith:       return 35
+        case .nullPortrait:        return 35
+        case .framedPhantom:       return 30
+        case .tomeWraith:          return 30
         case .albumEcho:           return 35
         case .shakyGhost:          return 35
         case .livePhotoLycan:      return 35
@@ -218,7 +248,8 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .duplicateDragon, .videoVampire, .ancientArchive:        return 12
         case .hoardHydra, .fourKKraken:                               return 14
         case .burstHydra, .cloneChimera, .panoramaColossus,
-             .screenRecordingShade, .corruptedCodec:                  return 10
+             .screenRecordingShade, .corruptedCodec, .nullPortrait,
+             .staticHusk, .sigilSpecter:                     return 10
         default:                                                       return 8
         }
     }
@@ -255,7 +286,13 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .timelapsePhantom:    return "Timelapses and slow-motion captures"
         case .pocketPoltergeist:   return "Barely-a-moment or near-black videos"
         case .screenRecordingShade:return "Screen recordings of forgotten sessions"
+        case .framedPhantom:       return "Footage where nothing moves"
+        case .flickerWraith:       return "Brightness strobing between frames"
         case .corruptedCodec:      return "Media that could not be fully loaded"
+        case .nullPortrait:        return "An image that could not be rendered"
+        case .staticHusk:          return "A file with nothing inside"
+        case .tomeWraith:          return "A photo dense with text"
+        case .sigilSpecter:        return "A QR or barcode hiding in the frame"
         }
     }
 
@@ -286,13 +323,20 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .screenRecordingShade:return "Recordings often hold passwords or personal data."
         case .screenshotSpecter:   return "Old screenshots can hold codes or conversations."
         case .lowQualityLich:      return "Saved-from-elsewhere media rarely returns."
+        case .framedPhantom:       return "Still frames in a video shell — check it actually plays."
+        case .flickerWraith:       return "Strobe-heavy clips are rough to rewatch — preview first."
+        case .nullPortrait:        return "Could not be fully loaded. Confirm it's replaceable first."
+        case .staticHusk:          return "Appears empty, but confirm nothing valuable hides inside."
+        case .tomeWraith:          return "Documents often hold details you'll need later."
+        case .sigilSpecter:        return "Codes can be tickets, keys, or one-time links. Review before striking."
         }
     }
 
     /// Families whose members always deserve the careful-review flag:
-    /// old memories are never junk, and broken media is never auto-deleted.
+    /// old memories are never junk, broken media is never auto-deleted, and
+    /// a scanned code may be a ticket or key that can't be replaced.
     var defaultsToCarefulReview: Bool {
-        family == .archiveRelics || family == .glitchborn
+        family == .archiveRelics || family == .glitchborn || self == .sigilSpecter
     }
 
     /// Short bestiary lore line.
@@ -324,7 +368,13 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .timelapsePhantom:    return "Captured an entire afternoon. Probably."
         case .pocketPoltergeist:   return "Escaped a pocket mid-step. Half a second of chaos."
         case .screenRecordingShade:return "It watched everything you did. It remembers."
+        case .framedPhantom:       return "A reel that never learned to move. Stillness wears a filmstrip costume."
+        case .flickerWraith:       return "Blinks in and out of the dark — a lighthouse with no harbor."
         case .corruptedCodec:      return "Fragmented frames. A glitch in the dungeon."
+        case .nullPortrait:        return "The frame remembers a pose, but the face arrived as static."
+        case .staticHusk:          return "A shell of a file. All the bytes left home."
+        case .tomeWraith:          return "Pages photographed in haste. Every letter it holds is a debt."
+        case .sigilSpecter:        return "A woven sigil that opens doors when scanned. Handle with care."
         }
     }
 
@@ -357,7 +407,13 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .timelapsePhantom:    return "Time Bender"
         case .pocketPoltergeist:   return "Pocket Warden"
         case .screenRecordingShade:return "Shadow Auditor"
+        case .framedPhantom:       return "Frame Reader"
+        case .flickerWraith:       return "Strobe Tamer"
         case .corruptedCodec:      return "Glitch Healer"
+        case .nullPortrait:        return "Portrait Restorer"
+        case .staticHusk:          return "Husk Inspector"
+        case .tomeWraith:          return "Tome Keeper"
+        case .sigilSpecter:        return "Sigil Decoder"
         }
     }
 

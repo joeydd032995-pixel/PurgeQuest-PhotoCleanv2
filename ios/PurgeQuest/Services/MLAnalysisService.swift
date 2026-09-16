@@ -32,10 +32,15 @@ enum MLAnalysisService {
     }
 
     nonisolated static func averageLuminance(image: UIImage) -> Double {
-        guard let cg = image.cgImage,
-              let scaled = downsample(cgImage: cg, to: CGSize(width: 16, height: 16)) else { return 1.0 }
-        let width = scaled.width
-        let height = scaled.height
+        guard let cg = image.cgImage else { return 1.0 }
+        return averageLuminance(cgImage: cg)
+    }
+
+    /// Mean 0…1 luminance of any CGImage (16×16 readback).
+    nonisolated static func averageLuminance(cgImage: CGImage) -> Double {
+        let width = 16
+        let height = 16
+        guard let scaled = downsample(cgImage: cgImage, to: CGSize(width: width, height: height)) else { return 1.0 }
         let bytesPerRow = width * 4
         var pixels = [UInt8](repeating: 0, count: width * height * 4)
         let cs = CGColorSpaceCreateDeviceRGB()

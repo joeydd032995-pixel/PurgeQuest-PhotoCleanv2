@@ -18,7 +18,9 @@ struct LibraryComposition: Sendable, Equatable {
     var oldCount: Int = 0
     var largeCount: Int = 0
     var videoCount: Int = 0
-    var brokenVideoCount: Int = 0
+    /// Broken media: unloadable renders, empty files, or videos without
+    /// playable metadata (stages 3–5 broaden this beyond video metadata).
+    var brokenCount: Int = 0
     /// Share of items that belong to a duplicate cluster (0…1).
     var duplicateShare: Double = 0
 
@@ -26,7 +28,7 @@ struct LibraryComposition: Sendable, Equatable {
     var oldShare: Double { total == 0 ? 0 : Double(oldCount) / Double(total) }
     var largeShare: Double { total == 0 ? 0 : Double(largeCount) / Double(total) }
     var videoShare: Double { total == 0 ? 0 : Double(videoCount) / Double(total) }
-    var brokenVideoShare: Double { total == 0 ? 0 : Double(brokenVideoCount) / Double(total) }
+    var brokenShare: Double { total == 0 ? 0 : Double(brokenCount) / Double(total) }
 }
 
 enum DungeonTheme: String, CaseIterable, Codable, Sendable {
@@ -123,9 +125,11 @@ enum DungeonThemeEngine {
             if item.isScreenshot { c.screenshotCount += 1 }
             if (item.creationDate ?? .distantFuture) < threeYearsAgo { c.oldCount += 1 }
             if item.estimatedBytes >= MonsterClassifier.hundredMegabyte { c.largeCount += 1 }
+            let isBroken = item.loadFailed || item.estimatedBytes <= 0
+                || (item.kind == .video && item.durationSeconds <= 0)
+            if isBroken { c.brokenCount += 1 }
             if item.kind == .video {
                 c.videoCount += 1
-                if item.durationSeconds <= 0 { c.brokenVideoCount += 1 }
             }
         }
         return c
@@ -135,7 +139,7 @@ enum DungeonThemeEngine {
     /// share so Dragon's Hoard can trigger even on mixed libraries.
     static func theme(for composition: LibraryComposition) -> DungeonTheme {
         guard composition.total >= minimumBatch else { return .wildGallery }
-        if composition.brokenVideoShare >= brokenShareThreshold { return .glitchAbyss }
+        if composition.brokenShare >= brokenShareThreshold { return .glitchAbyss }
         if composition.duplicateShare >= duplicateShareThreshold { return .dragonsHoard }
         if composition.largeShare >= largeShareThreshold { return .vaultOfExcess }
         if composition.screenshotShare >= screenshotShareThreshold { return .clutterCatacombs }

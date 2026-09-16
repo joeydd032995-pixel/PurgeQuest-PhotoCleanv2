@@ -32,6 +32,11 @@ struct MediaItem: Identifiable, Equatable {
     var sharpness: Double? = nil     // Laplacian variance of the thumbnail
     var luminance: Double? = nil     // Average thumbnail luminance
 
+    // Deep signals (rollout stages 3–5), captured when a dive enriches the batch.
+    var loadFailed: Bool = false                  // Render failed — a Glitchborn signal
+    var frameSignals: VideoFrameSignals? = nil    // Stage 3 sampled-frame analysis (videos)
+    var visionSignals: VisionTextSignals? = nil   // Stage 5 OCR + barcode analysis (photos)
+
     var monsterType: MonsterType = .blurBeast
     var classification: MonsterClassification? = nil
     var thumbnail: UIImage?

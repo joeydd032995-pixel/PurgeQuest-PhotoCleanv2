@@ -2,10 +2,11 @@
 //  MonsterClassifier.swift
 //  PurgeQuest
 //
-//  Explanation-first classifier (rollout stages 1+2). Duplicate clusters are
-//  resolved first — they carry the clearest "why" — then metadata-driven
-//  rules run in confidence order for solo assets. Every verdict records its
-//  reasons so cards and the bestiary can answer "Why did this appear?".
+//  Explanation-first classifier (rollout stages 1–5). Duplicate clusters are
+//  resolved first — they carry the clearest "why" — then metadata rules and
+//  deep-signal rules (sampled frames, on-device Vision) run in confidence
+//  order for solo assets. Every verdict records its reasons so cards and the
+//  bestiary can answer "Why did this appear?".
 //
 //  Pure over MediaItem + MediaFingerprint: UIImage and PHAsset work happens
 //  upstream (PhotoLibraryService / MediaFingerprinter), which keeps the rules
@@ -37,6 +38,15 @@ enum MonsterClassifier {
     static let gigabyte: Int64 = 1_000_000_000
     static let halfGigabyte: Int64 = 500_000_000
     static let hundredMegabyte: Int64 = 100_000_000
+
+    // Stage 5 thresholds: on-device text density (documents photographed
+    // instead of kept). Measured by VisionAnalysisService.
+    static let denseTextCharacters = 300
+    static let denseTextRegions = 6
+
+    // Stage 3: a motionless clip must at least outlive a blooper to summon
+    // the Framed Phantom.
+    static let staticVideoMinimumDuration: Double = 3
 
     static func classify(items: [MediaItem], fingerprints: [MediaFingerprint], now: Date = Date()) -> ClassifiedLibrary {
         let byID = Dictionary(uniqueKeysWithValues: items.map { ($0.id, $0) })
@@ -96,6 +106,31 @@ enum MonsterClassifier {
     private static func classifyPhoto(_ item: MediaItem, now: Date) -> MonsterClassification {
         let bytes = item.estimatedBytes
 
+        // Glitchborn first (stage 4): empty or unloadable media is never
+        // auto-deletable.
+        if bytes <= 0 || item.pixelWidth <= 0 || item.pixelHeight <= 0 {
+            return MonsterClassification(
+                monsterType: .staticHusk, confidence: 0.9,
+                reasons: [.emptyResource], estimatedBytes: bytes,
+                requiresCarefulReview: true
+            )
+        }
+        if item.loadFailed {
+            return MonsterClassification(
+                monsterType: .nullPortrait, confidence: 0.85,
+                reasons: [.renderFailed], estimatedBytes: bytes,
+                requiresCarefulReview: true
+            )
+        }
+        // Stage 5: an embedded code is always review material — it may be a
+        // ticket, key, or one-time link.
+        if let vision = item.visionSignals, vision.hasBarcode {
+            return MonsterClassification(
+                monsterType: .sigilSpecter, confidence: 0.9,
+                reasons: [.embeddedCode], estimatedBytes: bytes,
+                requiresCarefulReview: true
+            )
+        }
         // Live Photo with paired motion file — the everyday iPhone capture.
         if item.isLivePhoto {
             return MonsterClassification(
@@ -109,6 +144,14 @@ enum MonsterClassifier {
             return MonsterClassification(
                 monsterType: .screenshotSpecter, confidence: 0.95,
                 reasons: [.screenshotCapture], estimatedBytes: bytes
+            )
+        }
+        // Stage 5: dense text — a document or note photographed instead of kept.
+        if let vision = item.visionSignals,
+           vision.characterCount >= denseTextCharacters || vision.regionCount >= denseTextRegions {
+            return MonsterClassification(
+                monsterType: .tomeWraith, confidence: 0.8,
+                reasons: [.denseText], estimatedBytes: bytes
             )
         }
         // Extreme width — panorama-style captures.
@@ -174,6 +217,21 @@ enum MonsterClassifier {
                 requiresCarefulReview: true
             )
         }
+        // Stage 4: empty files and unloadable renders are never auto-deletable.
+        if bytes <= 0 {
+            return MonsterClassification(
+                monsterType: .staticHusk, confidence: 0.9,
+                reasons: [.emptyResource], estimatedBytes: bytes,
+                requiresCarefulReview: true
+            )
+        }
+        if item.loadFailed {
+            return MonsterClassification(
+                monsterType: .corruptedCodec, confidence: 0.85,
+                reasons: [.renderFailed], estimatedBytes: bytes,
+                requiresCarefulReview: true
+            )
+        }
         // Storage Behemoths by size, then resolution, then duration.
         if bytes >= gigabyte {
             return MonsterClassification(
@@ -210,6 +268,33 @@ enum MonsterClassifier {
                 monsterType: .timelapsePhantom, confidence: 0.85,
                 reasons: [.loopVideo], estimatedBytes: bytes
             )
+        }
+        // Stage 3: sampled-frame signals refine the phantoms.
+        if let frames = item.frameSignals {
+            if frames.isFlickering {
+                return MonsterClassification(
+                    monsterType: .flickerWraith, confidence: 0.8,
+                    reasons: [.flickeringFrames], estimatedBytes: bytes
+                )
+            }
+            if duration >= staticVideoMinimumDuration && frames.isStatic {
+                return MonsterClassification(
+                    monsterType: .framedPhantom, confidence: 0.8,
+                    reasons: [.staticFrames], estimatedBytes: bytes
+                )
+            }
+            if frames.isDark {
+                return MonsterClassification(
+                    monsterType: .pocketPoltergeist, confidence: 0.7,
+                    reasons: [.darkFrames], estimatedBytes: bytes
+                )
+            }
+            if frames.isErratic {
+                return MonsterClassification(
+                    monsterType: .shakyGhost, confidence: 0.7,
+                    reasons: [.erraticMotion], estimatedBytes: bytes
+                )
+            }
         }
         // Video Phantoms: barely-a-moment or near-black clips.
         if duration < 2 {

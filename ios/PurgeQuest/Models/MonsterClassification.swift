@@ -46,6 +46,19 @@ enum ClassificationReason: String, Codable, Sendable, CaseIterable {
     // Glitchborn
     case brokenMetadata
 
+    // Video Phantoms (stage 3 — sampled-frame analysis)
+    case staticFrames
+    case flickeringFrames
+    case erraticMotion
+
+    // Glitchborn (stage 4 — render/emptiness signals)
+    case renderFailed
+    case emptyResource
+
+    // Clutter Undead (stage 5 — on-device Vision signals)
+    case denseText
+    case embeddedCode
+
     // Fallback
     case noStrongSignal
 
@@ -70,6 +83,13 @@ enum ClassificationReason: String, Codable, Sendable, CaseIterable {
         case .darkFrames:          return "Captured in near darkness"
         case .loopVideo, .highFrameRate: return "A looping or slow-motion clip"
         case .brokenMetadata:      return "Could not be fully loaded"
+        case .staticFrames:        return "Frames barely change from start to finish"
+        case .flickeringFrames:    return "Brightness swings sharply between frames"
+        case .erraticMotion:       return "The camera lurches between frames"
+        case .renderFailed:        return "Could not be fully loaded"
+        case .emptyResource:       return "The file appears to be empty"
+        case .denseText:           return "Dense with text, like a saved document"
+        case .embeddedCode:        return "Contains a QR or barcode"
         case .noStrongSignal:      return "No strong signals — a routine gallery wanderer"
         }
     }

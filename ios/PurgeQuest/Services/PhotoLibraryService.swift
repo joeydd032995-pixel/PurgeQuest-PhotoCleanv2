@@ -145,8 +145,10 @@ final class PhotoLibraryService {
     // MARK: - Build MediaItems
 
     /// Builds MediaItems with the cheap explainability signals captured at
-    /// fetch time. A provisional solo classification is attached; the batch
-    /// classifier (MonsterClassifier) refines duplicate groups afterwards.
+    /// fetch time, plus the deep signals (stage 3 sampled frames for videos,
+    /// stage 5 on-device Vision for photos). A provisional solo classification
+    /// is attached; the batch classifier (MonsterClassifier) refines duplicate
+    /// groups afterwards.
     func buildMediaItems(from assets: [PHAsset], thumbSize: CGSize, withThumbnails: Bool = true) async -> [MediaItem] {
         var items: [MediaItem] = []
         items.reserveCapacity(assets.count)
@@ -154,6 +156,16 @@ final class PhotoLibraryService {
             let bytes = estimateBytes(for: asset)
             let thumb = withThumbnails ? await requestThumbnail(for: asset, size: thumbSize) : nil
             let signals = captureSignals(for: asset)
+            // Stage 3: sampled-frame analysis for videos with healthy metadata.
+            var frames: VideoFrameSignals? = nil
+            if withThumbnails, asset.mediaType == .video, asset.duration > 0 {
+                frames = await VideoFrameAnalysisService.signals(for: asset)
+            }
+            // Stage 5: one on-device text/barcode pass per photo.
+            var vision: VisionTextSignals? = nil
+            if withThumbnails, let thumb {
+                vision = await VisionAnalysisService.analyze(image: thumb)
+            }
             var item = MediaItem(
                 id: asset.localIdentifier,
                 kind: asset.mediaType == .video ? .video : .photo,
@@ -174,6 +186,9 @@ final class PhotoLibraryService {
                 luminance: thumb.map { MLAnalysisService.averageLuminance(image: $0) },
                 thumbnail: thumb
             )
+            item.loadFailed = withThumbnails && thumb == nil
+            item.frameSignals = frames
+            item.visionSignals = vision
             let solo = MonsterClassifier.classifySolo(item)
             item.monsterType = solo.monsterType
             item.classification = solo

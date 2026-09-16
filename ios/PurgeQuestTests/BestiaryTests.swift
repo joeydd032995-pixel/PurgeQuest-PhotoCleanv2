@@ -86,7 +86,7 @@ struct BestiaryExpansionTests {
     // MARK: - Roster
 
     @Test func rosterHasSixFamiliesAndCompleteMetadata() {
-        #expect(MonsterType.allCases.count == 27)
+        #expect(MonsterType.allCases.count == 33)
         #expect(MonsterFamily.allCases.count == 6)
         for type in MonsterType.allCases {
             #expect(!type.lore.isEmpty)
@@ -338,8 +338,130 @@ struct BestiaryExpansionTests {
     @Test func carefulReviewFlagsFollowFamilies() {
         #expect(MonsterType.ancientArchive.defaultsToCarefulReview)
         #expect(MonsterType.corruptedCodec.defaultsToCarefulReview)
+        #expect(MonsterType.nullPortrait.defaultsToCarefulReview)
+        #expect(MonsterType.staticHusk.defaultsToCarefulReview)
+        #expect(MonsterType.sigilSpecter.defaultsToCarefulReview)
         #expect(!MonsterType.screenshotSpecter.defaultsToCarefulReview)
+        #expect(!MonsterType.tomeWraith.defaultsToCarefulReview)
         #expect(!MonsterType.blurBeast.defaultsToCarefulReview)
+    }
+
+    // MARK: - Stages 3–5: deep signals
+
+    @Test func stageThreeToFiveMonstersLandInFamilies() {
+        #expect(MonsterType.framedPhantom.family == .videoPhantoms)
+        #expect(MonsterType.flickerWraith.family == .videoPhantoms)
+        #expect(MonsterType.nullPortrait.family == .glitchborn)
+        #expect(MonsterType.staticHusk.family == .glitchborn)
+        #expect(MonsterType.tomeWraith.family == .clutterUndead)
+        #expect(MonsterType.sigilSpecter.family == .clutterUndead)
+    }
+
+    @Test func staticFootageSummonsFramedPhantom() {
+        var item = makeItem(id: "fp", kind: .video, bytes: 5_000_000, duration: 10)
+        item.frameSignals = VideoFrameSignals.evaluate(luminances: [0.5, 0.501, 0.502])
+        let c = classify([item], fingerprints: [makeFingerprint(from: item)])["fp"]
+        #expect(c?.monsterType == .framedPhantom)
+        #expect(c?.reasons.contains(.staticFrames) == true)
+    }
+
+    @Test func flickeringFootageSummonsFlickerWraith() {
+        var item = makeItem(id: "fw", kind: .video, bytes: 5_000_000, duration: 10)
+        item.frameSignals = VideoFrameSignals.evaluate(luminances: [0.2, 0.9, 0.15])
+        let c = classify([item], fingerprints: [makeFingerprint(from: item)])["fw"]
+        #expect(c?.monsterType == .flickerWraith)
+        #expect(c?.reasons.contains(.flickeringFrames) == true)
+    }
+
+    @Test func erraticMotionUpgradesShakyGhost() {
+        var item = makeItem(id: "em", kind: .video, bytes: 5_000_000, duration: 10)
+        item.frameSignals = VideoFrameSignals.evaluate(luminances: [0.3, 0.5, 0.35])
+        let c = classify([item], fingerprints: [makeFingerprint(from: item)])["em"]
+        #expect(c?.monsterType == .shakyGhost)
+        #expect(c?.reasons.contains(.erraticMotion) == true)
+    }
+
+    @Test func darkSampledFramesSummonsPocketPoltergeist() {
+        var item = makeItem(id: "df", kind: .video, bytes: 5_000_000, duration: 10)
+        item.frameSignals = VideoFrameSignals.evaluate(luminances: [0.05, 0.09, 0.03])
+        let c = classify([item], fingerprints: [makeFingerprint(from: item)])["df"]
+        #expect(c?.monsterType == .pocketPoltergeist)
+        #expect(c?.reasons.contains(.darkFrames) == true)
+    }
+
+    @Test func frameSignalEvaluationIsPureAndSafe() {
+        #expect(VideoFrameSignals.evaluate(luminances: []) == nil)
+        let single = VideoFrameSignals.evaluate(luminances: [0.5])
+        #expect(single?.frameCount == 1)
+        #expect(single?.meanMotion == 0)
+        let dark = VideoFrameSignals.evaluate(luminances: [0.05, 0.1])
+        #expect(dark?.darkFrameRatio == 1.0)
+        // Non-finite luminances are filtered, not propagated.
+        let dirty = VideoFrameSignals.evaluate(luminances: [0.5, .nan])
+        #expect(dirty?.frameCount == 1)
+    }
+
+    @Test func failedRenderPhotoSummonsNullPortrait() {
+        var item = makeItem(id: "np")
+        item.loadFailed = true
+        let c = classify([item], fingerprints: [makeFingerprint(from: item)])["np"]
+        #expect(c?.monsterType == .nullPortrait)
+        #expect(c?.requiresCarefulReview == true)
+        #expect(c?.reasons.contains(.renderFailed) == true)
+    }
+
+    @Test func emptyFileSummonsStaticHusk() {
+        let item = makeItem(id: "sh", bytes: 0)
+        let c = classify([item], fingerprints: [makeFingerprint(from: item)])["sh"]
+        #expect(c?.monsterType == .staticHusk)
+        #expect(c?.requiresCarefulReview == true)
+        #expect(c?.reasons.contains(.emptyResource) == true)
+    }
+
+    @Test func failedRenderVideoSummonsCorruptedCodec() {
+        var item = makeItem(id: "cv", kind: .video, bytes: 10_000_000, duration: 30)
+        item.loadFailed = true
+        let c = classify([item], fingerprints: [makeFingerprint(from: item)])["cv"]
+        #expect(c?.monsterType == .corruptedCodec)
+        #expect(c?.reasons.contains(.renderFailed) == true)
+    }
+
+    @Test func barcodePhotoSummonsSigilSpecterWithCarefulReview() {
+        var item = makeItem(id: "qr")
+        item.visionSignals = VisionTextSignals(characterCount: 0, regionCount: 0, hasBarcode: true)
+        let c = classify([item], fingerprints: [makeFingerprint(from: item)])["qr"]
+        #expect(c?.monsterType == .sigilSpecter)
+        #expect(c?.requiresCarefulReview == true)
+        #expect(c?.reasons.contains(.embeddedCode) == true)
+    }
+
+    @Test func embeddedCodeOutranksScreenshotFlag() {
+        var item = makeItem(id: "qs", isScreenshot: true)
+        item.visionSignals = VisionTextSignals(characterCount: 0, regionCount: 0, hasBarcode: true)
+        #expect(classify([item], fingerprints: [makeFingerprint(from: item)])["qs"]?.monsterType == .sigilSpecter)
+    }
+
+    @Test func denseTextPhotoSummonsTomeWraith() {
+        var item = makeItem(id: "tw")
+        item.visionSignals = VisionTextSignals(characterCount: 500, regionCount: 8, hasBarcode: false)
+        let c = classify([item], fingerprints: [makeFingerprint(from: item)])["tw"]
+        #expect(c?.monsterType == .tomeWraith)
+        #expect(c?.reasons.contains(.denseText) == true)
+    }
+
+    @Test func sparseTextPhotoFallsThroughToMetadataRules() {
+        var item = makeItem(id: "sp")
+        item.visionSignals = VisionTextSignals(characterCount: 40, regionCount: 2, hasBarcode: false)
+        #expect(classify([item], fingerprints: [makeFingerprint(from: item)])["sp"]?.monsterType != .tomeWraith)
+    }
+
+    @Test func unloadablePhotosAlsoSummonGlitchAbyss() {
+        let items = (0..<10).map { i -> MediaItem in
+            var item = makeItem(id: "gl\(i)")
+            item.loadFailed = true
+            return item
+        }
+        #expect(DungeonThemeEngine.theme(for: DungeonThemeEngine.composition(for: items)) == .glitchAbyss)
     }
 
     // MARK: - Why lines
