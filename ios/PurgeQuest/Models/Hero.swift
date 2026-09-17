@@ -246,7 +246,7 @@ final class Hero {
         set {
             var look = appearance
             look.race = newValue
-            if look.paintVariant < 1 || look.paintVariant > 3 { look.paintVariant = 1 }
+            if look.paintVariant < 1 || look.paintVariant > newValue.variantCount { look.paintVariant = 1 }
             appearance = look
         }
     }

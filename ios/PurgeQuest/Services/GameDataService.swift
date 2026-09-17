@@ -28,9 +28,30 @@ enum GameDataService {
 
     static func seedCosmeticsIfNeeded(in context: ModelContext) {
         let descriptor = FetchDescriptor<CosmeticItem>()
-        let existing = (try? context.fetch(descriptor)) ?? []
-        let existingByID = Dictionary(existing.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        var existing = (try? context.fetch(descriptor)) ?? []
         var didChange = false
+
+        // One-time migration: Skeleton Crusader and Skeleton Warrior merged
+        // into Skeletal Undead, so owned gear re-points to the merged catalog
+        // ids. Ownership, equip state, and unlock state are preserved.
+        let byID = Dictionary(existing.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        for item in existing {
+            let migrated = GearCatalog.migratedID(for: item.id)
+            guard migrated != item.id else { continue }
+            if let counterpart = byID[migrated] {
+                counterpart.isEquipped = counterpart.isEquipped || item.isEquipped
+                context.delete(item)
+            } else {
+                item.id = migrated
+            }
+            didChange = true
+        }
+        if didChange {
+            try? context.save()
+            existing = (try? context.fetch(descriptor)) ?? []
+        }
+
+        let existingByID = Dictionary(existing.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
 
         for seed in Self.cosmeticSeeds {
             if let item = existingByID[seed.id] {
@@ -95,7 +116,7 @@ enum GameDataService {
         CosmeticItem(id: "upgrade.titanBlade",  name: "Titan Blade",     subtitle: "Doubles the size of your held weapon.",  type: .upgrade, iconName: "arrow.up.left.and.arrow.down.right", priceGems: 3000),
         ]
         // Race gear: 40 staves, 40 shields, each race's signature weapon, and
-        // the nine race armor sets. Seeded alongside the classic cosmetics so
+        // the eight race armor sets. Seeded alongside the classic cosmetics so
         // everything shares one economy and nothing is ever lost once owned.
         return base + GearCatalog.cosmeticSeeds
     }

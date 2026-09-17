@@ -2,7 +2,7 @@
 //  HeroIdentityTests.swift
 //  PurgeQuest
 //
-//  Tests for the nine-race identity overhaul: class roster and legacy
+//  Tests for the eight-race identity overhaul: class roster and legacy
 //  mapping, race defaults, appearance v3 migration, gear catalog integrity,
 //  class perk math, and sprite part naming.
 //
@@ -51,11 +51,48 @@ struct HeroIdentityTests {
 
     @Test func racePalettesAndAnimations() {
         #expect(HeroRace.valkyrie.palette == .flesh)
-        #expect(HeroRace.skeletonWarrior.palette == .bone)
-        #expect(HeroRace.skeletonCrusader.palette == .bone)
+        #expect(HeroRace.skeletalUndead.palette == .bone)
         #expect(HeroRace.golem.palette == .stone)
-        #expect(HeroRace.forestRanger.attackAnimationName == "Shooting")
+        #expect(HeroRace.elven.attackAnimationName == "Shooting")
         #expect(HeroRace.valkyrie.attackAnimationName == "Slashing")
+    }
+
+    @Test func raceRenamesAndMerge() {
+        #expect(HeroRace.allCases.count == 8)
+        #expect(HeroRace.elven.rawValue == "forest_ranger")
+        #expect(HeroRace.elven.displayName == "Elven")
+        #expect(HeroRace.vampyri.displayName == "Vampyri")
+        #expect(HeroRace.scarredOnes.displayName == "The Scarred Ones")
+        #expect(HeroRace.lostSouls.displayName == "Lost Souls")
+        #expect(HeroRace.skeletalUndead.displayName == "Skeletal Undead")
+        #expect(HeroRace.skeletalUndead.variantCount == 6)
+        #expect(HeroRace.valkyrie.variantCount == 3)
+        #expect(HeroRace.skeletalUndead.artBase(variant: 5) == "skeleton_warrior_v2")
+        #expect(HeroRace.skeletalUndead.artBase(variant: 1) == "skeleton_crusader_v1")
+        #expect(HeroRace.elven.artBase(variant: 2) == "forest_ranger_v2")
+    }
+
+    @Test func skeletonWarriorSaveMigratesIntoSkeletalUndead() {
+        let warrior = HeroAppearance.decode(
+            Data("{\"schemaVersion\":3,\"race\":\"skeleton_warrior\",\"paintVariant\":2}".utf8),
+            for: .knight
+        )
+        #expect(warrior.race == .skeletalUndead)
+        #expect(warrior.paintVariant == 5)
+
+        let crusader = HeroAppearance.decode(
+            Data("{\"schemaVersion\":3,\"race\":\"skeleton_crusader\",\"paintVariant\":3}".utf8),
+            for: .knight
+        )
+        #expect(crusader.race == .skeletalUndead)
+        #expect(crusader.paintVariant == 3)
+    }
+
+    @Test func legacyWarriorGearIDsMigrate() {
+        #expect(GearCatalog.migratedID(for: "weapon.skeleton_warrior") == "weapon.skeleton_crusader")
+        #expect(GearCatalog.migratedID(for: "armor.skeleton_warrior.helm") == "armor.skeleton_crusader.helm")
+        #expect(GearCatalog.migratedID(for: "weapon.valkyrie") == "weapon.valkyrie")
+        #expect(GearCatalog.design(id: "weapon.skeleton_warrior")?.kind == .sword)
     }
 
     // MARK: - Appearance migration
@@ -99,7 +136,7 @@ struct HeroIdentityTests {
 
     @Test func defaultsAreRaceAppropriate() {
         #expect(HeroAppearance.default(for: .golem).skinTone == .ashen)
-        #expect(HeroAppearance.default(for: .skeletonCrusader).skinTone == .moonlit)
+        #expect(HeroAppearance.default(for: .skeletalUndead).skinTone == .moonlit)
         #expect(HeroAppearance.default(for: .valkyrie).race == .valkyrie)
     }
 
@@ -108,8 +145,8 @@ struct HeroIdentityTests {
     @Test func gearCatalogCounts() {
         #expect(GearCatalog.staves.count == 40)
         #expect(GearCatalog.shields.count == 40)
-        #expect(GearCatalog.signatureWeapons.count == 9)
-        #expect(GearCatalog.armorSets.count == 36)
+        #expect(GearCatalog.signatureWeapons.count == 8)
+        #expect(GearCatalog.armorSets.count == 32)
     }
 
     @Test func gearIDsAreUnique() {
@@ -162,5 +199,6 @@ struct HeroIdentityTests {
     @Test func partBaseNaming() {
         #expect(SpriteRenderer.partBaseName(race: .valkyrie, variant: 1, fileName: "Face 01.png") == "valkyrie_v1_face_01")
         #expect(SpriteRenderer.partBaseName(race: .golem, variant: 2, fileName: "Body.png") == "golem_v2_body")
+        #expect(SpriteRenderer.partBaseName(race: .skeletalUndead, variant: 4, fileName: "Head.png") == "skeleton_warrior_v1_head")
     }
 }

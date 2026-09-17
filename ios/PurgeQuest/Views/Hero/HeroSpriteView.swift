@@ -28,7 +28,7 @@ struct HeroSpriteView: View {
 
     private var look: HeroAppearance { appearance ?? hero.appearance }
     private var race: HeroRace { look.race ?? hero.race }
-    private var variant: Int { min(max(look.paintVariant, 1), 3) }
+    private var variant: Int { min(max(look.paintVariant, 1), race.variantCount) }
 
     private static let heartbeat = Timer.publish(every: 0.12, on: .main, in: .common).autoconnect()
 

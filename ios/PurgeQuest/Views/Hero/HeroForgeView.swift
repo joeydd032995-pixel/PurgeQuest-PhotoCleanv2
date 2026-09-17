@@ -356,7 +356,7 @@ struct HeroForgeView: View {
         VStack(alignment: .leading, spacing: 10) {
             sectionTitle("Paint job")
             HStack(spacing: 10) {
-                ForEach([1, 2, 3], id: \.self) { variant in
+                ForEach(1...max((draft.race ?? hero.race).variantCount, 1), id: \.self) { variant in
                     Button {
                         select(variant) { draft.paintVariant = $0 }
                     } label: {

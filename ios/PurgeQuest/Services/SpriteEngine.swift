@@ -5,9 +5,12 @@
 //  Renders the illustrated race sprites. Each race pack ships a Spriter
 //  (SCML) project describing how layered part PNGs (body, head, faces, arms,
 //  hands, legs, weapon, shield, FX) are placed per animation frame. The
-//  engine parses that project, composites parts into frames, applies the
-//  hero's recolor choices (hue shifts + armor dye), and swaps the baked
-//  weapon/shield for whatever the player has equipped.
+//  projects are skeletal: every part attaches to a bone, and each bone/part
+//  stores only its offset and angle relative to its parent. The engine
+//  parses that project, resolves the full parent chain into world-space
+//  placements, composites parts into frames, applies the hero's recolor
+//  choices (hue shifts + armor dye), and swaps the baked weapon/shield for
+//  whatever the player has equipped.
 //
 
 import UIKit
@@ -20,16 +23,22 @@ nonisolated struct SpriteFileDef {
     let name: String
     let width: CGFloat
     let height: CGFloat
+    /// Default pivot (fractions of the image, y-up) when a placement omits it.
+    let pivotX: CGFloat
+    let pivotY: CGFloat
 }
 
 nonisolated struct SpritePlacement {
     let file: SpriteFileDef
+    /// World-space position of the part's pivot (Spriter y-up space).
     let x: CGFloat
     let y: CGFloat
+    /// World-space angle in degrees, counter-clockwise in y-up space.
     let angle: CGFloat
     let pivotX: CGFloat
     let pivotY: CGFloat
     let zIndex: Int
+    let alpha: CGFloat
 }
 
 nonisolated struct SpriteAnimation {
@@ -51,9 +60,9 @@ nonisolated final class SpriterDocument {
         self.origin = origin
     }
 
-    /// Loads and parses `<race>_v<variant>.scml` from the app bundle.
+    /// Loads and parses the race's `<artBase>.scml` from the app bundle.
     static func load(race: HeroRace, variant: Int) -> SpriterDocument? {
-        let base = "\(race.rawValue)_v\(variant)"
+        let base = race.artBase(variant: variant)
         guard let url = Bundle.main.url(forResource: base, withExtension: "scml"),
               let data = try? Data(contentsOf: url) else { return nil }
         return SCMLParser(data: data).parse()
@@ -67,7 +76,7 @@ nonisolated final class SpriterDocument {
 
 // MARK: - SCML parsing
 
-private struct ScmlObject {
+nonisolated private struct ScmlObject {
     let folder: Int
     let file: Int
     let x: CGFloat
@@ -75,12 +84,37 @@ private struct ScmlObject {
     let angle: CGFloat
     let pivotX: CGFloat
     let pivotY: CGFloat
+    let alpha: CGFloat
 }
 
-private struct MainlineRef {
+nonisolated private struct ScmlBone {
+    let x: CGFloat
+    let y: CGFloat
+    let angle: CGFloat
+}
+
+/// A mainline bone reference: which bone timeline key to sample, and which
+/// earlier bone (by id) it attaches to.
+nonisolated private struct MainlineBone {
+    let id: Int
     let timeline: Int
     let key: Int
+    let parent: Int?
+}
+
+/// A mainline object reference: which sprite timeline key to sample, which
+/// bone it attaches to, and its draw order.
+nonisolated private struct MainlineRef {
+    let timeline: Int
+    let key: Int
+    let parent: Int?
     let zIndex: Int
+}
+
+/// One mainline key — the bones and object refs that make up one frame.
+nonisolated private struct MainlineFrame {
+    var bones: [MainlineBone] = []
+    var objects: [MainlineRef] = []
 }
 
 nonisolated private struct SCMLParser: @unchecked Sendable {
@@ -94,26 +128,40 @@ nonisolated private struct SCMLParser: @unchecked Sendable {
         parser.delegate = delegate
         guard parser.parse(), !delegate.animations.isEmpty else { return nil }
 
-        // Union bounds across every placement, in Spriter's y-up world space.
+        // Union bounds across every visible placement, accounting for each
+        // part's world rotation. Hidden parts (alpha 0) and the slash effect
+        // are excluded so the canvas hugs the character.
         var minX = CGFloat.greatestFiniteMagnitude
         var maxX = -CGFloat.greatestFiniteMagnitude
         var minY = CGFloat.greatestFiniteMagnitude
         var maxY = -CGFloat.greatestFiniteMagnitude
         for animation in delegate.animations.values {
             for frame in animation.frames {
-                for p in frame {
-                    let left = p.x - p.pivotX * p.file.width
-                    let bottom = p.y - p.pivotY * p.file.height
-                    let top = p.y + (1 - p.pivotY) * p.file.height
-                    minX = min(minX, left)
-                    maxX = max(maxX, left + p.file.width)
-                    minY = min(minY, bottom)
-                    maxY = max(maxY, top)
+                for p in frame where p.alpha > 0.01 {
+                    if p.file.name.lowercased().hasPrefix("slashfx") { continue }
+                    let rad = p.angle * .pi / 180
+                    let cosA = cos(rad)
+                    let sinA = sin(rad)
+                    // Image rect corners relative to the pivot, y-up.
+                    let corners: [(CGFloat, CGFloat)] = [
+                        (-p.pivotX * p.file.width, -p.pivotY * p.file.height),
+                        ((1 - p.pivotX) * p.file.width, -p.pivotY * p.file.height),
+                        ((1 - p.pivotX) * p.file.width, (1 - p.pivotY) * p.file.height),
+                        (-p.pivotX * p.file.width, (1 - p.pivotY) * p.file.height)
+                    ]
+                    for (cx, cy) in corners {
+                        let x = p.x + cx * cosA - cy * sinA
+                        let y = p.y + cx * sinA + cy * cosA
+                        minX = min(minX, x)
+                        maxX = max(maxX, x)
+                        minY = min(minY, y)
+                        maxY = max(maxY, y)
+                    }
                 }
             }
         }
         guard minX.isFinite, minY.isFinite else { return nil }
-        let pad: CGFloat = 40
+        let pad: CGFloat = 20
         let origin = CGPoint(x: minX - pad, y: minY - pad)
         let size = CGSize(width: (maxX + pad) - origin.x, height: (maxY + pad) - origin.y)
         return SpriterDocument(animations: delegate.animations, canvasSize: size, origin: origin)
@@ -127,11 +175,13 @@ nonisolated private final class ParserDelegate: NSObject, XMLParserDelegate {
     private var stack: [String] = []
     private var folderID: Int = 0
     private var animationName: String?
-    private var mainlineFrames: [[MainlineRef]] = []
+    private var mainlineFrames: [MainlineFrame] = []
+    private var currentFrame = MainlineFrame()
+    private var inMainline = false
+    private var boneTimelines: [Int: [Int: ScmlBone]] = [:]
     private var timelines: [Int: [Int: ScmlObject]] = [:]
     private var currentTimelineID: Int?
     private var currentTimelineKey: Int?
-    private var pendingObjectRefs: [MainlineRef] = []
 
     private func attr(_ attributes: [String: String], _ key: String) -> String? {
         attributes[key] ?? attributes[key.replacingOccurrences(of: "_", with: "-")]
@@ -142,48 +192,75 @@ nonisolated private final class ParserDelegate: NSObject, XMLParserDelegate {
         return CGFloat(value)
     }
 
+    private func int(_ attributes: [String: String], _ key: String, _ fallback: Int) -> Int {
+        guard let raw = attr(attributes, key), let value = Int(raw) else { return fallback }
+        return value
+    }
+
     func parser(_ parser: XMLParser, didStartElement name: String, namespaceURI: String?, qualifiedName: String?, attributes: [String: String] = [:]) {
         stack.append(name)
         switch name {
         case "folder":
-            folderID = Int(attr(attributes, "id") ?? "0") ?? 0
+            folderID = int(attributes, "id", 0)
         case "file":
-            let fileID = Int(attr(attributes, "id") ?? "0") ?? 0
+            let fileID = int(attributes, "id", 0)
             let def = SpriteFileDef(
                 name: attr(attributes, "name") ?? "",
                 width: num(attributes, "width", 1),
-                height: num(attributes, "height", 1)
+                height: num(attributes, "height", 1),
+                pivotX: num(attributes, "pivot_x", 0),
+                pivotY: num(attributes, "pivot_y", 1)
             )
             folders[folderID, default: [:]][fileID] = def
         case "animation":
             animationName = attr(attributes, "name")
             mainlineFrames = []
+            boneTimelines = [:]
             timelines = [:]
+        case "mainline":
+            inMainline = true
         case "timeline":
-            currentTimelineID = Int(attr(attributes, "id") ?? "-1")
+            currentTimelineID = int(attributes, "id", -1)
         case "key":
-            if stack.contains("mainline") {
-                pendingObjectRefs = []
+            if inMainline {
+                currentFrame = MainlineFrame()
             } else {
-                currentTimelineKey = Int(attr(attributes, "id") ?? "-1")
+                currentTimelineKey = int(attributes, "id", -1)
             }
+        case "bone_ref":
+            guard inMainline else { break }
+            currentFrame.bones.append(MainlineBone(
+                id: int(attributes, "id", -1),
+                timeline: int(attributes, "timeline", -1),
+                key: int(attributes, "key", -1),
+                parent: attr(attributes, "parent").flatMap { Int($0) }
+            ))
         case "object_ref":
-            let ref = MainlineRef(
-                timeline: Int(attr(attributes, "timeline") ?? "-1") ?? -1,
-                key: Int(attr(attributes, "key") ?? "-1") ?? -1,
-                zIndex: Int(attr(attributes, "z_index") ?? "0") ?? 0
+            guard inMainline else { break }
+            currentFrame.objects.append(MainlineRef(
+                timeline: int(attributes, "timeline", -1),
+                key: int(attributes, "key", -1),
+                parent: attr(attributes, "parent").flatMap { Int($0) },
+                zIndex: int(attributes, "z_index", 0)
+            ))
+        case "bone":
+            guard let tl = currentTimelineID, let keyID = currentTimelineKey else { break }
+            boneTimelines[tl, default: [:]][keyID] = ScmlBone(
+                x: num(attributes, "x", 0),
+                y: num(attributes, "y", 0),
+                angle: num(attributes, "angle", 0)
             )
-            pendingObjectRefs.append(ref)
         case "object":
             guard let tl = currentTimelineID, let keyID = currentTimelineKey else { break }
             let obj = ScmlObject(
-                folder: Int(attr(attributes, "folder") ?? "0") ?? 0,
-                file: Int(attr(attributes, "file") ?? "0") ?? 0,
+                folder: int(attributes, "folder", 0),
+                file: int(attributes, "file", 0),
                 x: num(attributes, "x", 0),
                 y: num(attributes, "y", 0),
                 angle: num(attributes, "angle", 0),
                 pivotX: num(attributes, "pivot_x", CGFloat.nan),
-                pivotY: num(attributes, "pivot_y", CGFloat.nan)
+                pivotY: num(attributes, "pivot_y", CGFloat.nan),
+                alpha: num(attributes, "a", 1)
             )
             timelines[tl, default: [:]][keyID] = obj
         default:
@@ -193,10 +270,12 @@ nonisolated private final class ParserDelegate: NSObject, XMLParserDelegate {
 
     func parser(_ parser: XMLParser, didEndElement name: String, namespaceURI: String?, qualifiedName: String?) {
         switch name {
+        case "mainline":
+            inMainline = false
         case "key":
-            if stack.contains("mainline") && pendingObjectRefs.isEmpty == false {
-                mainlineFrames.append(pendingObjectRefs)
-                pendingObjectRefs = []
+            if inMainline {
+                mainlineFrames.append(currentFrame)
+                currentFrame = MainlineFrame()
             }
         case "animation":
             finishAnimation()
@@ -212,20 +291,49 @@ nonisolated private final class ParserDelegate: NSObject, XMLParserDelegate {
             return
         }
         var frames: [[SpritePlacement]] = []
-        for refs in mainlineFrames {
-            let placements: [SpritePlacement] = refs.compactMap { ref in
+        for mainline in mainlineFrames {
+            // Resolve the bone skeleton first. SCML lists parents before
+            // children, so one ordered pass memoizes every world transform.
+            var boneWorlds: [Int: (position: CGPoint, angle: CGFloat)] = [:]
+            for ref in mainline.bones {
+                let bone = boneTimelines[ref.timeline]?[ref.key] ?? ScmlBone(x: 0, y: 0, angle: 0)
+                let world: (position: CGPoint, angle: CGFloat)
+                if let parentID = ref.parent, let parent = boneWorlds[parentID] {
+                    world = Self.childWorld(
+                        localX: bone.x, localY: bone.y,
+                        parentPosition: parent.position, parentAngle: parent.angle,
+                        ownAngle: bone.angle
+                    )
+                } else {
+                    world = (CGPoint(x: bone.x, y: bone.y), bone.angle)
+                }
+                boneWorlds[ref.id] = world
+            }
+
+            let placements: [SpritePlacement] = mainline.objects.compactMap { ref in
                 guard let object = timelines[ref.timeline]?[ref.key],
                       let def = folders[object.folder]?[object.file] else { return nil }
-                let pivotX = object.pivotX.isFinite ? object.pivotX : 0
-                let pivotY = object.pivotY.isFinite ? object.pivotY : 1
+                let pivotX = object.pivotX.isFinite ? object.pivotX : def.pivotX
+                let pivotY = object.pivotY.isFinite ? object.pivotY : def.pivotY
+                let world: (position: CGPoint, angle: CGFloat)
+                if let parentID = ref.parent, let parent = boneWorlds[parentID] {
+                    world = Self.childWorld(
+                        localX: object.x, localY: object.y,
+                        parentPosition: parent.position, parentAngle: parent.angle,
+                        ownAngle: object.angle
+                    )
+                } else {
+                    world = (CGPoint(x: object.x, y: object.y), object.angle)
+                }
                 return SpritePlacement(
                     file: def,
-                    x: object.x,
-                    y: object.y,
-                    angle: object.angle,
+                    x: world.position.x,
+                    y: world.position.y,
+                    angle: world.angle,
                     pivotX: pivotX,
                     pivotY: pivotY,
-                    zIndex: ref.zIndex
+                    zIndex: ref.zIndex,
+                    alpha: object.alpha
                 )
             }
             if !placements.isEmpty { frames.append(placements) }
@@ -235,7 +343,25 @@ nonisolated private final class ParserDelegate: NSObject, XMLParserDelegate {
         }
         animationName = nil
         mainlineFrames = []
+        boneTimelines = [:]
         timelines = [:]
+    }
+
+    /// Applies a parent's world transform to a child's local offset and
+    /// relative angle. Spriter stores counter-clockwise degrees in y-up space.
+    private static func childWorld(
+        localX: CGFloat,
+        localY: CGFloat,
+        parentPosition: CGPoint,
+        parentAngle: CGFloat,
+        ownAngle: CGFloat
+    ) -> (position: CGPoint, angle: CGFloat) {
+        let rad = parentAngle * .pi / 180
+        let cosA = cos(rad)
+        let sinA = sin(rad)
+        let x = parentPosition.x + localX * cosA - localY * sinA
+        let y = parentPosition.y + localX * sinA + localY * cosA
+        return (CGPoint(x: x, y: y), parentAngle + ownAngle)
     }
 }
 
@@ -257,13 +383,13 @@ final class SpriteRenderer {
         let stem = (fileName as NSString).deletingPathExtension
             .lowercased()
             .replacingOccurrences(of: " ", with: "_")
-        return "\(race.rawValue)_v\(variant)_\(stem)"
+        return "\(race.artBase(variant: variant))_\(stem)"
     }
 
     // MARK: Documents & assets
 
     func document(race: HeroRace, variant: Int) -> SpriterDocument? {
-        let key = "\(race.rawValue)_v\(variant)"
+        let key = race.artBase(variant: variant)
         if let cached = documents[key] { return cached }
         guard let doc = SpriterDocument.load(race: race, variant: variant) else { return nil }
         documents[key] = doc
@@ -388,8 +514,8 @@ final class SpriteRenderer {
     ) -> UIImage? {
         guard let doc = document(race: race, variant: variant),
               let anim = doc.animations[animation], !anim.frames.isEmpty else { return nil }
-        let clampedVariant = min(max(variant, 1), 3)
-        let key = "\(race.rawValue)_v\(clampedVariant)|\(animation)|\(frameIndex)|\(appearance.skinHueShift)|\(appearance.eyeHueShift)|\(appearance.hairHueShift)|\(appearance.armorDye.rawValue)|\(weaponResource ?? "-")|\(shieldResource ?? "-")|\(titanWeapon)"
+        let clampedVariant = min(max(variant, 1), race.variantCount)
+        let key = "\(race.artBase(variant: clampedVariant))|\(animation)|\(frameIndex)|\(appearance.skinHueShift)|\(appearance.eyeHueShift)|\(appearance.hairHueShift)|\(appearance.armorDye.rawValue)|\(weaponResource ?? "-")|\(shieldResource ?? "-")|\(titanWeapon)"
         if let cached = frameCache.object(forKey: key as NSString) { return cached }
 
         let index = ((frameIndex % anim.frames.count) + anim.frames.count) % anim.frames.count
@@ -403,6 +529,7 @@ final class SpriteRenderer {
 
             for placement in placements.sorted(by: { $0.zIndex < $1.zIndex }) {
                 let fileName = placement.file.name.lowercased()
+                if placement.alpha < 0.01 { continue }
                 if weaponResource != nil && isWeaponFile(fileName) { continue }
                 if shieldResource != nil && fileName.hasPrefix("shield") { continue }
                 if fileName.hasPrefix("slashfx") { continue }

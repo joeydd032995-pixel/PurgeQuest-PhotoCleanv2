@@ -99,9 +99,9 @@ struct ContentView: View {
             let cls = HeroClass(rawValue: className) ?? HeroClass.legacyClass(forRaw: className)
             if let cls { hero.heroClass = cls }
         }
-        if let raceRaw = UserDefaults.standard.string(forKey: "pq.race"),
-           let race = HeroRace(rawValue: raceRaw) {
-            hero.race = race
+        if let raceRaw = UserDefaults.standard.string(forKey: "pq.race") {
+            // legacyRaw migrates the removed Skeleton Warrior pack.
+            hero.race = HeroRace(legacyRaw: raceRaw)
         }
         // Apply the look drafted during onboarding once, then clear it so
         // later Forge edits always win.

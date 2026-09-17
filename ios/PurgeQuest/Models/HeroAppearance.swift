@@ -379,8 +379,15 @@ nonisolated struct HeroAppearance: Equatable, Codable {
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         schemaVersion = (try? c.decodeIfPresent(Int.self, forKey: .schemaVersion)) ?? HeroAppearance.currentSchemaVersion
-        race = (try? c.decodeIfPresent(HeroRace.self, forKey: .race)) ?? nil
+        // Race raw values decode through the migration path: the removed
+        // Skeleton Warrior pack folds into Skeletal Undead, shifting its
+        // paint job into the warrior variant range (4-6).
+        let raceRaw = (try? c.decodeIfPresent(String.self, forKey: .race)) ?? nil
+        race = raceRaw.map { HeroRace(legacyRaw: $0) }
         paintVariant = (try? c.decodeIfPresent(Int.self, forKey: .paintVariant)) ?? 1
+        if raceRaw == "skeleton_warrior" {
+            paintVariant = min(max(paintVariant + 3, 1), HeroRace.skeletalUndead.variantCount)
+        }
         skinHueShift = (try? c.decodeIfPresent(Double.self, forKey: .skinHueShift)) ?? 0
         eyeHueShift = (try? c.decodeIfPresent(Double.self, forKey: .eyeHueShift)) ?? 0
         hairHueShift = (try? c.decodeIfPresent(Double.self, forKey: .hairHueShift)) ?? 0
@@ -435,7 +442,7 @@ nonisolated struct HeroAppearance: Equatable, Codable {
                 backdropStyle: .plaque
             )
         case .flesh:
-            let knightish = race == .valkyrie || race == .skeletonCrusader
+            let knightish = race == .valkyrie || race == .skeletalUndead
             return HeroAppearance(
                 race: race,
                 skinTone: knightish ? .sandstone : .honey,

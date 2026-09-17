@@ -92,17 +92,16 @@ nonisolated enum GearCatalog {
     static var signatureWeapons: [GearDesign] {
         let entries: [(HeroRace, String, String)] = [
             (.valkyrie, "Valkyrie Blade", "Gilded edge that remembers every oath."),
-            (.forestRanger, "Ranger's Recurve", "Cut from living heartwood."),
+            (.elven, "Elven Recurve", "Cut from living heartwood."),
             (.seer, "Seer's Edge", "A blade that reflects fates back at them."),
-            (.bloodAlchemist, "Alchemist's Cleaver", "Stained by a hundred experiments."),
-            (.darkOracle, "Oracle's Fang", "Whispers prophecies mid-swing."),
-            (.necromancer, "Shadowbrand", "Forged in the cold between worlds."),
-            (.skeletonCrusader, "Crusader Claymore", "An oath that outlived its body."),
-            (.skeletonWarrior, "Worn Warblade", "Old bones, sharper edge."),
+            (.vampyri, "Vampyri Cleaver", "Stained by a hundred experiments."),
+            (.scarredOnes, "Scarred Fang", "Whispers prophecies mid-swing."),
+            (.lostSouls, "Shadowbrand", "Forged in the cold between worlds."),
+            (.skeletalUndead, "Undead Claymore", "An oath that outlived its body."),
             (.golem, "Vaultcracker", "Carved from the deepest vault door.")
         ]
         return entries.map { race, name, subtitle in
-            let isBow = race == .forestRanger
+            let isBow = race == .elven
             return GearDesign(
                 id: "weapon.\(race.rawValue)",
                 name: name,
@@ -126,7 +125,7 @@ nonisolated enum GearCatalog {
         ("hands", .hands, "Gauntlets", 220, "hand.raised.fill")
     ]
 
-    /// 36 armor pieces: each race's signature look across four slots.
+    /// 32 armor pieces: each race's signature look across four slots.
     static var armorSets: [GearDesign] {
         var designs: [GearDesign] = []
         for race in HeroRace.allCases {
@@ -152,8 +151,19 @@ nonisolated enum GearCatalog {
         staves + shields + signatureWeapons + armorSets
     }
 
+    /// Merges the removed Skeleton Warrior gear ids into their Skeletal
+    /// Undead equivalents so previously owned pieces keep working.
+    static func migratedID(for id: String) -> String {
+        if id == "weapon.skeleton_warrior" { return "weapon.skeleton_crusader" }
+        if id.hasPrefix("armor.skeleton_warrior.") {
+            return "armor.skeleton_crusader." + id.dropFirst("armor.skeleton_warrior.".count)
+        }
+        return id
+    }
+
     static func design(id: String) -> GearDesign? {
-        all.first { $0.id == id }
+        let normalized = migratedID(for: id)
+        return all.first { $0.id == normalized }
     }
 
     /// Maps catalog designs into the CosmeticItem store.

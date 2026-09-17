@@ -156,7 +156,7 @@ struct OnboardingView: View {
                 .font(.dungeonTitle)
                 .foregroundStyle(.textPrimary)
                 .padding(.top, 20)
-            Text("Nine illustrated races. Three paint jobs each.")
+            Text("Eight illustrated races. Every paint job recolorable.")
                 .font(.callout)
                 .foregroundStyle(.textSecondary)
 
@@ -329,7 +329,7 @@ struct OnboardingView: View {
                 .foregroundStyle(.textSecondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
             HStack(spacing: 10) {
-                ForEach([1, 2, 3], id: \.self) { variant in
+                ForEach(1...max(selectedRace.variantCount, 1), id: \.self) { variant in
                     Button {
                         HapticsService.shared.light()
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
