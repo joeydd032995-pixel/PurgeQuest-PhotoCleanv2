@@ -1,6 +1,5 @@
 #if DEBUG && canImport(SwiftUI) && canImport(UIKit)
 import SwiftUI
-import Combine
 
 /// Xcode-only comparison surface for the first `humanoid_v1` migration.
 /// The left side is the production legacy renderer. The right side requests
@@ -13,9 +12,7 @@ struct ModularCharacterDebugPreview: View {
     var equipped: [CosmeticItem] = []
     var size: CGFloat = 150
 
-    @State private var frameIndex = 0
-
-    private static let heartbeat = Timer.publish(every: 0.12, on: .main, in: .common).autoconnect()
+    private let frameIndex = 0
 
     private var clampedVariant: Int {
         min(max(variant, 1), race.variantCount)
@@ -29,6 +26,16 @@ struct ModularCharacterDebugPreview: View {
 
     private var plan: CharacterRenderPlan {
         ModularCharacterPreviewRenderer.shared.availability(race: race, variant: clampedVariant)
+    }
+
+    private var weaponResource: String? {
+        guard let item = equipped.first(where: { $0.type == .weapon }) else { return nil }
+        return GearCatalog.design(id: item.id)?.resourceName
+    }
+
+    private var shieldResource: String? {
+        guard let item = equipped.first(where: { $0.type == .shield }) else { return nil }
+        return GearCatalog.design(id: item.id)?.resourceName
     }
 
     var body: some View {
@@ -85,12 +92,6 @@ struct ModularCharacterDebugPreview: View {
                 .fill(Color.dungeonStone.opacity(0.92))
                 .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.dungeonAsh, lineWidth: 1))
         )
-        .onReceive(Self.heartbeat) { _ in
-            guard plan.path == .modular else { return }
-            let count = ModularCharacterPreviewRenderer.shared.frameCount(animation: "Idle")
-            guard count > 0 else { return }
-            frameIndex = (frameIndex + 1) % count
-        }
     }
 
     @ViewBuilder
@@ -100,7 +101,10 @@ struct ModularCharacterDebugPreview: View {
                 race: race,
                 variant: clampedVariant,
                 animation: "Idle",
-                frameIndex: frameIndex
+                frameIndex: frameIndex,
+                weaponResource: weaponResource,
+                shieldResource: shieldResource,
+                titanWeapon: hero.titanWeaponUnlocked
            ) {
             Image(uiImage: image)
                 .resizable()
