@@ -131,6 +131,16 @@ nonisolated struct MaterialRGBA: Codable, Equatable, Sendable {
         self.alpha = Self.clamp(alpha)
     }
 
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(
+            red: try container.decode(Double.self, forKey: .red),
+            green: try container.decode(Double.self, forKey: .green),
+            blue: try container.decode(Double.self, forKey: .blue),
+            alpha: try container.decode(Double.self, forKey: .alpha)
+        )
+    }
+
     private static func clamp(_ value: Double) -> Double {
         min(max(value, 0), 1)
     }
@@ -256,15 +266,19 @@ nonisolated struct ModularCharacterRecipe: Codable, Equatable, Sendable {
     var renderFingerprint: String {
         let partKey = parts
             .sorted { $0.slot.rawValue < $1.slot.rawValue }
-            .map { "\($0.slot.rawValue)=\($0.partID)" }
-            .joined(separator: "|")
+            .map { Self.fingerprintField($0.slot.rawValue) + Self.fingerprintField($0.partID) }
+            .joined()
         return [
-            "rig=\(rigID)",
-            "ancestry=\(ancestry.rawValue)",
-            "profile=\(bodyProfile.rawValue)",
+            Self.fingerprintField(rigID),
+            Self.fingerprintField(ancestry.rawValue),
+            Self.fingerprintField(bodyProfile.rawValue),
             partKey,
-            Self.materialFingerprint(materials)
-        ].joined(separator: ";")
+            Self.fingerprintField(Self.materialFingerprint(materials))
+        ].joined()
+    }
+
+    private static func fingerprintField(_ value: String) -> String {
+        "\(value.utf8.count):\(value)"
     }
 
     private static func materialFingerprint(_ materials: CharacterMaterialSet) -> String {
@@ -350,14 +364,43 @@ nonisolated struct CharacterRenderPlan: Equatable, Sendable {
 }
 
 nonisolated enum CharacterRenderPlanner {
+    static let mandatoryAnatomySlots: Set<CharacterSlot> = [
+        .head, .torso, .leftArm, .rightArm,
+        .leftHand, .rightHand, .leftLeg, .rightLeg
+    ]
+
     static func plan(for recipe: ModularCharacterRecipe, manifests: [PartManifest]) -> CharacterRenderPlan {
-        let byID = Dictionary(uniqueKeysWithValues: manifests.map { ($0.id, $0) })
         var reasons: [String] = []
+        var manifestsByID: [String: PartManifest] = [:]
+        var ambiguousManifestIDs = Set<String>()
+        for manifest in manifests {
+            if manifestsByID[manifest.id] != nil {
+                ambiguousManifestIDs.insert(manifest.id)
+            } else {
+                manifestsByID[manifest.id] = manifest
+            }
+        }
+
+        let selectedSlots = recipe.parts.map(\.slot)
+        let duplicateSlots = Dictionary(grouping: selectedSlots, by: { $0 })
+            .filter { $0.value.count > 1 }
+            .keys
+        reasons.append(contentsOf: duplicateSlots.map { "duplicate-slot:\($0.rawValue)" })
+
+        let missingSlots = mandatoryAnatomySlots.subtracting(selectedSlots)
+        reasons.append(contentsOf: missingSlots.map { "missing-slot:\($0.rawValue)" })
 
         for selection in recipe.parts {
-            guard let manifest = byID[selection.partID] else {
+            guard !ambiguousManifestIDs.contains(selection.partID) else {
+                reasons.append("ambiguous:\(selection.partID)")
+                continue
+            }
+            guard let manifest = manifestsByID[selection.partID] else {
                 reasons.append("missing:\(selection.partID)")
                 continue
+            }
+            if manifest.slot != selection.slot {
+                reasons.append("slot-mismatch:\(selection.slot.rawValue):\(selection.partID)")
             }
             if manifest.representation != .modular {
                 reasons.append("legacy:\(selection.partID)")
