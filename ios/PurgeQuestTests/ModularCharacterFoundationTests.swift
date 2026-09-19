@@ -69,21 +69,38 @@ struct ModularCharacterFoundationTests {
     }
 
     @Test func renderPlannerAllowsCompleteModularRecipe() {
-        let manifest = PartManifest(
-            id: "anatomy.valkyrie.head.01",
-            resourceBaseName: "valkyrie_head_01",
-            slot: .head,
-            sourceRace: .valkyrie,
-            referenceProfile: .athletic,
-            nativeProfiles: [.athletic],
-            materialRegions: [.skin, .hair, .eyes]
-        )
+        let manifests = CharacterRenderPlanner.mandatoryAnatomySlots.map { slot in
+            PartManifest(id: "anatomy.valkyrie.\(slot.rawValue).01", resourceBaseName: "valkyrie_\(slot.rawValue)_01", slot: slot, sourceRace: .valkyrie, referenceProfile: .athletic, nativeProfiles: [.athletic])
+        }
         let recipe = ModularCharacterRecipe(
             ancestry: .valkyrie,
             bodyProfile: .athletic,
-            parts: [.init(slot: .head, partID: manifest.id)]
+            parts: manifests.map { .init(slot: $0.slot, partID: $0.id) }
         )
-        #expect(CharacterRenderPlanner.plan(for: recipe, manifests: [manifest]) == .init(path: .modular, reasons: []))
+        #expect(CharacterRenderPlanner.plan(for: recipe, manifests: manifests) == .init(path: .modular, reasons: []))
+    }
+
+    @Test func renderPlannerRejectsIncompleteDuplicateAndMismatchedSelections() {
+        let head = PartManifest(id: "head", resourceBaseName: "head", slot: .head)
+        let torso = PartManifest(id: "torso", resourceBaseName: "torso", slot: .torso)
+        let recipe = ModularCharacterRecipe(ancestry: .valkyrie, bodyProfile: .standard, parts: [
+            .init(slot: .head, partID: torso.id),
+            .init(slot: .head, partID: head.id)
+        ])
+        let plan = CharacterRenderPlanner.plan(for: recipe, manifests: [head, torso])
+        #expect(plan.path == .legacy)
+        #expect(plan.reasons.contains("duplicate-slot:head"))
+        #expect(plan.reasons.contains("slot-mismatch:head:torso"))
+        #expect(plan.reasons.contains("missing-slot:torso"))
+    }
+
+    @Test func renderPlannerTreatsDuplicateManifestIDsAsAmbiguousWithoutCrashing() {
+        let duplicate = PartManifest(id: "duplicate", resourceBaseName: "first", slot: .head)
+        let other = PartManifest(id: "duplicate", resourceBaseName: "second", slot: .head)
+        let recipe = ModularCharacterRecipe(ancestry: .valkyrie, bodyProfile: .standard, parts: [.init(slot: .head, partID: "duplicate")])
+        let plan = CharacterRenderPlanner.plan(for: recipe, manifests: [duplicate, other])
+        #expect(plan.path == .legacy)
+        #expect(plan.reasons.contains("ambiguous:duplicate"))
     }
 
     @Test func fingerprintIsStableAcrossPartOrdering() {
@@ -100,6 +117,18 @@ struct ModularCharacterFoundationTests {
         #expect(color.green == 0.4)
         #expect(color.blue == 1)
         #expect(color.alpha == 1)
+    }
+
+    @Test func materialRGBADecodingClampsChannels() throws {
+        let data = Data(#"{"red":-0.5,"green":0.4,"blue":1.7,"alpha":2}"#.utf8)
+        let color = try JSONDecoder().decode(MaterialRGBA.self, from: data)
+        #expect(color == MaterialRGBA(red: 0, green: 0.4, blue: 1, alpha: 1))
+    }
+
+    @Test func fingerprintCannotBeConfusedByDelimiterCharactersInPartIDs() {
+        let injected = ModularCharacterRecipe(ancestry: .valkyrie, bodyProfile: .athletic, parts: [.init(slot: .head, partID: "x|torso=y")])
+        let separate = ModularCharacterRecipe(ancestry: .valkyrie, bodyProfile: .athletic, parts: [.init(slot: .head, partID: "x"), .init(slot: .torso, partID: "y")])
+        #expect(injected.renderFingerprint != separate.renderFingerprint)
     }
 
     @Test func defaultBodyProfilesKeepExtremeRacesOnCanonicalRig() {
