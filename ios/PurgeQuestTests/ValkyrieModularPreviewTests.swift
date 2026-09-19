@@ -23,6 +23,12 @@ struct ValkyrieModularPreviewTests {
         #expect(ValkyrieV1ModularAssetSet.renderPlan.reasons.isEmpty)
     }
 
+    @Test func valkyrieV1ContainsEveryMandatoryAnatomySlotExactlyOnce() {
+        let slots = ValkyrieV1ModularAssetSet.recipe.parts.map(\.slot)
+        #expect(Set(slots) == CharacterRenderPlanner.mandatoryAnatomySlots)
+        #expect(slots.count == Set(slots).count)
+    }
+
     @Test func scmlFileNamesResolveToMigratedResources() {
         #expect(ValkyrieV1ModularAssetSet.resourceBaseName(forSCMLFileName: "Body.png") == "valkyrie_v1_body")
         #expect(ValkyrieV1ModularAssetSet.resourceBaseName(forSCMLFileName: "Left Arm.png") == "valkyrie_v1_left_arm")
