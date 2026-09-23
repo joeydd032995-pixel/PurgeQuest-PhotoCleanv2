@@ -141,7 +141,7 @@ struct BestiaryExpansionTests {
 
     @Test func exactPairFormsWyrmlingWithSurvivorSuggestion() {
         let a = makeItem(id: "a", favorite: false)
-        let b = makeItem(id: "b", favorite: true, bytes: 2_000_001)
+        let b = makeItem(id: "b", bytes: 2_000_001, favorite: true)
         let fps = [
             makeFingerprint(from: a, contentHash: "abc123"),
             makeFingerprint(from: b, contentHash: "abc123")
@@ -172,7 +172,7 @@ struct BestiaryExpansionTests {
 
     @Test func editedVariantFormsCloneChimera() {
         let a = makeItem(id: "orig", bytes: 4_000_000)
-        let b = makeItem(id: "edited", bytes: 3_500_000, width: 3000, height: 2000)
+        let b = makeItem(id: "edited", width: 3000, height: 2000, bytes: 3_500_000)
         let fps = [
             makeFingerprint(from: a, dHash: 0xFF00FF00FF00FF00).withCreationOffset(0),
             makeFingerprint(from: b, dHash: 0xFF00FF00FF00FF00).withCreationOffset(60)
@@ -205,7 +205,7 @@ struct BestiaryExpansionTests {
 
     @Test func screenshotClusterFormsScreenshotTwin() {
         let items = (0..<2).map { i in
-            makeItem(id: "shot\(i)", isScreenshot: true, daysAgo: 3, bytes: Int64(400_000 + i * 1_234))
+            makeItem(id: "shot\(i)", daysAgo: 3, bytes: Int64(400_000 + i * 1_234), isScreenshot: true)
         }
         let fps = items.enumerated().map { i, item in
             makeFingerprint(from: item, dHash: 0x1234_5678_9ABC_DEF0).withCreationOffset(TimeInterval(i * 86_400))
@@ -227,7 +227,7 @@ struct BestiaryExpansionTests {
 
     @Test func survivorRankingPrefersFavoriteThenSharpness() {
         let plain = makeItem(id: "plain")
-        let fav = makeItem(id: "fav", favorite: true, bytes: 1)
+        let fav = makeItem(id: "fav", bytes: 1, favorite: true)
         let fps = [makeFingerprint(from: plain), makeFingerprint(from: fav)]
         #expect(DuplicateDetectionEngine.recommendedSurvivor(in: fps) == "fav")
 
@@ -518,7 +518,7 @@ struct BestiaryExpansionTests {
 
         // Mixed, nothing dominant → Wild Gallery
         let mixed = items(20) { i in
-            makeItem(id: "x\(i)", kind: i % 2 == 0 ? .photo : .video, duration: 20, daysAgo: 30)
+            makeItem(id: "x\(i)", kind: i % 2 == 0 ? .photo : .video, daysAgo: 30, duration: 20)
         }
         #expect(DungeonThemeEngine.theme(for: DungeonThemeEngine.composition(for: mixed)) == .wildGallery)
 
