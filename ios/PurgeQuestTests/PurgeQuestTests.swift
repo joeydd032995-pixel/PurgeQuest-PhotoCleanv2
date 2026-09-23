@@ -121,33 +121,34 @@ struct HeroAppearanceTests {
         #expect(HeroAppearance.gearTier(maxEquippedPrice: 0, hasPremium: true) == .mythic)
     }
 
-    // MARK: - Schema 2 migration
+    // MARK: - Legacy schema compatibility
 
     @Test func defaultsCarryNoArmorDyeOnCurrentSchema() {
         #expect(HeroAppearance.default(for: .knight).armorDye == .none)
-        #expect(HeroAppearance.default(for: .knight).schemaVersion == 2)
+        #expect(HeroAppearance.default(for: .knight).schemaVersion == HeroAppearance.currentSchemaVersion)
     }
 
-    @Test func schemaOneRecordMigratesForwardWithoutTraitLoss() throws {
-        // A save written by schema 1 must keep every trait and gain the
-        // default None armor dye.
-        let legacy = HeroAppearance.LegacyV1(
-            schemaVersion: 1,
-            skinTone: .ebony,
-            faceShape: .round,
-            eyeStyle: .gentle,
-            eyeColor: .ember,
-            browStyle: .stern,
-            mouthStyle: .frown,
-            hairStyle: .long,
-            hairColor: .sapphire,
-            expression: .weary,
-            backdropStyle: .medallion
-        )
-        let data = try JSONEncoder().encode(legacy)
+    @Test func schemaOneRecordPreservesTraitsAndDefaultsArmorDye() {
+        // This is a saved schema-1 record: it has no race, hue, or armor-dye
+        // fields. Decoding preserves its traits and supplies new defaults.
+        let data = Data(#"""
+            {
+              "schemaVersion": 1,
+              "skinTone": "ebony",
+              "faceShape": "round",
+              "eyeStyle": "gentle",
+              "eyeColor": "ember",
+              "browStyle": "stern",
+              "mouthStyle": "frown",
+              "hairStyle": "long",
+              "hairColor": "sapphire",
+              "expression": "weary",
+              "backdropStyle": "medallion"
+            }
+            """#.utf8)
 
         let migrated = HeroAppearance.decode(data, for: .knight)
-        #expect(migrated.schemaVersion == HeroAppearance.currentSchemaVersion)
+        #expect(migrated.schemaVersion == 1)
         #expect(migrated.skinTone == .ebony)
         #expect(migrated.faceShape == .round)
         #expect(migrated.eyeStyle == .gentle)
