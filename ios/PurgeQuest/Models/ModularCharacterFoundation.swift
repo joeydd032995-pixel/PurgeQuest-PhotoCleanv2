@@ -133,16 +133,28 @@ nonisolated struct MaterialRGBA: Codable, Equatable, Sendable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        let red = try container.decode(Double.self, forKey: .red)
+        let green = try container.decode(Double.self, forKey: .green)
+        let blue = try container.decode(Double.self, forKey: .blue)
+        let alpha = try container.decode(Double.self, forKey: .alpha)
+        guard [red, green, blue, alpha].allSatisfy(\.isFinite) else {
+            throw DecodingError.dataCorruptedError(
+                forKey: .red,
+                in: container,
+                debugDescription: "Material color channels must be finite"
+            )
+        }
         self.init(
-            red: try container.decode(Double.self, forKey: .red),
-            green: try container.decode(Double.self, forKey: .green),
-            blue: try container.decode(Double.self, forKey: .blue),
-            alpha: try container.decode(Double.self, forKey: .alpha)
+            red: red,
+            green: green,
+            blue: blue,
+            alpha: alpha
         )
     }
 
     private static func clamp(_ value: Double) -> Double {
-        min(max(value, 0), 1)
+        guard value.isFinite else { return 0 }
+        return min(max(value, 0), 1)
     }
 }
 
@@ -272,7 +284,7 @@ nonisolated struct ModularCharacterRecipe: Codable, Equatable, Sendable {
             Self.fingerprintField(rigID),
             Self.fingerprintField(ancestry.rawValue),
             Self.fingerprintField(bodyProfile.rawValue),
-            partKey,
+            Self.fingerprintField(partKey),
             Self.fingerprintField(Self.materialFingerprint(materials))
         ].joined()
     }
@@ -293,10 +305,13 @@ nonisolated struct ModularCharacterRecipe: Codable, Equatable, Sendable {
             ("emissive", materials.emissive)
         ]
         return entries.map { key, value in
-            guard let value else { return "\(key)=-" }
+            let prefix = fingerprintField(key)
+            guard let value else { return prefix + "0" }
             let c = value.color
-            return "\(key)=\(value.id):\(c.red),\(c.green),\(c.blue),\(c.alpha)"
-        }.joined(separator: "|")
+            return prefix + "1" + [
+                value.id, String(c.red), String(c.green), String(c.blue), String(c.alpha)
+            ].map(fingerprintField).joined()
+        }.joined()
     }
 }
 
