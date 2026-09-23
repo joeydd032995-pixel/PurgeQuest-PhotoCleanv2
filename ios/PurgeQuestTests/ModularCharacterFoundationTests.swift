@@ -125,6 +125,39 @@ struct ModularCharacterFoundationTests {
         #expect(color == MaterialRGBA(red: 0, green: 0.4, blue: 1, alpha: 1))
     }
 
+    @Test func materialRGBADecodingRejectsNonFiniteChannels() {
+        let decoder = JSONDecoder()
+        decoder.nonConformingFloatDecodingStrategy = .convertFromString(
+            positiveInfinity: "Infinity", negativeInfinity: "-Infinity", nan: "NaN"
+        )
+        for badValue in ["NaN", "Infinity", "-Infinity"] {
+            for key in ["red", "green", "blue", "alpha"] {
+                let data = Data("{\"red\":0.5,\"green\":0.5,\"blue\":0.5,\"alpha\":0.5}".replacingOccurrences(of: "\"\(key)\":0.5", with: "\"\(key)\":\"\(badValue)\"").utf8)
+                #expect(throws: DecodingError.self) {
+                    try decoder.decode(MaterialRGBA.self, from: data)
+                }
+            }
+        }
+        #expect(MaterialRGBA(red: .nan, green: .infinity, blue: -.infinity).red.isFinite)
+    }
+
+    @Test func fingerprintSeparatesMaterialIDDelimitersFromColors() {
+        let a = MaterialRGBA(red: 0.1, green: 0.2, blue: 0.3)
+        let b = MaterialRGBA(red: 0.4, green: 0.5, blue: 0.6)
+        let c = MaterialRGBA(red: 0.7, green: 0.8, blue: 0.9)
+        let aText = "\(a.red),\(a.green),\(a.blue),\(a.alpha)"
+        let bText = "\(b.red),\(b.green),\(b.blue),\(b.alpha)"
+        let first = ModularCharacterRecipe(ancestry: .valkyrie, bodyProfile: .athletic, parts: [], materials: .init(
+            leather: .init(id: "x", color: a),
+            emissive: .init(id: "foo:\(bText)|emissive=bar", color: c)
+        ))
+        let second = ModularCharacterRecipe(ancestry: .valkyrie, bodyProfile: .athletic, parts: [], materials: .init(
+            leather: .init(id: "x:\(aText)|emissive=foo", color: b),
+            emissive: .init(id: "bar", color: c)
+        ))
+        #expect(first.renderFingerprint != second.renderFingerprint)
+    }
+
     @Test func fingerprintCannotBeConfusedByDelimiterCharactersInPartIDs() {
         let injected = ModularCharacterRecipe(ancestry: .valkyrie, bodyProfile: .athletic, parts: [.init(slot: .head, partID: "x|torso=y")])
         let separate = ModularCharacterRecipe(ancestry: .valkyrie, bodyProfile: .athletic, parts: [.init(slot: .head, partID: "x"), .init(slot: .torso, partID: "y")])
