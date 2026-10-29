@@ -1,0 +1,49 @@
+name: iOS Unit Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unit-tests:
+    runs-on: macos-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Show Xcode version
+        run: xcodebuild -version
+      - name: Select an available iPhone simulator
+        run: |
+          simulator_udid="$(
+            xcrun simctl list -j devices available |
+            jq -r '[.devices | to_entries[]
+              | select(.key | test("iOS-(1[89]|[2-9][0-9])-"))
+              | .value[]
+              | select(.name | startswith("iPhone"))
+              | .udid][0] // empty'
+          )"
+          if [[ -z "$simulator_udid" ]]; then
+            echo 'No available iPhone simulator running iOS 18 or newer.' >&2
+            xcrun simctl list devices available
+            exit 1
+          fi
+          echo "SIMULATOR_UDID=$simulator_udid" >> "$GITHUB_ENV"
+      - name: Build and run PurgeQuest unit tests
+        run: |
+          xcodebuild \
+            -project ios/PurgeQuest.xcodeproj \
+            -scheme PurgeQuest \
+            -configuration Debug \
+            -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
+            -parallel-testing-enabled NO \
+            -only-testing:PurgeQuestTests \
+            CODE_SIGNING_ALLOWED=NO \
+            test

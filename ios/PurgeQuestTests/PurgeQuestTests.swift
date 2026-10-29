@@ -57,11 +57,17 @@ struct HeroAppearanceTests {
         #expect(HeroAppearance.decode(corrupt, for: .magician) == .default(for: .magician))
     }
 
-    @Test func legacyPartialDataFallsBackToArchetypeDefault() throws {
-        // A record written by an older schema with missing fields cannot
-        // satisfy the decoder and must fall back to the designed default.
-        let partial = Data("{\"schemaVersion\":1,\"skinTone\":\"sandstone\"}".utf8)
-        #expect(HeroAppearance.decode(partial, for: .knight) == .default(for: .knight))
+    @Test func legacyPartialDataPreservesTraitsAndDefaultsMissingFields() {
+        // Older records decode leniently, preserving valid fields while
+        // supplying defaults for fields that were not saved.
+        let partial = Data("{\"schemaVersion\":1,\"skinTone\":\"ebony\"}".utf8)
+        let decoded = HeroAppearance.decode(partial, for: .knight)
+        #expect(decoded.schemaVersion == 1)
+        #expect(decoded.race == nil)
+        #expect(decoded.skinTone == .ebony)
+        #expect(decoded.faceShape == .boulder)
+        #expect(decoded.paintVariant == 1)
+        #expect(decoded.armorDye == .none)
     }
 
     @Test func futureSchemaFallsBackToArchetypeDefault() throws {
@@ -121,33 +127,34 @@ struct HeroAppearanceTests {
         #expect(HeroAppearance.gearTier(maxEquippedPrice: 0, hasPremium: true) == .mythic)
     }
 
-    // MARK: - Schema 2 migration
+    // MARK: - Legacy schema compatibility
 
     @Test func defaultsCarryNoArmorDyeOnCurrentSchema() {
         #expect(HeroAppearance.default(for: .knight).armorDye == .none)
-        #expect(HeroAppearance.default(for: .knight).schemaVersion == 2)
+        #expect(HeroAppearance.default(for: .knight).schemaVersion == HeroAppearance.currentSchemaVersion)
     }
 
-    @Test func schemaOneRecordMigratesForwardWithoutTraitLoss() throws {
-        // A save written by schema 1 must keep every trait and gain the
-        // default None armor dye.
-        let legacy = HeroAppearance.LegacyV1(
-            schemaVersion: 1,
-            skinTone: .ebony,
-            faceShape: .round,
-            eyeStyle: .gentle,
-            eyeColor: .ember,
-            browStyle: .stern,
-            mouthStyle: .frown,
-            hairStyle: .long,
-            hairColor: .sapphire,
-            expression: .weary,
-            backdropStyle: .medallion
-        )
-        let data = try JSONEncoder().encode(legacy)
+    @Test func schemaOneRecordPreservesTraitsAndDefaultsArmorDye() {
+        // This is a saved schema-1 record: it has no race, hue, or armor-dye
+        // fields. Decoding preserves its traits and supplies new defaults.
+        let data = Data(#"""
+            {
+              "schemaVersion": 1,
+              "skinTone": "ebony",
+              "faceShape": "round",
+              "eyeStyle": "gentle",
+              "eyeColor": "ember",
+              "browStyle": "stern",
+              "mouthStyle": "frown",
+              "hairStyle": "long",
+              "hairColor": "sapphire",
+              "expression": "weary",
+              "backdropStyle": "medallion"
+            }
+            """#.utf8)
 
         let migrated = HeroAppearance.decode(data, for: .knight)
-        #expect(migrated.schemaVersion == HeroAppearance.currentSchemaVersion)
+        #expect(migrated.schemaVersion == 1)
         #expect(migrated.skinTone == .ebony)
         #expect(migrated.faceShape == .round)
         #expect(migrated.eyeStyle == .gentle)

@@ -141,7 +141,7 @@ struct BestiaryExpansionTests {
 
     @Test func exactPairFormsWyrmlingWithSurvivorSuggestion() {
         let a = makeItem(id: "a", favorite: false)
-        let b = makeItem(id: "b", favorite: true, bytes: 2_000_001)
+        let b = makeItem(id: "b", bytes: 2_000_001, favorite: true)
         let fps = [
             makeFingerprint(from: a, contentHash: "abc123"),
             makeFingerprint(from: b, contentHash: "abc123")
@@ -172,7 +172,7 @@ struct BestiaryExpansionTests {
 
     @Test func editedVariantFormsCloneChimera() {
         let a = makeItem(id: "orig", bytes: 4_000_000)
-        let b = makeItem(id: "edited", bytes: 3_500_000, width: 3000, height: 2000)
+        let b = makeItem(id: "edited", width: 3000, height: 2000, bytes: 3_500_000)
         let fps = [
             makeFingerprint(from: a, dHash: 0xFF00FF00FF00FF00).withCreationOffset(0),
             makeFingerprint(from: b, dHash: 0xFF00FF00FF00FF00).withCreationOffset(60)
@@ -205,7 +205,7 @@ struct BestiaryExpansionTests {
 
     @Test func screenshotClusterFormsScreenshotTwin() {
         let items = (0..<2).map { i in
-            makeItem(id: "shot\(i)", isScreenshot: true, daysAgo: 3, bytes: Int64(400_000 + i * 1_234))
+            makeItem(id: "shot\(i)", daysAgo: 3, bytes: Int64(400_000 + i * 1_234), isScreenshot: true)
         }
         let fps = items.enumerated().map { i, item in
             makeFingerprint(from: item, dHash: 0x1234_5678_9ABC_DEF0).withCreationOffset(TimeInterval(i * 86_400))
@@ -227,7 +227,7 @@ struct BestiaryExpansionTests {
 
     @Test func survivorRankingPrefersFavoriteThenSharpness() {
         let plain = makeItem(id: "plain")
-        let fav = makeItem(id: "fav", favorite: true, bytes: 1)
+        let fav = makeItem(id: "fav", bytes: 1, favorite: true)
         let fps = [makeFingerprint(from: plain), makeFingerprint(from: fav)]
         #expect(DuplicateDetectionEngine.recommendedSurvivor(in: fps) == "fav")
 
@@ -294,22 +294,23 @@ struct BestiaryExpansionTests {
     }
 
     @Test func fourKVideoSummonsKraken() {
-        let item = makeItem(id: "k", kind: .video, width: 3840, height: 2160, bytes: 80_000_000, duration: 60)
+        // Resolution takes priority over duration and screen recording.
+        let item = makeItem(id: "k", kind: .video, width: 3840, height: 2160, bytes: 80_000_000, duration: 200, isScreenRecording: true)
         #expect(classify([item], fingerprints: [makeFingerprint(from: item)])["k"]?.monsterType == .fourKKraken)
     }
 
     @Test func longVideoSummonsLeviathan() {
-        let item = makeItem(id: "l", kind: .video, bytes: 40_000_000, duration: 200)
+        let item = makeItem(id: "l", kind: .video, width: 1920, height: 1080, bytes: 40_000_000, duration: 200)
         #expect(classify([item], fingerprints: [makeFingerprint(from: item)])["l"]?.monsterType == .longTakeLeviathan)
     }
 
     @Test func screenRecordingSummonsShade() {
-        let item = makeItem(id: "sr", kind: .video, bytes: 20_000_000, duration: 30, isScreenRecording: true)
+        let item = makeItem(id: "sr", kind: .video, width: 1920, height: 1080, bytes: 20_000_000, duration: 30, isScreenRecording: true)
         #expect(classify([item], fingerprints: [makeFingerprint(from: item)])["sr"]?.monsterType == .screenRecordingShade)
     }
 
     @Test func loopingVideoSummonsTimelapsePhantom() {
-        let item = makeItem(id: "tl", kind: .video, bytes: 20_000_000, duration: 30, isLooping: true)
+        let item = makeItem(id: "tl", kind: .video, width: 1920, height: 1080, bytes: 20_000_000, duration: 30, isLooping: true)
         #expect(classify([item], fingerprints: [makeFingerprint(from: item)])["tl"]?.monsterType == .timelapsePhantom)
     }
 
@@ -321,17 +322,17 @@ struct BestiaryExpansionTests {
     }
 
     @Test func veryShortVideoSummonsPocketPoltergeist() {
-        let item = makeItem(id: "pp", kind: .video, bytes: 5_000_000, duration: 1.2)
+        let item = makeItem(id: "pp", kind: .video, width: 1920, height: 1080, bytes: 5_000_000, duration: 1.2)
         #expect(classify([item], fingerprints: [makeFingerprint(from: item)])["pp"]?.monsterType == .pocketPoltergeist)
     }
 
     @Test func blooperUnderFiveSecondsSummonsBoringBlooper() {
-        let item = makeItem(id: "bb", kind: .video, bytes: 5_000_000, duration: 3.5)
+        let item = makeItem(id: "bb", kind: .video, width: 1920, height: 1080, bytes: 5_000_000, duration: 3.5)
         #expect(classify([item], fingerprints: [makeFingerprint(from: item)])["bb"]?.monsterType == .boringBlooper)
     }
 
     @Test func largeVideoSummonsVideoVampire() {
-        let item = makeItem(id: "vv", kind: .video, bytes: 150_000_000, duration: 30)
+        let item = makeItem(id: "vv", kind: .video, width: 1920, height: 1080, bytes: 150_000_000, duration: 30)
         #expect(classify([item], fingerprints: [makeFingerprint(from: item)])["vv"]?.monsterType == .videoVampire)
     }
 
@@ -358,7 +359,7 @@ struct BestiaryExpansionTests {
     }
 
     @Test func staticFootageSummonsFramedPhantom() {
-        var item = makeItem(id: "fp", kind: .video, bytes: 5_000_000, duration: 10)
+        var item = makeItem(id: "fp", kind: .video, width: 1920, height: 1080, bytes: 5_000_000, duration: 10)
         item.frameSignals = VideoFrameSignals.evaluate(luminances: [0.5, 0.501, 0.502])
         let c = classify([item], fingerprints: [makeFingerprint(from: item)])["fp"]
         #expect(c?.monsterType == .framedPhantom)
@@ -366,7 +367,7 @@ struct BestiaryExpansionTests {
     }
 
     @Test func flickeringFootageSummonsFlickerWraith() {
-        var item = makeItem(id: "fw", kind: .video, bytes: 5_000_000, duration: 10)
+        var item = makeItem(id: "fw", kind: .video, width: 1920, height: 1080, bytes: 5_000_000, duration: 10)
         item.frameSignals = VideoFrameSignals.evaluate(luminances: [0.2, 0.9, 0.15])
         let c = classify([item], fingerprints: [makeFingerprint(from: item)])["fw"]
         #expect(c?.monsterType == .flickerWraith)
@@ -374,7 +375,7 @@ struct BestiaryExpansionTests {
     }
 
     @Test func erraticMotionUpgradesShakyGhost() {
-        var item = makeItem(id: "em", kind: .video, bytes: 5_000_000, duration: 10)
+        var item = makeItem(id: "em", kind: .video, width: 1920, height: 1080, bytes: 5_000_000, duration: 10)
         item.frameSignals = VideoFrameSignals.evaluate(luminances: [0.3, 0.5, 0.35])
         let c = classify([item], fingerprints: [makeFingerprint(from: item)])["em"]
         #expect(c?.monsterType == .shakyGhost)
@@ -382,7 +383,7 @@ struct BestiaryExpansionTests {
     }
 
     @Test func darkSampledFramesSummonsPocketPoltergeist() {
-        var item = makeItem(id: "df", kind: .video, bytes: 5_000_000, duration: 10)
+        var item = makeItem(id: "df", kind: .video, width: 1920, height: 1080, bytes: 5_000_000, duration: 10)
         item.frameSignals = VideoFrameSignals.evaluate(luminances: [0.05, 0.09, 0.03])
         let c = classify([item], fingerprints: [makeFingerprint(from: item)])["df"]
         #expect(c?.monsterType == .pocketPoltergeist)
@@ -516,11 +517,17 @@ struct BestiaryExpansionTests {
         comp.duplicateShare = 0.2
         #expect(DungeonThemeEngine.theme(for: comp) == .dragonsHoard)
 
-        // Mixed, nothing dominant → Wild Gallery
+        // Mixed, below every theme threshold → Wild Gallery.
         let mixed = items(20) { i in
-            makeItem(id: "x\(i)", kind: i % 2 == 0 ? .photo : .video, duration: 20, daysAgo: 30)
+            makeItem(id: "x\(i)", kind: i % 3 == 0 ? .video : .photo, daysAgo: 30, duration: 20)
         }
         #expect(DungeonThemeEngine.theme(for: DungeonThemeEngine.composition(for: mixed)) == .wildGallery)
+
+        // Exactly 50% video meets the Phantom Theater threshold.
+        let halfVideo = items(20) { i in
+            makeItem(id: "half\(i)", kind: i % 2 == 0 ? .photo : .video, daysAgo: 30, duration: 20)
+        }
+        #expect(DungeonThemeEngine.theme(for: DungeonThemeEngine.composition(for: halfVideo)) == .phantomTheater)
 
         // Tiny batch → always Wild Gallery
         #expect(DungeonThemeEngine.theme(for: DungeonThemeEngine.composition(for: [shots[0]])) == .wildGallery)
