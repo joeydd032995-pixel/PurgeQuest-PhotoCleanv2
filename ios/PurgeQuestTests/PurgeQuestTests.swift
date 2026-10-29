@@ -57,11 +57,17 @@ struct HeroAppearanceTests {
         #expect(HeroAppearance.decode(corrupt, for: .magician) == .default(for: .magician))
     }
 
-    @Test func legacyPartialDataFallsBackToArchetypeDefault() throws {
-        // A record written by an older schema with missing fields cannot
-        // satisfy the decoder and must fall back to the designed default.
-        let partial = Data("{\"schemaVersion\":1,\"skinTone\":\"sandstone\"}".utf8)
-        #expect(HeroAppearance.decode(partial, for: .knight) == .default(for: .knight))
+    @Test func legacyPartialDataPreservesTraitsAndDefaultsMissingFields() {
+        // Older records decode leniently, preserving valid fields while
+        // supplying defaults for fields that were not saved.
+        let partial = Data("{\"schemaVersion\":1,\"skinTone\":\"ebony\"}".utf8)
+        let decoded = HeroAppearance.decode(partial, for: .knight)
+        #expect(decoded.schemaVersion == 1)
+        #expect(decoded.race == nil)
+        #expect(decoded.skinTone == .ebony)
+        #expect(decoded.faceShape == .boulder)
+        #expect(decoded.paintVariant == 1)
+        #expect(decoded.armorDye == .none)
     }
 
     @Test func futureSchemaFallsBackToArchetypeDefault() throws {

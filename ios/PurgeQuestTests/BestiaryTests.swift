@@ -294,22 +294,23 @@ struct BestiaryExpansionTests {
     }
 
     @Test func fourKVideoSummonsKraken() {
-        let item = makeItem(id: "k", kind: .video, width: 3840, height: 2160, bytes: 80_000_000, duration: 60)
+        // Resolution takes priority over duration and screen recording.
+        let item = makeItem(id: "k", kind: .video, width: 3840, height: 2160, bytes: 80_000_000, duration: 200, isScreenRecording: true)
         #expect(classify([item], fingerprints: [makeFingerprint(from: item)])["k"]?.monsterType == .fourKKraken)
     }
 
     @Test func longVideoSummonsLeviathan() {
-        let item = makeItem(id: "l", kind: .video, bytes: 40_000_000, duration: 200)
+        let item = makeItem(id: "l", kind: .video, width: 1920, height: 1080, bytes: 40_000_000, duration: 200)
         #expect(classify([item], fingerprints: [makeFingerprint(from: item)])["l"]?.monsterType == .longTakeLeviathan)
     }
 
     @Test func screenRecordingSummonsShade() {
-        let item = makeItem(id: "sr", kind: .video, bytes: 20_000_000, duration: 30, isScreenRecording: true)
+        let item = makeItem(id: "sr", kind: .video, width: 1920, height: 1080, bytes: 20_000_000, duration: 30, isScreenRecording: true)
         #expect(classify([item], fingerprints: [makeFingerprint(from: item)])["sr"]?.monsterType == .screenRecordingShade)
     }
 
     @Test func loopingVideoSummonsTimelapsePhantom() {
-        let item = makeItem(id: "tl", kind: .video, bytes: 20_000_000, duration: 30, isLooping: true)
+        let item = makeItem(id: "tl", kind: .video, width: 1920, height: 1080, bytes: 20_000_000, duration: 30, isLooping: true)
         #expect(classify([item], fingerprints: [makeFingerprint(from: item)])["tl"]?.monsterType == .timelapsePhantom)
     }
 
@@ -321,17 +322,17 @@ struct BestiaryExpansionTests {
     }
 
     @Test func veryShortVideoSummonsPocketPoltergeist() {
-        let item = makeItem(id: "pp", kind: .video, bytes: 5_000_000, duration: 1.2)
+        let item = makeItem(id: "pp", kind: .video, width: 1920, height: 1080, bytes: 5_000_000, duration: 1.2)
         #expect(classify([item], fingerprints: [makeFingerprint(from: item)])["pp"]?.monsterType == .pocketPoltergeist)
     }
 
     @Test func blooperUnderFiveSecondsSummonsBoringBlooper() {
-        let item = makeItem(id: "bb", kind: .video, bytes: 5_000_000, duration: 3.5)
+        let item = makeItem(id: "bb", kind: .video, width: 1920, height: 1080, bytes: 5_000_000, duration: 3.5)
         #expect(classify([item], fingerprints: [makeFingerprint(from: item)])["bb"]?.monsterType == .boringBlooper)
     }
 
     @Test func largeVideoSummonsVideoVampire() {
-        let item = makeItem(id: "vv", kind: .video, bytes: 150_000_000, duration: 30)
+        let item = makeItem(id: "vv", kind: .video, width: 1920, height: 1080, bytes: 150_000_000, duration: 30)
         #expect(classify([item], fingerprints: [makeFingerprint(from: item)])["vv"]?.monsterType == .videoVampire)
     }
 
@@ -358,7 +359,7 @@ struct BestiaryExpansionTests {
     }
 
     @Test func staticFootageSummonsFramedPhantom() {
-        var item = makeItem(id: "fp", kind: .video, bytes: 5_000_000, duration: 10)
+        var item = makeItem(id: "fp", kind: .video, width: 1920, height: 1080, bytes: 5_000_000, duration: 10)
         item.frameSignals = VideoFrameSignals.evaluate(luminances: [0.5, 0.501, 0.502])
         let c = classify([item], fingerprints: [makeFingerprint(from: item)])["fp"]
         #expect(c?.monsterType == .framedPhantom)
@@ -366,7 +367,7 @@ struct BestiaryExpansionTests {
     }
 
     @Test func flickeringFootageSummonsFlickerWraith() {
-        var item = makeItem(id: "fw", kind: .video, bytes: 5_000_000, duration: 10)
+        var item = makeItem(id: "fw", kind: .video, width: 1920, height: 1080, bytes: 5_000_000, duration: 10)
         item.frameSignals = VideoFrameSignals.evaluate(luminances: [0.2, 0.9, 0.15])
         let c = classify([item], fingerprints: [makeFingerprint(from: item)])["fw"]
         #expect(c?.monsterType == .flickerWraith)
@@ -374,7 +375,7 @@ struct BestiaryExpansionTests {
     }
 
     @Test func erraticMotionUpgradesShakyGhost() {
-        var item = makeItem(id: "em", kind: .video, bytes: 5_000_000, duration: 10)
+        var item = makeItem(id: "em", kind: .video, width: 1920, height: 1080, bytes: 5_000_000, duration: 10)
         item.frameSignals = VideoFrameSignals.evaluate(luminances: [0.3, 0.5, 0.35])
         let c = classify([item], fingerprints: [makeFingerprint(from: item)])["em"]
         #expect(c?.monsterType == .shakyGhost)
@@ -382,7 +383,7 @@ struct BestiaryExpansionTests {
     }
 
     @Test func darkSampledFramesSummonsPocketPoltergeist() {
-        var item = makeItem(id: "df", kind: .video, bytes: 5_000_000, duration: 10)
+        var item = makeItem(id: "df", kind: .video, width: 1920, height: 1080, bytes: 5_000_000, duration: 10)
         item.frameSignals = VideoFrameSignals.evaluate(luminances: [0.05, 0.09, 0.03])
         let c = classify([item], fingerprints: [makeFingerprint(from: item)])["df"]
         #expect(c?.monsterType == .pocketPoltergeist)
@@ -516,11 +517,17 @@ struct BestiaryExpansionTests {
         comp.duplicateShare = 0.2
         #expect(DungeonThemeEngine.theme(for: comp) == .dragonsHoard)
 
-        // Mixed, nothing dominant → Wild Gallery
+        // Mixed, below every theme threshold → Wild Gallery.
         let mixed = items(20) { i in
-            makeItem(id: "x\(i)", kind: i % 2 == 0 ? .photo : .video, daysAgo: 30, duration: 20)
+            makeItem(id: "x\(i)", kind: i % 3 == 0 ? .video : .photo, daysAgo: 30, duration: 20)
         }
         #expect(DungeonThemeEngine.theme(for: DungeonThemeEngine.composition(for: mixed)) == .wildGallery)
+
+        // Exactly 50% video meets the Phantom Theater threshold.
+        let halfVideo = items(20) { i in
+            makeItem(id: "half\(i)", kind: i % 2 == 0 ? .photo : .video, daysAgo: 30, duration: 20)
+        }
+        #expect(DungeonThemeEngine.theme(for: DungeonThemeEngine.composition(for: halfVideo)) == .phantomTheater)
 
         // Tiny batch → always Wild Gallery
         #expect(DungeonThemeEngine.theme(for: DungeonThemeEngine.composition(for: [shots[0]])) == .wildGallery)

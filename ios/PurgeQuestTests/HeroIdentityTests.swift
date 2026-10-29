@@ -97,18 +97,19 @@ struct HeroIdentityTests {
 
     // MARK: - Appearance migration
 
-    @Test func v2JSONMigratesToV3WithDefaults() {
+    @Test func v2JSONPreservesSavedTraitsAndSuppliesNewDefaults() {
         let v2 = """
         {"schemaVersion":2,"skinTone":"honey","faceShape":"nimble","eyeStyle":"bright","eyeColor":"jade","browStyle":"steady","mouthStyle":"grin","hairStyle":"swept","hairColor":"raven","expression":"calm","backdropStyle":"plaque","armorDye":"crimson"}
         """
         let data = Data(v2.utf8)
         let look = HeroAppearance.decode(data, for: .magician)
-        #expect(look.schemaVersion == HeroAppearance.currentSchemaVersion)
+        #expect(look.schemaVersion == 2)
         #expect(look.race == nil)
         #expect(look.paintVariant == 1)
         #expect(look.skinHueShift == 0)
         #expect(look.armorDye == .crimson)
         #expect(look.skinTone == .honey)
+        #expect(HeroAppearance.decode(look.encoded(), for: .magician) == look)
 
         // nil race falls back to the legacy archetype's designed race.
         let hero = Hero()
