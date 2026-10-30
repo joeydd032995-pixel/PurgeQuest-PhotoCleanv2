@@ -120,15 +120,16 @@ def local_offset(hold: Tuple[float, float], grip: Tuple[float, float], pivot_px:
 
 
 def item_corners_world(p: scml.Placement, bbox, img_size, off, s: float):
-    """World (y-up) corners of an item's opaque bbox drawn at placement p with scale s and local offset off (y-down)."""
-    sx, sy = p.file.width / img_size[0], p.file.height / img_size[1]
+    """World (y-up) corners of an item's opaque bbox. Items draw in native pixels relative to the anchor pivot:
+    local(u, v) = s * ((u, v) - pivotPx) + off (y-down), matching SpriteRenderer.itemRect."""
+    pivot_px = (p.pivot_x * p.file.width, (1 - p.pivot_y) * p.file.height)
     x0, y0, x1, y1 = bbox
     r = math.radians(p.angle)
     c, sn = math.cos(r), math.sin(r)
     pts = []
     for u, v in ((x0, y0), (x1 + 1, y0), (x1 + 1, y1 + 1), (x0, y1 + 1)):
-        lx = (u * sx - p.pivot_x * p.file.width) * s + off[0]
-        ly = ((1 - p.pivot_y) * p.file.height - v * sy) * s - off[1]
+        lx = s * (u - pivot_px[0]) + off[0]
+        ly = -(s * (v - pivot_px[1]) + off[1])
         pts.append((p.x + lx * c - ly * sn, p.y + lx * sn + ly * c))
     return pts
 
@@ -224,6 +225,14 @@ def supported_packs(item: dict) -> List[str]:
     if item["kind"] == "bow":   # a bow needs a pack with a bow anchor and the Shooting animation
         return [p for p in packs if p in ("forest_ranger_v1", "forest_ranger_v2")]
     return packs
+
+
+def arrow_nock(pid: str) -> list:
+    """Arrow tail (nock) in arrow-image px: the left end of the arrow's opaque bbox, mid-height."""
+    race, variant = pid.rsplit("_v", 1)[0], int(pid.rsplit("_v", 1)[1])
+    img = Image.open(scml.pack_dir(race, variant) / f"{pid}_arrow.png").convert("RGBA")
+    x0, y0, x1, y1 = opaque_bbox(img)
+    return [float(x0), (y0 + y1) / 2]
 
 
 def head_fit(race: str, variant: int) -> dict:
@@ -336,7 +345,8 @@ def analyze() -> dict:
                       "weaponHold": [round(x, 2) for x in h["weapon"]["hold"]],
                       "shieldAnchor": h["shield"]["anchor"], "shieldPivotPx": [round(x, 2) for x in h["shield"]["pivotPx"]],
                       "shieldHold": [round(x, 2) for x in h["shield"]["hold"]],
-                      "headFit": head_fit(pid.rsplit("_v", 1)[0], int(pid.rsplit("_v", 1)[1]))} for pid, h in holds.items()}
+                      "headFit": head_fit(pid.rsplit("_v", 1)[0], int(pid.rsplit("_v", 1)[1])),
+                      **({"arrowNock": arrow_nock(pid)} if h["weapon"]["anchor"] == "bow" else {})} for pid, h in holds.items()}
     return {"schemaVersion": 1, "titanScale": TITAN_SCALE, "headpieceNominal": nominal, "packs": pack_out, "items": out_items}
 
 

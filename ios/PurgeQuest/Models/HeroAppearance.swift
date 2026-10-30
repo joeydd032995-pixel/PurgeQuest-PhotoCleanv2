@@ -304,7 +304,8 @@ nonisolated enum GearTier: String, CaseIterable, Codable {
 /// The full saved identity of a hero. Equipped gear is stored separately and
 /// renders over this identity.
 nonisolated struct HeroAppearance: Equatable, Codable {
-    static let currentSchemaVersion = 3
+    /// v4 adds optional masked material colours (`materials`, `gearMaterials`). v1-v3 decode in place.
+    static let currentSchemaVersion = 4
 
     var schemaVersion: Int
     /// The hero's race. nil on pre-v3 saves; falls back to the legacy
@@ -327,6 +328,10 @@ nonisolated struct HeroAppearance: Equatable, Codable {
     var expression: Expression
     var backdropStyle: BackdropStyle
     var armorDye: ArmorDye
+    /// Mask-aware colours for body/armor regions. nil until the player picks a colour in the Forge.
+    var materials: CharacterMaterialSet?
+    /// Mask-aware colours for held gear and headpieces (weapon, shield, head).
+    var gearMaterials: CharacterMaterialSet?
 
     init(
         schemaVersion: Int = HeroAppearance.currentSchemaVersion,
@@ -345,7 +350,9 @@ nonisolated struct HeroAppearance: Equatable, Codable {
         hairColor: HairColor,
         expression: Expression,
         backdropStyle: BackdropStyle,
-        armorDye: ArmorDye = .none
+        armorDye: ArmorDye = .none,
+        materials: CharacterMaterialSet? = nil,
+        gearMaterials: CharacterMaterialSet? = nil
     ) {
         self.schemaVersion = schemaVersion
         self.race = race
@@ -364,6 +371,8 @@ nonisolated struct HeroAppearance: Equatable, Codable {
         self.expression = expression
         self.backdropStyle = backdropStyle
         self.armorDye = armorDye
+        self.materials = materials
+        self.gearMaterials = gearMaterials
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -371,6 +380,7 @@ nonisolated struct HeroAppearance: Equatable, Codable {
         case skinHueShift, eyeHueShift, hairHueShift
         case skinTone, faceShape, eyeStyle, eyeColor, browStyle, mouthStyle
         case hairStyle, hairColor, expression, backdropStyle, armorDye
+        case materials, gearMaterials
     }
 
     /// Lenient decode: every field falls back to its designed default when
@@ -402,6 +412,9 @@ nonisolated struct HeroAppearance: Equatable, Codable {
         expression = (try? c.decodeIfPresent(Expression.self, forKey: .expression)) ?? .calm
         backdropStyle = (try? c.decodeIfPresent(BackdropStyle.self, forKey: .backdropStyle)) ?? .plaque
         armorDye = (try? c.decodeIfPresent(ArmorDye.self, forKey: .armorDye)) ?? .none
+        // Corrupt or unknown material data decodes to nil: the hero keeps every other trait.
+        materials = (try? c.decodeIfPresent(CharacterMaterialSet.self, forKey: .materials)) ?? nil
+        gearMaterials = (try? c.decodeIfPresent(CharacterMaterialSet.self, forKey: .gearMaterials)) ?? nil
     }
 
     /// Clamps a hue slider into its storage range.

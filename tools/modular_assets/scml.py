@@ -293,12 +293,18 @@ def render_frame(doc: Doc, race_dir: str, variant: int, animation: str, frame_in
             _draw(canvas, img, head, origin, size[1], scale, rect=(left, top, img.size[0] * k * f, img.size[1] * k * f))
     if swapped_weapon and weapon_anchor is not None:
         fit = weapon_fit or {}
+        s = fit.get("scale", 1.0) * weapon_scale
+        off = fit.get("offset", (0.0, 0.0))
+        pp = (weapon_anchor.pivot_x * weapon_anchor.file.width, (1 - weapon_anchor.pivot_y) * weapon_anchor.file.height)
         _draw(canvas, weapon_image, weapon_anchor, origin, size[1], scale,
-              extra=fit.get("scale", 1.0) * weapon_scale, local_offset=fit.get("offset", (0, 0)),
+              rect=(off[0] - s * pp[0], off[1] - s * pp[1], s * weapon_image.size[0], s * weapon_image.size[1]),
               extra_rot=fit.get("rotation", 0.0))
     if swapped_shield and shield_anchor is not None:
         fit = shield_fit or {}
+        s = fit.get("scale", 1.0)
+        off = fit.get("offset", (0.0, 0.0))
+        pp = (shield_anchor.pivot_x * shield_anchor.file.width, (1 - shield_anchor.pivot_y) * shield_anchor.file.height)
         _draw(canvas, shield_image, shield_anchor, origin, size[1], scale,
-              extra=fit.get("scale", 1.0), local_offset=fit.get("offset", (0, 0)),
+              rect=(off[0] - s * pp[0], off[1] - s * pp[1], s * shield_image.size[0], s * shield_image.size[1]),
               extra_rot=fit.get("rotation", 0.0))
     return canvas

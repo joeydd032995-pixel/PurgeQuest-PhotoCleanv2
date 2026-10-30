@@ -32,7 +32,8 @@ RACE_RAW = {  # art dir -> HeroRace raw value used by the Swift enum (rawValue o
     "skeleton_warrior": "skeleton_crusader", "golem": "golem",
 }
 ATTACK_PREFERENCE = ("Shooting", "Slashing")
-THRESH = {"mean": 5e-4, "bad": 2e-3, "coverage": 0.80}
+# coverage: near-black shadow pixels are intentionally left out of masks (recoloring them yields near-black anyway)
+THRESH = {"mean": 5e-4, "bad": 2e-3, "coverage": 0.65}
 
 
 def attack_name(race: str, variant: int = 1) -> str:

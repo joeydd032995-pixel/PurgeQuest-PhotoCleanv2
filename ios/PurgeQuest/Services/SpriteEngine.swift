@@ -53,6 +53,8 @@ nonisolated final class SpriterDocument {
     let animations: [String: SpriteAnimation]
     let canvasSize: CGSize
     let origin: CGPoint
+    /// Transparent margin around the union of all visible parts.
+    static let canvasPadding: CGFloat = 20
 
     init(animations: [String: SpriteAnimation], canvasSize: CGSize, origin: CGPoint) {
         self.animations = animations
@@ -161,7 +163,7 @@ nonisolated private struct SCMLParser: @unchecked Sendable {
             }
         }
         guard minX.isFinite, minY.isFinite else { return nil }
-        let pad: CGFloat = 20
+        let pad = SpriterDocument.canvasPadding
         let origin = CGPoint(x: minX - pad, y: minY - pad)
         let size = CGSize(width: (maxX + pad) - origin.x, height: (maxY + pad) - origin.y)
         return SpriterDocument(animations: delegate.animations, canvasSize: size, origin: origin)
@@ -365,17 +367,87 @@ nonisolated private final class ParserDelegate: NSObject, XMLParserDelegate {
     }
 }
 
+// MARK: - Loadout
+
+/// What the hero holds and wears over the race art, by catalog id. Resolved against the bundled
+/// modular gear manifest; ids the manifest doesn't know fall back to the legacy generic anchor.
+nonisolated struct SpriteLoadout: Equatable, Sendable {
+    var weaponID: String? = nil
+    var shieldID: String? = nil
+    var headID: String? = nil
+    var titanWeapon: Bool = false
+    var gearMaterials: CharacterMaterialSet? = nil
+
+    static let none = SpriteLoadout()
+}
+
+/// A rendered frame plus how far its canvas extends beyond the pack's base canvas (a Titan blade
+/// enlarges it). The view keeps the character's size constant and lets the blade overflow.
+final class SpriteFrame {
+    let image: UIImage
+    let layout: SpriteCanvasLayout
+    init(image: UIImage, layout: SpriteCanvasLayout) {
+        self.image = image
+        self.layout = layout
+    }
+}
+
 // MARK: - Renderer
 
 @MainActor
 final class SpriteRenderer {
     static let shared = SpriteRenderer()
 
+    private struct ResolvedItem {
+        let resource: String
+        let placement: HeldGearPlacement
+        let entry: HeldGearEntry?
+        /// Image-pixel size used to build the local draw rect.
+        let imageSize: CGSize
+    }
+
+    private struct ResolvedLoadout {
+        var weapon: ResolvedItem?
+        var shield: ResolvedItem?
+        var head: ResolvedItem?
+        /// Titan with nothing equipped: the pack's own weapon scaled about its grip.
+        var bakedTitan: HeldGearPlacement?
+        var gearMaterials: CharacterMaterialSet?
+
+        var hidesBakedWeapon: Bool { weapon != nil || bakedTitan != nil }
+        var key: String {
+            let w = weapon.map { "\($0.resource)@\($0.placement.scale)" } ?? (bakedTitan.map { "baked@\($0.scale)" } ?? "-")
+            let sh = shield.map { $0.resource } ?? "-"
+            let hd = head.map { $0.resource } ?? "-"
+            return "\(w)|\(sh)|\(hd)|\(MaterialPalette.fingerprint(gearMaterials))"
+        }
+    }
+
+    private let catalog: ModularAssetCatalog
     private var documents: [String: SpriterDocument] = [:]
     private var partImages: [String: UIImage] = [:]
     private var tintedImages: [String: UIImage] = [:]
-    private let frameCache = NSCache<NSString, UIImage>()
+    private var recoloredImages: [String: UIImage] = [:]
+    private var canvases: [String: (origin: CGPoint, size: CGSize)] = [:]
+    private var modularPartCache: [String: [String: [PartManifest]]?] = [:]
+    private let frameCache = NSCache<NSString, SpriteFrame>()
     private let ciContext = CIContext(options: [.useSoftwareRenderer: false])
+    private let recolorer = MaterialRecolorer()
+
+    init(catalog: ModularAssetCatalog = .shared) {
+        self.catalog = catalog
+        NotificationCenter.default.addObserver(forName: UIApplication.didReceiveMemoryWarningNotification, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.purgeCaches() }
+        }
+    }
+
+    /// Drops every rebuildable image cache (memory warning). Documents stay: they are small and re-parsing is slow.
+    func purgeCaches() {
+        frameCache.removeAllObjects()
+        partImages.removeAll()
+        tintedImages.removeAll()
+        recoloredImages.removeAll()
+    }
 
     /// Normalizes an SCML file name ("Face 01.png") into its bundled base
     /// name ("valkyrie_v1_face_01").
@@ -404,6 +476,13 @@ final class SpriteRenderer {
         document(race: race, variant: variant)?.canvasSize
     }
 
+    /// The attack animation this variant actually ships ("Shooting" or "Slashing").
+    func attackAnimation(race: HeroRace, variant: Int) -> String {
+        let preferred = race.attackAnimationName(variant: variant)
+        if frameCount(race: race, variant: variant, animation: preferred) > 0 { return preferred }
+        return frameCount(race: race, variant: variant, animation: "Slashing") > 0 ? "Slashing" : preferred
+    }
+
     private func image(base: String) -> UIImage? {
         if let cached = partImages[base] { return cached }
         guard let url = Bundle.main.url(forResource: base, withExtension: "png"),
@@ -412,7 +491,7 @@ final class SpriteRenderer {
         return image
     }
 
-    // MARK: Recoloring
+    // MARK: Recoloring (legacy whole-part tint, used until a layer ships masks)
 
     private func hueRotated(_ image: UIImage, shift: Double) -> UIImage {
         guard shift != 0, let source = image.ciImage ?? CIImage(image: image) else { return image }
@@ -479,81 +558,302 @@ final class SpriteRenderer {
         return image
     }
 
-    // MARK: Compositing
+    // MARK: Masked recolor (held gear and modular layers)
 
-    private func draw(_ image: UIImage, for placement: SpritePlacement, doc: SpriterDocument, in cg: CGContext, extraScale: CGFloat = 1) {
-        let w = placement.file.width * extraScale
-        let h = placement.file.height * extraScale
+    /// Layer image recolored through its masks, or the plain image when nothing is coloured.
+    private func maskedImage(resource: String, maskResources: [String: String], regionLuma: [String: Double], colors: CharacterMaterialSet?) -> UIImage? {
+        guard let base = image(base: resource) else { return nil }
+        guard let colors, !maskResources.isEmpty else { return base }
+        let key = "\(resource)|\(MaterialPalette.fingerprint(colors))"
+        if let cached = recoloredImages[key] { return cached }
+        let regions: [MaterialRecolorer.Region] = maskResources.compactMap { name, maskName in
+            guard let region = MaterialRegion(rawValue: name), let mask = image(base: maskName) else { return nil }
+            return MaterialRecolorer.Region(region: region, mask: mask, referenceLuma: regionLuma[name])
+        }
+        let out = recolorer.recolor(base, regions: regions, colors: colors)
+        recoloredImages[key] = out
+        return out
+    }
+
+    // MARK: Geometry
+
+    /// Draws `image` into `rect` (SCML units, y-down) relative to the placement's pivot, rotated with the part.
+    private func drawRelative(_ image: UIImage, placement: SpritePlacement, rect: CGRect, extraRotation: CGFloat = 0, doc: SpriterDocument, in cg: CGContext) {
         let pivot = doc.screenPoint(placement.x, placement.y)
-        let left = pivot.x - placement.pivotX * w
-        let top = pivot.y - (1 - placement.pivotY) * h
-
         cg.saveGState()
         cg.translateBy(x: pivot.x, y: pivot.y)
-        cg.rotate(by: -placement.angle * .pi / 180)
-        cg.translateBy(x: -pivot.x, y: -pivot.y)
-        image.draw(in: CGRect(x: left, y: top, width: w, height: h))
+        cg.rotate(by: -(placement.angle + extraRotation) * .pi / 180)
+        image.draw(in: rect)
         cg.restoreGState()
     }
 
-    private func isWeaponFile(_ name: String) -> Bool {
-        name.hasPrefix("sword") || name.hasPrefix("bow") || name.hasPrefix("arrow")
+    private func draw(_ image: UIImage, for placement: SpritePlacement, doc: SpriterDocument, in cg: CGContext) {
+        let w = placement.file.width
+        let h = placement.file.height
+        drawRelative(image, placement: placement,
+                     rect: CGRect(x: -placement.pivotX * w, y: -(1 - placement.pivotY) * h, width: w, height: h),
+                     doc: doc, in: cg)
     }
 
-    /// Renders one composited frame. Cached aggressively — idle loops hit the
-    /// cache after the first pass.
+    /// Anchor-relative rect of a held item: grip on the hold at the item's scale (see HeldGearFit).
+    private func itemRect(_ item: ResolvedItem, anchor: SpritePlacement) -> CGRect {
+        let pivotX = anchor.pivotX * anchor.file.width
+        let pivotY = (1 - anchor.pivotY) * anchor.file.height
+        let s = CGFloat(item.placement.scale)
+        return CGRect(x: CGFloat(item.placement.offsetX) - s * pivotX,
+                      y: CGFloat(item.placement.offsetY) - s * pivotY,
+                      width: s * item.imageSize.width, height: s * item.imageSize.height)
+    }
+
+    private func headRect(_ item: ResolvedItem, head: SpritePlacement, fit: HeadFit, nominal: HeadpieceNominal) -> CGRect {
+        let k = CGFloat(fit.widthPx / nominal.width)
+        let f = head.file.width / CGFloat(fit.headPngSize.first ?? Double(head.file.width))
+        let left = (CGFloat(fit.cx) - k * CGFloat(nominal.anchorU)) * f - head.pivotX * head.file.width
+        let top = (CGFloat(fit.baseY) - k * CGFloat(nominal.anchorV)) * f - (1 - head.pivotY) * head.file.height
+        return CGRect(x: left, y: top, width: item.imageSize.width * k * f, height: item.imageSize.height * k * f)
+    }
+
+    /// World-space (y-up) bounds of a pivot-relative, y-down rect on a placement.
+    private func worldBounds(of rect: CGRect, placement p: SpritePlacement, extraRotation: CGFloat = 0) -> CGRect {
+        let r = (p.angle + extraRotation) * .pi / 180
+        let c = cos(r), sn = sin(r)
+        var minX = CGFloat.greatestFiniteMagnitude, maxX = -CGFloat.greatestFiniteMagnitude
+        var minY = CGFloat.greatestFiniteMagnitude, maxY = -CGFloat.greatestFiniteMagnitude
+        for (lx, ly) in [(rect.minX, rect.minY), (rect.maxX, rect.minY), (rect.maxX, rect.maxY), (rect.minX, rect.maxY)] {
+            let upY = -ly
+            let x = p.x + lx * c - upY * sn
+            let y = p.y + lx * sn + upY * c
+            minX = min(minX, x); maxX = max(maxX, x); minY = min(minY, y); maxY = max(maxY, y)
+        }
+        return CGRect(x: minX, y: minY, width: maxX - minX, height: maxY - minY)
+    }
+
+    private func weaponAnchor(_ frame: [SpritePlacement]) -> SpritePlacement? {
+        frame.first { $0.file.name.lowercased().hasPrefix("sword") || $0.file.name.lowercased().hasPrefix("bow") }
+    }
+
+    private func shieldAnchor(_ frame: [SpritePlacement]) -> SpritePlacement? {
+        frame.first { $0.file.name.lowercased().hasPrefix("shield") }
+            ?? frame.first { $0.file.name.lowercased().contains("left hand") }
+    }
+
+    /// The pack's base canvas united with every held item's rect across all frames (a swapped item is drawn at
+    /// its anchor even when the baked one is hidden, and Titan doubles it), so nothing clips in any animation.
+    private func canvas(doc: SpriterDocument, pack: String, resolved: ResolvedLoadout) -> (origin: CGPoint, size: CGSize) {
+        guard resolved.weapon != nil || resolved.shield != nil || resolved.head != nil || resolved.bakedTitan != nil else {
+            return (doc.origin, doc.canvasSize)
+        }
+        let key = "\(pack)|\(resolved.key)"
+        if let cached = canvases[key] { return cached }
+        let pad = SpriterDocument.canvasPadding
+        var minX = doc.origin.x + pad, minY = doc.origin.y + pad
+        var maxX = doc.origin.x + doc.canvasSize.width - pad, maxY = doc.origin.y + doc.canvasSize.height - pad
+        func include(_ r: CGRect) {
+            minX = min(minX, r.minX); minY = min(minY, r.minY); maxX = max(maxX, r.maxX); maxY = max(maxY, r.maxY)
+        }
+        let anchors = catalog.anchors(pack: pack)
+        let nominal = catalog.gear?.headpieceNominal
+        for animation in doc.animations.values {
+            for frame in animation.frames {
+                if let item = resolved.weapon ?? bakedItem(resolved, frame: frame), let a = weaponAnchor(frame) {
+                    include(worldBounds(of: itemRect(item, anchor: a), placement: a, extraRotation: CGFloat(item.placement.rotationDegrees)))
+                }
+                if let item = resolved.shield, let a = shieldAnchor(frame) {
+                    include(worldBounds(of: itemRect(item, anchor: a), placement: a, extraRotation: CGFloat(item.placement.rotationDegrees)))
+                }
+                if let item = resolved.head, let fit = anchors?.headFit, let nominal,
+                   let head = frame.first(where: { $0.file.name.lowercased().hasPrefix("head") }) {
+                    include(worldBounds(of: headRect(item, head: head, fit: fit, nominal: nominal), placement: head))
+                }
+            }
+        }
+        let origin = CGPoint(x: minX - pad, y: minY - pad)
+        let result = (origin: origin, size: CGSize(width: maxX + pad - origin.x, height: maxY + pad - origin.y))
+        canvases[key] = result
+        return result
+    }
+
+    /// The baked weapon as a held item (Titan with nothing equipped).
+    private func bakedItem(_ resolved: ResolvedLoadout, frame: [SpritePlacement]) -> ResolvedItem? {
+        guard let titan = resolved.bakedTitan, let a = weaponAnchor(frame) else { return nil }
+        return ResolvedItem(resource: "", placement: titan, entry: nil, imageSize: CGSize(width: a.file.width, height: a.file.height))
+    }
+
+    // MARK: Loadout resolution
+
+    private func resolve(_ loadout: SpriteLoadout, race: HeroRace, pack: String) -> ResolvedLoadout {
+        var out = ResolvedLoadout(weapon: nil, shield: nil, head: nil, bakedTitan: nil, gearMaterials: loadout.gearMaterials)
+        let anchors = catalog.anchors(pack: pack)
+
+        func resolveItem(_ id: String?, wants: (HeldGearKind) -> Bool, titan: Bool) -> ResolvedItem? {
+            guard let id else { return nil }
+            if let entry = catalog.gearItem(id: id) {
+                guard wants(entry.kind), let anchors,
+                      let placement = HeldGearFit.placement(item: entry, anchors: anchors, pack: pack, titan: titan) else { return nil }
+                return ResolvedItem(resource: entry.resourceName, placement: placement, entry: entry,
+                                    imageSize: CGSize(width: entry.imageWidth, height: entry.imageHeight))
+            }
+            // Not in the manifest (older catalog entry): legacy generic anchor, no fit data.
+            guard let legacy = GearCatalog.design(id: id)?.resourceName, let img = image(base: legacy) else { return nil }
+            let scale = titan ? HeldGearFit.titanScale : 1
+            return ResolvedItem(resource: legacy, placement: HeldGearPlacement(scale: scale, offsetX: 0, offsetY: 0, rotationDegrees: 0),
+                                entry: nil, imageSize: img.size)
+        }
+
+        out.weapon = resolveItem(loadout.weaponID, wants: { $0 != .shield && $0 != .headpiece }, titan: loadout.titanWeapon)
+        out.shield = resolveItem(loadout.shieldID, wants: { $0 == .shield }, titan: false)
+        out.head = resolveItem(loadout.headID, wants: { $0 == .headpiece }, titan: false)
+        if out.weapon == nil, loadout.titanWeapon, let anchors {
+            out.bakedTitan = HeldGearFit.bakedWeaponPlacement(anchors: anchors, titan: true)
+        }
+        return out
+    }
+
+    // MARK: Modular path (verified recipes only)
+
+    /// Layers per original part stem when this pack's full recipe is verified; nil keeps the legacy renderer.
+    private func modularParts(race: HeroRace, variant: Int, pack: String, appearance: HeroAppearance) -> [String: [PartManifest]]? {
+        let key = "\(pack)|\(appearance.materials.map { MaterialPalette.fingerprint($0) } ?? "-")"
+        if let cached = modularPartCache[key] { return cached }
+        var result: [String: [PartManifest]]? = nil
+        let layers = catalog.parts(forPack: pack).filter { $0.kind != "face" }
+        if !layers.isEmpty {
+            let recipe = ModularCharacterRecipe(
+                ancestry: race, bodyProfile: race.defaultBodyProfile,
+                parts: layers.map { CharacterPartSelection(slot: $0.slot, partID: $0.id) },
+                materials: appearance.materials ?? CharacterMaterialSet()
+            )
+            if CharacterRenderPlanner.plan(for: recipe, manifests: layers).path == .modular {
+                let order = ["anatomy": 0, "armor": 1, "headgear": 1]
+                result = Dictionary(grouping: layers, by: { $0.part ?? "" })
+                    .mapValues { $0.sorted { (order[$0.kind ?? ""] ?? 1) < (order[$1.kind ?? ""] ?? 1) } }
+            }
+        }
+        modularPartCache[key] = .some(result)
+        return result
+    }
+
+    // MARK: Compositing
+
+    /// Renders one composited frame. Cached aggressively — idle loops hit the cache after the first pass.
     func frame(
         race: HeroRace,
         variant: Int,
         animation: String,
         frameIndex: Int,
         appearance: HeroAppearance,
-        weaponResource: String? = nil,
-        shieldResource: String? = nil,
-        titanWeapon: Bool = false
-    ) -> UIImage? {
+        loadout: SpriteLoadout = .none
+    ) -> SpriteFrame? {
         guard let doc = document(race: race, variant: variant),
               let anim = doc.animations[animation], !anim.frames.isEmpty else { return nil }
         let clampedVariant = min(max(variant, 1), race.variantCount)
-        let key = "\(race.artBase(variant: clampedVariant))|\(animation)|\(frameIndex)|\(appearance.skinHueShift)|\(appearance.eyeHueShift)|\(appearance.hairHueShift)|\(appearance.armorDye.rawValue)|\(weaponResource ?? "-")|\(shieldResource ?? "-")|\(titanWeapon)"
+        let pack = race.artBase(variant: clampedVariant)
+        let resolved = resolve(loadout, race: race, pack: pack)
+        let modular = modularParts(race: race, variant: clampedVariant, pack: pack, appearance: appearance)
+        let key = "\(pack)|\(animation)|\(frameIndex)|\(appearance.skinHueShift)|\(appearance.eyeHueShift)|\(appearance.hairHueShift)|\(appearance.armorDye.rawValue)|\(resolved.key)|\(modular == nil ? "legacy" : "modular")|\(MaterialPalette.fingerprint(appearance.materials))"
         if let cached = frameCache.object(forKey: key as NSString) { return cached }
 
         let index = ((frameIndex % anim.frames.count) + anim.frames.count) % anim.frames.count
         let placements = anim.frames[index]
+        let extent = canvas(doc: doc, pack: pack, resolved: resolved)
+        let layout = SpriteCanvasLayout.around(
+            baseOrigin: (Double(doc.origin.x), Double(doc.origin.y)), baseSize: (Double(doc.canvasSize.width), Double(doc.canvasSize.height)),
+            frameOrigin: (Double(extent.origin.x), Double(extent.origin.y)), frameSize: (Double(extent.size.width), Double(extent.size.height)))
+        // Draw through a document whose origin/size match the (possibly enlarged) canvas.
+        let drawDoc = (extent.origin == doc.origin && extent.size == doc.canvasSize)
+            ? doc : SpriterDocument(animations: doc.animations, canvasSize: extent.size, origin: extent.origin)
 
         let format = UIGraphicsImageRendererFormat()
         format.scale = 0.5
         format.opaque = false
-        let rendered = UIGraphicsImageRenderer(size: doc.canvasSize, format: format).image { ctx in
+        let rendered = UIGraphicsImageRenderer(size: extent.size, format: format).image { ctx in
             let cg = ctx.cgContext
 
             for placement in placements.sorted(by: { $0.zIndex < $1.zIndex }) {
                 let fileName = placement.file.name.lowercased()
                 if placement.alpha < 0.01 { continue }
-                if weaponResource != nil && isWeaponFile(fileName) { continue }
-                if shieldResource != nil && fileName.hasPrefix("shield") { continue }
+                // The arrow stays: a swapped bow still fires.
+                if resolved.hidesBakedWeapon && (fileName.hasPrefix("sword") || fileName.hasPrefix("bow")) { continue }
+                if resolved.shield != nil && fileName.hasPrefix("shield") { continue }
                 if fileName.hasPrefix("slashfx") { continue }
+                let stem = (fileName as NSString).deletingPathExtension.replacingOccurrences(of: " ", with: "_")
+                if let layers = modular?[stem] {
+                    for layer in layers {
+                        if let img = maskedImage(resource: layer.resourceBaseName, maskResources: layer.maskResources,
+                                                 regionLuma: layer.regionLuma, colors: appearance.materials) {
+                            draw(img, for: placement, doc: drawDoc, in: cg)
+                        }
+                    }
+                    continue
+                }
                 guard let part = processedPart(race: race, variant: clampedVariant, fileDef: placement.file, appearance: appearance) else { continue }
-                draw(part, for: placement, doc: doc, in: cg)
+                draw(part, for: placement, doc: drawDoc, in: cg)
             }
 
-            if let weaponResource {
-                if let weaponImage = image(base: weaponResource),
-                   let anchor = placements.first(where: { isWeaponFile($0.file.name.lowercased()) }) {
-                    draw(weaponImage, for: anchor, doc: doc, in: cg, extraScale: titanWeapon ? 1.4 : 1)
-                }
+            if let head = resolved.head, let entry = head.entry, let nominal = catalog.gear?.headpieceNominal,
+               let fit = catalog.anchors(pack: pack)?.headFit,
+               let anchor = placements.first(where: { $0.file.name.lowercased().hasPrefix("head") }),
+               let img = maskedImage(resource: entry.resourceName, maskResources: entry.maskResources, regionLuma: entry.regionLuma, colors: resolved.gearMaterials) {
+                drawRelative(img, placement: anchor, rect: headRect(head, head: anchor, fit: fit, nominal: nominal), doc: drawDoc, in: cg)
             }
-            if let shieldResource {
-                if let shieldImage = image(base: shieldResource) {
-                    let anchor = placements.first(where: { $0.file.name.lowercased().hasPrefix("shield") })
-                        ?? placements.first(where: { $0.file.name.lowercased().contains("left hand") })
-                    if let anchor {
-                        draw(shieldImage, for: anchor, doc: doc, in: cg)
-                    }
+
+            if let weapon = resolved.weapon, let anchor = weaponAnchor(placements) {
+                let img = maskedImage(resource: weapon.resource, maskResources: weapon.entry?.maskResources ?? [:],
+                                      regionLuma: weapon.entry?.regionLuma ?? [:], colors: resolved.gearMaterials)
+                if let img {
+                    drawRelative(img, placement: anchor, rect: itemRect(weapon, anchor: anchor),
+                                 extraRotation: CGFloat(weapon.placement.rotationDegrees), doc: drawDoc, in: cg)
+                    drawBowString(weapon: weapon, anchor: anchor, placements: placements, pack: pack, doc: drawDoc, in: cg)
                 }
+            } else if let titan = resolved.bakedTitan, let anchor = weaponAnchor(placements),
+                      let img = image(base: Self.partBaseName(race: race, variant: clampedVariant, fileName: anchor.file.name)) {
+                let item = ResolvedItem(resource: "", placement: titan, entry: nil, imageSize: CGSize(width: anchor.file.width, height: anchor.file.height))
+                drawRelative(img, placement: anchor, rect: itemRect(item, anchor: anchor), doc: drawDoc, in: cg)
+            }
+
+            if let shield = resolved.shield, let anchor = shieldAnchor(placements),
+               let img = maskedImage(resource: shield.resource, maskResources: shield.entry?.maskResources ?? [:],
+                                     regionLuma: shield.entry?.regionLuma ?? [:], colors: resolved.gearMaterials) {
+                drawRelative(img, placement: anchor, rect: itemRect(shield, anchor: anchor),
+                             extraRotation: CGFloat(shield.placement.rotationDegrees), doc: drawDoc, in: cg)
             }
         }
-        frameCache.setObject(rendered, forKey: key as NSString)
-        return rendered
+        let result = SpriteFrame(image: rendered, layout: layout)
+        frameCache.setObject(result, forKey: key as NSString)
+        return result
+    }
+
+    /// The Recurve's art has no string. Draw one from the bow tips, through the nock while the arrow is drawn.
+    private func drawBowString(weapon: ResolvedItem, anchor: SpritePlacement, placements: [SpritePlacement], pack: String,
+                               doc: SpriterDocument, in cg: CGContext) {
+        guard let entry = weapon.entry, entry.kind == .bow, let strings = entry.stringAnchors,
+              strings.top.count == 2, strings.bottom.count == 2 else { return }
+        let pivotX = anchor.pivotX * anchor.file.width
+        let pivotY = (1 - anchor.pivotY) * anchor.file.height
+        let s = CGFloat(weapon.placement.scale)
+        func point(_ u: Double, _ v: Double, on p: SpritePlacement, local: (CGFloat, CGFloat)) -> CGPoint {
+            let pivot = doc.screenPoint(p.x, p.y)
+            let r = p.angle * .pi / 180
+            return CGPoint(x: pivot.x + local.0 * cos(r) + local.1 * sin(r), y: pivot.y - local.0 * sin(r) + local.1 * cos(r))
+        }
+        func bowPoint(_ uv: [Double]) -> CGPoint {
+            point(uv[0], uv[1], on: anchor, local: (s * (CGFloat(uv[0]) - pivotX) + CGFloat(weapon.placement.offsetX),
+                                                    s * (CGFloat(uv[1]) - pivotY) + CGFloat(weapon.placement.offsetY)))
+        }
+        var path = [bowPoint(strings.top)]
+        if let nock = catalog.anchors(pack: pack)?.arrowNock, nock.count == 2,
+           let arrow = placements.first(where: { $0.file.name.lowercased().hasPrefix("arrow") && $0.alpha > 0.01 }) {
+            let local = (CGFloat(nock[0]) - arrow.pivotX * arrow.file.width, CGFloat(nock[1]) - (1 - arrow.pivotY) * arrow.file.height)
+            path.append(point(nock[0], nock[1], on: arrow, local: local))
+        }
+        path.append(bowPoint(strings.bottom))
+        cg.saveGState()
+        cg.setStrokeColor(UIColor(red: 0.93, green: 0.90, blue: 0.78, alpha: 1).cgColor)
+        cg.setLineWidth(3)
+        cg.setLineCap(.round)
+        cg.setLineJoin(.round)
+        cg.addLines(between: path)
+        cg.strokePath()
+        cg.restoreGState()
     }
 }

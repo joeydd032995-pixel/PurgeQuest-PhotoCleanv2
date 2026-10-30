@@ -70,7 +70,7 @@ struct ModularCharacterFoundationTests {
 
     @Test func renderPlannerAllowsCompleteModularRecipe() {
         let manifests = CharacterRenderPlanner.mandatoryAnatomySlots.map { slot in
-            PartManifest(id: "anatomy.valkyrie.\(slot.rawValue).01", resourceBaseName: "valkyrie_\(slot.rawValue)_01", slot: slot, sourceRace: .valkyrie, referenceProfile: .athletic, nativeProfiles: [.athletic])
+            PartManifest(id: "anatomy.valkyrie.\(slot.rawValue).01", resourceBaseName: "valkyrie_\(slot.rawValue)_01", slot: slot, sourceRace: .valkyrie, referenceProfile: .athletic, nativeProfiles: [.athletic], verification: .init(status: .verified))
         }
         let recipe = ModularCharacterRecipe(
             ancestry: .valkyrie,

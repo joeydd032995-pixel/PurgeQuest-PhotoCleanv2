@@ -1,0 +1,5 @@
+{
+ "schemaVersion": 1,
+ "_doc": "Human approvals only. Add records with tools/modular_assets/approvals.py approve ...",
+ "approvals": []
+}

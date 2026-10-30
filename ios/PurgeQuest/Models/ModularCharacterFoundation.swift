@@ -199,6 +199,35 @@ nonisolated struct CharacterPartSelection: Codable, Equatable, Sendable {
     let partID: String
 }
 
+/// Where an asset sits between "mapped" and "visually verified". Only a recorded human
+/// approval (docs/modular/approvals.json, stamped into the bundled manifests) is `verified`.
+nonisolated enum AssetVerification: String, Codable, Sendable {
+    case unstarted
+    case mapped
+    case candidate
+    case verified
+    case unsupported
+}
+
+nonisolated struct AssetVerificationRecord: Codable, Equatable, Sendable {
+    var status: AssetVerification
+    /// Body profiles whose *adapted* fit a reviewer approved. The native profile is covered by `.verified`.
+    var approvedProfiles: [String]
+
+    init(status: AssetVerification = .candidate, approvedProfiles: [String] = []) {
+        self.status = status
+        self.approvedProfiles = approvedProfiles
+    }
+
+    private enum CodingKeys: String, CodingKey { case status, approvedProfiles }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        status = (try? c.decode(AssetVerification.self, forKey: .status)) ?? .mapped
+        approvedProfiles = (try? c.decodeIfPresent([String].self, forKey: .approvedProfiles)) ?? []
+    }
+}
+
 nonisolated struct PartManifest: Codable, Equatable, Sendable {
     let id: String
     let resourceBaseName: String
@@ -214,6 +243,16 @@ nonisolated struct PartManifest: Codable, Equatable, Sendable {
     let coverageTags: [String]
     let materialRegions: [MaterialRegion]
     let representation: CharacterPartRepresentation
+    /// Region raw value -> mask resource base name (8-bit grayscale, same size as the layer).
+    let maskResources: [String: String]
+    /// Region raw value -> mean source luminance, used by the recolor matrix.
+    let regionLuma: [String: Double]
+    let verification: AssetVerificationRecord
+    /// Art pack ("valkyrie_v1"), original SCML part stem ("body"), layer kind, and paint variant.
+    let pack: String?
+    let part: String?
+    let kind: String?
+    let paintVariant: Int?
 
     init(
         id: String,
@@ -229,7 +268,14 @@ nonisolated struct PartManifest: Codable, Equatable, Sendable {
         profileOverrides: [String: PartFitOverride] = [:],
         coverageTags: [String] = [],
         materialRegions: [MaterialRegion] = [],
-        representation: CharacterPartRepresentation = .modular
+        representation: CharacterPartRepresentation = .modular,
+        maskResources: [String: String] = [:],
+        regionLuma: [String: Double] = [:],
+        verification: AssetVerificationRecord = .init(),
+        pack: String? = nil,
+        part: String? = nil,
+        kind: String? = nil,
+        paintVariant: Int? = nil
     ) {
         self.id = id
         self.resourceBaseName = resourceBaseName
@@ -245,6 +291,57 @@ nonisolated struct PartManifest: Codable, Equatable, Sendable {
         self.coverageTags = coverageTags
         self.materialRegions = materialRegions
         self.representation = representation
+        self.maskResources = maskResources
+        self.regionLuma = regionLuma
+        self.verification = verification
+        self.pack = pack
+        self.part = part
+        self.kind = kind
+        self.paintVariant = paintVariant
+    }
+
+    /// A copy with a different verification record (used to rehearse activation without touching shipped data).
+    func replacingVerification(_ record: AssetVerificationRecord) -> PartManifest {
+        PartManifest(
+            id: id, resourceBaseName: resourceBaseName, slot: slot, rigID: rigID, sourceRace: sourceRace,
+            referenceProfile: referenceProfile, nativeProfiles: nativeProfiles, adaptedProfiles: adaptedProfiles,
+            scaleXRange: scaleXRange, scaleYRange: scaleYRange, profileOverrides: profileOverrides,
+            coverageTags: coverageTags, materialRegions: materialRegions, representation: representation,
+            maskResources: maskResources, regionLuma: regionLuma, verification: record,
+            pack: pack, part: part, kind: kind, paintVariant: paintVariant
+        )
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, resourceBaseName, slot, rigID, sourceRace, referenceProfile, nativeProfiles, adaptedProfiles
+        case scaleXRange, scaleYRange, profileOverrides, coverageTags, materialRegions, representation
+        case maskResources, regionLuma, verification, pack, part, kind, paintVariant
+    }
+
+    /// Strict on the original contract fields; lenient on the additive ones so older manifests still load.
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decode(String.self, forKey: .id)
+        resourceBaseName = try c.decode(String.self, forKey: .resourceBaseName)
+        slot = try c.decode(CharacterSlot.self, forKey: .slot)
+        rigID = try c.decode(String.self, forKey: .rigID)
+        sourceRace = try c.decodeIfPresent(HeroRace.self, forKey: .sourceRace)
+        referenceProfile = try c.decode(BodyProfile.self, forKey: .referenceProfile)
+        nativeProfiles = try c.decode([BodyProfile].self, forKey: .nativeProfiles)
+        adaptedProfiles = try c.decode([BodyProfile].self, forKey: .adaptedProfiles)
+        scaleXRange = try c.decode(ScaleRange.self, forKey: .scaleXRange)
+        scaleYRange = try c.decode(ScaleRange.self, forKey: .scaleYRange)
+        profileOverrides = try c.decode([String: PartFitOverride].self, forKey: .profileOverrides)
+        coverageTags = try c.decode([String].self, forKey: .coverageTags)
+        materialRegions = try c.decode([MaterialRegion].self, forKey: .materialRegions)
+        representation = try c.decode(CharacterPartRepresentation.self, forKey: .representation)
+        maskResources = (try? c.decodeIfPresent([String: String].self, forKey: .maskResources)) ?? [:]
+        regionLuma = (try? c.decodeIfPresent([String: Double].self, forKey: .regionLuma)) ?? [:]
+        verification = (try? c.decodeIfPresent(AssetVerificationRecord.self, forKey: .verification)) ?? .init(status: .mapped)
+        pack = try? c.decodeIfPresent(String.self, forKey: .pack)
+        part = try? c.decodeIfPresent(String.self, forKey: .part)
+        kind = try? c.decodeIfPresent(String.self, forKey: .kind)
+        paintVariant = try? c.decodeIfPresent(Int.self, forKey: .paintVariant)
     }
 }
 
@@ -420,8 +517,14 @@ nonisolated enum CharacterRenderPlanner {
             if manifest.representation != .modular {
                 reasons.append("legacy:\(selection.partID)")
             }
-            if CharacterCompatibilityResolver.level(for: manifest, recipe: recipe) == .unsupported {
+            let level = CharacterCompatibilityResolver.level(for: manifest, recipe: recipe)
+            if level == .unsupported {
                 reasons.append("unsupported:\(selection.partID)")
+            }
+            if manifest.verification.status != .verified {
+                reasons.append("unverified:\(selection.partID)")
+            } else if level == .adapted, !manifest.verification.approvedProfiles.contains(recipe.bodyProfile.rawValue) {
+                reasons.append("unapproved-fit:\(selection.partID):\(recipe.bodyProfile.rawValue)")
             }
         }
 

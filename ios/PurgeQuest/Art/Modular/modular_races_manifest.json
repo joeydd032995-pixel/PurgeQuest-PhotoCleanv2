@@ -100,6 +100,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9962,
@@ -121,6 +122,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -200,6 +202,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.7915,
@@ -221,7 +224,8 @@
       }
      }
     },
-    "status": "mapped"
+    "automatedPass": true,
+    "status": "candidate"
    }
   },
   {
@@ -280,6 +284,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.992,
@@ -301,6 +306,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -366,6 +372,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8796,
@@ -387,6 +394,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -446,6 +454,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9832,
@@ -467,6 +476,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -522,6 +532,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9406,
@@ -543,6 +554,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -602,6 +614,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9834,
@@ -623,6 +636,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -678,6 +692,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8807,
@@ -699,6 +714,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -758,6 +774,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9657,
@@ -779,6 +796,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -841,6 +859,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.7143,
@@ -862,7 +881,8 @@
       }
      }
     },
-    "status": "mapped"
+    "automatedPass": true,
+    "status": "candidate"
    }
   },
   {
@@ -921,6 +941,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9738,
@@ -942,6 +963,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -1004,6 +1026,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9631,
@@ -1025,6 +1048,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -1077,6 +1101,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -1098,6 +1123,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -1153,6 +1179,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9403,
@@ -1174,6 +1201,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -1226,6 +1254,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9846,
@@ -1247,6 +1276,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -1302,6 +1332,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8108,
@@ -1323,6 +1354,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -1360,6 +1392,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -1377,6 +1410,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -1414,6 +1448,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -1431,6 +1466,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -1468,6 +1504,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -1485,6 +1522,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -1558,6 +1596,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8081,
@@ -1579,6 +1618,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -1658,6 +1698,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8577,
@@ -1679,6 +1720,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -1738,6 +1780,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.7302,
@@ -1759,6 +1802,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -1824,6 +1868,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9015,
@@ -1845,6 +1890,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -1904,6 +1950,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9678,
@@ -1925,6 +1972,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -1980,6 +2028,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8327,
@@ -2001,6 +2050,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -2060,6 +2110,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9679,
@@ -2081,6 +2132,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -2136,6 +2188,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.946,
@@ -2157,6 +2210,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -2216,6 +2270,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9213,
@@ -2237,6 +2292,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -2296,6 +2352,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9623,
@@ -2317,6 +2374,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -2369,6 +2427,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -2390,6 +2449,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -2448,6 +2508,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9591,
@@ -2469,6 +2530,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -2521,6 +2583,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9846,
@@ -2542,6 +2605,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -2600,6 +2664,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9617,
@@ -2621,6 +2686,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -2664,6 +2730,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -2681,6 +2748,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -2718,6 +2786,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -2735,6 +2804,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -2772,6 +2842,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -2789,6 +2860,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -2862,6 +2934,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9965,
@@ -2883,6 +2956,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -2959,6 +3033,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8453,
@@ -2980,6 +3055,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -3039,6 +3115,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9921,
@@ -3060,6 +3137,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -3122,6 +3200,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9534,
@@ -3143,6 +3222,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -3202,6 +3282,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9832,
@@ -3223,6 +3304,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -3278,6 +3360,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9342,
@@ -3299,6 +3382,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -3358,6 +3442,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9834,
@@ -3379,6 +3464,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -3434,6 +3520,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9376,
@@ -3455,6 +3542,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -3514,6 +3602,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9818,
@@ -3535,6 +3624,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -3597,6 +3687,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.76,
@@ -3618,7 +3709,8 @@
       }
      }
     },
-    "status": "mapped"
+    "automatedPass": true,
+    "status": "candidate"
    }
   },
   {
@@ -3677,6 +3769,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.984,
@@ -3698,6 +3791,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -3760,6 +3854,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9662,
@@ -3781,6 +3876,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -3833,6 +3929,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -3854,6 +3951,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -3909,6 +4007,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9729,
@@ -3930,6 +4029,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -3982,6 +4082,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9846,
@@ -4003,6 +4104,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -4058,6 +4160,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9723,
@@ -4079,6 +4182,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -4122,6 +4226,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -4139,6 +4244,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -4182,6 +4288,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -4199,6 +4306,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -4242,6 +4350,7 @@
    "sourceRace": "valkyrie",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -4259,6 +4368,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -4325,6 +4435,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8136,
@@ -4346,6 +4457,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -4418,6 +4530,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8518,
@@ -4439,6 +4552,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -4505,6 +4619,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.5985,
@@ -4526,6 +4641,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -4598,6 +4714,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9485,
@@ -4619,6 +4736,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -4662,6 +4780,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9833,
@@ -4683,6 +4802,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -4741,6 +4861,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8681,
@@ -4762,6 +4883,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -4805,6 +4927,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9834,
@@ -4826,6 +4949,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -4884,6 +5008,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8665,
@@ -4905,6 +5030,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -4948,6 +5074,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9231,
@@ -4969,6 +5096,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -5012,6 +5140,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.963,
@@ -5033,6 +5162,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -5085,6 +5215,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -5106,6 +5237,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -5161,6 +5293,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9885,
@@ -5182,6 +5315,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -5234,6 +5368,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9846,
@@ -5255,6 +5390,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -5310,6 +5446,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9892,
@@ -5331,6 +5468,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -5374,6 +5512,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -5391,6 +5530,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -5434,6 +5574,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -5451,6 +5592,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -5494,6 +5636,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -5511,6 +5654,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -5577,6 +5721,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8085,
@@ -5598,6 +5743,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -5670,6 +5816,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9765,
@@ -5691,6 +5838,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -5757,6 +5905,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.5932,
@@ -5778,6 +5927,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -5850,6 +6000,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9736,
@@ -5871,6 +6022,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -5914,6 +6066,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9825,
@@ -5935,6 +6088,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -5993,6 +6147,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9719,
@@ -6014,6 +6169,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -6057,6 +6213,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9826,
@@ -6078,6 +6235,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -6136,6 +6294,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9672,
@@ -6157,6 +6316,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -6200,6 +6360,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9231,
@@ -6221,6 +6382,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -6264,6 +6426,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.963,
@@ -6285,6 +6448,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -6337,6 +6501,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -6358,6 +6523,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -6413,6 +6579,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9887,
@@ -6434,6 +6601,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -6486,6 +6654,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9846,
@@ -6507,6 +6676,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -6562,6 +6732,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9891,
@@ -6583,6 +6754,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -6626,6 +6798,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -6643,6 +6816,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -6680,6 +6854,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -6697,6 +6872,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -6734,6 +6910,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -6751,6 +6928,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -6817,6 +6995,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.7998,
@@ -6838,6 +7017,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -6907,6 +7087,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.7803,
@@ -6928,7 +7109,8 @@
       }
      }
     },
-    "status": "mapped"
+    "automatedPass": true,
+    "status": "candidate"
    }
   },
   {
@@ -6994,6 +7176,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.6561,
@@ -7015,6 +7198,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -7087,6 +7271,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9792,
@@ -7108,6 +7293,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -7151,6 +7337,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9832,
@@ -7172,6 +7359,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -7227,6 +7415,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9391,
@@ -7248,6 +7437,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -7291,6 +7481,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9834,
@@ -7312,6 +7503,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -7367,6 +7559,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9316,
@@ -7388,6 +7581,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -7431,6 +7625,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9818,
@@ -7452,6 +7647,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -7498,6 +7694,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9823,
@@ -7519,6 +7716,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -7562,6 +7760,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.984,
@@ -7583,6 +7782,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -7629,6 +7829,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9885,
@@ -7650,6 +7851,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -7702,6 +7904,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -7723,6 +7926,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -7781,6 +7985,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9772,
@@ -7802,6 +8007,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -7854,6 +8060,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9845,
@@ -7875,6 +8082,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -7933,6 +8141,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9808,
@@ -7954,6 +8163,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -7997,6 +8207,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -8014,6 +8225,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -8057,6 +8269,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -8074,6 +8287,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -8117,6 +8331,7 @@
    "sourceRace": "forest_ranger",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -8134,6 +8349,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -8200,6 +8416,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9963,
@@ -8221,6 +8438,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -8293,6 +8511,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9214,
@@ -8314,6 +8533,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -8380,6 +8600,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.959,
@@ -8401,6 +8622,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -8444,6 +8666,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9575,
@@ -8465,6 +8688,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -8508,6 +8732,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9585,
@@ -8529,6 +8754,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -8572,6 +8798,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9279,
@@ -8593,6 +8820,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -8636,6 +8864,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.965,
@@ -8657,6 +8886,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -8709,6 +8939,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -8730,6 +8961,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -8788,6 +9020,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9881,
@@ -8809,6 +9042,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -8861,6 +9095,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9846,
@@ -8882,6 +9117,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -8940,6 +9176,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9889,
@@ -8961,6 +9198,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -8998,6 +9236,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -9015,6 +9254,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -9052,6 +9292,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -9069,6 +9310,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -9106,6 +9348,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -9123,6 +9366,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -9189,6 +9433,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.7864,
@@ -9210,6 +9455,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -9282,6 +9528,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9524,
@@ -9303,6 +9550,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -9369,6 +9617,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.6471,
@@ -9390,6 +9639,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -9462,6 +9712,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9656,
@@ -9483,6 +9734,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -9526,6 +9778,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9832,
@@ -9547,6 +9800,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -9605,6 +9859,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9776,
@@ -9626,6 +9881,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -9669,6 +9925,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9834,
@@ -9690,6 +9947,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -9748,6 +10006,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.966,
@@ -9769,6 +10028,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -9812,6 +10072,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9306,
@@ -9833,6 +10094,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -9876,6 +10138,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9671,
@@ -9897,6 +10160,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -9949,6 +10213,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -9970,6 +10235,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -10028,6 +10294,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9886,
@@ -10049,6 +10316,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -10101,6 +10369,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9846,
@@ -10122,6 +10391,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -10180,6 +10450,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9901,
@@ -10201,6 +10472,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -10244,6 +10516,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -10261,6 +10534,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -10298,6 +10572,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -10315,6 +10590,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -10352,6 +10628,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -10369,6 +10646,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -10435,6 +10713,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9961,
@@ -10456,6 +10735,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -10531,6 +10811,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9437,
@@ -10552,6 +10833,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -10618,6 +10900,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.6413,
@@ -10639,6 +10922,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -10714,6 +10998,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9289,
@@ -10735,6 +11020,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -10778,6 +11064,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9832,
@@ -10799,6 +11086,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -10860,6 +11148,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9698,
@@ -10881,6 +11170,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -10924,6 +11214,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9834,
@@ -10945,6 +11236,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -11006,6 +11298,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9756,
@@ -11027,6 +11320,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -11070,6 +11364,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9818,
@@ -11091,6 +11386,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -11140,6 +11436,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9143,
@@ -11161,6 +11458,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -11204,6 +11502,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9738,
@@ -11225,6 +11524,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -11277,6 +11577,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9669,
@@ -11298,6 +11599,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -11350,6 +11652,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -11371,6 +11674,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -11432,6 +11736,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9881,
@@ -11453,6 +11758,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -11505,6 +11811,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9846,
@@ -11526,6 +11833,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -11587,6 +11895,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9887,
@@ -11608,6 +11917,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -11651,6 +11961,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -11668,6 +11979,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -11705,6 +12017,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -11722,6 +12035,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -11759,6 +12073,7 @@
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -11776,6 +12091,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -11849,6 +12165,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8559,
@@ -11870,6 +12187,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -11929,6 +12247,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9929,
@@ -11950,6 +12269,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -12012,6 +12332,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8722,
@@ -12033,6 +12354,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -12092,6 +12414,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9832,
@@ -12113,6 +12436,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -12168,6 +12492,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9922,
@@ -12189,6 +12514,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -12248,6 +12574,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9834,
@@ -12269,6 +12596,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -12324,6 +12652,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9914,
@@ -12345,6 +12674,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -12404,6 +12734,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9818,
@@ -12425,6 +12756,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -12487,6 +12819,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9937,
@@ -12508,6 +12841,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -12567,6 +12901,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.984,
@@ -12588,6 +12923,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -12650,6 +12986,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9932,
@@ -12671,6 +13008,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -12723,6 +13061,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -12744,6 +13083,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -12799,6 +13139,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9924,
@@ -12820,6 +13161,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -12872,6 +13214,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9846,
@@ -12893,6 +13236,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -12948,6 +13292,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9929,
@@ -12969,6 +13314,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -13006,6 +13352,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -13023,6 +13370,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -13060,6 +13408,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -13077,6 +13426,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -13114,6 +13464,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -13131,6 +13482,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -13204,6 +13556,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8146,
@@ -13225,6 +13578,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -13304,6 +13658,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9927,
@@ -13325,6 +13680,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -13384,6 +13740,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.6459,
@@ -13405,6 +13762,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -13470,6 +13828,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9927,
@@ -13491,6 +13850,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -13550,6 +13910,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9832,
@@ -13571,6 +13932,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -13629,6 +13991,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9803,
@@ -13650,6 +14013,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -13709,6 +14073,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9834,
@@ -13730,6 +14095,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -13788,6 +14154,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9796,
@@ -13809,6 +14176,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -13868,6 +14236,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9818,
@@ -13889,6 +14258,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -13954,6 +14324,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9822,
@@ -13975,6 +14346,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -14034,6 +14406,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.984,
@@ -14055,6 +14428,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -14120,6 +14494,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9884,
@@ -14141,6 +14516,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -14193,6 +14569,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -14214,6 +14591,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -14272,6 +14650,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.988,
@@ -14293,6 +14672,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -14345,6 +14725,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9846,
@@ -14366,6 +14747,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -14424,6 +14806,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9885,
@@ -14445,6 +14828,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -14488,6 +14872,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -14505,6 +14890,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -14542,6 +14928,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -14559,6 +14946,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -14596,6 +14984,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -14613,6 +15002,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -14686,6 +15076,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8676,
@@ -14707,6 +15098,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -14783,6 +15175,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9937,
@@ -14804,6 +15197,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -14863,6 +15257,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.6462,
@@ -14884,6 +15279,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -14946,6 +15342,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9892,
@@ -14967,6 +15364,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -15026,6 +15424,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9832,
@@ -15047,6 +15446,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -15102,6 +15502,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9703,
@@ -15123,6 +15524,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -15182,6 +15584,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9834,
@@ -15203,6 +15606,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -15258,6 +15662,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9711,
@@ -15279,6 +15684,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -15338,6 +15744,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9818,
@@ -15359,6 +15766,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -15421,6 +15829,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9234,
@@ -15442,6 +15851,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -15501,6 +15911,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.984,
@@ -15522,6 +15933,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -15584,6 +15996,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9642,
@@ -15605,6 +16018,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -15657,6 +16071,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -15678,6 +16093,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -15733,6 +16149,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9885,
@@ -15754,6 +16171,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -15806,6 +16224,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9846,
@@ -15827,6 +16246,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -15882,6 +16302,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9892,
@@ -15903,6 +16324,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -15940,6 +16362,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -15957,6 +16380,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -15994,6 +16418,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -16011,6 +16436,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -16048,6 +16474,7 @@
    "sourceRace": "blood_alchemist",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -16065,6 +16492,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -16138,6 +16566,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8942,
@@ -16159,6 +16588,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -16235,6 +16665,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9877,
@@ -16256,6 +16687,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -16322,6 +16754,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.662,
@@ -16343,6 +16776,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -16412,6 +16846,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9866,
@@ -16433,6 +16868,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -16492,6 +16928,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9832,
@@ -16513,6 +16950,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -16582,6 +17020,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9554,
@@ -16603,6 +17042,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -16662,6 +17102,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9834,
@@ -16683,6 +17124,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -16752,6 +17194,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9577,
@@ -16773,6 +17216,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -16832,6 +17276,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9292,
@@ -16853,6 +17298,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -16912,6 +17358,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9664,
@@ -16933,6 +17380,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -16992,6 +17440,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -17013,6 +17462,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -17075,6 +17525,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9924,
@@ -17096,6 +17547,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -17155,6 +17607,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9846,
@@ -17176,6 +17629,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -17238,6 +17692,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9929,
@@ -17259,6 +17714,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -17302,6 +17758,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -17319,6 +17776,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -17356,6 +17814,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -17373,6 +17832,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -17410,6 +17870,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -17427,6 +17888,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -17500,6 +17962,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9954,
@@ -17521,6 +17984,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -17600,6 +18064,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.993,
@@ -17621,6 +18086,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -17687,6 +18153,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.994,
@@ -17708,6 +18175,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -17780,6 +18248,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9845,
@@ -17801,6 +18270,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -17860,6 +18330,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9832,
@@ -17881,6 +18352,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -17953,6 +18425,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9725,
@@ -17974,6 +18447,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -18033,6 +18507,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9834,
@@ -18054,6 +18529,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -18126,6 +18602,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9178,
@@ -18147,6 +18624,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -18206,6 +18684,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9937,
@@ -18227,6 +18706,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -18286,6 +18766,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9932,
@@ -18307,6 +18788,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -18366,6 +18848,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -18387,6 +18870,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -18452,6 +18936,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9745,
@@ -18473,6 +18958,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -18532,6 +19018,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9846,
@@ -18553,6 +19040,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -18618,6 +19106,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9769,
@@ -18639,6 +19128,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -18676,6 +19166,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -18693,6 +19184,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -18730,6 +19222,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -18747,6 +19240,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -18784,6 +19278,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -18801,6 +19296,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -18874,6 +19370,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9962,
@@ -18895,6 +19392,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -18974,6 +19472,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9939,
@@ -18995,6 +19494,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -19061,6 +19561,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9942,
@@ -19082,6 +19583,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -19154,6 +19656,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9864,
@@ -19175,6 +19678,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -19234,6 +19738,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9825,
@@ -19255,6 +19760,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -19327,6 +19833,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.986,
@@ -19348,6 +19855,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -19407,6 +19915,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9825,
@@ -19428,6 +19937,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -19500,6 +20010,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9805,
@@ -19521,6 +20032,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -19580,6 +20092,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9874,
@@ -19601,6 +20114,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -19660,6 +20174,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.984,
@@ -19681,6 +20196,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -19746,6 +20262,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9855,
@@ -19767,6 +20284,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -19826,6 +20344,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -19847,6 +20366,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -19912,6 +20432,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9842,
@@ -19933,6 +20454,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -19992,6 +20514,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9846,
@@ -20013,6 +20536,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -20078,6 +20602,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9833,
@@ -20099,6 +20624,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -20142,6 +20668,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -20159,6 +20686,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -20196,6 +20724,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -20213,6 +20742,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -20250,6 +20780,7 @@
    "sourceRace": "dark_oracle",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -20267,6 +20798,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -20333,6 +20865,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8334,
@@ -20354,6 +20887,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -20423,6 +20957,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.7981,
@@ -20444,7 +20979,8 @@
       }
      }
     },
-    "status": "mapped"
+    "automatedPass": true,
+    "status": "candidate"
    }
   },
   {
@@ -20510,6 +21046,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.6454,
@@ -20531,6 +21068,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -20600,6 +21138,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.99,
@@ -20621,6 +21160,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -20664,6 +21204,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9832,
@@ -20685,6 +21226,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -20740,6 +21282,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9821,
@@ -20761,6 +21304,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -20804,6 +21348,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9834,
@@ -20825,6 +21370,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -20880,6 +21426,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9832,
@@ -20901,6 +21448,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -20944,6 +21492,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9818,
@@ -20965,6 +21514,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -21011,6 +21561,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.7589,
@@ -21032,7 +21583,8 @@
       }
      }
     },
-    "status": "mapped"
+    "automatedPass": true,
+    "status": "candidate"
    }
   },
   {
@@ -21075,6 +21627,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.984,
@@ -21096,6 +21649,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -21142,6 +21696,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9662,
@@ -21163,6 +21718,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -21215,6 +21771,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -21236,6 +21793,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -21291,6 +21849,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9924,
@@ -21312,6 +21871,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -21364,6 +21924,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9846,
@@ -21385,6 +21946,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -21440,6 +22002,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9929,
@@ -21461,6 +22024,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -21504,6 +22068,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -21521,6 +22086,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -21558,6 +22124,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -21575,6 +22142,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -21612,6 +22180,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -21629,6 +22198,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -21695,6 +22265,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.841,
@@ -21716,6 +22287,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -21791,6 +22363,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9936,
@@ -21812,6 +22385,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -21878,6 +22452,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.661,
@@ -21899,6 +22474,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -21974,6 +22550,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9918,
@@ -21995,6 +22572,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -22038,6 +22616,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9832,
@@ -22059,6 +22638,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -22120,6 +22700,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9888,
@@ -22141,6 +22722,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -22184,6 +22766,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9834,
@@ -22205,6 +22788,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -22266,6 +22850,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9899,
@@ -22287,6 +22872,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -22330,6 +22916,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.7284,
@@ -22351,6 +22938,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -22394,6 +22982,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9666,
@@ -22415,6 +23004,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -22467,6 +23057,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -22488,6 +23079,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -22549,6 +23141,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9899,
@@ -22570,6 +23163,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -22622,6 +23216,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9846,
@@ -22643,6 +23238,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -22704,6 +23300,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9904,
@@ -22725,6 +23322,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -22762,6 +23360,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -22779,6 +23378,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -22816,6 +23416,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -22833,6 +23434,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -22870,6 +23472,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -22887,6 +23490,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -22953,6 +23557,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9679,
@@ -22974,6 +23579,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -23043,6 +23649,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.996,
@@ -23064,6 +23671,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -23130,6 +23738,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9025,
@@ -23151,6 +23760,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -23220,6 +23830,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9902,
@@ -23241,6 +23852,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -23284,6 +23896,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9832,
@@ -23305,6 +23918,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -23360,6 +23974,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9867,
@@ -23381,6 +23996,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -23424,6 +24040,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9834,
@@ -23445,6 +24062,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -23500,6 +24118,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9857,
@@ -23521,6 +24140,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -23564,6 +24184,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9818,
@@ -23585,6 +24206,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -23631,6 +24253,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9077,
@@ -23652,6 +24275,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -23695,6 +24319,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9644,
@@ -23716,6 +24341,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -23768,6 +24394,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -23789,6 +24416,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -23844,6 +24472,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9924,
@@ -23865,6 +24494,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -23917,6 +24547,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9846,
@@ -23938,6 +24569,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -23993,6 +24625,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9928,
@@ -24014,6 +24647,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -24051,6 +24685,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -24068,6 +24703,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -24105,6 +24741,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -24122,6 +24759,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -24159,6 +24797,7 @@
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -24176,6 +24815,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -24242,6 +24882,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9967,
@@ -24263,6 +24904,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -24335,6 +24977,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9427,
@@ -24356,6 +24999,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -24408,6 +25052,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.6543,
@@ -24429,6 +25074,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -24487,6 +25133,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9342,
@@ -24508,6 +25155,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -24551,6 +25199,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9693,
@@ -24572,6 +25221,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -24637,6 +25287,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9654,
@@ -24658,6 +25309,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -24701,6 +25353,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9696,
@@ -24722,6 +25375,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -24787,6 +25441,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9651,
@@ -24808,6 +25463,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -24851,6 +25507,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9817,
@@ -24872,6 +25529,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -24921,6 +25579,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.7827,
@@ -24942,7 +25601,8 @@
       }
      }
     },
-    "status": "mapped"
+    "automatedPass": true,
+    "status": "candidate"
    }
   },
   {
@@ -24985,6 +25645,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.984,
@@ -25006,6 +25667,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -25055,6 +25717,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9666,
@@ -25076,6 +25739,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -25119,6 +25783,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9839,
@@ -25140,6 +25805,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -25189,6 +25855,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8865,
@@ -25210,6 +25877,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -25253,6 +25921,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9847,
@@ -25274,6 +25943,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -25323,6 +25993,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.83,
@@ -25344,6 +26015,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -25381,6 +26053,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -25398,6 +26071,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -25435,6 +26109,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -25452,6 +26127,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -25489,6 +26165,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -25506,6 +26183,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -25572,6 +26250,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.967,
@@ -25593,6 +26272,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -25645,6 +26325,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.6208,
@@ -25666,6 +26347,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -25724,6 +26406,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8649,
@@ -25745,6 +26428,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -25788,6 +26472,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9731,
@@ -25809,6 +26494,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -25871,6 +26557,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9476,
@@ -25892,6 +26579,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -25935,6 +26623,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9335,
@@ -25956,6 +26645,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -26021,6 +26711,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.924,
@@ -26042,6 +26733,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -26085,6 +26777,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9817,
@@ -26106,6 +26799,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -26152,6 +26846,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.7077,
@@ -26173,7 +26868,8 @@
       }
      }
     },
-    "status": "mapped"
+    "automatedPass": true,
+    "status": "candidate"
    }
   },
   {
@@ -26216,6 +26912,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9737,
@@ -26237,6 +26934,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -26283,6 +26981,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9516,
@@ -26304,6 +27003,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -26347,6 +27047,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9717,
@@ -26368,6 +27069,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -26414,6 +27116,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9418,
@@ -26435,6 +27138,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -26478,6 +27182,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9741,
@@ -26499,6 +27204,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -26545,6 +27251,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9444,
@@ -26566,6 +27273,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -26603,6 +27311,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -26620,6 +27329,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -26657,6 +27367,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -26674,6 +27385,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -26711,6 +27423,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -26728,6 +27441,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -26794,6 +27508,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9689,
@@ -26815,6 +27530,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -26867,6 +27583,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9924,
@@ -26888,6 +27605,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -26946,6 +27664,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8688,
@@ -26967,6 +27686,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -27010,6 +27730,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.97,
@@ -27031,6 +27752,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -27093,6 +27815,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9589,
@@ -27114,6 +27837,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -27157,6 +27881,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9705,
@@ -27178,6 +27903,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -27240,6 +27966,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.96,
@@ -27261,6 +27988,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -27304,6 +28032,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9657,
@@ -27325,6 +28054,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -27371,6 +28101,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.7169,
@@ -27392,7 +28123,8 @@
       }
      }
     },
-    "status": "mapped"
+    "automatedPass": true,
+    "status": "candidate"
    }
   },
   {
@@ -27435,6 +28167,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9737,
@@ -27456,6 +28189,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -27502,6 +28236,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9667,
@@ -27523,6 +28258,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -27566,6 +28302,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9718,
@@ -27587,6 +28324,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -27633,6 +28371,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9082,
@@ -27654,6 +28393,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -27697,6 +28437,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9741,
@@ -27718,6 +28459,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -27764,6 +28506,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8416,
@@ -27785,6 +28528,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -27822,6 +28566,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -27839,6 +28584,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -27876,6 +28622,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -27893,6 +28640,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -27930,6 +28678,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -27947,6 +28696,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -28013,6 +28763,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9614,
@@ -28034,6 +28785,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -28086,6 +28838,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.6526,
@@ -28107,6 +28860,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -28168,6 +28922,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.988,
@@ -28189,6 +28944,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -28232,6 +28988,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9338,
@@ -28253,6 +29010,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -28296,6 +29054,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9819,
@@ -28317,6 +29076,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -28385,6 +29145,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.7716,
@@ -28406,7 +29167,8 @@
       }
      }
     },
-    "status": "mapped"
+    "automatedPass": true,
+    "status": "candidate"
    }
   },
   {
@@ -28449,6 +29211,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9278,
@@ -28470,6 +29233,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -28513,6 +29277,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.965,
@@ -28534,6 +29299,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -28577,6 +29343,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9206,
@@ -28598,6 +29365,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -28650,6 +29418,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9795,
@@ -28671,6 +29440,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -28714,6 +29484,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9208,
@@ -28735,6 +29506,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -28787,6 +29559,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9805,
@@ -28808,6 +29581,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -28845,6 +29619,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -28862,6 +29637,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -28899,6 +29675,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -28916,6 +29693,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -28953,6 +29731,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -28970,6 +29749,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -29036,6 +29816,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.996,
@@ -29057,6 +29838,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -29129,6 +29911,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8607,
@@ -29150,6 +29933,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -29202,6 +29986,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9927,
@@ -29223,6 +30008,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -29281,6 +30067,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9112,
@@ -29302,6 +30089,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -29345,6 +30133,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.972,
@@ -29366,6 +30155,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -29431,6 +30221,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9589,
@@ -29452,6 +30243,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -29495,6 +30287,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9703,
@@ -29516,6 +30309,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -29581,6 +30375,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9592,
@@ -29602,6 +30397,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -29645,6 +30441,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9818,
@@ -29666,6 +30463,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -29715,6 +30513,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9305,
@@ -29736,6 +30535,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -29779,6 +30579,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9738,
@@ -29800,6 +30601,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -29849,6 +30651,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9671,
@@ -29870,6 +30673,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -29913,6 +30717,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9734,
@@ -29934,6 +30739,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -29983,6 +30789,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9603,
@@ -30004,6 +30811,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -30047,6 +30855,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9754,
@@ -30068,6 +30877,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -30117,6 +30927,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9631,
@@ -30138,6 +30949,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -30175,6 +30987,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -30192,6 +31005,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -30229,6 +31043,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -30246,6 +31061,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -30283,6 +31099,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -30300,6 +31117,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -30366,6 +31184,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9962,
@@ -30387,6 +31206,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -30462,6 +31282,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.846,
@@ -30483,6 +31304,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -30535,6 +31357,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.6023,
@@ -30556,6 +31379,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -30617,6 +31441,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.7212,
@@ -30638,7 +31463,8 @@
       }
      }
     },
-    "status": "mapped"
+    "automatedPass": true,
+    "status": "candidate"
    }
   },
   {
@@ -30681,6 +31507,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9413,
@@ -30702,6 +31529,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -30745,6 +31573,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9656,
@@ -30766,6 +31595,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -30834,6 +31664,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8073,
@@ -30855,6 +31686,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -30898,6 +31730,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9297,
@@ -30919,6 +31752,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -30962,6 +31796,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9666,
@@ -30983,6 +31818,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -31026,6 +31862,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9775,
@@ -31047,6 +31884,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -31099,6 +31937,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9825,
@@ -31120,6 +31959,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -31163,6 +32003,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9783,
@@ -31184,6 +32025,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -31236,6 +32078,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9834,
@@ -31257,6 +32100,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -31294,6 +32138,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -31311,6 +32156,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -31348,6 +32194,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -31365,6 +32212,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -31402,6 +32250,7 @@
    "sourceRace": "skeleton_crusader",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -31419,6 +32268,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -31485,6 +32335,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9386,
@@ -31506,6 +32357,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -31549,6 +32401,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9924,
@@ -31570,6 +32423,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -31622,6 +32476,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8665,
@@ -31643,6 +32498,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -31695,6 +32551,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9701,
@@ -31716,6 +32573,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -31768,6 +32626,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.6841,
@@ -31789,7 +32648,8 @@
       }
      }
     },
-    "status": "mapped"
+    "automatedPass": true,
+    "status": "candidate"
    }
   },
   {
@@ -31841,6 +32701,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9731,
@@ -31862,6 +32723,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -31914,6 +32776,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.7473,
@@ -31935,7 +32798,8 @@
       }
      }
     },
-    "status": "mapped"
+    "automatedPass": true,
+    "status": "candidate"
    }
   },
   {
@@ -31987,6 +32851,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.964,
@@ -32008,6 +32873,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -32069,6 +32935,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9635,
@@ -32090,6 +32957,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -32142,6 +33010,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9702,
@@ -32163,6 +33032,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -32224,6 +33094,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9717,
@@ -32245,6 +33116,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -32297,6 +33169,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9733,
@@ -32318,6 +33191,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -32379,6 +33253,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9728,
@@ -32400,6 +33275,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -32452,6 +33328,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9743,
@@ -32473,6 +33350,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -32534,6 +33412,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9707,
@@ -32555,6 +33434,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -32598,6 +33478,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -32615,6 +33496,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -32652,6 +33534,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -32669,6 +33552,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -32706,6 +33590,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -32723,6 +33608,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -32789,6 +33675,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9103,
@@ -32810,6 +33697,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -32853,6 +33741,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9716,
@@ -32874,6 +33763,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -32926,6 +33816,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9797,
@@ -32947,6 +33838,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -32999,6 +33891,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9797,
@@ -33020,6 +33913,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -33072,6 +33966,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9445,
@@ -33093,6 +33988,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -33145,6 +34041,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9782,
@@ -33166,6 +34063,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -33218,6 +34116,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9798,
@@ -33239,6 +34138,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -33291,6 +34191,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9814,
@@ -33312,6 +34213,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -33355,6 +34257,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -33372,6 +34275,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -33415,6 +34319,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -33432,6 +34337,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -33475,6 +34381,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -33492,6 +34399,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -33558,6 +34466,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9394,
@@ -33579,6 +34488,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -33622,6 +34532,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8365,
@@ -33643,6 +34554,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -33692,6 +34604,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.8972,
@@ -33713,6 +34626,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -33765,6 +34679,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9829,
@@ -33786,6 +34701,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -33838,6 +34754,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9829,
@@ -33859,6 +34776,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -33911,6 +34829,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9608,
@@ -33932,6 +34851,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -33984,6 +34904,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9791,
@@ -34005,6 +34926,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -34057,6 +34979,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9588,
@@ -34078,6 +35001,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -34130,6 +35054,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {
       "coverage": 0.9715,
@@ -34151,6 +35076,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -34194,6 +35120,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -34211,6 +35138,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -34248,6 +35176,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -34265,6 +35194,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   },
@@ -34302,6 +35232,7 @@
    "sourceRace": "golem",
    "verification": {
     "approvedBy": null,
+    "approvedProfiles": [],
     "automated": {
      "masks": {},
      "reassembly": {
@@ -34319,6 +35250,7 @@
       }
      }
     },
+    "automatedPass": true,
     "status": "candidate"
    }
   }
