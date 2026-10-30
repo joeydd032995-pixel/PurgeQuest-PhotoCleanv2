@@ -1,6 +1,7 @@
 import Testing
 import Foundation
 import SwiftData
+import UIKit
 @testable import PurgeQuest
 
 /// Needs the app bundle (the unit tests are app-hosted): every resource the manifests reference must ship,
