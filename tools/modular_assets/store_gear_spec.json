@@ -3,7 +3,7 @@
  "headpieceNominal": {
   "width": 380.0,
   "anchorU": 260.0,
-  "anchorV": 330.0
+  "anchorV": 400.0
  },
  "items": [
   {
@@ -123,7 +123,7 @@
    "resource": "store_head_starhat",
    "imageSize": [
     520,
-    400
+    640
    ]
   },
   {
@@ -133,7 +133,7 @@
    "resource": "store_head_hood",
    "imageSize": [
     520,
-    400
+    640
    ]
   },
   {
@@ -143,7 +143,7 @@
    "resource": "store_head_dragoncrest",
    "imageSize": [
     520,
-    400
+    640
    ]
   }
  ]

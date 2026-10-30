@@ -110,9 +110,9 @@ Grip, hold, scale, rotation, layering and profile overrides are recorded per ite
 | `weapon.fireworkBlade` | Firework Blade | sword | primary, secondary | 27 | candidate |
 | `shield.crux` | Azure Aegis | shield | emissive, primary, secondary | 27 | candidate |
 | `shield.templar` | Templar Bulwark | shield | emissive, primary, secondary | 27 | candidate |
-| `head.starhat` | Starlit Cap | headpiece | emissive, primary, secondary | 27 | candidate |
+| `head.starhat` | Starlit Cap | headpiece | primary, secondary | 27 | candidate |
 | `head.hood` | Shadow Hood | headpiece | leather, primary, secondary, trim | 27 | candidate |
-| `head.dragoncrest` | Dragoncrest Helm | headpiece | emissive, primary | 27 | candidate |
+| `head.dragoncrest` | Dragoncrest Helm | headpiece | primary, secondary, trim | 27 | candidate |
 
 ## Open gates (cannot be closed from an automated session)
 

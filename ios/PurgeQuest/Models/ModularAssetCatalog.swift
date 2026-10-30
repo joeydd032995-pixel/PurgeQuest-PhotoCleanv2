@@ -66,17 +66,19 @@ nonisolated struct HeldGearEntry: Codable, Equatable, Sendable, Identifiable {
     let gripPx: [Double]
     let scale: Double
     let rotationDegrees: Double
-    /// front (drawn last) or aboveFace (headpieces).
+    /// front (drawn last) or overHead (headpieces: on the bare head, under the face overlay).
     let layer: String
     let supportedPacks: [String]
     let maskResources: [String: String]
     let regionLuma: [String: Double]
     let stringAnchors: StringAnchors?
+    /// Opaque pixel bounds [x0, y0, x1, y1] in image pixels (headpieces use it so empty margins don't enlarge the canvas).
+    let contentBox: [Double]?
     let verification: AssetVerificationRecord
 
     private enum CodingKeys: String, CodingKey {
         case id, name, kind, slot, resourceName, group, imageWidth, imageHeight, gripPx, scale
-        case rotationDegrees, layer, supportedPacks, maskResources, regionLuma, stringAnchors, verification
+        case rotationDegrees, layer, supportedPacks, maskResources, regionLuma, stringAnchors, contentBox, verification
     }
 
     init(from decoder: Decoder) throws {
@@ -97,6 +99,7 @@ nonisolated struct HeldGearEntry: Codable, Equatable, Sendable, Identifiable {
         maskResources = (try? c.decodeIfPresent([String: String].self, forKey: .maskResources)) ?? [:]
         regionLuma = (try? c.decodeIfPresent([String: Double].self, forKey: .regionLuma)) ?? [:]
         stringAnchors = try? c.decodeIfPresent(StringAnchors.self, forKey: .stringAnchors)
+        contentBox = try? c.decodeIfPresent([Double].self, forKey: .contentBox)
         verification = (try? c.decodeIfPresent(AssetVerificationRecord.self, forKey: .verification)) ?? .init(status: .mapped)
     }
 }

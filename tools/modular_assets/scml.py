@@ -249,7 +249,8 @@ def render_frame(doc: Doc, race_dir: str, variant: int, animation: str, frame_in
                  weapon_scale: float = 1.0, hide: Iterable[str] = (),
                  weapon_image: Optional[Image.Image] = None, weapon_fit: Optional[dict] = None,
                  shield_image: Optional[Image.Image] = None, shield_fit: Optional[dict] = None,
-                 head_overlay: Optional[tuple] = None, canvas: Optional[tuple] = None, background=(0, 0, 0, 0)) -> Image.Image:
+                 head_overlay: Optional[tuple] = None, head_image: Optional[Image.Image] = None,
+                 canvas: Optional[tuple] = None, background=(0, 0, 0, 0)) -> Image.Image:
     """Render one frame. `provider(placement)` may return replacement layer images
     (same pixel size as the original part) drawn at the part's placement in order."""
     frames = doc.animations[animation]
@@ -279,18 +280,18 @@ def render_frame(doc: Doc, race_dir: str, variant: int, animation: str, frame_in
             if not path.exists():
                 continue
             layers = [load_png(path)]
+        if stem == "head" and head_image is not None:
+            layers = [head_image]            # the bare head replaces the baked helmet/hair under a headpiece
         for item in layers:
             img, sx, sy = item if isinstance(item, tuple) else (item, 1.0, 1.0)
             _draw(canvas, img, p, origin, size[1], scale, sx=sx, sy=sy)
-    if head_overlay is not None:
-        img, fit = head_overlay        # fit: cx, baseY, widthPx (head px), nominal: width, anchorU, anchorV, headPngSize
-        head = next((p for p in placements if p.file.stem == "head"), None)
-        if head is not None:
+        if stem == "head" and head_overlay is not None:
+            himg, fit = head_overlay           # fit: cx, baseY, widthPx (head px) + nominal width/anchorU/anchorV + headPngSize
             k = fit["widthPx"] / fit["nominalWidth"]
-            f = head.file.width / fit["headPngSize"][0]
-            left = (fit["cx"] - k * fit["anchorU"]) * f - head.pivot_x * head.file.width
-            top = (fit["baseY"] - k * fit["anchorV"]) * f - (1 - head.pivot_y) * head.file.height
-            _draw(canvas, img, head, origin, size[1], scale, rect=(left, top, img.size[0] * k * f, img.size[1] * k * f))
+            f = p.file.width / fit["headPngSize"][0]
+            left = (fit["cx"] - k * fit["anchorU"]) * f - p.pivot_x * p.file.width
+            top = (fit["baseY"] - k * fit["anchorV"]) * f - (1 - p.pivot_y) * p.file.height
+            _draw(canvas, himg, p, origin, size[1], scale, rect=(left, top, himg.size[0] * k * f, himg.size[1] * k * f))
     if swapped_weapon and weapon_anchor is not None:
         fit = weapon_fit or {}
         s = fit.get("scale", 1.0) * weapon_scale

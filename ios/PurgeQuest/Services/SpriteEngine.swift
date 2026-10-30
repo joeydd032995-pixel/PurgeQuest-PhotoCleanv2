@@ -605,12 +605,25 @@ final class SpriteRenderer {
                       width: s * item.imageSize.width, height: s * item.imageSize.height)
     }
 
-    private func headRect(_ item: ResolvedItem, head: SpritePlacement, fit: HeadFit, nominal: HeadpieceNominal) -> CGRect {
+    /// Pivot-relative rect of a headpiece on a pack's head. `tight` limits it to the art's opaque bounds
+    /// (used for canvas growth so transparent margins never enlarge the frame).
+    private func headRect(_ item: ResolvedItem, head: SpritePlacement, fit: HeadFit, nominal: HeadpieceNominal, tight: Bool = false) -> CGRect {
         let k = CGFloat(fit.widthPx / nominal.width)
         let f = head.file.width / CGFloat(fit.headPngSize.first ?? Double(head.file.width))
         let left = (CGFloat(fit.cx) - k * CGFloat(nominal.anchorU)) * f - head.pivotX * head.file.width
         let top = (CGFloat(fit.baseY) - k * CGFloat(nominal.anchorV)) * f - (1 - head.pivotY) * head.file.height
+        if tight, let box = item.entry?.contentBox, box.count == 4 {
+            return CGRect(x: left + CGFloat(box[0]) * k * f, y: top + CGFloat(box[1]) * k * f,
+                          width: CGFloat(box[2] - box[0] + 1) * k * f, height: CGFloat(box[3] - box[1] + 1) * k * f)
+        }
         return CGRect(x: left, y: top, width: item.imageSize.width * k * f, height: item.imageSize.height * k * f)
+    }
+
+    /// The race's bare head (anatomy layer, or the original head when it is already skin/bone/stone), skin-tinted.
+    private func bareHead(pack: String, appearance: HeroAppearance) -> UIImage? {
+        guard let layer = catalog.parts(forPack: pack).first(where: { $0.part == "head" && $0.kind == "anatomy" }),
+              let image = image(base: layer.resourceBaseName) else { return nil }
+        return hueRotated(image, shift: appearance.skinHueShift)
     }
 
     /// World-space (y-up) bounds of a pivot-relative, y-down rect on a placement.
@@ -663,7 +676,7 @@ final class SpriteRenderer {
                 }
                 if let item = resolved.head, let fit = anchors?.headFit, let nominal,
                    let head = frame.first(where: { $0.file.name.lowercased().hasPrefix("head") }) {
-                    include(worldBounds(of: headRect(item, head: head, fit: fit, nominal: nominal), placement: head))
+                    include(worldBounds(of: headRect(item, head: head, fit: fit, nominal: nominal, tight: true), placement: head))
                 }
             }
         }
@@ -763,6 +776,14 @@ final class SpriteRenderer {
         let drawDoc = (extent.origin == doc.origin && extent.size == doc.canvasSize)
             ? doc : SpriterDocument(animations: doc.animations, canvasSize: extent.size, origin: extent.origin)
 
+        let headpiece: (bare: UIImage, image: UIImage, item: ResolvedItem, fit: HeadFit, nominal: HeadpieceNominal)? = {
+            guard let item = resolved.head, let entry = item.entry, let nominal = catalog.gear?.headpieceNominal,
+                  let fit = catalog.anchors(pack: pack)?.headFit, let bare = bareHead(pack: pack, appearance: appearance),
+                  let art = maskedImage(resource: entry.resourceName, maskResources: entry.maskResources,
+                                        regionLuma: entry.regionLuma, colors: resolved.gearMaterials) else { return nil }
+            return (bare, art, item, fit, nominal)
+        }()
+
         let format = UIGraphicsImageRendererFormat()
         format.scale = 0.5
         format.opaque = false
@@ -777,6 +798,13 @@ final class SpriteRenderer {
                 if resolved.shield != nil && fileName.hasPrefix("shield") { continue }
                 if fileName.hasPrefix("slashfx") { continue }
                 let stem = (fileName as NSString).deletingPathExtension.replacingOccurrences(of: " ", with: "_")
+                // A headpiece sits on the bare head, not on top of the baked helmet/hair, and under the face overlay.
+                if stem == "head", let hat = headpiece {
+                    draw(hat.bare, for: placement, doc: drawDoc, in: cg)
+                    drawRelative(hat.image, placement: placement, rect: headRect(hat.item, head: placement, fit: hat.fit, nominal: hat.nominal),
+                                 doc: drawDoc, in: cg)
+                    continue
+                }
                 if let layers = modular?[stem] {
                     for layer in layers {
                         if let img = maskedImage(resource: layer.resourceBaseName, maskResources: layer.maskResources,
@@ -788,13 +816,6 @@ final class SpriteRenderer {
                 }
                 guard let part = processedPart(race: race, variant: clampedVariant, fileDef: placement.file, appearance: appearance) else { continue }
                 draw(part, for: placement, doc: drawDoc, in: cg)
-            }
-
-            if let head = resolved.head, let entry = head.entry, let nominal = catalog.gear?.headpieceNominal,
-               let fit = catalog.anchors(pack: pack)?.headFit,
-               let anchor = placements.first(where: { $0.file.name.lowercased().hasPrefix("head") }),
-               let img = maskedImage(resource: entry.resourceName, maskResources: entry.maskResources, regionLuma: entry.regionLuma, colors: resolved.gearMaterials) {
-                drawRelative(img, placement: anchor, rect: headRect(head, head: anchor, fit: fit, nominal: nominal), doc: drawDoc, in: cg)
             }
 
             if let weapon = resolved.weapon, let anchor = weaponAnchor(placements) {

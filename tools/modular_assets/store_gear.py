@@ -2,7 +2,7 @@
 
 Weapons are 400x128 (hilt left, blade right, centre line y=64, same convention as the race
 swords so the standard anchor/grip model applies). Shields are 160x160. Headpieces are
-520x400 overlays with their brim/base line at y=330 and dome width 380 at that line; the
+520x640 overlays with their brim/base line at y=400 and dome width 380 at that line; the
 per-pack head fit (held_gear.py) positions and scales them on each race's head.
 
 Catalog IDs, prices and unlock rules live in GameDataService and are untouched; this file
@@ -232,42 +232,185 @@ def templar_bulwark() -> Image.Image:
     return c.finish(outline=5)
 
 
-# ------------------------------------------------------------------ headpieces (520x400, base line y=330, dome width 380)
+# ------------------------------------------------------------------ headpieces
+# 520x640 overlays. The brim/brow line is y=400 and the dome is 380 wide there; the head fit scales that to each
+# race's *bare* head (anatomy layer), so cheek guards and hood drapes reach the jaw instead of floating.
+
+HP_W, HP_H, HP_BASE = 520, 640, 400
+
+
+def catmull(pts, closed=True, n=14):
+    P = np.array(pts, float)
+    ext = np.vstack([P[-1], P, P[0], P[1]]) if closed else np.vstack([P[0], P, P[-1]])
+    last = len(P) + 1 if closed else len(P)
+    out = []
+    for i in range(1, last):
+        p0, p1, p2, p3 = ext[i - 1], ext[i], ext[i + 1], ext[i + 2]
+        for t in np.linspace(0, 1, n, endpoint=False):
+            out.append(0.5 * ((2 * p1) + (-p0 + p2) * t + (2 * p0 - 5 * p1 + 4 * p2 - p3) * t * t + (-p0 + 3 * p1 - 3 * p2 + p3) * t ** 3))
+    if not closed:
+        out.append(P[-1])
+    return [tuple(p) for p in out]
+
+
+def mix(c0, c1, t):
+    return tuple(int(round(a + (b - a) * t)) for a, b in zip(c0, c1))
+
+
+class Art(Canvas):
+    """Canvas with smooth shapes, gradients, clipped strokes and soft highlights."""
+
+    def mask(self, pts) -> Image.Image:
+        m = Image.new("L", self.img.size, 0)
+        ImageDraw.Draw(m).polygon(self._p(pts), fill=255)
+        return m
+
+    def gradient(self, mask: Image.Image, top: str, bottom: str, side: float = 0.0):
+        """Vertical gradient (optionally shaded darker toward the right by `side`) clipped to `mask`."""
+        x0, y0, x1, y1 = mask.getbbox()
+        h, w = y1 - y0, x1 - x0
+        c0, c1 = np.array(rgb(top)[:3], float), np.array(rgb(bottom)[:3], float)
+        t = np.linspace(0, 1, max(h, 1))[:, None, None]
+        arr = c0 * (1 - t) + c1 * t
+        arr = np.broadcast_to(arr, (h, w, 3)).copy()
+        if side:
+            arr = np.clip(arr * (1 - side * np.linspace(0, 1, w))[None, :, None], 0, 255)
+        tile = np.concatenate([arr, np.full((h, w, 1), 255.0)], axis=-1).astype(np.uint8)
+        layer = Image.new("RGBA", self.img.size, (0, 0, 0, 0))
+        layer.paste(Image.fromarray(tile, "RGBA"), (x0, y0))
+        a = np.asarray(layer)[..., 3] * (np.asarray(mask) / 255.0)
+        out = np.asarray(layer).copy()
+        out[..., 3] = a.astype(np.uint8)
+        self.img.alpha_composite(Image.fromarray(out, "RGBA"))
+
+    def fill(self, pts, top, bottom=None, side=0.0):
+        m = self.mask(pts)
+        self.gradient(m, top, bottom or top, side)
+        return m
+
+    def stroke(self, pts, color, width, clip=None):
+        layer = Image.new("RGBA", self.img.size, (0, 0, 0, 0))
+        ImageDraw.Draw(layer).line(self._p(pts), fill=rgb(color) if isinstance(color, str) else color, width=int(width * SS), joint="curve")
+        self._clip_composite(layer, clip)
+
+    def arcs(self, boxes, color, width, clip=None):
+        layer = Image.new("RGBA", self.img.size, (0, 0, 0, 0))
+        d = ImageDraw.Draw(layer)
+        for (cx, cy, r) in boxes:
+            d.arc([(cx - r) * SS, (cy - r) * SS, (cx + r) * SS, (cy + r) * SS], 20, 160, fill=rgb(color), width=int(width * SS))
+        self._clip_composite(layer, clip)
+
+    def glow(self, cx, cy, rx, ry, color=(255, 255, 255), alpha=0.35, clip=None, blur=14):
+        from PIL import ImageFilter
+        layer = Image.new("RGBA", self.img.size, color + (0,))
+        m = Image.new("L", self.img.size, 0)
+        ImageDraw.Draw(m).ellipse([(cx - rx) * SS, (cy - ry) * SS, (cx + rx) * SS, (cy + ry) * SS], fill=int(255 * alpha))
+        m = m.filter(ImageFilter.GaussianBlur(blur * SS))
+        layer.putalpha(m)
+        self._clip_composite(layer, clip)
+
+    def _clip_composite(self, layer, clip):
+        if clip is not None:
+            a = np.asarray(layer).copy()
+            a[..., 3] = (a[..., 3] * (np.asarray(clip) / 255.0)).astype(np.uint8)
+            layer = Image.fromarray(a, "RGBA")
+        self.img.alpha_composite(layer)
+
+    def cut(self, pts):
+        m = self.mask(pts)
+        a = np.asarray(self.img).copy()
+        a[np.asarray(m) > 0] = 0
+        self.img = Image.fromarray(a, "RGBA")
+        self.d = ImageDraw.Draw(self.img)
+
 
 def starlit_cap() -> Image.Image:
-    c = Canvas(520, 400)
-    c.poly([(80, 330), (440, 330), (400, 190), (330, 90), (270, 30), (300, 120), (200, 110), (125, 215)], "#3b3f8f")
-    c.poly([(200, 110), (300, 120), (330, 90), (270, 30), (250, 90)], "#5a5fc4")
-    c.ellipse(260, 330, 235, 38, "#2c2f6e")
-    c.ellipse(260, 322, 235, 30, "#4046a6")
-    c.rect(95, 300, 425, 330, "#d9b44f")
-    c.star(250, 205, 46, "#ffe27a")
-    c.star(250, 205, 24, "#fff4c4")
-    c.star(340, 150, 14, "#ffe27a")
-    c.star(165, 250, 11, "#ffe27a")
-    return c.finish(outline=6)
+    c = Art(HP_W, HP_H)
+    # brim: dark underside then lit top, snug (1.24x the dome) so the hat reads as a cap, not a parasol
+    c.ellipse(260, 410, 236, 44, "#1d2160")
+    c.ellipse(260, 402, 236, 40, "#3b429a")
+    c.glow(190, 392, 120, 12, alpha=0.30, blur=8)
+    cone = catmull([(84, 398), (96, 330), (130, 250), (178, 170), (235, 104), (298, 58), (360, 40), (385, 52), (372, 86),
+                    (338, 126), (330, 190), (368, 270), (418, 340), (438, 398), (350, 412), (170, 412)])
+    m = c.fill(cone, "#5560c8", "#262c78", side=0.25)
+    c.glow(190, 230, 70, 120, alpha=0.30, clip=m, blur=22)
+    # soft crumple folds
+    c.stroke(catmull([(150, 360), (180, 300), (232, 220), (290, 130)], closed=False), "#20266e", 4, clip=m)
+    c.stroke(catmull([(330, 380), (320, 300), (338, 220), (362, 130)], closed=False), "#20266e", 4, clip=m)
+    # gold band + buckle
+    band = catmull([(90, 352), (170, 338), (260, 334), (350, 338), (430, 352), (436, 398), (350, 384), (260, 381), (170, 384), (88, 398)], n=10)
+    bm = c.fill(band, "#f1cf6b", "#b88a2a")
+    c.glow(200, 350, 90, 6, alpha=0.5, clip=bm, blur=4)
+    c.rect(244, 346, 276, 384, "#8a6420")
+    c.rect(250, 352, 270, 378, "#f4dc86")
+    c.rect(256, 360, 264, 370, "#8a6420")
+    # stars
+    c.star(240, 240, 46, "#ffe58a")
+    c.star(240, 240, 26, "#fff7d2")
+    for x, y, r in ((330, 168, 17), (160, 296, 15), (318, 290, 13), (205, 150, 10)):
+        c.star(x, y, r, "#ffe58a")
+    return c.finish(outline=5.5)
 
 
 def shadow_hood() -> Image.Image:
-    c = Canvas(520, 400)
-    c.poly([(40, 392), (60, 200), (120, 70), (260, 14), (400, 70), (460, 200), (480, 392), (400, 330), (260, 360), (120, 330)], "#262a3e")
-    c.poly([(120, 70), (260, 14), (400, 70), (330, 90), (200, 90)], "#3a4060")
-    c.ellipse(260, 245, 150, 135, "#12141f")
-    c.hole("ellipse", 260, 250, 128, 118)
-    return c.finish(outline=6)
+    c = Art(HP_W, HP_H)
+    outer = catmull([(292, 46), (338, 104), (412, 150), (474, 250), (500, 400), (514, 530), (496, 600), (440, 630), (390, 616),
+                     (330, 636), (260, 620), (190, 636), (130, 616), (80, 630), (24, 600), (6, 530), (20, 400), (48, 250),
+                     (108, 150), (200, 104), (256, 82)], n=12)
+    m = c.fill(outer, "#454d7c", "#1b1f38", side=0.30)
+    c.glow(150, 200, 110, 150, alpha=0.32, clip=m, blur=30)
+    # hanging cloth folds
+    for pts in ([(70, 300), (52, 420), (60, 520), (46, 610)], [(448, 300), (468, 420), (456, 520), (472, 610)],
+                [(120, 200), (88, 300), (84, 380)], [(404, 200), (436, 300), (440, 380)]):
+        c.stroke(catmull(pts, closed=False), "#12142a", 4.5, clip=m)
+    opening = catmull([(260, 298), (336, 314), (392, 366), (412, 450), (396, 540), (332, 590), (260, 604), (188, 590), (124, 540),
+                       (108, 450), (128, 366), (184, 314)], n=12)
+    # darker inner lining around the opening, then the opening itself is cut so the face shows through
+    lining = catmull([(260, 268), (350, 288), (418, 350), (442, 450), (424, 556), (346, 622), (260, 636), (174, 622), (96, 556),
+                      (78, 450), (102, 350), (170, 288)], n=12)
+    lm = c.mask(lining)
+    inner = Image.fromarray(np.asarray(lm) * (np.asarray(m) > 0), "L")
+    c.gradient(inner, "#2a2f55", "#0c0d19")
+    c.stroke(lining + [lining[0]], "#0b0c18", 3.5, clip=m)
+    c.cut(opening)
+    return c.finish(outline=5.5)
 
 
 def dragoncrest_helm() -> Image.Image:
-    c = Canvas(520, 400)
-    c.poly([(90, 340), (80, 210), (130, 100), (260, 50), (390, 100), (440, 210), (430, 340), (350, 380), (170, 380)], "#d1a33e")
-    c.poly([(130, 100), (260, 50), (390, 100), (330, 120), (190, 120)], "#f0d27a")
-    c.poly([(230, 60), (260, -10 + 12), (330, 50), (300, 120), (250, 100)], "#b3283b")   # crest fin
-    c.poly([(262, 22), (330, 50), (300, 120), (270, 90)], "#d9455a")
-    c.rect(95, 215, 425, 250, "#8a6a22")
-    for x in range(120, 420, 45):
-        c.ellipse(x, 232, 6, 6, "#f0d27a")
-    c.hole("ellipse", 260, 300, 118, 100)
-    return c.finish(outline=6)
+    c = Art(HP_W, HP_H)
+    # crest first (behind the dome): swept crimson fin
+    fin = catmull([(232, 150), (218, 96), (232, 48), (262, 22), (276, 62), (304, 40), (330, 70), (318, 150)], n=12)
+    fm = c.fill(fin, "#ec5a70", "#8a1c33", side=0.2)
+    c.stroke(catmull([(262, 40), (258, 90), (262, 140)], closed=False), "#6a1126", 4, clip=fm)
+    c.stroke(catmull([(300, 62), (296, 100), (298, 142)], closed=False), "#6a1126", 3, clip=fm)
+    dome = catmull([(78, 400), (68, 330), (92, 236), (146, 168), (214, 134), (260, 128), (306, 134), (374, 168), (428, 236), (452, 330),
+                    (442, 400), (350, 408), (170, 408)], n=12)
+    dm = c.fill(dome, "#f6dc83", "#a87a26", side=0.28)
+    # dragon-scale rows
+    boxes = []
+    for r in range(5):
+        y = 170 + r * 36
+        for x in range(60 + (18 if r % 2 else 0), 470, 36):
+            boxes.append((x, y, 18))
+    c.arcs(boxes, "#9b6e22", 3, clip=dm)
+    c.glow(190, 210, 100, 56, alpha=0.40, clip=dm, blur=16)
+    # brow band with rivets and a nasal guard
+    band = catmull([(70, 330), (146, 296), (260, 284), (374, 296), (450, 330), (448, 380), (374, 344), (260, 334), (146, 344), (72, 380)], n=10)
+    bm = c.fill(band, "#d4a53a", "#8a6420")
+    c.glow(220, 318, 120, 8, alpha=0.45, clip=bm, blur=5)
+    for x, y in ((120, 330), (190, 316), (260, 312), (330, 316), (400, 330)):
+        c.ellipse(x, y, 6, 6, "#f6dc83")
+    c.poly([(244, 336), (276, 336), (270, 456), (260, 474), (250, 456)], "#c79a35")
+    c.poly([(250, 340), (262, 340), (260, 452), (254, 450)], "#f2d779")
+    # cheek guards frame an open face
+    for sx in (1, -1):
+        def X(x):
+            return 260 + sx * (x - 260) if sx == 1 else 260 - (x - 260)
+        guard = catmull([(X(74), 372), (X(150), 346), (X(160), 420), (X(178), 500), (X(160), 552), (X(112), 540), (X(80), 470)], n=10)
+        gm = c.fill(guard, "#e7c261", "#946b24", side=0.2 * sx)
+        c.stroke(catmull([(X(100), 400), (X(128), 450), (X(138), 520)], closed=False), "#8a6420", 3, clip=gm)
+        c.ellipse(X(112), 392, 6, 6, "#f6dc83")
+    return c.finish(outline=5.5)
 
 
 ITEMS = [
@@ -288,7 +431,7 @@ ITEMS = [
     ("head.dragoncrest", "Dragoncrest Helm", "headpiece", "store_head_dragoncrest", dragoncrest_helm),
 ]
 
-HEADPIECE_NOMINAL = {"width": 380.0, "anchorU": 260.0, "anchorV": 330.0}
+HEADPIECE_NOMINAL = {"width": 380.0, "anchorU": 260.0, "anchorV": 400.0}
 
 
 def main() -> None:

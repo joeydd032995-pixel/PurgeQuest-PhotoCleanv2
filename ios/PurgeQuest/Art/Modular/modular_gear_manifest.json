@@ -1,7 +1,7 @@
 {
  "headpieceNominal": {
   "anchorU": 260.0,
-  "anchorV": 330.0,
+  "anchorV": 400.0,
   "width": 380.0
  },
  "items": [
@@ -8215,27 +8215,31 @@
    }
   },
   {
+   "contentBox": [
+    18,
+    34,
+    501,
+    459
+   ],
    "gripPx": [
     260.0,
-    330.0
+    400.0
    ],
    "group": "headpiece",
    "id": "head.starhat",
-   "imageHeight": 400,
+   "imageHeight": 640,
    "imageWidth": 520,
    "kind": "headpiece",
-   "layer": "aboveFace",
+   "layer": "overHead",
    "maskResources": {
-    "emissive": "store_head_starhat_mask_emissive",
     "primary": "store_head_starhat_mask_primary",
     "secondary": "store_head_starhat_mask_secondary"
    },
    "name": "Starlit Cap",
    "profileOverrides": {},
    "regionLuma": {
-    "emissive": 0.7468,
-    "primary": 0.2868,
-    "secondary": 0.2052
+    "primary": 0.2998,
+    "secondary": 0.726
    },
    "resourceName": "store_head_starhat",
    "rotationDegrees": 0.0,
@@ -8275,15 +8279,15 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      19,
-      24,
+      18,
+      34,
       501,
-      374
+      459
      ],
      "canvasGrowth": {
       "1x": [
-       1.282,
-       1.249
+       1.313,
+       1.25
       ]
      },
      "gripOnItem": true,
@@ -8294,16 +8298,22 @@
    }
   },
   {
+   "contentBox": [
+    0,
+    40,
+    519,
+    639
+   ],
    "gripPx": [
     260.0,
-    330.0
+    400.0
    ],
    "group": "headpiece",
    "id": "head.hood",
-   "imageHeight": 400,
+   "imageHeight": 640,
    "imageWidth": 520,
    "kind": "headpiece",
-   "layer": "aboveFace",
+   "layer": "overHead",
    "maskResources": {
     "leather": "store_head_hood_mask_leather",
     "primary": "store_head_hood_mask_primary",
@@ -8313,10 +8323,10 @@
    "name": "Shadow Hood",
    "profileOverrides": {},
    "regionLuma": {
-    "leather": 0.1942,
-    "primary": 0.1619,
-    "secondary": 0.1377,
-    "trim": 0.1274
+    "leather": 0.1733,
+    "primary": 0.2203,
+    "secondary": 0.2146,
+    "trim": 0.2368
    },
    "resourceName": "store_head_hood",
    "rotationDegrees": 0.0,
@@ -8356,15 +8366,15 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      34,
-      8,
-      486,
-      398
+      0,
+      40,
+      519,
+      639
      ],
      "canvasGrowth": {
       "1x": [
-       1.282,
-       1.249
+       1.33,
+       1.306
       ]
      },
      "gripOnItem": true,
@@ -8375,25 +8385,33 @@
    }
   },
   {
+   "contentBox": [
+    56,
+    16,
+    463,
+    560
+   ],
    "gripPx": [
     260.0,
-    330.0
+    400.0
    ],
    "group": "headpiece",
    "id": "head.dragoncrest",
-   "imageHeight": 400,
+   "imageHeight": 640,
    "imageWidth": 520,
    "kind": "headpiece",
-   "layer": "aboveFace",
+   "layer": "overHead",
    "maskResources": {
-    "emissive": "store_head_dragoncrest_mask_emissive",
-    "primary": "store_head_dragoncrest_mask_primary"
+    "primary": "store_head_dragoncrest_mask_primary",
+    "secondary": "store_head_dragoncrest_mask_secondary",
+    "trim": "store_head_dragoncrest_mask_trim"
    },
    "name": "Dragoncrest Helm",
    "profileOverrides": {},
    "regionLuma": {
-    "emissive": 0.6466,
-    "primary": 0.397
+    "primary": 0.5854,
+    "secondary": 0.6398,
+    "trim": 0.3559
    },
    "resourceName": "store_head_dragoncrest",
    "rotationDegrees": 0.0,
@@ -8433,15 +8451,15 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      74,
-      0,
-      446,
-      386
+      56,
+      16,
+      463,
+      560
      ],
      "canvasGrowth": {
       "1x": [
-       1.282,
-       1.249
+       1.285,
+       1.235
       ]
      },
      "gripOnItem": true,

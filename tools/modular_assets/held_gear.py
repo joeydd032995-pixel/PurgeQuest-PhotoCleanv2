@@ -235,6 +235,13 @@ def arrow_nock(pid: str) -> list:
     return [float(x0), (y0 + y1) / 2]
 
 
+def bare_head(race: str, variant: int) -> Image.Image:
+    """The race's bare-head layer (anatomy), or the original head when the head is already skin/bone/stone."""
+    pid = scml.pack_id(race, variant)
+    anat = OUT / race / f"v{variant}" / f"{pid}_head_anatomy.png"
+    return Image.open(anat if anat.exists() else scml.pack_dir(race, variant) / f"{pid}_head.png").convert("RGBA")
+
+
 def head_fit(race: str, variant: int) -> dict:
     """Where a headpiece sits on this pack's head, in head-PNG pixels: centre, brim line, and width."""
     pid = scml.pack_id(race, variant)
@@ -247,7 +254,7 @@ def head_fit(race: str, variant: int) -> dict:
             "headPngSize": list(orig.size), "headBox": [x0, y0, x1, y1]}
 
 
-def headpiece_canvas(doc: scml.Doc, fit: dict, nom: dict, img_size, pad: float = 20.0):
+def headpiece_canvas(doc: scml.Doc, fit: dict, nom: dict, img_size, bbox=None, pad: float = 20.0):
     """Canvas size when a headpiece overlay is added to every frame's head placement."""
     base_o, base_s = doc.canvas(1.0)
     min_x, min_y = base_o[0] + pad, base_o[1] + pad
@@ -261,9 +268,11 @@ def headpiece_canvas(doc: scml.Doc, fit: dict, nom: dict, img_size, pad: float =
             f = head.file.width / fit["headPngSize"][0]
             left = (fit["cx"] - k * nom["anchorU"]) * f - head.pivot_x * head.file.width
             top = (fit["baseY"] - k * nom["anchorV"]) * f - (1 - head.pivot_y) * head.file.height
-            w, h = img_size[0] * k * f, img_size[1] * k * f
+            bx0, by0, bx1, by1 = bbox or (0, 0, img_size[0], img_size[1])   # tight content box, not the whole image rect
+            l2, t2 = left + bx0 * k * f, top + by0 * k * f
+            w, h = (bx1 - bx0 + 1) * k * f, (by1 - by0 + 1) * k * f
             r = math.radians(head.angle); c, s = math.cos(r), math.sin(r)
-            for lx, ly in ((left, -top), (left + w, -top), (left + w, -(top + h)), (left, -(top + h))):
+            for lx, ly in ((l2, -t2), (l2 + w, -t2), (l2 + w, -(t2 + h)), (l2, -(t2 + h))):
                 x, y = head.x + lx * c - ly * s, head.y + lx * s + ly * c
                 min_x, max_x, min_y, max_y = min(min_x, x), max(max_x, x), min(min_y, y), max(max_y, y)
     return (max_x - min_x + 2 * pad, max_y - min_y + 2 * pad)
@@ -300,7 +309,7 @@ def analyze() -> dict:
                 race, v = pid.rsplit("_v", 1)[0], int(pid.rsplit("_v", 1)[1])
                 doc = scml.load_doc(race, v)
                 _, base_size = doc.canvas(1.0)
-                gs = headpiece_canvas(doc, pk["headFit"], nom, img.size)
+                gs = headpiece_canvas(doc, pk["headFit"], nom, img.size, bbox)
                 worst = [max(worst[0], round(gs[0] / base_size[0], 3)), max(worst[1], round(gs[1] / base_size[1], 3))]
             growth["1x"] = worst
             checks["canvasGrowth"] = growth
@@ -308,7 +317,7 @@ def analyze() -> dict:
             out_items.append({
                 "id": it["id"], "name": it["name"], "kind": kind, "slot": "head", "resourceName": it["resource"], "group": it["group"],
                 "imageWidth": img.size[0], "imageHeight": img.size[1], "gripPx": [grip[0], grip[1]], "scale": 1.0, "rotationDegrees": 0.0,
-                "layer": "aboveFace", "profileOverrides": {}, "supportedPacks": [p for p in pack_out_pre],
+                "contentBox": list(bbox), "layer": "overHead", "profileOverrides": {}, "supportedPacks": [p for p in pack_out_pre],
                 "maskResources": {r: f"{it['resource']}_mask_{r}" for r in sorted(masks)},
                 "regionLuma": {r: round(v, 4) for r, v in lumas.items()},
                 "verification": {"status": "candidate" if max(worst) <= 1.35 and masks else "mapped", "automated": checks, "approvedBy": None}})
@@ -394,12 +403,13 @@ def sheets(manifest: dict) -> None:
                 pid = scml.pack_id(race, v)
                 doc = scml.load_doc(race, v)
                 row = []
+                bare = bare_head(race, v)
                 for it in items:
                     img = Image.open(GEAR_ROOT / "store" / f"{it['resourceName']}.png").convert("RGBA")
                     fit = dict(manifest["packs"][pid]["headFit"], nominalWidth=nominal["width"], anchorU=nominal["anchorU"], anchorV=nominal["anchorV"])
                     origin, size = doc.canvas(1.0)
                     row.append((f"{race} {it['name']}", scml.render_frame(doc, race, v, "Idle", 0, scale=0.3, head_overlay=(img, fit),
-                                                                          canvas=(origin, size), background=qa.BG)))
+                                                                          head_image=bare, canvas=(origin, size), background=qa.BG)))
                 ims = qa.crop_to_content([im for _, im in row])
                 rows.append([(l, i) for (l, _), i in zip(row, ims)])
             qa.sheet(rows).convert("RGB").save(SHEETS / "gear_headpieces.png", optimize=True)
