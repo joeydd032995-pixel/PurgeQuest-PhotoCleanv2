@@ -665,7 +665,7 @@ final class SpriteRenderer {
     // MARK: Loadout resolution
 
     private func resolve(_ loadout: SpriteLoadout, race: HeroRace, pack: String) -> ResolvedLoadout {
-        var out = ResolvedLoadout(weapon: nil, shield: nil, head: nil, bakedTitan: nil, gearMaterials: loadout.gearMaterials)
+        var out = ResolvedLoadout(weapon: nil, shield: nil, bakedTitan: nil, gearMaterials: loadout.gearMaterials)
         let anchors = catalog.anchors(pack: pack)
 
         func resolveItem(_ id: String?, wants: (HeldGearKind) -> Bool, titan: Bool) -> ResolvedItem? {
