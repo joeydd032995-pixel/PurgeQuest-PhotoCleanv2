@@ -1,0 +1,9200 @@
+{
+ "headpieceNominal": {
+  "anchorU": 260.0,
+  "anchorV": 330.0,
+  "width": 380.0
+ },
+ "items": [
+  {
+   "gripPx": [
+    52.1,
+    63.5
+   ],
+   "group": "signature",
+   "id": "weapon.valkyrie",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "sword",
+   "layer": "front",
+   "maskResources": {
+    "leather": "valkyrie_v1_sword_mask_leather",
+    "primary": "valkyrie_v1_sword_mask_primary",
+    "secondary": "valkyrie_v1_sword_mask_secondary",
+    "trim": "valkyrie_v1_sword_mask_trim"
+   },
+   "name": "Valkyrie Blade",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.4269,
+    "primary": 0.4243,
+    "secondary": 0.5244,
+    "trim": 0.4422
+   },
+   "resourceName": "valkyrie_v1_sword",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      15,
+      1,
+      386,
+      126
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.048,
+       1.0
+      ],
+      "titan": [
+       1.527,
+       1.64
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    111.5,
+    159.5
+   ],
+   "group": "signature",
+   "id": "weapon.forest_ranger",
+   "imageHeight": 320,
+   "imageWidth": 200,
+   "kind": "bow",
+   "layer": "front",
+   "maskResources": {
+    "leather": "forest_ranger_v1_bow_mask_leather",
+    "primary": "forest_ranger_v1_bow_mask_primary",
+    "secondary": "forest_ranger_v1_bow_mask_secondary",
+    "trim": "forest_ranger_v1_bow_mask_trim"
+   },
+   "name": "Elven Recurve",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.3782,
+    "primary": 0.3003,
+    "secondary": 0.1193,
+    "trim": 0.1513
+   },
+   "resourceName": "forest_ranger_v1_bow",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "stringAnchors": {
+    "bottom": [
+     30.5,
+     299
+    ],
+    "top": [
+     30.5,
+     20
+    ]
+   },
+   "supportedPacks": [
+    "forest_ranger_v1",
+    "forest_ranger_v2"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      18,
+      20,
+      136,
+      299
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.035,
+       1.031
+      ]
+     },
+     "gripOnItem": true,
+     "stringAlignment": {
+      "forest_ranger_v1": {
+       "frames": 3,
+       "maxNockToChordPx": 107.18,
+       "meanNockToChordPx": 97.85
+      },
+      "forest_ranger_v2": {
+       "frames": 3,
+       "maxNockToChordPx": 107.18,
+       "meanNockToChordPx": 97.85
+      }
+     }
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    65.9,
+    63.5
+   ],
+   "group": "signature",
+   "id": "weapon.seer",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "sword",
+   "layer": "front",
+   "maskResources": {
+    "emissive": "seer_v1_sword_mask_emissive",
+    "primary": "seer_v1_sword_mask_primary",
+    "secondary": "seer_v1_sword_mask_secondary",
+    "trim": "seer_v1_sword_mask_trim"
+   },
+   "name": "Seer's Edge",
+   "profileOverrides": {},
+   "regionLuma": {
+    "emissive": 0.5802,
+    "primary": 0.2605,
+    "secondary": 0.4017,
+    "trim": 0.1171
+   },
+   "resourceName": "seer_v1_sword",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      31,
+      3,
+      380,
+      124
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.034,
+       1.0
+      ],
+      "titan": [
+       1.473,
+       1.584
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    88.7,
+    63.5
+   ],
+   "group": "signature",
+   "id": "weapon.blood_alchemist",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "sword",
+   "layer": "front",
+   "maskResources": {
+    "leather": "blood_alchemist_v1_sword_mask_leather",
+    "primary": "blood_alchemist_v1_sword_mask_primary",
+    "secondary": "blood_alchemist_v1_sword_mask_secondary",
+    "trim": "blood_alchemist_v1_sword_mask_trim"
+   },
+   "name": "Vampyri Cleaver",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.4044,
+    "primary": 0.6232,
+    "secondary": 0.4653,
+    "trim": 0.4589
+   },
+   "resourceName": "blood_alchemist_v1_sword",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      64,
+      31,
+      311,
+      96
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.012,
+       1.0
+      ],
+      "titan": [
+       1.384,
+       1.493
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    49.1,
+    69.5
+   ],
+   "group": "signature",
+   "id": "weapon.dark_oracle",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "sword",
+   "layer": "front",
+   "maskResources": {
+    "primary": "dark_oracle_v1_sword_mask_primary",
+    "secondary": "dark_oracle_v1_sword_mask_secondary",
+    "trim": "dark_oracle_v1_sword_mask_trim"
+   },
+   "name": "Scarred Fang",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.2249,
+    "secondary": 0.2756,
+    "trim": 0.4414
+   },
+   "resourceName": "dark_oracle_v1_sword",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      11,
+      18,
+      392,
+      119
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.051,
+       1.0
+      ],
+      "titan": [
+       1.537,
+       1.643
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    73.5,
+    63.5
+   ],
+   "group": "signature",
+   "id": "weapon.necromancer",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "sword",
+   "layer": "front",
+   "maskResources": {
+    "leather": "necromancer_v1_sword_mask_leather",
+    "primary": "necromancer_v1_sword_mask_primary",
+    "secondary": "necromancer_v1_sword_mask_secondary",
+    "trim": "necromancer_v1_sword_mask_trim"
+   },
+   "name": "Shadowbrand",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.138,
+    "primary": 0.1286,
+    "secondary": 0.1475,
+    "trim": 0.1618
+   },
+   "resourceName": "necromancer_v1_sword",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      42,
+      36,
+      357,
+      91
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.027,
+       1.0
+      ],
+      "titan": [
+       1.443,
+       1.554
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    55.9,
+    63.5
+   ],
+   "group": "signature",
+   "id": "weapon.skeleton_crusader",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "sword",
+   "layer": "front",
+   "maskResources": {
+    "leather": "skeleton_crusader_v1_sword_mask_leather",
+    "primary": "skeleton_crusader_v1_sword_mask_primary",
+    "secondary": "skeleton_crusader_v1_sword_mask_secondary",
+    "trim": "skeleton_crusader_v1_sword_mask_trim"
+   },
+   "name": "Undead Claymore",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.8117,
+    "primary": 0.6955,
+    "secondary": 0.6075,
+    "trim": 0.6018
+   },
+   "resourceName": "skeleton_crusader_v1_sword",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      20,
+      24,
+      379,
+      103
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.044,
+       1.0
+      ],
+      "titan": [
+       1.512,
+       1.625
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    85.4,
+    63.0
+   ],
+   "group": "signature",
+   "id": "weapon.golem",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "sword",
+   "layer": "front",
+   "maskResources": {
+    "primary": "golem_v1_sword_mask_primary",
+    "secondary": "golem_v1_sword_mask_secondary",
+    "trim": "golem_v1_sword_mask_trim"
+   },
+   "name": "Vaultcracker",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.6707,
+    "secondary": 0.5454,
+    "trim": 0.7267
+   },
+   "resourceName": "golem_v1_sword",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      53,
+      1,
+      377,
+      103
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.015,
+       1.0
+      ],
+      "titan": [
+       1.397,
+       1.507
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    44.6,
+    64.0
+   ],
+   "group": "staff1",
+   "id": "weapon.staff.1.1",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "leather": "staff_1_1_mask_leather",
+    "primary": "staff_1_1_mask_primary",
+    "secondary": "staff_1_1_mask_secondary",
+    "trim": "staff_1_1_mask_trim"
+   },
+   "name": "Ashen Bough I",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.3871,
+    "primary": 0.293,
+    "secondary": 0.2622,
+    "trim": 0.493
+   },
+   "resourceName": "staff_1_1",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      13,
+      1,
+      329,
+      126
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.055,
+       1.0
+      ],
+      "titan": [
+       1.556,
+       1.669
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    44.6,
+    64.0
+   ],
+   "group": "staff1",
+   "id": "weapon.staff.1.2",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_1_2_mask_primary"
+   },
+   "name": "Ashen Bough II",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.3456
+   },
+   "resourceName": "staff_1_2",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      13,
+      1,
+      329,
+      126
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.055,
+       1.0
+      ],
+      "titan": [
+       1.556,
+       1.669
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    45.4,
+    64.0
+   ],
+   "group": "staff1",
+   "id": "weapon.staff.1.3",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_1_3_mask_primary",
+    "secondary": "staff_1_3_mask_secondary"
+   },
+   "name": "Ashen Bough III",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.4476,
+    "secondary": 0.269
+   },
+   "resourceName": "staff_1_3",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      13,
+      0,
+      337,
+      127
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.055,
+       1.0
+      ],
+      "titan": [
+       1.553,
+       1.666
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    42.8,
+    63.5
+   ],
+   "group": "staff1",
+   "id": "weapon.staff.1.4",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_1_4_mask_primary",
+    "secondary": "staff_1_4_mask_secondary",
+    "trim": "staff_1_4_mask_trim"
+   },
+   "name": "Ashen Bough IV",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.4489,
+    "secondary": 0.275,
+    "trim": 0.2152
+   },
+   "resourceName": "staff_1_4",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      8,
+      0,
+      356,
+      127
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.057,
+       1.002
+      ],
+      "titan": [
+       1.564,
+       1.677
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    39.2,
+    63.5
+   ],
+   "group": "staff1",
+   "id": "weapon.staff.1.5",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_1_5_mask_primary",
+    "secondary": "staff_1_5_mask_secondary"
+   },
+   "name": "Ashen Bough V",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.0862,
+    "secondary": 0.2568
+   },
+   "resourceName": "staff_1_5",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      2,
+      0,
+      374,
+      127
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.061,
+       1.005
+      ],
+      "titan": [
+       1.578,
+       1.692
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    37.9,
+    64.0
+   ],
+   "group": "staff2",
+   "id": "weapon.staff.2.1",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "leather": "staff_2_1_mask_leather",
+    "primary": "staff_2_1_mask_primary",
+    "secondary": "staff_2_1_mask_secondary",
+    "trim": "staff_2_1_mask_trim"
+   },
+   "name": "Verdant Coil I",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.5102,
+    "primary": 0.4229,
+    "secondary": 0.5543,
+    "trim": 0.5383
+   },
+   "resourceName": "staff_2_1",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      7,
+      19,
+      316,
+      108
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.062,
+       1.005
+      ],
+      "titan": [
+       1.583,
+       1.696
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    39.5,
+    64.0
+   ],
+   "group": "staff2",
+   "id": "weapon.staff.2.2",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_2_2_mask_primary",
+    "secondary": "staff_2_2_mask_secondary",
+    "trim": "staff_2_2_mask_trim"
+   },
+   "name": "Verdant Coil II",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.6226,
+    "secondary": 0.2515,
+    "trim": 0.3468
+   },
+   "resourceName": "staff_2_2",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      7,
+      14,
+      332,
+      113
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.06,
+       1.004
+      ],
+      "titan": [
+       1.576,
+       1.69
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    40.1,
+    63.5
+   ],
+   "group": "staff2",
+   "id": "weapon.staff.2.3",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "leather": "staff_2_3_mask_leather",
+    "primary": "staff_2_3_mask_primary",
+    "secondary": "staff_2_3_mask_secondary",
+    "trim": "staff_2_3_mask_trim"
+   },
+   "name": "Verdant Coil III",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.5803,
+    "primary": 0.6019,
+    "secondary": 0.2769,
+    "trim": 0.3368
+   },
+   "resourceName": "staff_2_3",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      7,
+      9,
+      338,
+      118
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.06,
+       1.004
+      ],
+      "titan": [
+       1.574,
+       1.688
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    41.3,
+    63.5
+   ],
+   "group": "staff2",
+   "id": "weapon.staff.2.4",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "leather": "staff_2_4_mask_leather",
+    "primary": "staff_2_4_mask_primary",
+    "secondary": "staff_2_4_mask_secondary",
+    "trim": "staff_2_4_mask_trim"
+   },
+   "name": "Verdant Coil IV",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.2601,
+    "primary": 0.5623,
+    "secondary": 0.1279,
+    "trim": 0.2031
+   },
+   "resourceName": "staff_2_4",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      7,
+      4,
+      350,
+      123
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.059,
+       1.003
+      ],
+      "titan": [
+       1.569,
+       1.683
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    39.7,
+    63.5
+   ],
+   "group": "staff2",
+   "id": "weapon.staff.2.5",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_2_5_mask_primary",
+    "secondary": "staff_2_5_mask_secondary",
+    "trim": "staff_2_5_mask_trim"
+   },
+   "name": "Verdant Coil V",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.1608,
+    "secondary": 0.4968,
+    "trim": 0.7043
+   },
+   "resourceName": "staff_2_5",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      0,
+      0,
+      397,
+      127
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.06,
+       1.004
+      ],
+      "titan": [
+       1.576,
+       1.69
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    47.0,
+    63.5
+   ],
+   "group": "staff3",
+   "id": "weapon.staff.3.1",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "leather": "staff_3_1_mask_leather",
+    "primary": "staff_3_1_mask_primary",
+    "secondary": "staff_3_1_mask_secondary",
+    "trim": "staff_3_1_mask_trim"
+   },
+   "name": "Tidecaller I",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.4953,
+    "primary": 0.548,
+    "secondary": 0.2819,
+    "trim": 0.8455
+   },
+   "resourceName": "staff_3_1",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      14,
+      22,
+      344,
+      105
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.053,
+       1.0
+      ],
+      "titan": [
+       1.547,
+       1.66
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    48.0,
+    63.5
+   ],
+   "group": "staff3",
+   "id": "weapon.staff.3.2",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "leather": "staff_3_2_mask_leather",
+    "primary": "staff_3_2_mask_primary",
+    "secondary": "staff_3_2_mask_secondary",
+    "trim": "staff_3_2_mask_trim"
+   },
+   "name": "Tidecaller II",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.8002,
+    "primary": 0.506,
+    "secondary": 0.5459,
+    "trim": 0.2459
+   },
+   "resourceName": "staff_3_2",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      14,
+      22,
+      354,
+      105
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.052,
+       1.0
+      ],
+      "titan": [
+       1.543,
+       1.656
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    49.0,
+    63.5
+   ],
+   "group": "staff3",
+   "id": "weapon.staff.3.3",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_3_3_mask_primary",
+    "secondary": "staff_3_3_mask_secondary"
+   },
+   "name": "Tidecaller III",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.4674,
+    "secondary": 0.2662
+   },
+   "resourceName": "staff_3_3",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      14,
+      22,
+      364,
+      105
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.051,
+       1.0
+      ],
+      "titan": [
+       1.539,
+       1.652
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    46.4,
+    63.5
+   ],
+   "group": "staff3",
+   "id": "weapon.staff.3.4",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "emissive": "staff_3_4_mask_emissive",
+    "primary": "staff_3_4_mask_primary",
+    "secondary": "staff_3_4_mask_secondary",
+    "trim": "staff_3_4_mask_trim"
+   },
+   "name": "Tidecaller IV",
+   "profileOverrides": {},
+   "regionLuma": {
+    "emissive": 0.7856,
+    "primary": 0.4728,
+    "secondary": 0.4267,
+    "trim": 0.4096
+   },
+   "resourceName": "staff_3_4",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      10,
+      22,
+      374,
+      105
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.054,
+       1.0
+      ],
+      "titan": [
+       1.549,
+       1.663
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    43.8,
+    63.5
+   ],
+   "group": "staff3",
+   "id": "weapon.staff.3.5",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_3_5_mask_primary",
+    "secondary": "staff_3_5_mask_secondary"
+   },
+   "name": "Tidecaller V",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.1595,
+    "secondary": 0.3207
+   },
+   "resourceName": "staff_3_5",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      6,
+      18,
+      384,
+      109
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.056,
+       1.001
+      ],
+      "titan": [
+       1.56,
+       1.673
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    41.9,
+    62.0
+   ],
+   "group": "staff4",
+   "id": "weapon.staff.4.1",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_4_1_mask_primary",
+    "secondary": "staff_4_1_mask_secondary"
+   },
+   "name": "Ember Scepter I",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.388,
+    "secondary": 0.4951
+   },
+   "resourceName": "staff_4_1",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      12,
+      3,
+      311,
+      127
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.058,
+       1.004
+      ],
+      "titan": [
+       1.568,
+       1.683
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    42.4,
+    62.0
+   ],
+   "group": "staff4",
+   "id": "weapon.staff.4.2",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_4_2_mask_primary"
+   },
+   "name": "Ember Scepter II",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.2362
+   },
+   "resourceName": "staff_4_2",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      12,
+      2,
+      316,
+      127
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.058,
+       1.003
+      ],
+      "titan": [
+       1.566,
+       1.681
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    44.1,
+    63.5
+   ],
+   "group": "staff4",
+   "id": "weapon.staff.4.3",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_4_3_mask_primary",
+    "secondary": "staff_4_3_mask_secondary",
+    "trim": "staff_4_3_mask_trim"
+   },
+   "name": "Ember Scepter III",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.2736,
+    "secondary": 0.421,
+    "trim": 0.5509
+   },
+   "resourceName": "staff_4_3",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      12,
+      3,
+      333,
+      127
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.056,
+       1.001
+      ],
+      "titan": [
+       1.558,
+       1.672
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    45.4,
+    63.5
+   ],
+   "group": "staff4",
+   "id": "weapon.staff.4.4",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_4_4_mask_primary",
+    "secondary": "staff_4_4_mask_secondary",
+    "trim": "staff_4_4_mask_trim"
+   },
+   "name": "Ember Scepter IV",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.1547,
+    "secondary": 0.4015,
+    "trim": 0.6087
+   },
+   "resourceName": "staff_4_4",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      12,
+      1,
+      346,
+      127
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.055,
+       1.0
+      ],
+      "titan": [
+       1.553,
+       1.667
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    49.6,
+    61.5
+   ],
+   "group": "staff4",
+   "id": "weapon.staff.4.5",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "emissive": "staff_4_5_mask_emissive",
+    "primary": "staff_4_5_mask_primary",
+    "secondary": "staff_4_5_mask_secondary",
+    "trim": "staff_4_5_mask_trim"
+   },
+   "name": "Ember Scepter V",
+   "profileOverrides": {},
+   "regionLuma": {
+    "emissive": 0.6228,
+    "primary": 0.3252,
+    "secondary": 0.1694,
+    "trim": 0.7713
+   },
+   "resourceName": "staff_4_5",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      12,
+      0,
+      388,
+      127
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.051,
+       1.0
+      ],
+      "titan": [
+       1.537,
+       1.653
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    48.5,
+    63.5
+   ],
+   "group": "staff5",
+   "id": "weapon.staff.5.1",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_5_1_mask_primary",
+    "secondary": "staff_5_1_mask_secondary"
+   },
+   "name": "Storm Spire I",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.2818,
+    "secondary": 0.4801
+   },
+   "resourceName": "staff_5_1",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      18,
+      0,
+      323,
+      127
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.052,
+       1.0
+      ],
+      "titan": [
+       1.541,
+       1.654
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    49.5,
+    63.5
+   ],
+   "group": "staff5",
+   "id": "weapon.staff.5.2",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_5_2_mask_primary",
+    "secondary": "staff_5_2_mask_secondary"
+   },
+   "name": "Storm Spire II",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.2846,
+    "secondary": 0.4543
+   },
+   "resourceName": "staff_5_2",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      18,
+      0,
+      333,
+      127
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.051,
+       1.0
+      ],
+      "titan": [
+       1.537,
+       1.65
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    50.3,
+    63.5
+   ],
+   "group": "staff5",
+   "id": "weapon.staff.5.3",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "emissive": "staff_5_3_mask_emissive",
+    "primary": "staff_5_3_mask_primary",
+    "secondary": "staff_5_3_mask_secondary",
+    "trim": "staff_5_3_mask_trim"
+   },
+   "name": "Storm Spire III",
+   "profileOverrides": {},
+   "regionLuma": {
+    "emissive": 0.7607,
+    "primary": 0.4657,
+    "secondary": 0.2373,
+    "trim": 0.421
+   },
+   "resourceName": "staff_5_3",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      18,
+      0,
+      341,
+      127
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.05,
+       1.0
+      ],
+      "titan": [
+       1.534,
+       1.647
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    49.8,
+    63.5
+   ],
+   "group": "staff5",
+   "id": "weapon.staff.5.4",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_5_4_mask_primary",
+    "secondary": "staff_5_4_mask_secondary",
+    "trim": "staff_5_4_mask_trim"
+   },
+   "name": "Storm Spire IV",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.3287,
+    "secondary": 0.5393,
+    "trim": 0.3237
+   },
+   "resourceName": "staff_5_4",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      17,
+      0,
+      345,
+      127
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.05,
+       1.0
+      ],
+      "titan": [
+       1.536,
+       1.649
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    38.4,
+    63.5
+   ],
+   "group": "staff5",
+   "id": "weapon.staff.5.5",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_5_5_mask_primary",
+    "secondary": "staff_5_5_mask_secondary",
+    "trim": "staff_5_5_mask_trim"
+   },
+   "name": "Storm Spire V",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.1779,
+    "secondary": 0.4228,
+    "trim": 0.3219
+   },
+   "resourceName": "staff_5_5",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      0,
+      0,
+      384,
+      127
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.061,
+       1.005
+      ],
+      "titan": [
+       1.581,
+       1.695
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    41.7,
+    65.5
+   ],
+   "group": "staff6",
+   "id": "weapon.staff.6.1",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "leather": "staff_6_1_mask_leather",
+    "primary": "staff_6_1_mask_primary",
+    "secondary": "staff_6_1_mask_secondary",
+    "trim": "staff_6_1_mask_trim"
+   },
+   "name": "Gilded Crook I",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.3156,
+    "primary": 0.291,
+    "secondary": 0.2763,
+    "trim": 0.299
+   },
+   "resourceName": "staff_6_1",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      13,
+      24,
+      300,
+      103
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.058,
+       1.001
+      ],
+      "titan": [
+       1.567,
+       1.679
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    42.6,
+    65.5
+   ],
+   "group": "staff6",
+   "id": "weapon.staff.6.2",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "leather": "staff_6_2_mask_leather",
+    "primary": "staff_6_2_mask_primary",
+    "secondary": "staff_6_2_mask_secondary",
+    "trim": "staff_6_2_mask_trim"
+   },
+   "name": "Gilded Crook II",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.2552,
+    "primary": 0.0756,
+    "secondary": 0.1643,
+    "trim": 0.1042
+   },
+   "resourceName": "staff_6_2",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      13,
+      7,
+      309,
+      103
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.057,
+       1.0
+      ],
+      "titan": [
+       1.564,
+       1.675
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    36.9,
+    66.5
+   ],
+   "group": "staff6",
+   "id": "weapon.staff.6.3",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "leather": "staff_6_3_mask_leather",
+    "primary": "staff_6_3_mask_primary",
+    "secondary": "staff_6_3_mask_secondary",
+    "trim": "staff_6_3_mask_trim"
+   },
+   "name": "Gilded Crook III",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.441,
+    "primary": 0.2188,
+    "secondary": 0.0837,
+    "trim": 0.3166
+   },
+   "resourceName": "staff_6_3",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      6,
+      7,
+      315,
+      103
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.063,
+       1.004
+      ],
+      "titan": [
+       1.586,
+       1.697
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    42.0,
+    65.5
+   ],
+   "group": "staff6",
+   "id": "weapon.staff.6.4",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "leather": "staff_6_4_mask_leather",
+    "primary": "staff_6_4_mask_primary",
+    "secondary": "staff_6_4_mask_secondary",
+    "trim": "staff_6_4_mask_trim"
+   },
+   "name": "Gilded Crook IV",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.4164,
+    "primary": 0.0855,
+    "secondary": 0.1839,
+    "trim": 0.2692
+   },
+   "resourceName": "staff_6_4",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      9,
+      5,
+      339,
+      103
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.058,
+       1.001
+      ],
+      "titan": [
+       1.566,
+       1.678
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    44.6,
+    64.5
+   ],
+   "group": "staff6",
+   "id": "weapon.staff.6.5",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_6_5_mask_primary"
+   },
+   "name": "Gilded Crook V",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.1421
+   },
+   "resourceName": "staff_6_5",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      9,
+      6,
+      365,
+      103
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.055,
+       1.0
+      ],
+      "titan": [
+       1.556,
+       1.669
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    47.5,
+    64.5
+   ],
+   "group": "staff7",
+   "id": "weapon.staff.7.1",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "leather": "staff_7_1_mask_leather",
+    "primary": "staff_7_1_mask_primary",
+    "secondary": "staff_7_1_mask_secondary",
+    "trim": "staff_7_1_mask_trim"
+   },
+   "name": "Bone Reliquary I",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.796,
+    "primary": 0.5725,
+    "secondary": 0.2872,
+    "trim": 0.4692
+   },
+   "resourceName": "staff_7_1",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      16,
+      18,
+      331,
+      109
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.052,
+       1.0
+      ],
+      "titan": [
+       1.545,
+       1.657
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    49.7,
+    63.5
+   ],
+   "group": "staff7",
+   "id": "weapon.staff.7.2",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "leather": "staff_7_2_mask_leather",
+    "primary": "staff_7_2_mask_primary",
+    "secondary": "staff_7_2_mask_secondary",
+    "trim": "staff_7_2_mask_trim"
+   },
+   "name": "Bone Reliquary II",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.7273,
+    "primary": 0.591,
+    "secondary": 0.4836,
+    "trim": 0.4248
+   },
+   "resourceName": "staff_7_2",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      16,
+      13,
+      353,
+      114
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.05,
+       1.0
+      ],
+      "titan": [
+       1.537,
+       1.65
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    51.5,
+    63.5
+   ],
+   "group": "staff7",
+   "id": "weapon.staff.7.3",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "emissive": "staff_7_3_mask_emissive",
+    "primary": "staff_7_3_mask_primary",
+    "secondary": "staff_7_3_mask_secondary",
+    "trim": "staff_7_3_mask_trim"
+   },
+   "name": "Bone Reliquary III",
+   "profileOverrides": {},
+   "regionLuma": {
+    "emissive": 0.6288,
+    "primary": 0.4249,
+    "secondary": 0.7649,
+    "trim": 0.7236
+   },
+   "resourceName": "staff_7_3",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      16,
+      9,
+      371,
+      119
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.049,
+       1.0
+      ],
+      "titan": [
+       1.529,
+       1.642
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    49.0,
+    63.5
+   ],
+   "group": "staff7",
+   "id": "weapon.staff.7.4",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "emissive": "staff_7_4_mask_emissive",
+    "primary": "staff_7_4_mask_primary",
+    "secondary": "staff_7_4_mask_secondary",
+    "trim": "staff_7_4_mask_trim"
+   },
+   "name": "Bone Reliquary IV",
+   "profileOverrides": {},
+   "regionLuma": {
+    "emissive": 0.6505,
+    "primary": 0.4317,
+    "secondary": 0.6433,
+    "trim": 0.4004
+   },
+   "resourceName": "staff_7_4",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      13,
+      4,
+      373,
+      123
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.051,
+       1.0
+      ],
+      "titan": [
+       1.539,
+       1.652
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    47.9,
+    63.5
+   ],
+   "group": "staff7",
+   "id": "weapon.staff.7.5",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "emissive": "staff_7_5_mask_emissive",
+    "primary": "staff_7_5_mask_primary",
+    "secondary": "staff_7_5_mask_secondary",
+    "trim": "staff_7_5_mask_trim"
+   },
+   "name": "Bone Reliquary V",
+   "profileOverrides": {},
+   "regionLuma": {
+    "emissive": 0.6456,
+    "primary": 0.2925,
+    "secondary": 0.6192,
+    "trim": 0.3026
+   },
+   "resourceName": "staff_7_5",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      11,
+      0,
+      380,
+      127
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.052,
+       1.0
+      ],
+      "titan": [
+       1.544,
+       1.657
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    46.9,
+    65.5
+   ],
+   "group": "staff8",
+   "id": "weapon.staff.8.1",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "leather": "staff_8_1_mask_leather",
+    "primary": "staff_8_1_mask_primary",
+    "secondary": "staff_8_1_mask_secondary",
+    "trim": "staff_8_1_mask_trim"
+   },
+   "name": "Voidspike I",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.6943,
+    "primary": 0.6668,
+    "secondary": 0.4512,
+    "trim": 0.3093
+   },
+   "resourceName": "staff_8_1",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      15,
+      4,
+      334,
+      123
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.053,
+       1.0
+      ],
+      "titan": [
+       1.547,
+       1.658
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    48.0,
+    60.0
+   ],
+   "group": "staff8",
+   "id": "weapon.staff.8.2",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "leather": "staff_8_2_mask_leather",
+    "primary": "staff_8_2_mask_primary",
+    "secondary": "staff_8_2_mask_secondary",
+    "trim": "staff_8_2_mask_trim"
+   },
+   "name": "Voidspike II",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.7421,
+    "primary": 0.6674,
+    "secondary": 0.423,
+    "trim": 0.3249
+   },
+   "resourceName": "staff_8_2",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      15,
+      2,
+      345,
+      125
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.052,
+       1.001
+      ],
+      "titan": [
+       1.544,
+       1.662
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    48.3,
+    63.0
+   ],
+   "group": "staff8",
+   "id": "weapon.staff.8.3",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "primary": "staff_8_3_mask_primary",
+    "secondary": "staff_8_3_mask_secondary",
+    "trim": "staff_8_3_mask_trim"
+   },
+   "name": "Voidspike III",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.7443,
+    "secondary": 0.5302,
+    "trim": 0.33
+   },
+   "resourceName": "staff_8_3",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      15,
+      1,
+      348,
+      126
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.052,
+       1.0
+      ],
+      "titan": [
+       1.542,
+       1.656
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    49.4,
+    63.5
+   ],
+   "group": "staff8",
+   "id": "weapon.staff.8.4",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "emissive": "staff_8_4_mask_emissive",
+    "primary": "staff_8_4_mask_primary",
+    "secondary": "staff_8_4_mask_secondary",
+    "trim": "staff_8_4_mask_trim"
+   },
+   "name": "Voidspike IV",
+   "profileOverrides": {},
+   "regionLuma": {
+    "emissive": 0.5377,
+    "primary": 0.752,
+    "secondary": 0.319,
+    "trim": 0.6397
+   },
+   "resourceName": "staff_8_4",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      15,
+      0,
+      359,
+      126
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.051,
+       1.0
+      ],
+      "titan": [
+       1.538,
+       1.651
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    40.8,
+    63.5
+   ],
+   "group": "staff8",
+   "id": "weapon.staff.8.5",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "leather": "staff_8_5_mask_leather",
+    "primary": "staff_8_5_mask_primary",
+    "secondary": "staff_8_5_mask_secondary",
+    "trim": "staff_8_5_mask_trim"
+   },
+   "name": "Voidspike V",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.4005,
+    "primary": 0.7274,
+    "secondary": 0.3802,
+    "trim": 0.2397
+   },
+   "resourceName": "staff_8_5",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      2,
+      0,
+      390,
+      127
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.059,
+       1.003
+      ],
+      "titan": [
+       1.571,
+       1.685
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield1",
+   "id": "shield.set.1.1",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_1_1_mask_leather",
+    "primary": "shield_1_1_mask_primary",
+    "secondary": "shield_1_1_mask_secondary",
+    "trim": "shield_1_1_mask_trim"
+   },
+   "name": "Oaken Ward I",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.2064,
+    "primary": 0.2418,
+    "secondary": 0.1481,
+    "trim": 0.2933
+   },
+   "resourceName": "shield_1_1",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      15,
+      12,
+      144,
+      147
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.0,
+    79.5
+   ],
+   "group": "shield1",
+   "id": "shield.set.1.2",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_1_2_mask_leather",
+    "primary": "shield_1_2_mask_primary",
+    "secondary": "shield_1_2_mask_secondary",
+    "trim": "shield_1_2_mask_trim"
+   },
+   "name": "Oaken Ward II",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.2968,
+    "primary": 0.321,
+    "secondary": 0.2418,
+    "trim": 0.3842
+   },
+   "resourceName": "shield_1_2",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      12,
+      9,
+      146,
+      150
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.0,
+    79.5
+   ],
+   "group": "shield1",
+   "id": "shield.set.1.3",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_1_3_mask_leather",
+    "primary": "shield_1_3_mask_primary",
+    "secondary": "shield_1_3_mask_secondary",
+    "trim": "shield_1_3_mask_trim"
+   },
+   "name": "Oaken Ward III",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.2988,
+    "primary": 0.2341,
+    "secondary": 0.2391,
+    "trim": 0.3823
+   },
+   "resourceName": "shield_1_3",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      12,
+      9,
+      146,
+      150
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.0,
+    79.5
+   ],
+   "group": "shield1",
+   "id": "shield.set.1.4",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_1_4_mask_leather",
+    "primary": "shield_1_4_mask_primary",
+    "secondary": "shield_1_4_mask_secondary",
+    "trim": "shield_1_4_mask_trim"
+   },
+   "name": "Oaken Ward IV",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.3153,
+    "primary": 0.6423,
+    "secondary": 0.5842,
+    "trim": 0.2912
+   },
+   "resourceName": "shield_1_4",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      7,
+      5,
+      151,
+      154
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield1",
+   "id": "shield.set.1.5",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_1_5_mask_leather",
+    "primary": "shield_1_5_mask_primary",
+    "secondary": "shield_1_5_mask_secondary",
+    "trim": "shield_1_5_mask_trim"
+   },
+   "name": "Oaken Ward V",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.4346,
+    "primary": 0.3943,
+    "secondary": 0.3547,
+    "trim": 0.3827
+   },
+   "resourceName": "shield_1_5",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      6,
+      2,
+      153,
+      157
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield2",
+   "id": "shield.set.2.1",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_2_1_mask_leather",
+    "primary": "shield_2_1_mask_primary",
+    "secondary": "shield_2_1_mask_secondary",
+    "trim": "shield_2_1_mask_trim"
+   },
+   "name": "Templar Aegis I",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.2325,
+    "primary": 0.1266,
+    "secondary": 0.1883,
+    "trim": 0.1594
+   },
+   "resourceName": "shield_2_1",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      14,
+      14,
+      145,
+      145
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.0,
+    79.5
+   ],
+   "group": "shield2",
+   "id": "shield.set.2.2",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_2_2_mask_leather",
+    "primary": "shield_2_2_mask_primary",
+    "secondary": "shield_2_2_mask_secondary",
+    "trim": "shield_2_2_mask_trim"
+   },
+   "name": "Templar Aegis II",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.2444,
+    "primary": 0.126,
+    "secondary": 0.1881,
+    "trim": 0.156
+   },
+   "resourceName": "shield_2_2",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      14,
+      15,
+      144,
+      144
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield2",
+   "id": "shield.set.2.3",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_2_3_mask_leather",
+    "primary": "shield_2_3_mask_primary",
+    "secondary": "shield_2_3_mask_secondary",
+    "trim": "shield_2_3_mask_trim"
+   },
+   "name": "Templar Aegis III",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.2426,
+    "primary": 0.3088,
+    "secondary": 0.4172,
+    "trim": 0.2239
+   },
+   "resourceName": "shield_2_3",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      10,
+      10,
+      149,
+      149
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield2",
+   "id": "shield.set.2.4",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_2_4_mask_leather",
+    "primary": "shield_2_4_mask_primary",
+    "secondary": "shield_2_4_mask_secondary",
+    "trim": "shield_2_4_mask_trim"
+   },
+   "name": "Templar Aegis IV",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.4249,
+    "primary": 0.4082,
+    "secondary": 0.3795,
+    "trim": 0.4688
+   },
+   "resourceName": "shield_2_4",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      10,
+      5,
+      149,
+      154
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield2",
+   "id": "shield.set.2.5",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "primary": "shield_2_5_mask_primary",
+    "secondary": "shield_2_5_mask_secondary",
+    "trim": "shield_2_5_mask_trim"
+   },
+   "name": "Templar Aegis V",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.3055,
+    "secondary": 0.3698,
+    "trim": 0.3369
+   },
+   "resourceName": "shield_2_5",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      2,
+      2,
+      157,
+      157
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield3",
+   "id": "shield.set.3.1",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_3_1_mask_leather",
+    "primary": "shield_3_1_mask_primary",
+    "secondary": "shield_3_1_mask_secondary",
+    "trim": "shield_3_1_mask_trim"
+   },
+   "name": "Scaled Bulwark I",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.2349,
+    "primary": 0.1972,
+    "secondary": 0.2237,
+    "trim": 0.2487
+   },
+   "resourceName": "shield_3_1",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      27,
+      8,
+      132,
+      151
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield3",
+   "id": "shield.set.3.2",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_3_2_mask_leather",
+    "primary": "shield_3_2_mask_primary",
+    "secondary": "shield_3_2_mask_secondary",
+    "trim": "shield_3_2_mask_trim"
+   },
+   "name": "Scaled Bulwark II",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.3823,
+    "primary": 0.1508,
+    "secondary": 0.2879,
+    "trim": 0.2326
+   },
+   "resourceName": "shield_3_2",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      27,
+      6,
+      132,
+      153
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield3",
+   "id": "shield.set.3.3",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_3_3_mask_leather",
+    "primary": "shield_3_3_mask_primary",
+    "secondary": "shield_3_3_mask_secondary",
+    "trim": "shield_3_3_mask_trim"
+   },
+   "name": "Scaled Bulwark III",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.4281,
+    "primary": 0.4651,
+    "secondary": 0.4135,
+    "trim": 0.3927
+   },
+   "resourceName": "shield_3_3",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      25,
+      4,
+      134,
+      155
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield3",
+   "id": "shield.set.3.4",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_3_4_mask_leather",
+    "primary": "shield_3_4_mask_primary",
+    "secondary": "shield_3_4_mask_secondary",
+    "trim": "shield_3_4_mask_trim"
+   },
+   "name": "Scaled Bulwark IV",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.5571,
+    "primary": 0.52,
+    "secondary": 0.5187,
+    "trim": 0.4766
+   },
+   "resourceName": "shield_3_4",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      24,
+      3,
+      135,
+      156
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield3",
+   "id": "shield.set.3.5",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "primary": "shield_3_5_mask_primary",
+    "secondary": "shield_3_5_mask_secondary",
+    "trim": "shield_3_5_mask_trim"
+   },
+   "name": "Scaled Bulwark V",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.6827,
+    "secondary": 0.5368,
+    "trim": 0.6865
+   },
+   "resourceName": "shield_3_5",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      24,
+      2,
+      135,
+      157
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield4",
+   "id": "shield.set.4.1",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_4_1_mask_leather",
+    "primary": "shield_4_1_mask_primary",
+    "secondary": "shield_4_1_mask_secondary",
+    "trim": "shield_4_1_mask_trim"
+   },
+   "name": "Runic Disc I",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.3674,
+    "primary": 0.1347,
+    "secondary": 0.2889,
+    "trim": 0.2585
+   },
+   "resourceName": "shield_4_1",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      25,
+      7,
+      134,
+      152
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield4",
+   "id": "shield.set.4.2",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_4_2_mask_leather",
+    "primary": "shield_4_2_mask_primary",
+    "secondary": "shield_4_2_mask_secondary",
+    "trim": "shield_4_2_mask_trim"
+   },
+   "name": "Runic Disc II",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.3913,
+    "primary": 0.3194,
+    "secondary": 0.2807,
+    "trim": 0.1807
+   },
+   "resourceName": "shield_4_2",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      28,
+      7,
+      131,
+      152
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield4",
+   "id": "shield.set.4.3",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_4_3_mask_leather",
+    "primary": "shield_4_3_mask_primary",
+    "secondary": "shield_4_3_mask_secondary",
+    "trim": "shield_4_3_mask_trim"
+   },
+   "name": "Runic Disc III",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.3993,
+    "primary": 0.4786,
+    "secondary": 0.3373,
+    "trim": 0.3461
+   },
+   "resourceName": "shield_4_3",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      26,
+      4,
+      133,
+      155
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield4",
+   "id": "shield.set.4.4",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_4_4_mask_leather",
+    "primary": "shield_4_4_mask_primary",
+    "secondary": "shield_4_4_mask_secondary",
+    "trim": "shield_4_4_mask_trim"
+   },
+   "name": "Runic Disc IV",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.4093,
+    "primary": 0.3428,
+    "secondary": 0.3421,
+    "trim": 0.3665
+   },
+   "resourceName": "shield_4_4",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      25,
+      2,
+      134,
+      157
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield4",
+   "id": "shield.set.4.5",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_4_5_mask_leather",
+    "primary": "shield_4_5_mask_primary",
+    "secondary": "shield_4_5_mask_secondary",
+    "trim": "shield_4_5_mask_trim"
+   },
+   "name": "Runic Disc V",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.5313,
+    "primary": 0.4518,
+    "secondary": 0.3399,
+    "trim": 0.4359
+   },
+   "resourceName": "shield_4_5",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      24,
+      1,
+      135,
+      158
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.0,
+    79.5
+   ],
+   "group": "shield5",
+   "id": "shield.set.5.1",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_5_1_mask_leather",
+    "primary": "shield_5_1_mask_primary",
+    "secondary": "shield_5_1_mask_secondary",
+    "trim": "shield_5_1_mask_trim"
+   },
+   "name": "Valkyrie Wing I",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.2616,
+    "primary": 0.1918,
+    "secondary": 0.2303,
+    "trim": 0.2381
+   },
+   "resourceName": "shield_5_1",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      14,
+      11,
+      144,
+      148
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield5",
+   "id": "shield.set.5.2",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_5_2_mask_leather",
+    "primary": "shield_5_2_mask_primary",
+    "secondary": "shield_5_2_mask_secondary",
+    "trim": "shield_5_2_mask_trim"
+   },
+   "name": "Valkyrie Wing II",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.4844,
+    "primary": 0.5279,
+    "secondary": 0.4589,
+    "trim": 0.4285
+   },
+   "resourceName": "shield_5_2",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      12,
+      8,
+      147,
+      151
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield5",
+   "id": "shield.set.5.3",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_5_3_mask_leather",
+    "primary": "shield_5_3_mask_primary",
+    "secondary": "shield_5_3_mask_secondary",
+    "trim": "shield_5_3_mask_trim"
+   },
+   "name": "Valkyrie Wing III",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.4149,
+    "primary": 0.4273,
+    "secondary": 0.4079,
+    "trim": 0.43
+   },
+   "resourceName": "shield_5_3",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      12,
+      8,
+      147,
+      151
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.0,
+    79.5
+   ],
+   "group": "shield5",
+   "id": "shield.set.5.4",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_5_4_mask_leather",
+    "primary": "shield_5_4_mask_primary",
+    "secondary": "shield_5_4_mask_secondary",
+    "trim": "shield_5_4_mask_trim"
+   },
+   "name": "Valkyrie Wing IV",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.5377,
+    "primary": 0.5298,
+    "secondary": 0.5626,
+    "trim": 0.4991
+   },
+   "resourceName": "shield_5_4",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      9,
+      5,
+      149,
+      154
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield5",
+   "id": "shield.set.5.5",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "primary": "shield_5_5_mask_primary"
+   },
+   "name": "Valkyrie Wing V",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.239
+   },
+   "resourceName": "shield_5_5",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      7,
+      2,
+      152,
+      157
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield6",
+   "id": "shield.set.6.1",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_6_1_mask_leather",
+    "primary": "shield_6_1_mask_primary",
+    "secondary": "shield_6_1_mask_secondary",
+    "trim": "shield_6_1_mask_trim"
+   },
+   "name": "Iron Moon I",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.1997,
+    "primary": 0.1474,
+    "secondary": 0.2549,
+    "trim": 0.3163
+   },
+   "resourceName": "shield_6_1",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      28,
+      7,
+      131,
+      152
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield6",
+   "id": "shield.set.6.2",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_6_2_mask_leather",
+    "primary": "shield_6_2_mask_primary",
+    "secondary": "shield_6_2_mask_secondary",
+    "trim": "shield_6_2_mask_trim"
+   },
+   "name": "Iron Moon II",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.4895,
+    "primary": 0.2898,
+    "secondary": 0.3513,
+    "trim": 0.1648
+   },
+   "resourceName": "shield_6_2",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      27,
+      4,
+      132,
+      155
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield6",
+   "id": "shield.set.6.3",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_6_3_mask_leather",
+    "primary": "shield_6_3_mask_primary",
+    "secondary": "shield_6_3_mask_secondary",
+    "trim": "shield_6_3_mask_trim"
+   },
+   "name": "Iron Moon III",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.4443,
+    "primary": 0.3198,
+    "secondary": 0.4996,
+    "trim": 0.413
+   },
+   "resourceName": "shield_6_3",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      27,
+      4,
+      132,
+      155
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield6",
+   "id": "shield.set.6.4",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_6_4_mask_leather",
+    "primary": "shield_6_4_mask_primary",
+    "secondary": "shield_6_4_mask_secondary",
+    "trim": "shield_6_4_mask_trim"
+   },
+   "name": "Iron Moon IV",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.6053,
+    "primary": 0.5283,
+    "secondary": 0.505,
+    "trim": 0.4476
+   },
+   "resourceName": "shield_6_4",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      25,
+      2,
+      134,
+      157
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield6",
+   "id": "shield.set.6.5",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_6_5_mask_leather",
+    "primary": "shield_6_5_mask_primary",
+    "secondary": "shield_6_5_mask_secondary",
+    "trim": "shield_6_5_mask_trim"
+   },
+   "name": "Iron Moon V",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.595,
+    "primary": 0.5318,
+    "secondary": 0.6538,
+    "trim": 0.5363
+   },
+   "resourceName": "shield_6_5",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      27,
+      1,
+      132,
+      158
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield7",
+   "id": "shield.set.7.1",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_7_1_mask_leather",
+    "primary": "shield_7_1_mask_primary",
+    "secondary": "shield_7_1_mask_secondary",
+    "trim": "shield_7_1_mask_trim"
+   },
+   "name": "Bone Paragon I",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.192,
+    "primary": 0.1366,
+    "secondary": 0.2439,
+    "trim": 0.323
+   },
+   "resourceName": "shield_7_1",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      16,
+      10,
+      143,
+      149
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield7",
+   "id": "shield.set.7.2",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_7_2_mask_leather",
+    "primary": "shield_7_2_mask_primary",
+    "secondary": "shield_7_2_mask_secondary",
+    "trim": "shield_7_2_mask_trim"
+   },
+   "name": "Bone Paragon II",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.2094,
+    "primary": 0.1461,
+    "secondary": 0.2697,
+    "trim": 0.3413
+   },
+   "resourceName": "shield_7_2",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      20,
+      9,
+      139,
+      150
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield7",
+   "id": "shield.set.7.3",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_7_3_mask_leather",
+    "primary": "shield_7_3_mask_primary",
+    "secondary": "shield_7_3_mask_secondary",
+    "trim": "shield_7_3_mask_trim"
+   },
+   "name": "Bone Paragon III",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.4118,
+    "primary": 0.401,
+    "secondary": 0.3191,
+    "trim": 0.3749
+   },
+   "resourceName": "shield_7_3",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      24,
+      6,
+      135,
+      153
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield7",
+   "id": "shield.set.7.4",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_7_4_mask_leather",
+    "primary": "shield_7_4_mask_primary",
+    "secondary": "shield_7_4_mask_secondary",
+    "trim": "shield_7_4_mask_trim"
+   },
+   "name": "Bone Paragon IV",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.6633,
+    "primary": 0.2209,
+    "secondary": 0.4947,
+    "trim": 0.3699
+   },
+   "resourceName": "shield_7_4",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      22,
+      4,
+      137,
+      155
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield7",
+   "id": "shield.set.7.5",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "emissive": "shield_7_5_mask_emissive",
+    "primary": "shield_7_5_mask_primary",
+    "secondary": "shield_7_5_mask_secondary",
+    "trim": "shield_7_5_mask_trim"
+   },
+   "name": "Bone Paragon V",
+   "profileOverrides": {},
+   "regionLuma": {
+    "emissive": 0.6923,
+    "primary": 0.176,
+    "secondary": 0.8345,
+    "trim": 0.8075
+   },
+   "resourceName": "shield_7_5",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      20,
+      1,
+      139,
+      158
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield8",
+   "id": "shield.set.8.1",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_8_1_mask_leather",
+    "primary": "shield_8_1_mask_primary",
+    "secondary": "shield_8_1_mask_secondary",
+    "trim": "shield_8_1_mask_trim"
+   },
+   "name": "Verdigris Sigil I",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.2767,
+    "primary": 0.1781,
+    "secondary": 0.2358,
+    "trim": 0.2148
+   },
+   "resourceName": "shield_8_1",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      28,
+      7,
+      131,
+      152
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield8",
+   "id": "shield.set.8.2",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_8_2_mask_leather",
+    "primary": "shield_8_2_mask_primary",
+    "secondary": "shield_8_2_mask_secondary",
+    "trim": "shield_8_2_mask_trim"
+   },
+   "name": "Verdigris Sigil II",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.3782,
+    "primary": 0.3463,
+    "secondary": 0.2954,
+    "trim": 0.3286
+   },
+   "resourceName": "shield_8_2",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      26,
+      4,
+      133,
+      155
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield8",
+   "id": "shield.set.8.3",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_8_3_mask_leather",
+    "primary": "shield_8_3_mask_primary",
+    "secondary": "shield_8_3_mask_secondary",
+    "trim": "shield_8_3_mask_trim"
+   },
+   "name": "Verdigris Sigil III",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.4519,
+    "primary": 0.3646,
+    "secondary": 0.4436,
+    "trim": 0.3904
+   },
+   "resourceName": "shield_8_3",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      21,
+      4,
+      138,
+      155
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield8",
+   "id": "shield.set.8.4",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_8_4_mask_leather",
+    "primary": "shield_8_4_mask_primary",
+    "secondary": "shield_8_4_mask_secondary",
+    "trim": "shield_8_4_mask_trim"
+   },
+   "name": "Verdigris Sigil IV",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.4018,
+    "primary": 0.3152,
+    "secondary": 0.3518,
+    "trim": 0.4278
+   },
+   "resourceName": "shield_8_4",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      19,
+      2,
+      140,
+      157
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    79.5,
+    79.5
+   ],
+   "group": "shield8",
+   "id": "shield.set.8.5",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "leather": "shield_8_5_mask_leather",
+    "primary": "shield_8_5_mask_primary",
+    "secondary": "shield_8_5_mask_secondary",
+    "trim": "shield_8_5_mask_trim"
+   },
+   "name": "Verdigris Sigil V",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.5623,
+    "primary": 0.5122,
+    "secondary": 0.5876,
+    "trim": 0.618
+   },
+   "resourceName": "shield_8_5",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      18,
+      2,
+      141,
+      157
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    37.3,
+    64.0
+   ],
+   "group": "store",
+   "id": "weapon.shard",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "sword",
+   "layer": "front",
+   "maskResources": {
+    "primary": "store_weapon_shard_mask_primary",
+    "secondary": "store_weapon_shard_mask_secondary"
+   },
+   "name": "Crystal Shard",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.806,
+    "secondary": 0.634
+   },
+   "resourceName": "store_weapon_shard",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      2,
+      29,
+      355,
+      99
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.062,
+       1.006
+      ],
+      "titan": [
+       1.585,
+       1.699
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    39.9,
+    63.5
+   ],
+   "group": "store",
+   "id": "weapon.reel",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "sword",
+   "layer": "front",
+   "maskResources": {
+    "primary": "store_weapon_reel_mask_primary",
+    "secondary": "store_weapon_reel_mask_secondary",
+    "trim": "store_weapon_reel_mask_trim"
+   },
+   "name": "Film Reel Blade",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.8714,
+    "secondary": 0.8295,
+    "trim": 0.7576
+   },
+   "resourceName": "store_weapon_reel",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      1,
+      23,
+      390,
+      105
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.06,
+       1.004
+      ],
+      "titan": [
+       1.575,
+       1.689
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    40.2,
+    64.0
+   ],
+   "group": "store",
+   "id": "weapon.gem",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "hammer",
+   "layer": "front",
+   "maskResources": {
+    "emissive": "store_weapon_gem_mask_emissive",
+    "primary": "store_weapon_gem_mask_primary",
+    "secondary": "store_weapon_gem_mask_secondary"
+   },
+   "name": "Gem Hammer",
+   "profileOverrides": {},
+   "regionLuma": {
+    "emissive": 0.6701,
+    "primary": 0.6016,
+    "secondary": 0.3608
+   },
+   "resourceName": "store_weapon_gem",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      1,
+      9,
+      393,
+      119
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.06,
+       1.003
+      ],
+      "titan": [
+       1.574,
+       1.687
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    38.4,
+    64.0
+   ],
+   "group": "store",
+   "id": "weapon.staff",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "staff",
+   "layer": "front",
+   "maskResources": {
+    "emissive": "store_weapon_staff_mask_emissive",
+    "primary": "store_weapon_staff_mask_primary",
+    "secondary": "store_weapon_staff_mask_secondary"
+   },
+   "name": "Archmage Staff",
+   "profileOverrides": {},
+   "regionLuma": {
+    "emissive": 0.6833,
+    "primary": 0.3477,
+    "secondary": 0.5635
+   },
+   "resourceName": "store_weapon_staff",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      0,
+      25,
+      384,
+      103
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.061,
+       1.005
+      ],
+      "titan": [
+       1.581,
+       1.694
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    40.3,
+    64.0
+   ],
+   "group": "store",
+   "id": "weapon.stormblade",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "sword",
+   "layer": "front",
+   "maskResources": {
+    "emissive": "store_weapon_stormblade_mask_emissive",
+    "primary": "store_weapon_stormblade_mask_primary"
+   },
+   "name": "Storm Cleaver",
+   "profileOverrides": {},
+   "regionLuma": {
+    "emissive": 0.8167,
+    "primary": 0.7785
+   },
+   "resourceName": "store_weapon_stormblade",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      2,
+      25,
+      385,
+      105
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.06,
+       1.003
+      ],
+      "titan": [
+       1.573,
+       1.687
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    41.5,
+    64.0
+   ],
+   "group": "store",
+   "id": "weapon.chevron",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "sword",
+   "layer": "front",
+   "maskResources": {
+    "primary": "store_weapon_chevron_mask_primary",
+    "secondary": "store_weapon_chevron_mask_secondary"
+   },
+   "name": "Oathbreaker Greatsword",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.7001,
+    "secondary": 0.7589
+   },
+   "resourceName": "store_weapon_chevron",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      2,
+      9,
+      397,
+      119
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.058,
+       1.002
+      ],
+      "titan": [
+       1.569,
+       1.682
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    38.6,
+    64.0
+   ],
+   "group": "store",
+   "id": "weapon.ruby",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "sword",
+   "layer": "front",
+   "maskResources": {
+    "primary": "store_weapon_ruby_mask_primary",
+    "secondary": "store_weapon_ruby_mask_secondary",
+    "trim": "store_weapon_ruby_mask_trim"
+   },
+   "name": "Ruby Fang",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.4724,
+    "secondary": 0.6476,
+    "trim": 0.2291
+   },
+   "resourceName": "store_weapon_ruby",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      1,
+      21,
+      377,
+      107
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.061,
+       1.005
+      ],
+      "titan": [
+       1.58,
+       1.694
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    41.3,
+    64.0
+   ],
+   "group": "store",
+   "id": "weapon.arcane",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "sword",
+   "layer": "front",
+   "maskResources": {
+    "emissive": "store_weapon_arcane_mask_emissive",
+    "primary": "store_weapon_arcane_mask_primary",
+    "secondary": "store_weapon_arcane_mask_secondary",
+    "trim": "store_weapon_arcane_mask_trim"
+   },
+   "name": "Arcane Edge",
+   "profileOverrides": {},
+   "regionLuma": {
+    "emissive": 0.7056,
+    "primary": 0.6449,
+    "secondary": 0.4461,
+    "trim": 0.4571
+   },
+   "resourceName": "store_weapon_arcane",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      2,
+      21,
+      395,
+      107
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.059,
+       1.003
+      ],
+      "titan": [
+       1.569,
+       1.683
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    40.9,
+    64.0
+   ],
+   "group": "store",
+   "id": "weapon.fireworkBlade",
+   "imageHeight": 128,
+   "imageWidth": 400,
+   "kind": "sword",
+   "layer": "front",
+   "maskResources": {
+    "primary": "store_weapon_fireworkBlade_mask_primary",
+    "secondary": "store_weapon_fireworkBlade_mask_secondary"
+   },
+   "name": "Firework Blade",
+   "profileOverrides": {},
+   "regionLuma": {
+    "primary": 0.8759,
+    "secondary": 0.6341
+   },
+   "resourceName": "store_weapon_fireworkBlade",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "mainHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      2,
+      27,
+      391,
+      101
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.059,
+       1.003
+      ],
+      "titan": [
+       1.571,
+       1.684
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    80.0,
+    83.0
+   ],
+   "group": "store",
+   "id": "shield.crux",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "emissive": "store_shield_crux_mask_emissive",
+    "primary": "store_shield_crux_mask_primary",
+    "secondary": "store_shield_crux_mask_secondary"
+   },
+   "name": "Azure Aegis",
+   "profileOverrides": {},
+   "regionLuma": {
+    "emissive": 0.7331,
+    "primary": 0.4633,
+    "secondary": 0.6199
+   },
+   "resourceName": "store_shield_crux",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      15,
+      15,
+      145,
+      151
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    80.0,
+    83.0
+   ],
+   "group": "store",
+   "id": "shield.templar",
+   "imageHeight": 160,
+   "imageWidth": 160,
+   "kind": "shield",
+   "layer": "front",
+   "maskResources": {
+    "emissive": "store_shield_templar_mask_emissive",
+    "primary": "store_shield_templar_mask_primary",
+    "secondary": "store_shield_templar_mask_secondary"
+   },
+   "name": "Templar Bulwark",
+   "profileOverrides": {},
+   "regionLuma": {
+    "emissive": 0.7102,
+    "primary": 0.8002,
+    "secondary": 0.3416
+   },
+   "resourceName": "store_shield_templar",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "offHand",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      15,
+      15,
+      145,
+      151
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.0,
+       1.0
+      ],
+      "titan": [
+       1.0,
+       1.0
+      ]
+     },
+     "gripOnItem": true
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    260.0,
+    330.0
+   ],
+   "group": "headpiece",
+   "id": "head.starhat",
+   "imageHeight": 400,
+   "imageWidth": 520,
+   "kind": "headpiece",
+   "layer": "aboveFace",
+   "maskResources": {
+    "emissive": "store_head_starhat_mask_emissive",
+    "primary": "store_head_starhat_mask_primary",
+    "secondary": "store_head_starhat_mask_secondary"
+   },
+   "name": "Starlit Cap",
+   "profileOverrides": {},
+   "regionLuma": {
+    "emissive": 0.7468,
+    "primary": 0.2868,
+    "secondary": 0.2052
+   },
+   "resourceName": "store_head_starhat",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "head",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      19,
+      24,
+      501,
+      374
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.282,
+       1.249
+      ]
+     },
+     "gripOnItem": true,
+     "headFitPacks": 27
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    260.0,
+    330.0
+   ],
+   "group": "headpiece",
+   "id": "head.hood",
+   "imageHeight": 400,
+   "imageWidth": 520,
+   "kind": "headpiece",
+   "layer": "aboveFace",
+   "maskResources": {
+    "leather": "store_head_hood_mask_leather",
+    "primary": "store_head_hood_mask_primary",
+    "secondary": "store_head_hood_mask_secondary",
+    "trim": "store_head_hood_mask_trim"
+   },
+   "name": "Shadow Hood",
+   "profileOverrides": {},
+   "regionLuma": {
+    "leather": 0.1942,
+    "primary": 0.1619,
+    "secondary": 0.1377,
+    "trim": 0.1274
+   },
+   "resourceName": "store_head_hood",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "head",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      34,
+      8,
+      486,
+      398
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.282,
+       1.249
+      ]
+     },
+     "gripOnItem": true,
+     "headFitPacks": 27
+    },
+    "status": "candidate"
+   }
+  },
+  {
+   "gripPx": [
+    260.0,
+    330.0
+   ],
+   "group": "headpiece",
+   "id": "head.dragoncrest",
+   "imageHeight": 400,
+   "imageWidth": 520,
+   "kind": "headpiece",
+   "layer": "aboveFace",
+   "maskResources": {
+    "emissive": "store_head_dragoncrest_mask_emissive",
+    "primary": "store_head_dragoncrest_mask_primary"
+   },
+   "name": "Dragoncrest Helm",
+   "profileOverrides": {},
+   "regionLuma": {
+    "emissive": 0.6466,
+    "primary": 0.397
+   },
+   "resourceName": "store_head_dragoncrest",
+   "rotationDegrees": 0.0,
+   "scale": 1.0,
+   "slot": "head",
+   "supportedPacks": [
+    "valkyrie_v1",
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v1",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v1",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v1",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v1",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v1",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v1",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v1",
+    "golem_v2",
+    "golem_v3"
+   ],
+   "verification": {
+    "approvedBy": null,
+    "automated": {
+     "bbox": [
+      74,
+      0,
+      446,
+      386
+     ],
+     "canvasGrowth": {
+      "1x": [
+       1.282,
+       1.249
+      ]
+     },
+     "gripOnItem": true,
+     "headFitPacks": 27
+    },
+    "status": "candidate"
+   }
+  }
+ ],
+ "packs": {
+  "blood_alchemist_v1": {
+   "headFit": {
+    "baseY": 222.7,
+    "cx": 239.5,
+    "headBox": [
+     56,
+     66,
+     423,
+     439
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 411.0
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    64.0,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    86.5,
+    61.3
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "blood_alchemist_v2": {
+   "headFit": {
+    "baseY": 247.8,
+    "cx": 285.0,
+    "headBox": [
+     123,
+     118,
+     447,
+     427
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 362.9
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    64.0,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    87.7,
+    61.3
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "blood_alchemist_v3": {
+   "headFit": {
+    "baseY": 199.1,
+    "cx": 279.5,
+    "headBox": [
+     109,
+     34,
+     450,
+     427
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 381.9
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    64.0,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    84.1,
+    61.3
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "dark_oracle_v1": {
+   "headFit": {
+    "baseY": 205.8,
+    "cx": 276.0,
+    "headBox": [
+     107,
+     34,
+     445,
+     443
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 378.6
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    64.0,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    46.9,
+    67.3
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "dark_oracle_v2": {
+   "headFit": {
+    "baseY": 200.6,
+    "cx": 239.5,
+    "headBox": [
+     39,
+     33,
+     440,
+     432
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 449.1
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    64.0,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    61.6,
+    66.8
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "dark_oracle_v3": {
+   "headFit": {
+    "baseY": 216.2,
+    "cx": 286.5,
+    "headBox": [
+     107,
+     49,
+     466,
+     447
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 402.1
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    64.0,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    73.4,
+    65.3
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "forest_ranger_v1": {
+   "headFit": {
+    "baseY": 329.3,
+    "cx": 350.5,
+    "headBox": [
+     186,
+     192,
+     515,
+     519
+    ],
+    "headPngSize": [
+     600,
+     600
+    ],
+    "widthPx": 368.5
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    63.5,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "bow",
+   "weaponHold": [
+    111.5,
+    159.5
+   ],
+   "weaponPivotPx": [
+    0.0,
+    0.0
+   ]
+  },
+  "forest_ranger_v2": {
+   "headFit": {
+    "baseY": 303.3,
+    "cx": 356.5,
+    "headBox": [
+     192,
+     145,
+     521,
+     522
+    ],
+    "headPngSize": [
+     600,
+     600
+    ],
+    "widthPx": 368.5
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    63.5,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "bow",
+   "weaponHold": [
+    108.5,
+    159.5
+   ],
+   "weaponPivotPx": [
+    0.0,
+    0.0
+   ]
+  },
+  "forest_ranger_v3": {
+   "headFit": {
+    "baseY": 240.7,
+    "cx": 268.5,
+    "headBox": [
+     109,
+     134,
+     428,
+     388
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 357.3
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    64.0,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    60.1,
+    61.3
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "golem_v1": {
+   "headFit": {
+    "baseY": 220.3,
+    "cx": 233.5,
+    "headBox": [
+     40,
+     59,
+     427,
+     443
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 433.4
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    65.5,
+    61.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    83.2,
+    60.8
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "golem_v2": {
+   "headFit": {
+    "baseY": 194.9,
+    "cx": 243.0,
+    "headBox": [
+     57,
+     21,
+     429,
+     435
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 416.6
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    64.5,
+    64.0
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    98.8,
+    62.3
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "golem_v3": {
+   "headFit": {
+    "baseY": 228.9,
+    "cx": 249.5,
+    "headBox": [
+     68,
+     71,
+     431,
+     447
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 406.6
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    63.0,
+    64.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    54.7,
+    61.3
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "necromancer_v1": {
+   "headFit": {
+    "baseY": 228.7,
+    "cx": 273.5,
+    "headBox": [
+     117,
+     80,
+     430,
+     434
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 350.6
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    63.5,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    71.3,
+    61.3
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "necromancer_v2": {
+   "headFit": {
+    "baseY": 242.4,
+    "cx": 271.0,
+    "headBox": [
+     107,
+     103,
+     435,
+     435
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 367.4
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    63.5,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    77.6,
+    59.8
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "necromancer_v3": {
+   "headFit": {
+    "baseY": 212.0,
+    "cx": 274.0,
+    "headBox": [
+     107,
+     49,
+     441,
+     437
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 374.1
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    63.5,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    57.2,
+    63.8
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "seer_v1": {
+   "headFit": {
+    "baseY": 236.3,
+    "cx": 283.5,
+    "headBox": [
+     125,
+     91,
+     442,
+     437
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 355.0
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    64.0,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    63.7,
+    61.3
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "seer_v2": {
+   "headFit": {
+    "baseY": 253.5,
+    "cx": 278.0,
+    "headBox": [
+     112,
+     125,
+     444,
+     431
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 371.8
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    64.0,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    56.9,
+    61.8
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "seer_v3": {
+   "headFit": {
+    "baseY": 229.7,
+    "cx": 261.5,
+    "headBox": [
+     92,
+     73,
+     431,
+     446
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 379.7
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    64.0,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    67.3,
+    61.8
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "skeleton_crusader_v1": {
+   "headFit": {
+    "baseY": 246.9,
+    "cx": 231.5,
+    "headBox": [
+     35,
+     97,
+     428,
+     454
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 440.2
+   },
+   "shieldAnchor": "shield",
+   "shieldHold": [
+    79.5,
+    79.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    55.9,
+    63.5
+   ],
+   "weaponPivotPx": [
+    0.0,
+    0.0
+   ]
+  },
+  "skeleton_crusader_v2": {
+   "headFit": {
+    "baseY": 242.6,
+    "cx": 232.5,
+    "headBox": [
+     44,
+     88,
+     421,
+     456
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 422.2
+   },
+   "shieldAnchor": "shield",
+   "shieldHold": [
+    79.5,
+    79.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    54.1,
+    63.5
+   ],
+   "weaponPivotPx": [
+    0.0,
+    0.0
+   ]
+  },
+  "skeleton_crusader_v3": {
+   "headFit": {
+    "baseY": 242.6,
+    "cx": 232.5,
+    "headBox": [
+     44,
+     88,
+     421,
+     456
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 422.2
+   },
+   "shieldAnchor": "shield",
+   "shieldHold": [
+    79.5,
+    79.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    56.7,
+    63.5
+   ],
+   "weaponPivotPx": [
+    0.0,
+    0.0
+   ]
+  },
+  "skeleton_warrior_v1": {
+   "headFit": {
+    "baseY": 242.6,
+    "cx": 239.5,
+    "headBox": [
+     51,
+     88,
+     428,
+     456
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 422.2
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    64.0,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    50.5,
+    61.3
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "skeleton_warrior_v2": {
+   "headFit": {
+    "baseY": 260.1,
+    "cx": 279.0,
+    "headBox": [
+     127,
+     127,
+     431,
+     444
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 340.5
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    64.0,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    47.8,
+    61.3
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "skeleton_warrior_v3": {
+   "headFit": {
+    "baseY": 257.1,
+    "cx": 262.0,
+    "headBox": [
+     96,
+     121,
+     428,
+     445
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 371.8
+   },
+   "shieldAnchor": "left_hand",
+   "shieldHold": [
+    64.0,
+    63.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    57.3,
+    61.3
+   ],
+   "weaponPivotPx": [
+    2.2,
+    2.2
+   ]
+  },
+  "valkyrie_v1": {
+   "headFit": {
+    "baseY": 240.0,
+    "cx": 276.5,
+    "headBox": [
+     119,
+     101,
+     434,
+     432
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 352.8
+   },
+   "shieldAnchor": "shield",
+   "shieldHold": [
+    79.5,
+    79.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    52.1,
+    63.5
+   ],
+   "weaponPivotPx": [
+    0.0,
+    0.0
+   ]
+  },
+  "valkyrie_v2": {
+   "headFit": {
+    "baseY": 240.3,
+    "cx": 279.0,
+    "headBox": [
+     117,
+     100,
+     441,
+     434
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 362.9
+   },
+   "shieldAnchor": "shield",
+   "shieldHold": [
+    79.5,
+    72.0
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    48.5,
+    63.5
+   ],
+   "weaponPivotPx": [
+    0.0,
+    0.0
+   ]
+  },
+  "valkyrie_v3": {
+   "headFit": {
+    "baseY": 233.8,
+    "cx": 248.5,
+    "headBox": [
+     72,
+     91,
+     425,
+     431
+    ],
+    "headPngSize": [
+     480,
+     480
+    ],
+    "widthPx": 395.4
+   },
+   "shieldAnchor": "shield",
+   "shieldHold": [
+    79.5,
+    79.5
+   ],
+   "shieldPivotPx": [
+    0.0,
+    0.0
+   ],
+   "weaponAnchor": "sword",
+   "weaponHold": [
+    55.9,
+    64.0
+   ],
+   "weaponPivotPx": [
+    0.0,
+    0.0
+   ]
+  }
+ },
+ "schemaVersion": 1,
+ "titanScale": 2.0
+}
