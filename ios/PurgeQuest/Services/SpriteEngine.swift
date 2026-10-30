@@ -374,7 +374,6 @@ nonisolated private final class ParserDelegate: NSObject, XMLParserDelegate {
 nonisolated struct SpriteLoadout: Equatable, Sendable {
     var weaponID: String? = nil
     var shieldID: String? = nil
-    var headID: String? = nil
     var titanWeapon: Bool = false
     var gearMaterials: CharacterMaterialSet? = nil
 
@@ -409,7 +408,6 @@ final class SpriteRenderer {
     private struct ResolvedLoadout {
         var weapon: ResolvedItem?
         var shield: ResolvedItem?
-        var head: ResolvedItem?
         /// Titan with nothing equipped: the pack's own weapon scaled about its grip.
         var bakedTitan: HeldGearPlacement?
         var gearMaterials: CharacterMaterialSet?
@@ -418,8 +416,7 @@ final class SpriteRenderer {
         var key: String {
             let w = weapon.map { "\($0.resource)@\($0.placement.scale)" } ?? (bakedTitan.map { "baked@\($0.scale)" } ?? "-")
             let sh = shield.map { $0.resource } ?? "-"
-            let hd = head.map { $0.resource } ?? "-"
-            return "\(w)|\(sh)|\(hd)|\(MaterialPalette.fingerprint(gearMaterials))"
+            return "\(w)|\(sh)|\(MaterialPalette.fingerprint(gearMaterials))"
         }
     }
 
@@ -561,14 +558,14 @@ final class SpriteRenderer {
     // MARK: Masked recolor (held gear and modular layers)
 
     /// Layer image recolored through its masks, or the plain image when nothing is coloured.
-    private func maskedImage(resource: String, maskResources: [String: String], regionLuma: [String: Double], colors: CharacterMaterialSet?) -> UIImage? {
+    private func maskedImage(resource: String, maskResources: [String: String], regionTone: [String: [Double]], colors: CharacterMaterialSet?) -> UIImage? {
         guard let base = image(base: resource) else { return nil }
         guard let colors, !maskResources.isEmpty else { return base }
         let key = "\(resource)|\(MaterialPalette.fingerprint(colors))"
         if let cached = recoloredImages[key] { return cached }
         let regions: [MaterialRecolorer.Region] = maskResources.compactMap { name, maskName in
             guard let region = MaterialRegion(rawValue: name), let mask = image(base: maskName) else { return nil }
-            return MaterialRecolorer.Region(region: region, mask: mask, referenceLuma: regionLuma[name])
+            return MaterialRecolorer.Region(region: region, mask: mask, tone: RegionTone(regionTone[name]))
         }
         let out = recolorer.recolor(base, regions: regions, colors: colors)
         recoloredImages[key] = out
@@ -605,27 +602,6 @@ final class SpriteRenderer {
                       width: s * item.imageSize.width, height: s * item.imageSize.height)
     }
 
-    /// Pivot-relative rect of a headpiece on a pack's head. `tight` limits it to the art's opaque bounds
-    /// (used for canvas growth so transparent margins never enlarge the frame).
-    private func headRect(_ item: ResolvedItem, head: SpritePlacement, fit: HeadFit, nominal: HeadpieceNominal, tight: Bool = false) -> CGRect {
-        let k = CGFloat(fit.widthPx / nominal.width)
-        let f = head.file.width / CGFloat(fit.headPngSize.first ?? Double(head.file.width))
-        let left = (CGFloat(fit.cx) - k * CGFloat(nominal.anchorU)) * f - head.pivotX * head.file.width
-        let top = (CGFloat(fit.baseY) - k * CGFloat(nominal.anchorV)) * f - (1 - head.pivotY) * head.file.height
-        if tight, let box = item.entry?.contentBox, box.count == 4 {
-            return CGRect(x: left + CGFloat(box[0]) * k * f, y: top + CGFloat(box[1]) * k * f,
-                          width: CGFloat(box[2] - box[0] + 1) * k * f, height: CGFloat(box[3] - box[1] + 1) * k * f)
-        }
-        return CGRect(x: left, y: top, width: item.imageSize.width * k * f, height: item.imageSize.height * k * f)
-    }
-
-    /// The race's bare head (anatomy layer, or the original head when it is already skin/bone/stone), skin-tinted.
-    private func bareHead(pack: String, appearance: HeroAppearance) -> UIImage? {
-        guard let layer = catalog.parts(forPack: pack).first(where: { $0.part == "head" && $0.kind == "anatomy" }),
-              let image = image(base: layer.resourceBaseName) else { return nil }
-        return hueRotated(image, shift: appearance.skinHueShift)
-    }
-
     /// World-space (y-up) bounds of a pivot-relative, y-down rect on a placement.
     private func worldBounds(of rect: CGRect, placement p: SpritePlacement, extraRotation: CGFloat = 0) -> CGRect {
         let r = (p.angle + extraRotation) * .pi / 180
@@ -653,7 +629,7 @@ final class SpriteRenderer {
     /// The pack's base canvas united with every held item's rect across all frames (a swapped item is drawn at
     /// its anchor even when the baked one is hidden, and Titan doubles it), so nothing clips in any animation.
     private func canvas(doc: SpriterDocument, pack: String, resolved: ResolvedLoadout) -> (origin: CGPoint, size: CGSize) {
-        guard resolved.weapon != nil || resolved.shield != nil || resolved.head != nil || resolved.bakedTitan != nil else {
+        guard resolved.weapon != nil || resolved.shield != nil || resolved.bakedTitan != nil else {
             return (doc.origin, doc.canvasSize)
         }
         let key = "\(pack)|\(resolved.key)"
@@ -664,8 +640,6 @@ final class SpriteRenderer {
         func include(_ r: CGRect) {
             minX = min(minX, r.minX); minY = min(minY, r.minY); maxX = max(maxX, r.maxX); maxY = max(maxY, r.maxY)
         }
-        let anchors = catalog.anchors(pack: pack)
-        let nominal = catalog.gear?.headpieceNominal
         for animation in doc.animations.values {
             for frame in animation.frames {
                 if let item = resolved.weapon ?? bakedItem(resolved, frame: frame), let a = weaponAnchor(frame) {
@@ -673,10 +647,6 @@ final class SpriteRenderer {
                 }
                 if let item = resolved.shield, let a = shieldAnchor(frame) {
                     include(worldBounds(of: itemRect(item, anchor: a), placement: a, extraRotation: CGFloat(item.placement.rotationDegrees)))
-                }
-                if let item = resolved.head, let fit = anchors?.headFit, let nominal,
-                   let head = frame.first(where: { $0.file.name.lowercased().hasPrefix("head") }) {
-                    include(worldBounds(of: headRect(item, head: head, fit: fit, nominal: nominal, tight: true), placement: head))
                 }
             }
         }
@@ -713,9 +683,8 @@ final class SpriteRenderer {
                                 entry: nil, imageSize: img.size)
         }
 
-        out.weapon = resolveItem(loadout.weaponID, wants: { $0 != .shield && $0 != .headpiece }, titan: loadout.titanWeapon)
+        out.weapon = resolveItem(loadout.weaponID, wants: { $0 != .shield }, titan: loadout.titanWeapon)
         out.shield = resolveItem(loadout.shieldID, wants: { $0 == .shield }, titan: false)
-        out.head = resolveItem(loadout.headID, wants: { $0 == .headpiece }, titan: false)
         if out.weapon == nil, loadout.titanWeapon, let anchors {
             out.bakedTitan = HeldGearFit.bakedWeaponPlacement(anchors: anchors, titan: true)
         }
@@ -776,14 +745,6 @@ final class SpriteRenderer {
         let drawDoc = (extent.origin == doc.origin && extent.size == doc.canvasSize)
             ? doc : SpriterDocument(animations: doc.animations, canvasSize: extent.size, origin: extent.origin)
 
-        let headpiece: (bare: UIImage, image: UIImage, item: ResolvedItem, fit: HeadFit, nominal: HeadpieceNominal)? = {
-            guard let item = resolved.head, let entry = item.entry, let nominal = catalog.gear?.headpieceNominal,
-                  let fit = catalog.anchors(pack: pack)?.headFit, let bare = bareHead(pack: pack, appearance: appearance),
-                  let art = maskedImage(resource: entry.resourceName, maskResources: entry.maskResources,
-                                        regionLuma: entry.regionLuma, colors: resolved.gearMaterials) else { return nil }
-            return (bare, art, item, fit, nominal)
-        }()
-
         let format = UIGraphicsImageRendererFormat()
         format.scale = 0.5
         format.opaque = false
@@ -798,17 +759,10 @@ final class SpriteRenderer {
                 if resolved.shield != nil && fileName.hasPrefix("shield") { continue }
                 if fileName.hasPrefix("slashfx") { continue }
                 let stem = (fileName as NSString).deletingPathExtension.replacingOccurrences(of: " ", with: "_")
-                // A headpiece sits on the bare head, not on top of the baked helmet/hair, and under the face overlay.
-                if stem == "head", let hat = headpiece {
-                    draw(hat.bare, for: placement, doc: drawDoc, in: cg)
-                    drawRelative(hat.image, placement: placement, rect: headRect(hat.item, head: placement, fit: hat.fit, nominal: hat.nominal),
-                                 doc: drawDoc, in: cg)
-                    continue
-                }
                 if let layers = modular?[stem] {
                     for layer in layers {
                         if let img = maskedImage(resource: layer.resourceBaseName, maskResources: layer.maskResources,
-                                                 regionLuma: layer.regionLuma, colors: appearance.materials) {
+                                                 regionTone: layer.regionTone, colors: appearance.materials) {
                             draw(img, for: placement, doc: drawDoc, in: cg)
                         }
                     }
@@ -820,7 +774,7 @@ final class SpriteRenderer {
 
             if let weapon = resolved.weapon, let anchor = weaponAnchor(placements) {
                 let img = maskedImage(resource: weapon.resource, maskResources: weapon.entry?.maskResources ?? [:],
-                                      regionLuma: weapon.entry?.regionLuma ?? [:], colors: resolved.gearMaterials)
+                                      regionTone: weapon.entry?.regionTone ?? [:], colors: resolved.gearMaterials)
                 if let img {
                     drawRelative(img, placement: anchor, rect: itemRect(weapon, anchor: anchor),
                                  extraRotation: CGFloat(weapon.placement.rotationDegrees), doc: drawDoc, in: cg)
@@ -834,7 +788,7 @@ final class SpriteRenderer {
 
             if let shield = resolved.shield, let anchor = shieldAnchor(placements),
                let img = maskedImage(resource: shield.resource, maskResources: shield.entry?.maskResources ?? [:],
-                                     regionLuma: shield.entry?.regionLuma ?? [:], colors: resolved.gearMaterials) {
+                                     regionTone: shield.entry?.regionTone ?? [:], colors: resolved.gearMaterials) {
                 drawRelative(img, placement: anchor, rect: itemRect(shield, anchor: anchor),
                              extraRotation: CGFloat(shield.placement.rotationDegrees), doc: drawDoc, in: cg)
             }

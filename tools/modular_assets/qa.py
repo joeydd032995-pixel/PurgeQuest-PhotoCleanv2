@@ -59,19 +59,18 @@ def mask_overlay(layer, scale: float = 1.0) -> Image.Image:
     return bg
 
 
-def recolor(img: Image.Image, masks: Dict[str, Image.Image], lumas: Dict[str, float], colors: Dict[str, Tuple[float, float, float]]) -> Image.Image:
-    """Reference implementation of the on-device recolor (CIColorMatrix + mask blend)."""
+def recolor(img: Image.Image, masks: Dict[str, Image.Image], tones: Dict[str, List[float]],
+            colors: Dict[str, Tuple[float, float, float]]) -> Image.Image:
+    """Reference implementation of the on-device recolor (RecolorMath.recolor): OKLab, shading-preserving."""
     rgb, a = ops.arrays(img)
-    y = ops.lum(rgb)[..., None]
-    out = rgb.copy()
+    out = rgb.astype(np.float64)
     for name, col in colors.items():
         if name not in masks:
             continue
-        m = (np.asarray(masks[name], np.float32) / 255.0)[..., None]
-        yref = max(lumas.get(name, 0.5), 0.05)
-        tinted = np.clip(np.array(col, np.float32)[None, None, :] * (y / yref), 0, 1)
-        out = out * (1 - m) + tinted * m
-    return ops.from_arrays(out, a)
+        m = np.asarray(masks[name], np.float64) / 255.0
+        tone = tones.get(name) or [0.6, 0.1]
+        out = ops.recolor_pixels(out, col, tone, m)
+    return ops.from_arrays(out.astype(np.float32), a)
 
 
 def sheet(rows: List[List[Tuple[str, Image.Image]]], cell_w: int = 0, label_h: int = 16) -> Image.Image:
@@ -120,7 +119,7 @@ def recolored_provider(sep: PackSeparation, colors=None):
         for l in sorted(by_part[stem], key=lambda l: order[l.kind]):
             key = (stem, l.kind)
             if key not in cache:
-                cache[key] = recolor(l.image, l.masks, l.region_luma, colors)
+                cache[key] = recolor(l.image, l.masks, l.region_tone, colors)
             out.append(cache[key])
         return out
     return provide

@@ -11,7 +11,7 @@ Complete separated anatomy/armor for all eight races, finish every listed gear a
 - Phase 0 exists: `ModularCharacterFoundation.swift` (profiles, slots, manifests, fitter, planner, legacy projection) and its tests.
 - No modular art exists. Every race pack (`Art/Races/<race>/v1..v3`, 27 packs; Skeletal Undead ships six variants from two packs) is 14 baked layers: `body, head, face_01..03, left/right arm, left/right hand, left/right leg, shield, slashfx, sword|bow+arrow`. Armor is painted into body/arms/legs; headgear/hair is painted into `head`; the skin "face window" is an outlined flat region.
 - `SpriteRenderer` draws held gear at the SCML weapon/shield anchor with no per-item fit. Titan Blade applies `1.4×` (`SpriteEngine.swift:543`); the store copy and `MiniAvatar` say `2×`.
-- The 14 store items (3 headpieces, 9 weapons, 2 shields) exist only as hand-drawn SwiftUI shapes in `MiniAvatar`; `GearCatalog.design(id:)` returns nil for them, so the sprite renderer ignores them.
+- The store items (3 headpieces, 9 weapons, 2 shields) exist only as hand-drawn SwiftUI shapes in `MiniAvatar`; `GearCatalog.design(id:)` returns nil for them, so the sprite renderer ignores them.
 - `HeroForgeView.save()` runs `try? modelContext.save()` then dismisses: a failed save looks like success. The Forge has no gear or material controls; equipment is changed only in the Armory and persists immediately.
 
 ## Status model (mapped ≠ verified)
@@ -92,3 +92,8 @@ Done and checked in CI/locally: separation pipeline and masks for all 27 packs; 
 Deliberately *not* claimed: every asset is `candidate`, not `verified` — approval is a human act recorded in `docs/modular/approvals.json`. Body colours are therefore inert until a look's layers are approved (the Forge says so); gear colours are live. Physical-iPhone checks (small previews, combat rendering, relaunch persistence, memory) remain open in `docs/modular/CHECKLIST.md`.
 
 Findings worth knowing: Elven variant 3 is a sword pack with no `Shooting` animation (the Recurve is therefore unsupported there, and v3 previously never attacked); the baked weapon anchor is hidden in Idle but a swapped item is still drawn there, so the canvas now includes hidden anchors; shields on packs without a baked shield were squashed into the 128px left-hand rect and now draw at native size.
+
+## Amendment: headpieces removed, recolor reworked (2026-10-30)
+
+- **Headpieces removed on request.** The Starlit Cap, Shadow Hood and Dragoncrest Helm sprites, masks, per-race head fits, and the renderer/Forge support for them are gone. Their catalog entries (`head.starhat`, `head.hood`, `head.dragoncrest`: IDs, prices, ownership) are untouched and still render in the vector avatar. The store set is therefore 9 weapons + 2 shields = 11 sprites, and held gear is 99 items.
+- **Recolor reworked** so it adheres to the model and blends with its shading: masks assign edge pixels from the nearest confident interior pixel and exclude outline junctions; the recolor math moved from a luminance-ratio multiply to OKLab (lightness offset around a pack-wide region tone, target hue, gamut-fitted chroma). `regionLuma` became `regionTone` ([mean OKLab lightness, chroma]) in both manifests. Swift applies it per pixel in `MaterialRecolorer`; Python is the reference and tests pin them together.

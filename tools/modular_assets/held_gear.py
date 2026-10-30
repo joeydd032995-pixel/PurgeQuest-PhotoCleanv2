@@ -25,7 +25,7 @@ import imgops as ops
 import qa
 import scml
 import separate
-from separate import Layer, RegionModel
+from separate import Layer, RegionModel, pool_tones
 
 REPO = Path(__file__).resolve().parents[2]
 OUT = scml.ART_ROOT / "Modular"
@@ -212,11 +212,9 @@ def build_items() -> List[dict]:
     spec = REPO / "tools" / "modular_assets" / "store_gear_spec.json"
     if spec.exists():
         for g in json.loads(spec.read_text())["items"]:
-            hp = g["kind"] == "headpiece"
             items.append({"id": g["id"], "name": g["name"], "kind": g["kind"],
-                          "slot": "head" if hp else ("offHand" if g["kind"] == "shield" else "mainHand"),
-                          "resource": g["resource"], "path": GEAR_ROOT / "store" / f"{g['resource']}.png",
-                          "group": "headpiece" if hp else "store"})
+                          "slot": "offHand" if g["kind"] == "shield" else "mainHand",
+                          "resource": g["resource"], "path": GEAR_ROOT / "store" / f"{g['resource']}.png", "group": "store"})
     return items
 
 
@@ -235,55 +233,10 @@ def arrow_nock(pid: str) -> list:
     return [float(x0), (y0 + y1) / 2]
 
 
-def bare_head(race: str, variant: int) -> Image.Image:
-    """The race's bare-head layer (anatomy), or the original head when the head is already skin/bone/stone."""
-    pid = scml.pack_id(race, variant)
-    anat = OUT / race / f"v{variant}" / f"{pid}_head_anatomy.png"
-    return Image.open(anat if anat.exists() else scml.pack_dir(race, variant) / f"{pid}_head.png").convert("RGBA")
-
-
-def head_fit(race: str, variant: int) -> dict:
-    """Where a headpiece sits on this pack's head, in head-PNG pixels: centre, brim line, and width."""
-    pid = scml.pack_id(race, variant)
-    anat = OUT / race / f"v{variant}" / f"{pid}_head_anatomy.png"
-    path = anat if anat.exists() else scml.pack_dir(race, variant) / f"{pid}_head.png"
-    img = Image.open(path).convert("RGBA")
-    x0, y0, x1, y1 = opaque_bbox(img)
-    orig = Image.open(scml.pack_dir(race, variant) / f"{pid}_head.png")
-    return {"cx": round((x0 + x1) / 2, 1), "baseY": round(y0 + 0.42 * (y1 - y0), 1), "widthPx": round(1.12 * (x1 - x0), 1),
-            "headPngSize": list(orig.size), "headBox": [x0, y0, x1, y1]}
-
-
-def headpiece_canvas(doc: scml.Doc, fit: dict, nom: dict, img_size, bbox=None, pad: float = 20.0):
-    """Canvas size when a headpiece overlay is added to every frame's head placement."""
-    base_o, base_s = doc.canvas(1.0)
-    min_x, min_y = base_o[0] + pad, base_o[1] + pad
-    max_x, max_y = base_o[0] + base_s[0] - pad, base_o[1] + base_s[1] - pad
-    k = fit["widthPx"] / nom["width"]
-    for frames in doc.animations.values():
-        for fr in frames:
-            head = next((p for p in fr if p.file.stem == "head"), None)
-            if head is None:
-                continue
-            f = head.file.width / fit["headPngSize"][0]
-            left = (fit["cx"] - k * nom["anchorU"]) * f - head.pivot_x * head.file.width
-            top = (fit["baseY"] - k * nom["anchorV"]) * f - (1 - head.pivot_y) * head.file.height
-            bx0, by0, bx1, by1 = bbox or (0, 0, img_size[0], img_size[1])   # tight content box, not the whole image rect
-            l2, t2 = left + bx0 * k * f, top + by0 * k * f
-            w, h = (bx1 - bx0 + 1) * k * f, (by1 - by0 + 1) * k * f
-            r = math.radians(head.angle); c, s = math.cos(r), math.sin(r)
-            for lx, ly in ((l2, -t2), (l2 + w, -t2), (l2 + w, -(t2 + h)), (l2, -(t2 + h))):
-                x, y = head.x + lx * c - ly * s, head.y + lx * s + ly * c
-                min_x, max_x, min_y, max_y = min(min_x, x), max(max_x, x), min(min_y, y), max(max_y, y)
-    return (max_x - min_x + 2 * pad, max_y - min_y + 2 * pad)
-
-
 def analyze() -> dict:
     holds = {scml.pack_id(r, v): pack_holds(r, v) for r, v in scml.PACKS}
     items = build_items()
     out_items = []
-    nominal = json.loads((REPO / 'tools' / 'modular_assets' / 'store_gear_spec.json').read_text())['headpieceNominal']
-    pack_out_pre = {pid: {"headFit": head_fit(pid.rsplit('_v', 1)[0], int(pid.rsplit('_v', 1)[1]))} for pid in holds}
     MASK_DIR.mkdir(parents=True, exist_ok=True)
     for old in MASK_DIR.glob("*.png"):
         old.unlink()
@@ -295,33 +248,13 @@ def analyze() -> dict:
         # recolor masks
         layer = Layer(it["resource"], "armor", it["slot"], img)
         model = RegionModel([layer])
-        masks, lumas = model.masks(img)
+        masks, _ = model.masks(img)
+        layer.masks = masks
+        pool_tones([layer])
+        tones = layer.region_tone
         for region, m in masks.items():
             m.save(MASK_DIR / f"{it['resource']}_mask_{region}.png", optimize=True)
         checks = {"gripOnItem": bool(_alpha_near(img, grip, 10) > 0.5), "bbox": list(bbox)}
-        if kind == "headpiece":
-            nom = nominal
-            grip = (nom["anchorU"], nom["anchorV"])
-            checks["gripOnItem"] = True
-            growth = {"1x": [1.0, 1.0]}
-            worst = [1.0, 1.0]
-            for pid, pk in pack_out_pre.items():
-                race, v = pid.rsplit("_v", 1)[0], int(pid.rsplit("_v", 1)[1])
-                doc = scml.load_doc(race, v)
-                _, base_size = doc.canvas(1.0)
-                gs = headpiece_canvas(doc, pk["headFit"], nom, img.size, bbox)
-                worst = [max(worst[0], round(gs[0] / base_size[0], 3)), max(worst[1], round(gs[1] / base_size[1], 3))]
-            growth["1x"] = worst
-            checks["canvasGrowth"] = growth
-            checks["headFitPacks"] = len(pack_out_pre)
-            out_items.append({
-                "id": it["id"], "name": it["name"], "kind": kind, "slot": "head", "resourceName": it["resource"], "group": it["group"],
-                "imageWidth": img.size[0], "imageHeight": img.size[1], "gripPx": [grip[0], grip[1]], "scale": 1.0, "rotationDegrees": 0.0,
-                "contentBox": list(bbox), "layer": "overHead", "profileOverrides": {}, "supportedPacks": [p for p in pack_out_pre],
-                "maskResources": {r: f"{it['resource']}_mask_{r}" for r in sorted(masks)},
-                "regionLuma": {r: round(v, 4) for r, v in lumas.items()},
-                "verification": {"status": "candidate" if max(worst) <= 1.35 and masks else "mapped", "automated": checks, "approvedBy": None}})
-            continue
         packs = supported_packs(it)
         growth = {"1x": [1.0, 1.0], "titan": [1.0, 1.0]}
         for pid in packs:
@@ -346,17 +279,15 @@ def analyze() -> dict:
             "gripPx": [round(grip[0], 2), round(grip[1], 2)], "scale": 1.0, "rotationDegrees": 0.0, "layer": "front",
             "profileOverrides": {}, "supportedPacks": packs, **extra,
             "maskResources": {r: f"{it['resource']}_mask_{r}" for r in sorted(masks)},
-            "regionLuma": {r: round(v, 4) for r, v in lumas.items()},
+            "regionTone": tones,
             "verification": {"status": "candidate" if ok else "mapped", "automated": checks, "approvedBy": None},
         })
-    nominal = json.loads((REPO / 'tools' / 'modular_assets' / 'store_gear_spec.json').read_text())['headpieceNominal'] if (REPO / 'tools' / 'modular_assets' / 'store_gear_spec.json').exists() else None
     pack_out = {pid: {"weaponAnchor": h["weapon"]["anchor"], "weaponPivotPx": [round(x, 2) for x in h["weapon"]["pivotPx"]],
                       "weaponHold": [round(x, 2) for x in h["weapon"]["hold"]],
                       "shieldAnchor": h["shield"]["anchor"], "shieldPivotPx": [round(x, 2) for x in h["shield"]["pivotPx"]],
                       "shieldHold": [round(x, 2) for x in h["shield"]["hold"]],
-                      "headFit": head_fit(pid.rsplit("_v", 1)[0], int(pid.rsplit("_v", 1)[1])),
                       **({"arrowNock": arrow_nock(pid)} if h["weapon"]["anchor"] == "bow" else {})} for pid, h in holds.items()}
-    return {"schemaVersion": 1, "titanScale": TITAN_SCALE, "headpieceNominal": nominal, "packs": pack_out, "items": out_items}
+    return {"schemaVersion": 1, "titanScale": TITAN_SCALE, "packs": pack_out, "items": out_items}
 
 
 def _alpha_near(img: Image.Image, pt, r: int) -> float:
@@ -393,26 +324,8 @@ def sheets(manifest: dict) -> None:
     by_group: Dict[str, List[dict]] = {}
     for it in manifest["items"]:
         by_group.setdefault(it["group"], []).append(it)
-    nominal = manifest["headpieceNominal"]
     for group, items in by_group.items():
         if group == "signature":
-            continue
-        if group == "headpiece":
-            rows = []
-            for race, v in [(r, 1) for r in ("valkyrie", "forest_ranger", "seer", "blood_alchemist", "dark_oracle", "necromancer", "skeleton_crusader", "golem")]:
-                pid = scml.pack_id(race, v)
-                doc = scml.load_doc(race, v)
-                row = []
-                bare = bare_head(race, v)
-                for it in items:
-                    img = Image.open(GEAR_ROOT / "store" / f"{it['resourceName']}.png").convert("RGBA")
-                    fit = dict(manifest["packs"][pid]["headFit"], nominalWidth=nominal["width"], anchorU=nominal["anchorU"], anchorV=nominal["anchorV"])
-                    origin, size = doc.canvas(1.0)
-                    row.append((f"{race} {it['name']}", scml.render_frame(doc, race, v, "Idle", 0, scale=0.3, head_overlay=(img, fit),
-                                                                          head_image=bare, canvas=(origin, size), background=qa.BG)))
-                ims = qa.crop_to_content([im for _, im in row])
-                rows.append([(l, i) for (l, _), i in zip(row, ims)])
-            qa.sheet(rows).convert("RGB").save(SHEETS / "gear_headpieces.png", optimize=True)
             continue
         for ci in range(0, len(items), 5):
             chunk = items[ci:ci + 5]
@@ -445,7 +358,7 @@ def main() -> None:
     summary = {"items": len(manifest["items"]),
                "candidate": sum(i["verification"]["status"] == "candidate" for i in manifest["items"]),
                "mapped": [i["id"] for i in manifest["items"] if i["verification"]["status"] != "candidate"],
-               "titanGrowthMax": max(max(i["verification"]["automated"]["canvasGrowth"]["titan"]) for i in manifest["items"] if i["kind"] not in ("shield", "headpiece"))}
+               "titanGrowthMax": max(max(i["verification"]["automated"]["canvasGrowth"]["titan"]) for i in manifest["items"] if i["kind"] != "shield")}
     print(json.dumps(summary, indent=1)[:1500])
     if "--no-sheets" not in sys.argv:
         sheets(manifest)

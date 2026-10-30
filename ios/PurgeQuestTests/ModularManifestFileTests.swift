@@ -32,7 +32,7 @@ struct ModularManifestFileTests {
         #expect(catalog.parts.count == (try Self.rawCount("modular_races_manifest.json", key: "parts")))
         #expect(catalog.gearItems.count == (try Self.rawCount("modular_gear_manifest.json", key: "items")))
         #expect(catalog.parts.count > 400)
-        #expect(catalog.gearItems.count == 8 + 80 + 14)
+        #expect(catalog.gearItems.count == 8 + 80 + 11)
     }
 
     @Test func nothingIsVerifiedWithoutALedgerApproval() throws {
@@ -109,24 +109,23 @@ struct ModularManifestFileTests {
         #expect(Set(bow.supportedPacks) == ["forest_ranger_v1", "forest_ranger_v2"])
         #expect(bow.stringAnchors != nil)
         #expect(catalog.anchors(pack: "forest_ranger_v1")?.arrowNock != nil)
-        for item in catalog.gearItems where item.kind != .bow && item.kind != .headpiece && item.slot == "mainHand" {
+        for item in catalog.gearItems where item.kind != .bow && item.slot == "mainHand" {
             #expect(item.supportedPacks.contains("forest_ranger_v3"), "\(item.id) must work on the Elven sword pack")
         }
     }
 
-    @Test func everyStoreItemIsMappedAndEveryPackHasHeadFit() throws {
+    @Test func everyStoreWeaponAndShieldIsMappedWithMasks() throws {
         let catalog = try Self.load()
-        let storeIDs = ["head.starhat", "head.hood", "head.dragoncrest",
-                        "weapon.shard", "weapon.reel", "weapon.gem", "weapon.staff", "weapon.stormblade",
+        let storeIDs = ["weapon.shard", "weapon.reel", "weapon.gem", "weapon.staff", "weapon.stormblade",
                         "weapon.chevron", "weapon.ruby", "weapon.arcane", "weapon.fireworkBlade",
                         "shield.crux", "shield.templar"]
         for id in storeIDs {
             let item = try #require(catalog.gearItem(id: id), "\(id)")
             #expect(!item.maskResources.isEmpty, "\(id) needs recolor masks")
         }
-        for pack in Set(catalog.parts.compactMap(\.pack)) {
-            #expect(catalog.anchors(pack: pack)?.headFit.widthPx ?? 0 > 0, "\(pack)")
+        // The three headpieces were removed on request; nothing may ship or reference them.
+        for id in ["head.starhat", "head.hood", "head.dragoncrest"] {
+            #expect(catalog.gearItem(id: id) == nil, "\(id) must not have sprite data")
         }
-        #expect(catalog.gear?.headpieceNominal != nil)
     }
 }

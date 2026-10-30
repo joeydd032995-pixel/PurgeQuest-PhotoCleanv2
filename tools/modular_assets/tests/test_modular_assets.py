@@ -32,6 +32,81 @@ class FitParity(unittest.TestCase):
         self.assertEqual(fit.compatibility("torso", "athletic", "athletic")[0], "native")
 
 
+class RecolorReference(unittest.TestCase):
+    """The same vectors are asserted by ModularGearTests.swiftRecolorMatchesThePythonReference."""
+
+    def test_reference_vectors(self):
+        import numpy as np
+        import imgops
+        tone, target = (0.55, 0.04), (0.15, 0.45, 0.85)
+        cases = [((0.5, 0.5, 0.5), (0.386066, 0.523885, 0.72084), (0.443033, 0.511943, 0.61042)),
+                 ((0.8, 0.2, 0.2), (0.007788, 0.448259, 0.933371), (0.403894, 0.32413, 0.566686)),
+                 ((0.2, 0.35, 0.6), (0.006171, 0.351848, 0.743256), (0.103085, 0.350924, 0.671628)),
+                 ((0.9, 0.9, 0.85), (0.862335, 0.918664, 0.999384), (0.881168, 0.909332, 0.924692))]
+        for src, full, half in cases:
+            a = imgops.recolor_pixels(np.array([src]), target, tone, np.array([1.0]))[0]
+            b = imgops.recolor_pixels(np.array([src]), target, tone, np.array([0.5]))[0]
+            self.assertTrue(np.allclose(a, full, atol=1e-5), (src, a, full))
+            self.assertTrue(np.allclose(b, half, atol=1e-5), (src, b, half))
+
+    def test_unmasked_untouched_and_shading_monotonic(self):
+        import numpy as np
+        import imgops
+        grey = np.array([[v, v, v] for v in np.linspace(0.2, 0.9, 8)])
+        out = imgops.recolor_pixels(grey, (0.15, 0.45, 0.85), (0.55, 0.04), np.ones(8))
+        light = imgops.rgb_to_oklab(out)[:, 0]
+        self.assertTrue(np.all(np.diff(light) > 0), "recolor must keep brighter pixels brighter")
+        untouched = imgops.recolor_pixels(grey, (0.15, 0.45, 0.85), (0.55, 0.04), np.zeros(8))
+        self.assertTrue(np.allclose(untouched, grey))
+
+    def test_masks_stay_off_the_linework(self):
+        races = json.loads(validate.RACES.read_text())
+        for p in races["parts"]:
+            leak = p["verification"]["automated"]["masks"].get("outlineLeak")
+            if leak is not None:
+                self.assertLessEqual(leak, 0.005, p["id"])
+
+
+class CellMerging(unittest.TestCase):
+    """One outline-bounded cell is one material: shading splits merge, a different hue stays its own region."""
+
+    @staticmethod
+    def _cell(colors, widths):
+        import numpy as np
+        h, w = 40, sum(widths)
+        rgb = np.zeros((h, w, 3), np.float32)
+        labels = np.zeros((h, w), np.int16)
+        x = 0
+        for i, (c, wd) in enumerate(zip(colors, widths)):
+            rgb[:, x:x + wd] = c
+            labels[:, x:x + wd] = i
+            x += wd
+        return rgb, np.ones((h, w), np.float32), np.zeros((h, w), bool), labels
+
+    def test_highlight_of_the_same_hue_joins_the_cloth(self):
+        import numpy as np
+        import separate
+        rgb, alpha, outline, labels = self._cell([(0.35, 0.22, 0.12), (0.62, 0.45, 0.25), (0.2, 0.35, 0.85)], [60, 25, 15])
+        out = separate.merge_shading_splits(labels, rgb, alpha, outline, 3)
+        self.assertTrue(np.all(out[:, 60:85] == 0), "tan highlight on brown cloth is shading")
+        self.assertTrue(np.all(out[:, 85:] == 2), "a blue patch is a different material and stays separate")
+
+    def test_light_and_dark_neutrals_in_one_cell_merge(self):
+        import numpy as np
+        import separate
+        rgb, alpha, outline, labels = self._cell([(0.30, 0.30, 0.31), (0.62, 0.62, 0.63)], [70, 30])
+        out = separate.merge_shading_splits(labels, rgb, alpha, outline, 2)
+        self.assertTrue(np.all(out == 0))
+
+    def test_cells_separated_by_outline_keep_their_own_labels(self):
+        import numpy as np
+        import separate
+        rgb, alpha, outline, labels = self._cell([(0.35, 0.22, 0.12), (0.62, 0.45, 0.25)], [50, 50])
+        outline[:, 49:51] = True          # linework splits it into two cells
+        out = separate.merge_shading_splits(labels, rgb, alpha, outline, 2)
+        self.assertTrue(np.all(out[:, :49] == 0) and np.all(out[:, 51:] == 1))
+
+
 class Rasterizer(unittest.TestCase):
     def test_valkyrie_frame_and_swapped_weapon(self):
         doc = scml.load_doc("valkyrie", 1)
@@ -65,7 +140,7 @@ class Manifests(unittest.TestCase):
         self.gear = json.loads(validate.GEAR.read_text())
 
     def test_counts(self):
-        self.assertEqual(len(self.gear["items"]), 8 + 80 + 14)
+        self.assertEqual(len(self.gear["items"]), 8 + 80 + 11)
         self.assertEqual(len(self.races["packs"]), 27)
         self.assertGreater(len(self.races["parts"]), 400)
 

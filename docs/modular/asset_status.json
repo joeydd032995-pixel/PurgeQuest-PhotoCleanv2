@@ -647,10 +647,6 @@
   "kind": "anatomy",
   "status": "candidate"
  },
- "golem_v1.body.armor": {
-  "kind": "armor",
-  "status": "candidate"
- },
  "golem_v1.face_01.face": {
   "kind": "face",
   "status": "candidate"
@@ -679,16 +675,8 @@
   "kind": "anatomy",
   "status": "candidate"
  },
- "golem_v1.left_hand.armor": {
-  "kind": "armor",
-  "status": "candidate"
- },
  "golem_v1.left_leg.anatomy": {
   "kind": "anatomy",
-  "status": "candidate"
- },
- "golem_v1.left_leg.armor": {
-  "kind": "armor",
   "status": "candidate"
  },
  "golem_v1.right_arm.anatomy": {
@@ -703,10 +691,6 @@
   "kind": "anatomy",
   "status": "candidate"
  },
- "golem_v1.right_hand.armor": {
-  "kind": "armor",
-  "status": "candidate"
- },
  "golem_v1.right_leg.anatomy": {
   "kind": "anatomy",
   "status": "candidate"
@@ -717,6 +701,10 @@
  },
  "golem_v2.body.anatomy": {
   "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v2.body.armor": {
+  "kind": "armor",
   "status": "candidate"
  },
  "golem_v2.face_01.face": {
@@ -739,24 +727,48 @@
   "kind": "anatomy",
   "status": "candidate"
  },
+ "golem_v2.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
  "golem_v2.left_hand.anatomy": {
   "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v2.left_hand.armor": {
+  "kind": "armor",
   "status": "candidate"
  },
  "golem_v2.left_leg.anatomy": {
   "kind": "anatomy",
   "status": "candidate"
  },
+ "golem_v2.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
  "golem_v2.right_arm.anatomy": {
   "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v2.right_arm.armor": {
+  "kind": "armor",
   "status": "candidate"
  },
  "golem_v2.right_hand.anatomy": {
   "kind": "anatomy",
   "status": "candidate"
  },
+ "golem_v2.right_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
  "golem_v2.right_leg.anatomy": {
   "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v2.right_leg.armor": {
+  "kind": "armor",
   "status": "candidate"
  },
  "golem_v3.body.anatomy": {
@@ -791,8 +803,16 @@
   "kind": "anatomy",
   "status": "candidate"
  },
+ "golem_v3.left_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
  "golem_v3.left_leg.anatomy": {
   "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v3.left_leg.armor": {
+  "kind": "armor",
   "status": "candidate"
  },
  "golem_v3.right_arm.anatomy": {
@@ -803,20 +823,12 @@
   "kind": "anatomy",
   "status": "candidate"
  },
+ "golem_v3.right_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
  "golem_v3.right_leg.anatomy": {
   "kind": "anatomy",
-  "status": "candidate"
- },
- "head.dragoncrest": {
-  "kind": "headpiece",
-  "status": "candidate"
- },
- "head.hood": {
-  "kind": "headpiece",
-  "status": "candidate"
- },
- "head.starhat": {
-  "kind": "headpiece",
   "status": "candidate"
  },
  "necromancer_v1.body.anatomy": {
@@ -1001,10 +1013,6 @@
  },
  "necromancer_v3.left_hand.anatomy": {
   "kind": "anatomy",
-  "status": "candidate"
- },
- "necromancer_v3.left_hand.armor": {
-  "kind": "armor",
   "status": "candidate"
  },
  "necromancer_v3.left_leg.anatomy": {
@@ -1659,10 +1667,6 @@
   "kind": "anatomy",
   "status": "candidate"
  },
- "skeleton_warrior_v1.left_leg.armor": {
-  "kind": "armor",
-  "status": "candidate"
- },
  "skeleton_warrior_v1.right_arm.anatomy": {
   "kind": "anatomy",
   "status": "candidate"
@@ -1677,10 +1681,6 @@
  },
  "skeleton_warrior_v1.right_leg.anatomy": {
   "kind": "anatomy",
-  "status": "candidate"
- },
- "skeleton_warrior_v1.right_leg.armor": {
-  "kind": "armor",
   "status": "candidate"
  },
  "skeleton_warrior_v2.body.anatomy": {
@@ -1799,10 +1799,6 @@
   "kind": "anatomy",
   "status": "candidate"
  },
- "skeleton_warrior_v3.left_leg.armor": {
-  "kind": "armor",
-  "status": "candidate"
- },
  "skeleton_warrior_v3.right_arm.anatomy": {
   "kind": "anatomy",
   "status": "candidate"
@@ -1817,10 +1813,6 @@
  },
  "skeleton_warrior_v3.right_leg.anatomy": {
   "kind": "anatomy",
-  "status": "candidate"
- },
- "skeleton_warrior_v3.right_leg.armor": {
-  "kind": "armor",
   "status": "candidate"
  },
  "valkyrie_v1.body.anatomy": {

@@ -32,7 +32,7 @@ struct ModularGearTests {
     private func anchors() -> PackAnchors {
         PackAnchors(weaponAnchor: "sword", weaponPivotPx: [0, 0], weaponHold: [52.1, 63.5],
                     shieldAnchor: "shield", shieldPivotPx: [0, 0], shieldHold: [79.5, 79.5],
-                    headFit: HeadFit(cx: 240, baseY: 200, widthPx: 300, headPngSize: [480, 480]), arrowNock: nil)
+                    arrowNock: nil)
     }
 
     private func staff(slot: String = "mainHand", packs: [String] = ["valkyrie_v1"]) throws -> HeldGearEntry {
@@ -76,36 +76,83 @@ struct ModularGearTests {
         #expect(SpriteCanvasLayout.pointsPerUnit(height: 160, baseHeight: 80) == 2)
     }
 
-    // MARK: Recolor math
+    // MARK: Recolor math (OKLab)
 
-    @Test func recolorLeavesUnmaskedPixelsAndPreservesShading() {
-        let target = MaterialRGBA(red: 0.8, green: 0.2, blue: 0.2)
-        let src = (r: 0.5, g: 0.5, b: 0.5)
-        let untouched = RecolorMath.recolor(pixel: src, target: target, referenceLuma: 0.5, mask: 0)
-        #expect(untouched.r == 0.5 && untouched.g == 0.5 && untouched.b == 0.5)
-        let full = RecolorMath.recolor(pixel: src, target: target, referenceLuma: 0.5, mask: 1)
-        #expect(abs(full.r - 0.8) < 1e-9 && abs(full.g - 0.2) < 1e-9)           // at the reference luminance: the target
-        let dark = RecolorMath.recolor(pixel: (0.25, 0.25, 0.25), target: target, referenceLuma: 0.5, mask: 1)
-        #expect(abs(dark.r - 0.4) < 1e-9)                                        // half as bright source -> half as bright result
-        let half = RecolorMath.recolor(pixel: src, target: target, referenceLuma: 0.5, mask: 0.5)
-        #expect(abs(half.r - 0.65) < 1e-9)
+    private let blue = MaterialRGBA(red: 0.15, green: 0.45, blue: 0.85)
+    private let tone = RegionTone(lightness: 0.55, chroma: 0.04)
+
+    /// Vectors produced by tools/modular_assets/imgops.py `recolor_pixels` (the offline reference).
+    @Test func swiftRecolorMatchesThePythonReference() {
+        let cases: [((Double, Double, Double), (Double, Double, Double), (Double, Double, Double))] = [
+            ((0.5, 0.5, 0.5), (0.386066, 0.523885, 0.72084), (0.443033, 0.511943, 0.61042)),
+            ((0.8, 0.2, 0.2), (0.007788, 0.448259, 0.933371), (0.403894, 0.32413, 0.566686)),
+            ((0.2, 0.35, 0.6), (0.006171, 0.351848, 0.743256), (0.103085, 0.350924, 0.671628)),
+            ((0.9, 0.9, 0.85), (0.862335, 0.918664, 0.999384), (0.881168, 0.909332, 0.924692))
+        ]
+        for (src, full, half) in cases {
+            let a = RecolorMath.recolor(pixel: src, target: blue, tone: tone, mask: 1)
+            let b = RecolorMath.recolor(pixel: src, target: blue, tone: tone, mask: 0.5)
+            #expect(abs(a.r - full.0) < 1e-5 && abs(a.g - full.1) < 1e-5 && abs(a.b - full.2) < 1e-5, "full \(src)")
+            #expect(abs(b.r - half.0) < 1e-5 && abs(b.g - half.1) < 1e-5 && abs(b.b - half.2) < 1e-5, "half \(src)")
+        }
     }
 
-    @Test func recolorMatrixReproducesTheScalarMath() {
-        let target = MaterialRGBA(red: 0.8, green: 0.2, blue: 0.4)
-        let rows = RecolorMath.matrixRows(target: target, referenceLuma: 0.4)
-        let src = (r: 0.3, g: 0.6, b: 0.1)
-        func apply(_ row: [Double]) -> Double { row[0] * src.r + row[1] * src.g + row[2] * src.b }
-        let scalar = RecolorMath.recolor(pixel: src, target: target, referenceLuma: 0.4, mask: 1)
-        #expect(abs(apply(rows.r) - scalar.r) < 1e-9)
-        #expect(abs(apply(rows.g) - scalar.g) < 1e-9)
-        #expect(abs(apply(rows.b) - scalar.b) < 1e-9)
+    @Test func okLabRoundTripsAndStaysInGamut() {
+        for src in [(0.5, 0.5, 0.5), (0.8, 0.2, 0.2), (0.05, 0.05, 0.07), (1, 1, 1), (0, 0, 0)] {
+            let lab = RecolorMath.toOKLab(r: src.0, g: src.1, b: src.2)
+            let back = RecolorMath.fromOKLab(l: lab.l, a: lab.a, b: lab.b)
+            #expect(abs(back.r - src.0) < 1e-6 && abs(back.g - src.1) < 1e-6 && abs(back.b - src.2) < 1e-6)
+        }
+        for hue in stride(from: 0.0, to: 6.28, by: 0.7) {
+            for lightness in [0.05, 0.3, 0.6, 0.95] {
+                let c = RecolorMath.fitChroma(lightness: lightness, chroma: 0.6, hue: hue)
+                let lin = RecolorMath.toLinear(l: lightness, a: c * cos(hue), b: c * sin(hue))
+                #expect(min(lin.r, lin.g, lin.b) >= -1.1e-4 && max(lin.r, lin.g, lin.b) <= 1 + 1.1e-4)
+            }
+        }
     }
 
-    @Test func nearBlackReferenceLumaCannotBlowUpTheGain() {
-        #expect(RecolorMath.safeReference(0.0) == 0.05)
-        #expect(RecolorMath.safeReference(nil) == 0.5)
-        #expect(RecolorMath.safeReference(.nan) == 0.5)
+    @Test func recolorLeavesUnmaskedPixelsAlone() {
+        let src = (r: 0.5, g: 0.4, b: 0.3)
+        let out = RecolorMath.recolor(pixel: src, target: blue, tone: tone, mask: 0)
+        #expect(out.r == src.r && out.g == src.g && out.b == src.b)
+    }
+
+    @Test func recolorPreservesShadingOrder() {
+        // Brighter source pixels must stay brighter after recoloring (highlights and shadows survive).
+        var previous = -1.0
+        for value in stride(from: 0.2, through: 0.9, by: 0.1) {
+            let out = RecolorMath.recolor(pixel: (value, value, value), target: blue, tone: tone, mask: 1)
+            let lightness = RecolorMath.toOKLab(r: out.r, g: out.g, b: out.b).l
+            #expect(lightness > previous, "lightness must increase with source brightness at \(value)")
+            previous = lightness
+        }
+    }
+
+    @Test func recolorTakesTheTargetHueAndHonoursGreyTargets() {
+        let out = RecolorMath.recolor(pixel: (0.5, 0.5, 0.5), target: blue, tone: tone, mask: 1)
+        let t = RecolorMath.toOKLab(r: blue.red, g: blue.green, b: blue.blue)
+        let o = RecolorMath.toOKLab(r: out.r, g: out.g, b: out.b)
+        #expect(abs(atan2(o.b, o.a) - atan2(t.b, t.a)) < 0.05)
+        let grey = MaterialRGBA(red: 0.5, green: 0.5, blue: 0.5)
+        let g = RecolorMath.recolor(pixel: (0.8, 0.3, 0.2), target: grey, tone: tone, mask: 1)
+        #expect(abs(g.r - g.g) < 1e-3 && abs(g.g - g.b) < 1e-3, "a grey target gives grey")
+    }
+
+    @Test func partsOfOneMaterialKeepTheirRelativeBrightness() {
+        // Two parts share a region tone; the one whose source was brighter stays brighter (no per-part re-centring).
+        let brightPart = RecolorMath.recolor(pixel: (0.7, 0.7, 0.7), target: blue, tone: tone, mask: 1)
+        let darkPart = RecolorMath.recolor(pixel: (0.35, 0.35, 0.35), target: blue, tone: tone, mask: 1)
+        #expect(RecolorMath.toOKLab(r: brightPart.r, g: brightPart.g, b: brightPart.b).l
+                > RecolorMath.toOKLab(r: darkPart.r, g: darkPart.g, b: darkPart.b).l + 0.1)
+    }
+
+    @Test func softLimitIsIdentityInsideAndBoundedOutside() {
+        #expect(RecolorMath.softLimit(0.5) == 0.5)
+        #expect(RecolorMath.softLimit(1.4) < 1 && RecolorMath.softLimit(1.4) > 0.9)
+        #expect(RecolorMath.softLimit(-0.4) > 0 && RecolorMath.softLimit(-0.4) < 0.1)
+        #expect(RegionTone(nil) == nil && RegionTone([0.5]) == nil && RegionTone([0.5, .nan]) == nil)
+        #expect(RegionTone([0.55, 0.04]) == tone)
     }
 
     @Test func materialPaletteSetsReadsAndNormalizes() {
@@ -186,7 +233,7 @@ struct ModularGearTests {
          "scaleXRange":{"min":0.9,"max":1.1},"scaleYRange":{"min":0.9,"max":1.1},
          "profileOverrides":{"standard":{"scaleX":0.96,"scaleY":1.0,"offsetX":0,"offsetY":0}},
          "coverageTags":["body","armor"],"materialRegions":["primary","trim"],"representation":"modular",
-         "maskResources":{"primary":"valkyrie_v1_body_armor_mask_primary"},"regionLuma":{"primary":0.41},
+         "maskResources":{"primary":"valkyrie_v1_body_armor_mask_primary"},"regionTone":{"primary":[0.41,0.05]},
          "verification":{"status":"candidate","approvedBy":null,"automated":{"x":1}},
          "pack":"valkyrie_v1","part":"body","kind":"armor","paintVariant":1}
         """

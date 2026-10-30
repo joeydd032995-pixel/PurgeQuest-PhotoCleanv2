@@ -8,72 +8,72 @@
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.8722,
-     "outlineLeak": 0.0327,
+     "coverage": 0.9803,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.8559,
-     "outlineLeak": 0.0058,
+     "coverage": 0.9876,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9832,
+     "coverage": 0.9576,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9922,
-     "outlineLeak": 0.2816,
+     "coverage": 0.9876,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9818,
+     "coverage": 0.9473,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:armor": {
-     "coverage": 0.9937,
+     "coverage": 0.9873,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.9646,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9924,
-     "outlineLeak": 0.3529,
+     "coverage": 0.9877,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9834,
+     "coverage": 0.9583,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.9914,
-     "outlineLeak": 0.2366,
+     "coverage": 0.9868,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
-     "coverage": 0.984,
+     "coverage": 0.9605,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:armor": {
-     "coverage": 0.9932,
-     "outlineLeak": 0.3529,
+     "coverage": 0.9877,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9846,
+     "coverage": 0.9686,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9929,
+     "coverage": 0.988,
      "outlineLeak": 0.0,
      "overlap": 0.0
     }
@@ -94,8 +94,8 @@
    }
   },
   "notes": [
-   "window rejected frac=0.05",
-   "body: skin-match=0.50 -> armor",
+   "window rejected frac=0.01",
+   "body: skin-match=0.59 -> armor",
    "left_arm: skin-match=0.00 -> armor",
    "right_arm: skin-match=0.00 -> armor",
    "left_hand: skin-match=0.00 -> armor",
@@ -108,84 +108,84 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.6459,
+     "coverage": 0.9921,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9927,
-     "outlineLeak": 0.0694,
-     "overlap": 0.0001
+     "coverage": 0.9892,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.8146,
+     "coverage": 0.996,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.9927,
-     "outlineLeak": 0.0507,
-     "overlap": 0.0001
+     "coverage": 0.991,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9832,
+     "coverage": 0.9576,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9803,
-     "outlineLeak": 0.0469,
+     "coverage": 0.9437,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9818,
+     "coverage": 0.9473,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:armor": {
-     "coverage": 0.9822,
-     "outlineLeak": 0.0673,
+     "coverage": 0.914,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.9646,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.988,
-     "outlineLeak": 0.0552,
-     "overlap": 0.0003
+     "coverage": 0.9848,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9834,
+     "coverage": 0.9583,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.9796,
-     "outlineLeak": 0.0484,
+     "coverage": 0.9482,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
-     "coverage": 0.984,
+     "coverage": 0.9605,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:armor": {
-     "coverage": 0.9884,
-     "outlineLeak": 0.0635,
+     "coverage": 0.9827,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9846,
+     "coverage": 0.9686,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9885,
-     "outlineLeak": 0.0556,
-     "overlap": 0.0004
+     "coverage": 0.9853,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     }
    },
    "reassembly": {
@@ -218,83 +218,83 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.6462,
+     "coverage": 0.9922,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9892,
-     "outlineLeak": 0.066,
+     "coverage": 0.983,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.8676,
+     "coverage": 0.9966,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.9937,
-     "outlineLeak": 0.0464,
+     "coverage": 0.9914,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9832,
+     "coverage": 0.9576,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9703,
-     "outlineLeak": 0.06,
+     "coverage": 0.8676,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9818,
+     "coverage": 0.9473,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:armor": {
-     "coverage": 0.9234,
-     "outlineLeak": 0.0479,
+     "coverage": 0.9253,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.9646,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9885,
-     "outlineLeak": 0.0562,
+     "coverage": 0.9848,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9834,
+     "coverage": 0.9583,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.9711,
-     "outlineLeak": 0.0592,
+     "coverage": 0.8375,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
-     "coverage": 0.984,
+     "coverage": 0.9605,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:armor": {
      "coverage": 0.9642,
-     "outlineLeak": 0.0449,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9846,
+     "coverage": 0.9686,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9892,
-     "outlineLeak": 0.056,
+     "coverage": 0.9853,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -328,94 +328,94 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.662,
+     "coverage": 0.9923,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9866,
-     "outlineLeak": 0.0757,
+     "coverage": 0.9729,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.8942,
-     "outlineLeak": 0.0088,
+     "coverage": 0.9966,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.9877,
-     "outlineLeak": 0.0603,
+     "coverage": 0.9882,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9832,
+     "coverage": 0.9576,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9554,
-     "outlineLeak": 0.0538,
+     "coverage": 0.9024,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
      "coverage": 0.9292,
-     "outlineLeak": 0.0103,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.9646,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9924,
-     "outlineLeak": 0.3529,
+     "coverage": 0.9877,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9834,
+     "coverage": 0.9583,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.9577,
-     "outlineLeak": 0.0543,
+     "coverage": 0.9043,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
      "coverage": 0.9664,
-     "outlineLeak": 0.0143,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9846,
+     "coverage": 0.9686,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9929,
+     "coverage": 0.988,
      "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
    "reassembly": {
     "Idle": {
-     "bad": 1.3e-05,
+     "bad": 1.4e-05,
      "frames": 4,
-     "max": 0.1255,
-     "mean": 8.8e-05
+     "max": 0.1333,
+     "mean": 8.7e-05
     },
     "Slashing": {
      "bad": 5.4e-05,
      "frames": 11,
      "max": 0.4353,
-     "mean": 8.8e-05
+     "mean": 8.7e-05
     }
    }
   },
   "notes": [
    "window frac=0.34",
-   "body: skin-match=0.01 -> armor",
+   "body: skin-match=0.02 -> armor",
    "left_arm: skin-match=0.00 -> armor",
    "right_arm: skin-match=0.00 -> armor",
    "left_hand: skin-match=0.98 -> anatomy",
@@ -428,178 +428,178 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.994,
+     "coverage": 0.9922,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9845,
-     "outlineLeak": 0.0706,
+     "coverage": 0.9773,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.9954,
-     "outlineLeak": 0.0474,
+     "coverage": 0.9958,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.993,
-     "outlineLeak": 0.0558,
+     "coverage": 0.9895,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9832,
+     "coverage": 0.9576,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9725,
-     "outlineLeak": 0.0482,
-     "overlap": 0.0001
+     "coverage": 0.945,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9937,
+     "coverage": 0.9873,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.9646,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9745,
-     "outlineLeak": 0.0435,
-     "overlap": 0.0003
+     "coverage": 0.9509,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9834,
+     "coverage": 0.9583,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.9178,
-     "outlineLeak": 0.0484,
+     "coverage": 0.9449,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
-     "coverage": 0.9932,
-     "outlineLeak": 0.3529,
+     "coverage": 0.9877,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9846,
+     "coverage": 0.9686,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9769,
-     "outlineLeak": 0.0443,
-     "overlap": 0.0002
+     "coverage": 0.9533,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     }
    },
    "reassembly": {
     "Idle": {
      "bad": 3e-06,
      "frames": 4,
-     "max": 0.1529,
-     "mean": 0.000151
+     "max": 0.1765,
+     "mean": 0.000119
     },
     "Slashing": {
      "bad": 4.4e-05,
      "frames": 11,
      "max": 0.5294,
-     "mean": 0.000152
+     "mean": 0.00012
     }
    }
   },
   "notes": [
-   "window frac=0.59",
-   "body: skin-match=0.55 -> armor",
-   "left_arm: skin-match=0.40 -> armor",
-   "right_arm: skin-match=0.37 -> armor",
+   "window frac=0.49",
+   "body: skin-match=0.32 -> armor",
+   "left_arm: skin-match=0.05 -> armor",
+   "right_arm: skin-match=0.04 -> armor",
    "left_hand: skin-match=1.00 -> anatomy",
    "right_hand: skin-match=1.00 -> anatomy",
-   "left_leg: skin-match=0.39 -> armor",
-   "right_leg: skin-match=0.38 -> armor"
+   "left_leg: skin-match=0.12 -> armor",
+   "right_leg: skin-match=0.16 -> armor"
   ]
  },
  "dark_oracle_v3": {
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.9942,
+     "coverage": 0.9902,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9864,
-     "outlineLeak": 0.0999,
+     "coverage": 0.975,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.9962,
-     "outlineLeak": 0.1366,
+     "coverage": 0.994,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.9939,
-     "outlineLeak": 0.0669,
+     "coverage": 0.9918,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9825,
+     "coverage": 0.9717,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.986,
-     "outlineLeak": 0.2285,
+     "coverage": 0.8354,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9874,
-     "outlineLeak": 0.1015,
+     "coverage": 0.9812,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.9736,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9842,
-     "outlineLeak": 0.0907,
+     "coverage": 0.9774,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9825,
+     "coverage": 0.9716,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.9805,
-     "outlineLeak": 0.1839,
+     "coverage": 0.8988,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
-     "coverage": 0.984,
+     "coverage": 0.9731,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:armor": {
-     "coverage": 0.9855,
-     "outlineLeak": 0.136,
+     "coverage": 0.9781,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9846,
+     "coverage": 0.9747,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9833,
-     "outlineLeak": 0.1187,
+     "coverage": 0.9761,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -619,14 +619,14 @@
    }
   },
   "notes": [
-   "window rejected frac=0.92",
+   "window rejected frac=0.90",
    "window=face-ellipse fallback",
-   "body: skin-match=0.60 -> armor",
-   "left_arm: skin-match=0.61 -> armor",
-   "right_arm: skin-match=0.62 -> armor",
-   "left_hand: skin-match=0.77 -> anatomy",
-   "right_hand: skin-match=0.58 -> armor",
-   "left_leg: skin-match=0.68 -> armor",
+   "body: skin-match=0.59 -> armor",
+   "left_arm: skin-match=0.08 -> armor",
+   "right_arm: skin-match=0.08 -> armor",
+   "left_hand: skin-match=0.75 -> anatomy",
+   "right_hand: skin-match=0.57 -> armor",
+   "left_leg: skin-match=0.66 -> armor",
    "right_leg: skin-match=0.66 -> armor"
   ]
  },
@@ -634,73 +634,73 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.5985,
+     "coverage": 0.9904,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9485,
-     "outlineLeak": 0.0483,
+     "coverage": 0.9503,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.8136,
+     "coverage": 0.9962,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.8518,
-     "outlineLeak": 0.02,
+     "coverage": 0.9896,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9833,
+     "coverage": 0.9575,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.8681,
-     "outlineLeak": 0.0348,
+     "coverage": 0.9349,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9231,
-     "outlineLeak": 0.0005,
+     "coverage": 0.9315,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.9646,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9885,
-     "outlineLeak": 0.0563,
+     "coverage": 0.9847,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9834,
+     "coverage": 0.9585,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.8665,
-     "outlineLeak": 0.035,
+     "coverage": 0.9359,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
-     "coverage": 0.963,
-     "outlineLeak": 0.0004,
+     "coverage": 0.9671,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9846,
+     "coverage": 0.9686,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9892,
-     "outlineLeak": 0.056,
+     "coverage": 0.9853,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -734,73 +734,73 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.5932,
+     "coverage": 0.9906,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9736,
-     "outlineLeak": 0.0533,
+     "coverage": 0.934,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.8085,
+     "coverage": 0.9964,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.9765,
-     "outlineLeak": 0.0788,
+     "coverage": 0.9647,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9825,
+     "coverage": 0.9548,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9719,
-     "outlineLeak": 0.0494,
+     "coverage": 0.9448,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9231,
-     "outlineLeak": 0.0005,
+     "coverage": 0.9315,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.9646,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9887,
-     "outlineLeak": 0.0547,
+     "coverage": 0.9847,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9826,
+     "coverage": 0.9554,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.9672,
-     "outlineLeak": 0.0607,
+     "coverage": 0.9453,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
-     "coverage": 0.963,
-     "outlineLeak": 0.0004,
+     "coverage": 0.9671,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9846,
+     "coverage": 0.9686,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9891,
-     "outlineLeak": 0.0558,
+     "coverage": 0.9852,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -834,83 +834,83 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.6561,
+     "coverage": 0.9925,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9792,
-     "outlineLeak": 0.0557,
+     "coverage": 0.9645,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.7998,
+     "coverage": 0.9955,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.7803,
-     "outlineLeak": 0.0281,
+     "coverage": 0.9696,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9832,
+     "coverage": 0.958,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9391,
-     "outlineLeak": 0.0449,
+     "coverage": 0.9504,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9818,
+     "coverage": 0.9473,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:armor": {
-     "coverage": 0.9823,
-     "outlineLeak": 0.0679,
+     "coverage": 0.9096,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.965,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9772,
-     "outlineLeak": 0.0452,
+     "coverage": 0.9515,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9834,
+     "coverage": 0.9584,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.9316,
-     "outlineLeak": 0.0471,
+     "coverage": 0.9342,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
-     "coverage": 0.984,
+     "coverage": 0.9605,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:armor": {
-     "coverage": 0.9885,
-     "outlineLeak": 0.0636,
+     "coverage": 0.9821,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9845,
+     "coverage": 0.9686,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9808,
-     "outlineLeak": 0.0452,
+     "coverage": 0.9548,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -944,18 +944,13 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.9924,
+     "coverage": 0.9843,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
-    "body:armor": {
-     "coverage": 0.8665,
-     "outlineLeak": 0.0031,
-     "overlap": 0.0001
-    },
     "head:anatomy": {
-     "coverage": 0.9386,
-     "outlineLeak": 0.0001,
+     "coverage": 0.9855,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
@@ -964,29 +959,19 @@
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.6841,
-     "outlineLeak": 0.0032,
-     "overlap": 0.0001
+     "coverage": 0.9743,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.964,
+     "coverage": 0.9125,
      "outlineLeak": 0.0,
      "overlap": 0.0
-    },
-    "left_hand:armor": {
-     "coverage": 0.9635,
-     "outlineLeak": 0.0754,
-     "overlap": 0.0001
     },
     "left_leg:anatomy": {
-     "coverage": 0.9733,
+     "coverage": 0.9555,
      "outlineLeak": 0.0,
      "overlap": 0.0
-    },
-    "left_leg:armor": {
-     "coverage": 0.9728,
-     "outlineLeak": 0.0526,
-     "overlap": 0.0001
     },
     "right_arm:anatomy": {
      "coverage": 0.9731,
@@ -994,19 +979,14 @@
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.7473,
-     "outlineLeak": 0.0105,
-     "overlap": 0.0001
-    },
-    "right_hand:anatomy": {
-     "coverage": 0.9702,
+     "coverage": 0.9779,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
-    "right_hand:armor": {
-     "coverage": 0.9717,
-     "outlineLeak": 0.0651,
-     "overlap": 0.0001
+    "right_hand:anatomy": {
+     "coverage": 0.9638,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "right_leg:anatomy": {
      "coverage": 0.9743,
@@ -1014,9 +994,9 @@
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9707,
-     "outlineLeak": 0.048,
-     "overlap": 0.0001
+     "coverage": 0.9539,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     }
    },
    "reassembly": {
@@ -1036,56 +1016,91 @@
   },
   "notes": [
    "window rejected frac=0.64",
-   "body: skin-match=0.58 -> armor",
-   "left_arm: skin-match=0.42 -> armor",
-   "right_arm: skin-match=0.41 -> armor",
-   "left_hand: skin-match=0.14 -> armor",
-   "right_hand: skin-match=0.32 -> armor",
-   "left_leg: skin-match=0.24 -> armor",
-   "right_leg: skin-match=0.23 -> armor"
+   "body: skin-match=0.83 -> anatomy",
+   "left_arm: skin-match=0.71 -> armor",
+   "right_arm: skin-match=0.67 -> armor",
+   "left_hand: skin-match=0.77 -> anatomy",
+   "right_hand: skin-match=0.79 -> anatomy",
+   "left_leg: skin-match=0.76 -> anatomy",
+   "right_leg: skin-match=0.71 -> armor"
   ]
  },
  "golem_v2": {
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.9716,
-     "outlineLeak": 0.0063,
+     "coverage": 0.9921,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
+    },
+    "body:armor": {
+     "coverage": 0.9875,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.9103,
-     "outlineLeak": 0.0201,
+     "coverage": 0.9875,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
+     "coverage": 0.9766,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
+    },
+    "left_arm:armor": {
      "coverage": 0.9797,
-     "outlineLeak": 0.003,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
+     "coverage": 0.9758,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
+    },
+    "left_hand:armor": {
      "coverage": 0.9445,
-     "outlineLeak": 0.0036,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
+     "coverage": 0.978,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
+    },
+    "left_leg:armor": {
      "coverage": 0.9798,
-     "outlineLeak": 0.0046,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
+     "coverage": 0.9772,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
+    },
+    "right_arm:armor": {
      "coverage": 0.9797,
-     "outlineLeak": 0.0032,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
+     "coverage": 0.9789,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
+    },
+    "right_hand:armor": {
      "coverage": 0.9782,
-     "outlineLeak": 0.0044,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
+     "coverage": 0.9791,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
+    },
+    "right_leg:armor": {
      "coverage": 0.9814,
-     "outlineLeak": 0.0028,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -1093,74 +1108,89 @@
     "Idle": {
      "bad": 0.0,
      "frames": 4,
-     "max": 0.0,
+     "max": 0.0039,
      "mean": 0.0
     },
     "Slashing": {
      "bad": 0.0,
      "frames": 11,
-     "max": 0.0,
+     "max": 0.0039,
      "mean": 0.0
     }
    }
   },
   "notes": [
    "window rejected frac=0.66",
-   "body: skin-match=0.78 -> anatomy",
-   "left_arm: skin-match=0.82 -> anatomy",
-   "right_arm: skin-match=0.76 -> anatomy",
-   "left_hand: skin-match=0.87 -> anatomy",
-   "right_hand: skin-match=0.74 -> anatomy",
-   "left_leg: skin-match=0.87 -> anatomy",
-   "right_leg: skin-match=0.92 -> anatomy"
+   "body: skin-match=0.55 -> armor",
+   "left_arm: skin-match=0.30 -> armor",
+   "right_arm: skin-match=0.36 -> armor",
+   "left_hand: skin-match=0.28 -> armor",
+   "right_hand: skin-match=0.34 -> armor",
+   "left_leg: skin-match=0.27 -> armor",
+   "right_leg: skin-match=0.35 -> armor"
   ]
  },
  "golem_v3": {
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.8365,
+     "coverage": 0.9925,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.8972,
-     "outlineLeak": 0.0464,
+     "coverage": 0.9493,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.9394,
-     "outlineLeak": 0.0367,
+     "coverage": 0.9951,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9829,
-     "outlineLeak": 0.0521,
+     "coverage": 0.9709,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9608,
-     "outlineLeak": 0.0573,
+     "coverage": 0.9506,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
+    },
+    "left_hand:armor": {
+     "coverage": 0.9303,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9588,
-     "outlineLeak": 0.0664,
+     "coverage": 0.9665,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
+    },
+    "left_leg:armor": {
+     "coverage": 0.935,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9829,
-     "outlineLeak": 0.0647,
+     "coverage": 0.9631,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
-     "coverage": 0.9791,
-     "outlineLeak": 0.0521,
+     "coverage": 0.9615,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
+    },
+    "right_hand:armor": {
+     "coverage": 0.9434,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9715,
-     "outlineLeak": 0.0759,
+     "coverage": 0.95,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -1181,95 +1211,95 @@
   },
   "notes": [
    "window rejected frac=0.90",
-   "body: skin-match=0.62 -> armor",
-   "left_arm: skin-match=0.93 -> anatomy",
-   "right_arm: skin-match=0.97 -> anatomy",
-   "left_hand: skin-match=0.80 -> anatomy",
-   "right_hand: skin-match=0.79 -> anatomy",
-   "left_leg: skin-match=0.85 -> anatomy",
-   "right_leg: skin-match=0.91 -> anatomy"
+   "body: skin-match=0.39 -> armor",
+   "left_arm: skin-match=0.83 -> anatomy",
+   "right_arm: skin-match=0.90 -> anatomy",
+   "left_hand: skin-match=0.57 -> armor",
+   "right_hand: skin-match=0.31 -> armor",
+   "left_leg: skin-match=0.63 -> armor",
+   "right_leg: skin-match=0.78 -> anatomy"
   ]
  },
  "necromancer_v1": {
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.6454,
+     "coverage": 0.9921,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.99,
-     "outlineLeak": 0.0658,
+     "coverage": 0.9875,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.8334,
-     "outlineLeak": 0.0012,
+     "coverage": 0.9963,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.7981,
-     "outlineLeak": 0.0245,
+     "coverage": 0.9851,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9832,
+     "coverage": 0.9577,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9821,
-     "outlineLeak": 0.105,
+     "coverage": 0.8358,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9818,
+     "coverage": 0.9476,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:armor": {
-     "coverage": 0.7589,
-     "outlineLeak": 0.016,
+     "coverage": 0.9294,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.9646,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9924,
-     "outlineLeak": 0.3569,
+     "coverage": 0.9877,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9834,
+     "coverage": 0.9584,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.9832,
-     "outlineLeak": 0.1042,
+     "coverage": 0.838,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
-     "coverage": 0.984,
+     "coverage": 0.9604,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:armor": {
      "coverage": 0.9662,
-     "outlineLeak": 0.0192,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9846,
+     "coverage": 0.9686,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9929,
+     "coverage": 0.988,
      "outlineLeak": 0.0,
      "overlap": 0.0
     }
@@ -1279,7 +1309,7 @@
      "bad": 6e-05,
      "frames": 4,
      "max": 0.4,
-     "mean": 6.8e-05
+     "mean": 6.7e-05
     },
     "Slashing": {
      "bad": 0.000137,
@@ -1291,10 +1321,10 @@
   },
   "notes": [
    "window frac=0.25",
-   "body: skin-match=0.25 -> armor",
+   "body: skin-match=0.26 -> armor",
    "left_arm: skin-match=0.00 -> armor",
    "right_arm: skin-match=0.00 -> armor",
-   "left_hand: skin-match=0.32 -> armor",
+   "left_hand: skin-match=0.42 -> armor",
    "right_hand: skin-match=0.16 -> armor",
    "left_leg: skin-match=0.00 -> armor",
    "right_leg: skin-match=0.00 -> armor"
@@ -1304,97 +1334,97 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.661,
+     "coverage": 0.9925,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9918,
-     "outlineLeak": 0.049,
-     "overlap": 0.0005
+     "coverage": 0.9915,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.841,
-     "outlineLeak": 0.0165,
+     "coverage": 0.9954,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.9936,
-     "outlineLeak": 0.0641,
-     "overlap": 0.0012
+     "coverage": 0.994,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9832,
+     "coverage": 0.9577,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9888,
-     "outlineLeak": 0.2458,
-     "overlap": 0.0001
+     "coverage": 0.9867,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.7284,
-     "outlineLeak": 0.0081,
+     "coverage": 0.9306,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.9646,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9899,
-     "outlineLeak": 0.3529,
+     "coverage": 0.9877,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9834,
+     "coverage": 0.9584,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.9899,
-     "outlineLeak": 0.2214,
-     "overlap": 0.0001
+     "coverage": 0.9884,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "right_hand:anatomy": {
      "coverage": 0.9666,
-     "outlineLeak": 0.0099,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9846,
+     "coverage": 0.9686,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9904,
+     "coverage": 0.9879,
      "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
    "reassembly": {
     "Idle": {
-     "bad": 0.000112,
+     "bad": 9.2e-05,
      "frames": 4,
-     "max": 0.3059,
-     "mean": 7.1e-05
+     "max": 0.302,
+     "mean": 6.5e-05
     },
     "Slashing": {
-     "bad": 0.000137,
+     "bad": 0.000109,
      "frames": 11,
      "max": 0.3569,
-     "mean": 6.7e-05
+     "mean": 6.3e-05
     }
    }
   },
   "notes": [
    "window frac=0.24",
-   "body: skin-match=0.46 -> armor",
+   "body: skin-match=0.47 -> armor",
    "left_arm: skin-match=0.16 -> armor",
    "right_arm: skin-match=0.17 -> armor",
-   "left_hand: skin-match=0.76 -> anatomy",
+   "left_hand: skin-match=1.00 -> anatomy",
    "right_hand: skin-match=1.00 -> anatomy",
    "left_leg: skin-match=0.00 -> armor",
    "right_leg: skin-match=0.00 -> armor"
@@ -1404,77 +1434,72 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.9025,
+     "coverage": 0.9923,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9902,
-     "outlineLeak": 0.0932,
+     "coverage": 0.9853,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.9679,
-     "outlineLeak": 0.0674,
+     "coverage": 0.9944,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.996,
-     "outlineLeak": 0.052,
+     "coverage": 0.9947,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9832,
+     "coverage": 0.9577,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9867,
-     "outlineLeak": 0.0474,
-     "overlap": 0.0
-    },
-    "left_hand:anatomy": {
-     "coverage": 0.9818,
+     "coverage": 0.9691,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
-    "left_hand:armor": {
-     "coverage": 0.9077,
-     "outlineLeak": 0.0393,
+    "left_hand:anatomy": {
+     "coverage": 0.9244,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.9646,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9924,
-     "outlineLeak": 0.3529,
+     "coverage": 0.9877,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9834,
+     "coverage": 0.9584,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.9857,
-     "outlineLeak": 0.0497,
+     "coverage": 0.9696,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
      "coverage": 0.9644,
-     "outlineLeak": 0.0433,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9846,
+     "coverage": 0.9686,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9928,
+     "coverage": 0.9879,
      "outlineLeak": 0.0,
      "overlap": 0.0
     }
@@ -1495,12 +1520,12 @@
    }
   },
   "notes": [
-   "window rejected frac=0.94",
+   "window rejected frac=0.91",
    "window=face-ellipse fallback",
    "body: skin-match=0.50 -> armor",
-   "left_arm: skin-match=0.23 -> armor",
-   "right_arm: skin-match=0.23 -> armor",
-   "left_hand: skin-match=0.71 -> armor",
+   "left_arm: skin-match=0.64 -> armor",
+   "right_arm: skin-match=0.65 -> armor",
+   "left_hand: skin-match=1.00 -> anatomy",
    "right_hand: skin-match=1.00 -> anatomy",
    "left_leg: skin-match=0.34 -> armor",
    "right_leg: skin-match=0.36 -> armor"
@@ -1510,8 +1535,8 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.959,
-     "outlineLeak": 0.0034,
+     "coverage": 0.9743,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:anatomy": {
@@ -1520,48 +1545,48 @@
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.9214,
-     "outlineLeak": 0.003,
+     "coverage": 0.9778,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9575,
-     "outlineLeak": 0.0024,
+     "coverage": 0.9593,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9279,
-     "outlineLeak": 0.0006,
+     "coverage": 0.932,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.9646,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9881,
-     "outlineLeak": 0.0563,
+     "coverage": 0.9847,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9585,
-     "outlineLeak": 0.0019,
+     "coverage": 0.9604,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
-     "coverage": 0.965,
-     "outlineLeak": 0.0014,
+     "coverage": 0.9672,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9846,
+     "coverage": 0.9686,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9889,
-     "outlineLeak": 0.0555,
+     "coverage": 0.9854,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -1582,7 +1607,7 @@
   },
   "notes": [
    "window frac=0.29",
-   "body: skin-match=0.93 -> anatomy",
+   "body: skin-match=0.95 -> anatomy",
    "left_arm: skin-match=0.96 -> anatomy",
    "right_arm: skin-match=0.96 -> anatomy",
    "left_hand: skin-match=0.94 -> anatomy",
@@ -1595,73 +1620,73 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.6471,
+     "coverage": 0.9922,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9656,
-     "outlineLeak": 0.0541,
-     "overlap": 0.0016
+     "coverage": 0.9715,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.7864,
+     "coverage": 0.996,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.9524,
-     "outlineLeak": 0.042,
-     "overlap": 0.0013
+     "coverage": 0.9925,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9832,
+     "coverage": 0.9576,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9776,
-     "outlineLeak": 0.0445,
-     "overlap": 0.0003
+     "coverage": 0.9482,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "left_hand:anatomy": {
      "coverage": 0.9306,
-     "outlineLeak": 0.0035,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.9646,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9886,
-     "outlineLeak": 0.0481,
+     "coverage": 0.9855,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9834,
+     "coverage": 0.9583,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.966,
-     "outlineLeak": 0.0479,
-     "overlap": 0.0003
+     "coverage": 0.9537,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "right_hand:anatomy": {
      "coverage": 0.9671,
-     "outlineLeak": 0.0052,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9846,
+     "coverage": 0.9686,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9901,
-     "outlineLeak": 0.0478,
+     "coverage": 0.9864,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -1682,12 +1707,12 @@
   },
   "notes": [
    "window frac=0.20",
-   "body: skin-match=0.30 -> armor",
-   "left_arm: skin-match=0.25 -> armor",
-   "right_arm: skin-match=0.24 -> armor",
+   "body: skin-match=0.34 -> armor",
+   "left_arm: skin-match=0.51 -> armor",
+   "right_arm: skin-match=0.36 -> armor",
    "left_hand: skin-match=0.96 -> anatomy",
    "right_hand: skin-match=0.98 -> anatomy",
-   "left_leg: skin-match=0.07 -> armor",
+   "left_leg: skin-match=0.08 -> armor",
    "right_leg: skin-match=0.06 -> armor"
   ]
  },
@@ -1695,64 +1720,64 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.6413,
+     "coverage": 0.992,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9289,
-     "outlineLeak": 0.0438,
-     "overlap": 0.0001
+     "coverage": 0.9447,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.9961,
+     "coverage": 0.9956,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.9437,
-     "outlineLeak": 0.0407,
+     "coverage": 0.9823,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9832,
+     "coverage": 0.9575,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9698,
-     "outlineLeak": 0.0585,
-     "overlap": 0.0004
+     "coverage": 0.9247,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9818,
+     "coverage": 0.9473,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:armor": {
-     "coverage": 0.9143,
-     "outlineLeak": 0.0006,
+     "coverage": 0.93,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.9646,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9881,
-     "outlineLeak": 0.0544,
+     "coverage": 0.9849,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9834,
+     "coverage": 0.9583,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.9756,
-     "outlineLeak": 0.0674,
-     "overlap": 0.0004
+     "coverage": 0.901,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "right_hand:anatomy": {
      "coverage": 0.9738,
@@ -1760,18 +1785,18 @@
      "overlap": 0.0
     },
     "right_hand:armor": {
-     "coverage": 0.9669,
-     "outlineLeak": 0.0082,
+     "coverage": 0.967,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9846,
+     "coverage": 0.9686,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9887,
-     "outlineLeak": 0.0554,
+     "coverage": 0.9854,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -1805,24 +1830,24 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.6543,
+     "coverage": 0.9924,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9342,
-     "outlineLeak": 0.0476,
+     "coverage": 0.9742,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.9967,
+     "coverage": 0.996,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.9427,
-     "outlineLeak": 0.0138,
-     "overlap": 0.0012
+     "coverage": 0.9758,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "left_arm:anatomy": {
      "coverage": 0.9693,
@@ -1831,27 +1856,27 @@
     },
     "left_arm:armor": {
      "coverage": 0.9654,
-     "outlineLeak": 0.0078,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9817,
+     "coverage": 0.9479,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:armor": {
-     "coverage": 0.7827,
-     "outlineLeak": 0.0205,
-     "overlap": 0.0008
+     "coverage": 0.9288,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.965,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.8865,
-     "outlineLeak": 0.0334,
+     "coverage": 0.9575,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
@@ -1861,27 +1886,27 @@
     },
     "right_arm:armor": {
      "coverage": 0.9651,
-     "outlineLeak": 0.0091,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
-     "coverage": 0.984,
+     "coverage": 0.96,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:armor": {
-     "coverage": 0.9666,
-     "outlineLeak": 0.0233,
-     "overlap": 0.0026
+     "coverage": 0.9665,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9847,
+     "coverage": 0.9685,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.83,
-     "outlineLeak": 0.0279,
+     "coverage": 0.9626,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -1902,7 +1927,7 @@
   },
   "notes": [
    "window frac=0.33",
-   "body: skin-match=0.06 -> armor",
+   "body: skin-match=0.07 -> armor",
    "left_arm: skin-match=0.00 -> armor",
    "right_arm: skin-match=0.00 -> armor",
    "left_hand: skin-match=0.00 -> armor",
@@ -1915,18 +1940,18 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.6208,
+     "coverage": 0.9913,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.8649,
-     "outlineLeak": 0.0163,
-     "overlap": 0.0007
+     "coverage": 0.9416,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.967,
-     "outlineLeak": 0.0006,
+     "coverage": 0.9948,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
@@ -1935,18 +1960,18 @@
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9476,
-     "outlineLeak": 0.004,
+     "coverage": 0.9656,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9817,
+     "coverage": 0.9479,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:armor": {
-     "coverage": 0.7077,
-     "outlineLeak": 0.0044,
+     "coverage": 0.9306,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
@@ -1955,8 +1980,8 @@
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9418,
-     "outlineLeak": 0.008,
+     "coverage": 0.9602,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
@@ -1965,9 +1990,9 @@
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.924,
-     "outlineLeak": 0.0008,
-     "overlap": 0.0004
+     "coverage": 0.9316,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "right_hand:anatomy": {
      "coverage": 0.9737,
@@ -1975,8 +2000,8 @@
      "overlap": 0.0
     },
     "right_hand:armor": {
-     "coverage": 0.9516,
-     "outlineLeak": 0.0047,
+     "coverage": 0.9667,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
@@ -1985,8 +2010,8 @@
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9444,
-     "outlineLeak": 0.0076,
+     "coverage": 0.9628,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -2025,13 +2050,13 @@
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.8688,
-     "outlineLeak": 0.0403,
+     "coverage": 0.9683,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.9689,
-     "outlineLeak": 0.0001,
+     "coverage": 0.9941,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
@@ -2041,7 +2066,7 @@
     },
     "left_arm:armor": {
      "coverage": 0.9589,
-     "outlineLeak": 0.0046,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
@@ -2050,8 +2075,8 @@
      "overlap": 0.0
     },
     "left_hand:armor": {
-     "coverage": 0.7169,
-     "outlineLeak": 0.0041,
+     "coverage": 0.9306,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
@@ -2060,8 +2085,8 @@
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9082,
-     "outlineLeak": 0.0359,
+     "coverage": 0.9614,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
@@ -2070,8 +2095,8 @@
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.96,
-     "outlineLeak": 0.0039,
+     "coverage": 0.9601,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
@@ -2081,7 +2106,7 @@
     },
     "right_hand:armor": {
      "coverage": 0.9667,
-     "outlineLeak": 0.0044,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
@@ -2090,8 +2115,8 @@
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.8416,
-     "outlineLeak": 0.0289,
+     "coverage": 0.9652,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -2125,63 +2150,53 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.6526,
+     "coverage": 0.9923,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.988,
-     "outlineLeak": 0.0551,
-     "overlap": 0.0002
-    },
-    "head:anatomy": {
-     "coverage": 0.9614,
-     "outlineLeak": 0.001,
-     "overlap": 0.0
-    },
-    "left_arm:anatomy": {
-     "coverage": 0.9338,
-     "outlineLeak": 0.0003,
-     "overlap": 0.0
-    },
-    "left_hand:anatomy": {
-     "coverage": 0.9278,
-     "outlineLeak": 0.0005,
-     "overlap": 0.0
-    },
-    "left_leg:anatomy": {
-     "coverage": 0.9206,
+     "coverage": 0.9845,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
-    "left_leg:armor": {
-     "coverage": 0.9795,
-     "outlineLeak": 0.0492,
+    "head:anatomy": {
+     "coverage": 0.9924,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
+    },
+    "left_arm:anatomy": {
+     "coverage": 0.9425,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
+    },
+    "left_hand:anatomy": {
+     "coverage": 0.932,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
+    },
+    "left_leg:anatomy": {
+     "coverage": 0.9572,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9819,
+     "coverage": 0.9454,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.7716,
-     "outlineLeak": 0.0128,
-     "overlap": 0.0001
-    },
-    "right_hand:anatomy": {
-     "coverage": 0.965,
-     "outlineLeak": 0.0013,
-     "overlap": 0.0
-    },
-    "right_leg:anatomy": {
-     "coverage": 0.9208,
+     "coverage": 0.9342,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
-    "right_leg:armor": {
-     "coverage": 0.9805,
-     "outlineLeak": 0.0475,
+    "right_hand:anatomy": {
+     "coverage": 0.9672,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
+    },
+    "right_leg:anatomy": {
+     "coverage": 0.9606,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -2204,11 +2219,11 @@
    "window rejected frac=0.80",
    "body: skin-match=0.04 -> armor",
    "left_arm: skin-match=0.97 -> anatomy",
-   "right_arm: skin-match=0.12 -> armor",
+   "right_arm: skin-match=0.14 -> armor",
    "left_hand: skin-match=0.95 -> anatomy",
    "right_hand: skin-match=0.98 -> anatomy",
-   "left_leg: skin-match=0.22 -> armor",
-   "right_leg: skin-match=0.24 -> armor"
+   "left_leg: skin-match=0.95 -> anatomy",
+   "right_leg: skin-match=0.98 -> anatomy"
   ]
  },
  "skeleton_warrior_v2": {
@@ -2220,8 +2235,8 @@
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9112,
-     "outlineLeak": 0.0045,
+     "coverage": 0.9789,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:anatomy": {
@@ -2230,8 +2245,8 @@
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.8607,
-     "outlineLeak": 0.0038,
+     "coverage": 0.9821,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
@@ -2240,18 +2255,18 @@
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9589,
-     "outlineLeak": 0.0031,
-     "overlap": 0.0001
+     "coverage": 0.9597,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9818,
+     "coverage": 0.9473,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:armor": {
-     "coverage": 0.9305,
-     "outlineLeak": 0.0043,
+     "coverage": 0.9306,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
@@ -2260,9 +2275,9 @@
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9603,
-     "outlineLeak": 0.0022,
-     "overlap": 0.0001
+     "coverage": 0.9605,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "right_arm:anatomy": {
      "coverage": 0.9703,
@@ -2270,9 +2285,9 @@
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.9592,
-     "outlineLeak": 0.0033,
-     "overlap": 0.0001
+     "coverage": 0.96,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "right_hand:anatomy": {
      "coverage": 0.9738,
@@ -2281,7 +2296,7 @@
     },
     "right_hand:armor": {
      "coverage": 0.9671,
-     "outlineLeak": 0.0063,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
@@ -2290,8 +2305,8 @@
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9631,
-     "outlineLeak": 0.0025,
+     "coverage": 0.9633,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -2312,7 +2327,7 @@
   },
   "notes": [
    "window frac=0.24",
-   "body: skin-match=0.08 -> armor",
+   "body: skin-match=0.09 -> armor",
    "left_arm: skin-match=0.17 -> armor",
    "right_arm: skin-match=0.19 -> armor",
    "left_hand: skin-match=0.00 -> armor",
@@ -2325,44 +2340,39 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.6023,
+     "coverage": 0.9904,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.7212,
-     "outlineLeak": 0.0229,
-     "overlap": 0.0009
+     "coverage": 0.9416,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.9962,
-     "outlineLeak": 0.0002,
+     "coverage": 0.9963,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.846,
-     "outlineLeak": 0.0047,
-     "overlap": 0.0002
+     "coverage": 0.9836,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "left_arm:anatomy": {
      "coverage": 0.9413,
-     "outlineLeak": 0.004,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
      "coverage": 0.9297,
-     "outlineLeak": 0.0073,
-     "overlap": 0.0
-    },
-    "left_leg:anatomy": {
-     "coverage": 0.9775,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
-    "left_leg:armor": {
-     "coverage": 0.9825,
-     "outlineLeak": 0.0478,
-     "overlap": 0.0005
+    "left_leg:anatomy": {
+     "coverage": 0.9564,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "right_arm:anatomy": {
      "coverage": 0.9656,
@@ -2370,24 +2380,19 @@
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.8073,
-     "outlineLeak": 0.0024,
-     "overlap": 0.0002
-    },
-    "right_hand:anatomy": {
-     "coverage": 0.9666,
-     "outlineLeak": 0.0102,
-     "overlap": 0.0
-    },
-    "right_leg:anatomy": {
-     "coverage": 0.9783,
+     "coverage": 0.9575,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
-    "right_leg:armor": {
-     "coverage": 0.9834,
-     "outlineLeak": 0.0471,
-     "overlap": 0.0005
+    "right_hand:anatomy": {
+     "coverage": 0.9666,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
+    },
+    "right_leg:anatomy": {
+     "coverage": 0.96,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     }
    },
    "reassembly": {
@@ -2407,13 +2412,13 @@
   },
   "notes": [
    "window frac=0.27",
-   "body: skin-match=0.27 -> armor",
+   "body: skin-match=0.39 -> armor",
    "left_arm: skin-match=1.00 -> anatomy",
-   "right_arm: skin-match=0.12 -> armor",
+   "right_arm: skin-match=0.14 -> armor",
    "left_hand: skin-match=1.00 -> anatomy",
    "right_hand: skin-match=1.00 -> anatomy",
-   "left_leg: skin-match=0.28 -> armor",
-   "right_leg: skin-match=0.30 -> armor"
+   "left_leg: skin-match=1.00 -> anatomy",
+   "right_leg: skin-match=1.00 -> anatomy"
   ]
  },
  "valkyrie_v1": {
@@ -2425,9 +2430,9 @@
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.8796,
-     "outlineLeak": 0.0117,
-     "overlap": 0.0008
+     "coverage": 0.9662,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "head:anatomy": {
      "coverage": 0.9962,
@@ -2435,18 +2440,18 @@
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.7915,
-     "outlineLeak": 0.0178,
+     "coverage": 0.9733,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9832,
+     "coverage": 0.9577,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9406,
-     "outlineLeak": 0.0409,
+     "coverage": 0.9604,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
@@ -2455,28 +2460,28 @@
      "overlap": 0.0
     },
     "left_hand:armor": {
-     "coverage": 0.7143,
-     "outlineLeak": 0.0041,
+     "coverage": 0.9312,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.9646,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9403,
-     "outlineLeak": 0.0405,
+     "coverage": 0.9611,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9834,
+     "coverage": 0.9584,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.8807,
-     "outlineLeak": 0.0361,
+     "coverage": 0.9617,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
@@ -2485,18 +2490,18 @@
      "overlap": 0.0
     },
     "right_hand:armor": {
-     "coverage": 0.9631,
-     "outlineLeak": 0.0048,
+     "coverage": 0.9668,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9846,
+     "coverage": 0.9686,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.8108,
-     "outlineLeak": 0.0255,
+     "coverage": 0.965,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -2517,7 +2522,7 @@
   },
   "notes": [
    "window frac=0.22",
-   "body: skin-match=0.24 -> armor",
+   "body: skin-match=0.27 -> armor",
    "left_arm: skin-match=0.00 -> armor",
    "right_arm: skin-match=0.00 -> armor",
    "left_hand: skin-match=0.00 -> armor",
@@ -2530,24 +2535,24 @@
   "checks": {
    "masks": {
     "body:anatomy": {
-     "coverage": 0.7302,
+     "coverage": 0.994,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9015,
-     "outlineLeak": 0.0343,
-     "overlap": 0.0001
+     "coverage": 0.9428,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "head:anatomy": {
-     "coverage": 0.8081,
+     "coverage": 0.9962,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.8577,
-     "outlineLeak": 0.0311,
-     "overlap": 0.0001
+     "coverage": 0.9752,
+     "outlineLeak": 0.0,
+     "overlap": 0.0
     },
     "left_arm:anatomy": {
      "coverage": 0.9678,
@@ -2555,23 +2560,23 @@
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.8327,
-     "outlineLeak": 0.0235,
+     "coverage": 0.9371,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9213,
-     "outlineLeak": 0.0003,
+     "coverage": 0.9315,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.9646,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9591,
-     "outlineLeak": 0.0152,
+     "coverage": 0.9598,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
@@ -2580,23 +2585,23 @@
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.946,
-     "outlineLeak": 0.017,
+     "coverage": 0.9556,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
-     "coverage": 0.9623,
-     "outlineLeak": 0.0003,
+     "coverage": 0.9671,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9846,
+     "coverage": 0.9686,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9617,
-     "outlineLeak": 0.016,
+     "coverage": 0.9626,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -2617,7 +2622,7 @@
   },
   "notes": [
    "window frac=0.21",
-   "body: skin-match=0.07 -> armor",
+   "body: skin-match=0.08 -> armor",
    "left_arm: skin-match=0.00 -> armor",
    "right_arm: skin-match=0.00 -> armor",
    "left_hand: skin-match=0.94 -> anatomy",
@@ -2635,8 +2640,8 @@
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9534,
-     "outlineLeak": 0.0228,
+     "coverage": 0.9391,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "head:anatomy": {
@@ -2645,68 +2650,68 @@
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.8453,
-     "outlineLeak": 0.0094,
+     "coverage": 0.9828,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:anatomy": {
-     "coverage": 0.9832,
+     "coverage": 0.9577,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9342,
-     "outlineLeak": 0.0236,
+     "coverage": 0.9134,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9818,
+     "coverage": 0.9476,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:armor": {
-     "coverage": 0.76,
-     "outlineLeak": 0.0164,
+     "coverage": 0.9294,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:anatomy": {
-     "coverage": 0.9839,
+     "coverage": 0.9646,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9729,
-     "outlineLeak": 0.0612,
+     "coverage": 0.9084,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:anatomy": {
-     "coverage": 0.9834,
+     "coverage": 0.9584,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.9376,
-     "outlineLeak": 0.0223,
+     "coverage": 0.9222,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
-     "coverage": 0.984,
+     "coverage": 0.9604,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:armor": {
      "coverage": 0.9662,
-     "outlineLeak": 0.0196,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:anatomy": {
-     "coverage": 0.9846,
+     "coverage": 0.9686,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9723,
-     "outlineLeak": 0.0618,
+     "coverage": 0.9168,
+     "outlineLeak": 0.0,
      "overlap": 0.0
     }
    },
@@ -2727,7 +2732,7 @@
   },
   "notes": [
    "window frac=0.28",
-   "body: skin-match=0.38 -> armor",
+   "body: skin-match=0.35 -> armor",
    "left_arm: skin-match=0.00 -> armor",
    "right_arm: skin-match=0.00 -> armor",
    "left_hand: skin-match=0.00 -> armor",

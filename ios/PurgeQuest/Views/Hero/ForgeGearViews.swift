@@ -12,7 +12,7 @@ import UIKit
 
 /// Equippable slots the Forge manages, in display order.
 enum ForgeGearSlot: String, CaseIterable, Identifiable {
-    case weapon, shield, head
+    case weapon, shield
 
     var id: String { rawValue }
 
@@ -20,7 +20,6 @@ enum ForgeGearSlot: String, CaseIterable, Identifiable {
         switch self {
         case .weapon: return .weapon
         case .shield: return .shield
-        case .head: return .head
         }
     }
 
@@ -28,7 +27,6 @@ enum ForgeGearSlot: String, CaseIterable, Identifiable {
         switch self {
         case .weapon: return "Weapon"
         case .shield: return "Shield"
-        case .head: return "Headgear"
         }
     }
 
@@ -36,7 +34,6 @@ enum ForgeGearSlot: String, CaseIterable, Identifiable {
         switch self {
         case .weapon: return "sword.fill"
         case .shield: return "shield.fill"
-        case .head: return "crown.fill"
         }
     }
 }
@@ -129,7 +126,7 @@ struct ForgeColorSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             group(title: "Gear colors", regions: gearRegions, set: $gearMaterials,
-                  emptyNote: "Equip a weapon, shield, or headpiece in Gear to colour it.")
+                  emptyNote: "Equip a weapon or shield in Gear to colour it.")
             if bodyColorsActive {
                 group(title: "Body colors", regions: bodyRegions, set: $bodyMaterials, emptyNote: "This look has no colourable body regions.")
             } else {

@@ -28,7 +28,7 @@ struct ForgeUITestRoot: View {
     }
 
     private var summary: String {
-        "weapon=\(equippedID(.weapon))|shield=\(equippedID(.shield))|head=\(equippedID(.head))"
+        "weapon=\(equippedID(.weapon))|shield=\(equippedID(.shield))"
     }
 
     var body: some View {
@@ -53,7 +53,7 @@ struct ForgeUITestRoot: View {
             GameDataService.seedCosmeticsIfNeeded(in: modelContext)
             _ = hero
             for item in (try? modelContext.fetch(FetchDescriptor<CosmeticItem>())) ?? [] {
-                if ["weapon.shard", "weapon.staff.1.1", "shield.set.1.1", "head.starhat"].contains(item.id) { item.isUnlocked = true }
+                if ["weapon.shard", "weapon.staff.1.1", "shield.set.1.1"].contains(item.id) { item.isUnlocked = true }
                 if item.id == "weapon.shard" { item.isEquipped = true }
             }
             try? modelContext.save()

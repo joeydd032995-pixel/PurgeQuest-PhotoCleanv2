@@ -185,7 +185,7 @@ The hero is rendered from layered PNG parts plus Spriter (SCML) animation projec
 ```
 ios/PurgeQuest/Art/Races/<race>/v1..v3/   baked race parts + .scml animation (27 packs; Skeletal Undead ships two)
 ios/PurgeQuest/Art/Gear/{staves,shields}/ 40 staves, 40 shields (held gear, swapped in at the weapon/shield anchor)
-ios/PurgeQuest/Art/Gear/store/            the 14 store weapons/shields/headpieces (generated sprites)
+ios/PurgeQuest/Art/Gear/store/            the 11 store weapons and shields (generated sprites)
 ios/PurgeQuest/Art/Modular/               separated anatomy / armor / headgear layers, recolor masks, and the two bundled manifests
 ```
 

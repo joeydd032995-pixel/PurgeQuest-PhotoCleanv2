@@ -117,9 +117,10 @@ def main() -> None:
                          f" | {', '.join(sorted(items[0]['maskResources']))} | {max(float(growth(i)[:-1]) for i in items):.2f}x |")
         lines.append("")
 
-    store = [i for i in gear["items"] if i["group"] in ("store", "headpiece")]
-    lines += ["## Remaining store gear (IDs, prices, ownership, unlocks unchanged)", ""]
-    lines += table("3 headpieces, 9 weapons, 2 named shields", store,
+    store = [i for i in gear["items"] if i["group"] == "store"]
+    lines += ["## Remaining store gear (IDs, prices, ownership, unlocks unchanged)", "",
+              "The three headpieces (Starlit Cap, Shadow Hood, Dragoncrest Helm) were drawn and then **removed on request**; their catalog entries are unchanged and still render in the vector avatar.", ""]
+    lines += table("9 weapons, 2 named shields", store,
                    ("Kind | Masks | Packs", lambda i: f"{i['kind']} | {', '.join(sorted(i['maskResources']))} | {len(i['supportedPacks'])}"))
 
     lines += ["## Open gates (cannot be closed from an automated session)", "",

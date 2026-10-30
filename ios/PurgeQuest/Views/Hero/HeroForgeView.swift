@@ -98,7 +98,7 @@ struct HeroForgeView: View {
 
     private var equippedItems: [CosmeticItem] { cosmetics.filter { $0.isEquipped } }
 
-    private static let managedSlots: Set<CosmeticType> = [.weapon, .shield, .head]
+    private static let managedSlots: Set<CosmeticType> = [.weapon, .shield]
 
     /// What is equipped right now, by managed slot.
     private var currentEquipped: [String: String] {

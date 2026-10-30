@@ -15,7 +15,7 @@ struct ModularAssetBundleTests {
     @Test func bundledManifestsLoad() {
         let catalog = ModularAssetCatalog.shared
         #expect(catalog.parts.count > 400)
-        #expect(catalog.gearItems.count == 102)
+        #expect(catalog.gearItems.count == 99)
         #expect(catalog.gear?.titanScale == 2)
     }
 
@@ -81,7 +81,7 @@ struct ModularAssetBundleTests {
         for id in ["weapon.staff.1.1", "weapon.valkyrie", "weapon.arcane", "weapon.fireworkBlade"] {
             for race in HeroRace.allCases {
                 let frame = SpriteRenderer.shared.frame(race: race, variant: 1, animation: "Idle", frameIndex: 0, appearance: look,
-                                                        loadout: SpriteLoadout(weaponID: id, shieldID: "shield.set.1.1", headID: "head.starhat"))
+                                                        loadout: SpriteLoadout(weaponID: id, shieldID: "shield.set.1.1"))
                 #expect(frame != nil, "\(id) on \(race.rawValue)")
             }
         }

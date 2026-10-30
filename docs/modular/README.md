@@ -10,8 +10,8 @@ Everything here is produced by `tools/modular_assets/` (Python 3, Pillow + NumPy
 | Races manifest (parts, fits, mask resources, automated results) | `Art/Modular/modular_races_manifest.json` | `build_assets.py` |
 | Held-gear grips, per-pack holds, head fits, Titan canvas analysis | `Art/Modular/modular_gear_manifest.json` | `held_gear.py` |
 | Gear recolor masks | `Art/Modular/Gear/` | `held_gear.py` |
-| 14 store sprites | `Art/Gear/store/` | `store_gear.py` |
-| QA sheets (layers, fit per body profile, gear, headpieces, Titan) | `docs/modular/verification/` | the scripts above |
+| 11 store weapon/shield sprites | `Art/Gear/store/` | `store_gear.py` |
+| QA sheets (layers, fit per body profile, gear, Titan) | `docs/modular/verification/` | the scripts above |
 | Checklist + status | `docs/modular/CHECKLIST.md`, `asset_status.json` | `checklist.py` |
 
 ## Regenerate
@@ -41,6 +41,12 @@ python3 -I tools/modular_assets/approvals.py approve weapon.staff.1 --reviewer "
 ## How the separation works (and its limits)
 
 The art closes every region with a dark outline. The head's skin "face window" is found by flood-filling from the face overlay's centre; the bare head is that window plus a hull-smoothed cranium, and the original head with the window cut out is the headgear layer. Torso, limbs, and non-skin hands get a flat bare-silhouette anatomy layer under the baked part as armor. Parts that are already skin/bone/stone (skulls, stone bodies, mitts) are anatomy-only. `overrides.json` corrects packs where a near-black hood hides the window.
+
+## Recoloring
+
+Masks are *adhesive*: each pixel is first assigned to a material region by colour, but pixels beside an outline or the silhouette edge (anti-aliased blends whose colour is misleading) inherit the region of their nearest confident interior pixel, and a 5x5 vote removes speckle. Thin outlines and the small dark blobs where outlines meet are excluded, so linework never recolors. Region names (`primary`, `secondary`, ...) are clustered per art pack, so they mean the same material on every part.
+
+The recolor itself runs in OKLab (`imgops.recolor_pixels`, mirrored in `RecolorMath.swift`): a pixel keeps its lightness offset from its region's mean, so shadows, highlights and painted texture survive, re-centred on the chosen colour's lightness; the hue becomes the chosen colour's; chroma follows it, is modulated by how the source's chroma varied, and is fitted into the sRGB gamut so saturated colours desaturate instead of clipping. The region means (`regionTone`) are measured over the whole pack, so parts of one material keep their relative brightness. `tests/` and `ModularGearTests.swiftRecolorMatchesThePythonReference` pin the two implementations to each other.
 
 Limits to review: bare anatomy is procedural (flat fill, matching outline), not hand-painted; hair is not separately masked where it is baked into headgear; Golem/skeleton parts that *are* the material have no separate armor art.
 

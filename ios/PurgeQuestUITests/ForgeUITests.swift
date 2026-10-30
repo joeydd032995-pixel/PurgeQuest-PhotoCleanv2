@@ -66,6 +66,5 @@ final class ForgeUITests: XCTestCase {
         openGear(app)
         XCTAssertTrue(app.buttons["Ashen Bough I"].waitForExistence(timeout: 5))
         XCTAssertFalse(app.buttons["Ashen Bough II"].exists, "Only owned gear may be offered")
-        XCTAssertFalse(app.buttons["Dragoncrest Helm"].exists)
     }
 }

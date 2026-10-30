@@ -245,8 +245,8 @@ nonisolated struct PartManifest: Codable, Equatable, Sendable {
     let representation: CharacterPartRepresentation
     /// Region raw value -> mask resource base name (8-bit grayscale, same size as the layer).
     let maskResources: [String: String]
-    /// Region raw value -> mean source luminance, used by the recolor matrix.
-    let regionLuma: [String: Double]
+    /// Region raw value -> [mean OKLab lightness, mean OKLab chroma], measured over the whole art pack (see RegionTone).
+    let regionTone: [String: [Double]]
     let verification: AssetVerificationRecord
     /// Art pack ("valkyrie_v1"), original SCML part stem ("body"), layer kind, and paint variant.
     let pack: String?
@@ -270,7 +270,7 @@ nonisolated struct PartManifest: Codable, Equatable, Sendable {
         materialRegions: [MaterialRegion] = [],
         representation: CharacterPartRepresentation = .modular,
         maskResources: [String: String] = [:],
-        regionLuma: [String: Double] = [:],
+        regionTone: [String: [Double]] = [:],
         verification: AssetVerificationRecord = .init(),
         pack: String? = nil,
         part: String? = nil,
@@ -292,7 +292,7 @@ nonisolated struct PartManifest: Codable, Equatable, Sendable {
         self.materialRegions = materialRegions
         self.representation = representation
         self.maskResources = maskResources
-        self.regionLuma = regionLuma
+        self.regionTone = regionTone
         self.verification = verification
         self.pack = pack
         self.part = part
@@ -307,7 +307,7 @@ nonisolated struct PartManifest: Codable, Equatable, Sendable {
             referenceProfile: referenceProfile, nativeProfiles: nativeProfiles, adaptedProfiles: adaptedProfiles,
             scaleXRange: scaleXRange, scaleYRange: scaleYRange, profileOverrides: profileOverrides,
             coverageTags: coverageTags, materialRegions: materialRegions, representation: representation,
-            maskResources: maskResources, regionLuma: regionLuma, verification: record,
+            maskResources: maskResources, regionTone: regionTone, verification: record,
             pack: pack, part: part, kind: kind, paintVariant: paintVariant
         )
     }
@@ -315,7 +315,7 @@ nonisolated struct PartManifest: Codable, Equatable, Sendable {
     private enum CodingKeys: String, CodingKey {
         case id, resourceBaseName, slot, rigID, sourceRace, referenceProfile, nativeProfiles, adaptedProfiles
         case scaleXRange, scaleYRange, profileOverrides, coverageTags, materialRegions, representation
-        case maskResources, regionLuma, verification, pack, part, kind, paintVariant
+        case maskResources, regionTone, verification, pack, part, kind, paintVariant
     }
 
     /// Strict on the original contract fields; lenient on the additive ones so older manifests still load.
@@ -336,7 +336,7 @@ nonisolated struct PartManifest: Codable, Equatable, Sendable {
         materialRegions = try c.decode([MaterialRegion].self, forKey: .materialRegions)
         representation = try c.decode(CharacterPartRepresentation.self, forKey: .representation)
         maskResources = (try? c.decodeIfPresent([String: String].self, forKey: .maskResources)) ?? [:]
-        regionLuma = (try? c.decodeIfPresent([String: Double].self, forKey: .regionLuma)) ?? [:]
+        regionTone = (try? c.decodeIfPresent([String: [Double]].self, forKey: .regionTone)) ?? [:]
         verification = (try? c.decodeIfPresent(AssetVerificationRecord.self, forKey: .verification)) ?? .init(status: .mapped)
         pack = try? c.decodeIfPresent(String.self, forKey: .pack)
         part = try? c.decodeIfPresent(String.self, forKey: .part)

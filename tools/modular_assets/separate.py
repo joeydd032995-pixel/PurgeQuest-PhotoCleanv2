@@ -41,7 +41,7 @@ class Layer:
     slot: str                 # CharacterSlot raw value
     image: Image.Image        # RGBA, same pixel size as the original part
     masks: Dict[str, Image.Image] = field(default_factory=dict)   # region -> L
-    region_luma: Dict[str, float] = field(default_factory=dict)   # region -> mean luminance
+    region_tone: Dict[str, List[float]] = field(default_factory=dict)   # region -> [mean OKLab L, mean OKLab chroma]
 
     @property
     def suffix(self) -> str:
@@ -127,17 +127,94 @@ def _features(rgb: np.ndarray) -> np.ndarray:
 
 
 def _layer_weight(img: Image.Image):
+    """(rgb, alpha, body, weight, outline). `weight` keeps dark *shading* (the OKLab recolor handles it) and
+    removes only the thin dark outline strokes, softly, so masks never reach the linework."""
     rgb, alpha = ops.arrays(img)
     outline = ops.outline_mask(rgb, alpha)
     soft_out = ops.blur(outline.astype(np.float32), 0.8)
     body = (alpha > 0.5) & ~outline
-    weight = np.clip(alpha * (1 - soft_out), 0, 1)
-    if body.sum() > 30:
-        # pixels far darker than the layer's typical fill are outline-adjacent shadow: keep them out of recolor masks
-        l = ops.lum(rgb)
-        rel = l / max(float(np.median(l[body])), 0.05)
-        weight = weight * ops.smoothstep(rel, 0.22, 0.5)
-    return rgb, alpha, body, weight
+    # outline pixels get exactly zero; the feather lives on the fill side, so linework is never tinted
+    weight = np.clip(alpha * (1 - np.maximum(outline.astype(np.float32), soft_out)), 0, 1)
+    return rgb, alpha, body, weight, outline
+
+
+def _adhesive_labels(hard: np.ndarray, alpha: np.ndarray, outline: np.ndarray, k: int) -> np.ndarray:
+    """Region label per pixel (-1 = none). Confident interior pixels keep their own colour-based label; pixels that
+    sit next to an outline or the silhouette edge (anti-aliased blends of fill and linework, whose colour is
+    misleading) inherit the label of the nearest interior pixel; a 5x5 vote removes isolated speckle."""
+    from PIL import ImageFilter
+    region = alpha > 0.08
+    todo = region & ~outline
+    near = ops.dilate(outline, 2) | ~ops.erode(alpha > 0.9, 2)
+    interior = todo & ~near
+    labels = np.full(hard.shape, -1, np.int16)
+    if interior.sum() < 20:
+        interior = todo
+    labels[interior] = hard[interior]
+    for _ in range(8):
+        unl = todo & (labels < 0)
+        if not unl.any():
+            break
+        for idx in range(k):
+            take = unl & (labels < 0) & ops.dilate(labels == idx, 1)
+            labels[take] = idx
+    counts = np.stack([
+        np.asarray(Image.fromarray(((labels == i) & todo).astype(np.uint8) * 255).filter(ImageFilter.BoxBlur(2)), np.float32)
+        for i in range(k)], axis=-1)
+    voted = counts.argmax(-1).astype(np.int16)
+    return np.where(todo & (counts.sum(-1) > 0), voted, labels)
+
+
+def merge_shading_splits(labels: np.ndarray, rgb: np.ndarray, alpha: np.ndarray, outline: np.ndarray, k: int,
+                         hue_tol: float = 40.0, neutral_chroma: float = 0.035) -> np.ndarray:
+    """One outline-bounded cell is one piece of material. When colour clustering splits a cell into labels whose hue is
+    the same (a highlight or shadow on the same cloth, a stitched glyph in the same tone), the minority label is
+    shading, not a second material, so it joins the cell's dominant label. A different hue (a gem, a lining) stays."""
+    todo = (alpha > 0.08) & ~outline
+    cells, n = ops.label(todo)
+    if n == 0:
+        return labels
+    lab = ops.rgb_to_oklab(rgb)
+    a, b = lab[..., 1].ravel(), lab[..., 2].ravel()
+    flat_cells, flat_labels = cells.ravel(), labels.ravel()
+    out = flat_labels.copy()
+    order = np.argsort(flat_cells, kind="stable")
+    bounds = np.searchsorted(flat_cells[order], np.arange(n + 2))
+    for cid in range(1, n + 1):
+        idx = order[bounds[cid]:bounds[cid + 1]]
+        lbl = flat_labels[idx]
+        ok = lbl >= 0
+        if ok.sum() < 40:
+            continue
+        counts = np.bincount(lbl[ok], minlength=k)
+        dom = int(counts.argmax())
+        if counts[dom] < 0.4 * counts.sum() or (counts > 0).sum() < 2:
+            continue
+        dom_sel = ok & (lbl == dom)
+        ad, bd = float(a[idx][dom_sel].mean()), float(b[idx][dom_sel].mean())
+        cd, hd = math.hypot(ad, bd), math.degrees(math.atan2(bd, ad))
+        for m in range(k):
+            if m == dom or counts[m] == 0:
+                continue
+            sel = ok & (lbl == m)
+            am, bm = float(a[idx][sel].mean()), float(b[idx][sel].mean())
+            cm, hm = math.hypot(am, bm), math.degrees(math.atan2(bm, am))
+            if cm < neutral_chroma and cd < neutral_chroma:
+                same = True
+            elif cm >= neutral_chroma and cd >= neutral_chroma:
+                same = abs((hm - hd + 180.0) % 360.0 - 180.0) < hue_tol
+            else:
+                same = counts[m] < 0.05 * counts.sum()
+            if same:
+                out[idx[sel]] = dom
+    return out.reshape(labels.shape)
+
+
+def _soft_partition(labels: np.ndarray, k: int, weight: np.ndarray):
+    """Soft, partition-of-unity masks from hard labels (gaussian-feathered), times the outline-excluding weight."""
+    soft = [ops.blur((labels == i).astype(np.float32), 0.9) for i in range(k)]
+    total = np.maximum(sum(soft), 1e-6)
+    return [np.clip(s_ / total * weight, 0, 1) for s_ in soft]
 
 
 class RegionModel:
@@ -146,11 +223,12 @@ class RegionModel:
     def __init__(self, layers: List["Layer"], max_regions: int = 4, hair_region: Optional[str] = None):
         pts = []
         for l in layers:
-            rgb, alpha, body, _ = _layer_weight(l.image)
+            rgb, alpha, body, _, _ = _layer_weight(l.image)
             if body.sum() < 30:
                 continue
             f = _features(rgb)[body]
-            take = np.random.default_rng(5).choice(len(f), min(len(f), 6000), replace=False)
+            # sample in proportion to area, so the primary/secondary ranking follows real pixel area
+            take = np.random.default_rng(5).choice(len(f), min(len(f), max(2000, len(f) // 3)), replace=False)
             pts.append(f[take])
         self.valid = bool(pts)
         if not self.valid:
@@ -174,36 +252,35 @@ class RegionModel:
         self.hair_region = hair_region
 
     def masks(self, img: Image.Image, kind: str = "armor"):
-        rgb, alpha, body, weight = _layer_weight(img)
-        out, lumas = {}, {}
+        rgb, alpha, body, weight, outline = _layer_weight(img)
+        out: Dict[str, Image.Image] = {}
         if not self.valid or body.sum() < 30:
-            return out, lumas
+            return out, {}
         feat = _features(rgb)
         d2 = ((feat[..., None, :] - self.centers[None, None]) ** 2).sum(-1)[..., self.keep]
-        wgt = np.exp(-(d2 - d2.min(-1, keepdims=True)) / (2 * 7.0 ** 2))
-        wgt /= wgt.sum(-1, keepdims=True)
-        luma = ops.lum(rgb)
-        for idx, nm in enumerate(self.names):
+        hard = d2.argmin(-1).astype(np.int16)
+        labels = _adhesive_labels(hard, alpha, outline, len(self.names))
+        labels = merge_shading_splits(labels, rgb, alpha, outline, len(self.names))
+        for idx, m in enumerate(_soft_partition(labels, len(self.names), weight)):
+            nm = self.names[idx]
             if kind == "headgear" and self.hair_region == nm:
                 nm = "hair"
-            m = wgt[..., idx] * weight
             if m.sum() < 40:
                 continue
-            out[nm] = Image.fromarray((np.clip(m, 0, 1) * 255 + 0.5).astype(np.uint8), "L")
-            lumas[nm] = float((luma * m).sum() / m.sum())
-        return out, lumas
+            out[nm] = Image.fromarray((m * 255 + 0.5).astype(np.uint8), "L")
+        return out, {}
 
 
 def skin_masks(img: Image.Image, name: str = "skin"):
-    rgb, alpha, body, weight = _layer_weight(img)
+    rgb, alpha, body, weight, outline = _layer_weight(img)
     if body.sum() < 30:
         return {}, {}
-    return ({name: Image.fromarray((weight * 255 + 0.5).astype(np.uint8), "L")}, {name: float(ops.lum(rgb)[body].mean())})
+    return {name: Image.fromarray((weight * 255 + 0.5).astype(np.uint8), "L")}, {}
 
 
 def eye_mask(img: Image.Image):
     """Iris/glow pixels of a face overlay: saturated, not blush-pink, not outline."""
-    rgb, alpha, body, weight = _layer_weight(img)
+    rgb, alpha, body, weight, outline = _layer_weight(img)
     lab = ops.rgb_to_lab(rgb)
     chroma = np.hypot(lab[..., 1], lab[..., 2])
     hue = np.degrees(np.arctan2(lab[..., 2], lab[..., 1]))
@@ -214,8 +291,24 @@ def eye_mask(img: Image.Image):
     m = np.clip(sc * weight, 0, 1)
     if m.sum() < 40:
         return {}, {}
-    luma = ops.lum(rgb)
-    return {"eyes": Image.fromarray((m * 255 + 0.5).astype(np.uint8), "L")}, {"eyes": float((luma * m).sum() / m.sum())}
+    return {"eyes": Image.fromarray((m * 255 + 0.5).astype(np.uint8), "L")}, {}
+
+
+def pool_tones(layers: List["Layer"]) -> None:
+    """Pack-wide region tones (mean OKLab lightness and chroma). Every layer that has a region uses the *pooled* value,
+    so parts of one material keep their relative brightness after a recolor instead of each being re-centred alone."""
+    acc: Dict[str, List[float]] = {}
+    for layer in layers:
+        rgb, alpha = ops.arrays(layer.image)
+        lab = ops.rgb_to_oklab(rgb)
+        chroma = np.hypot(lab[..., 1], lab[..., 2])
+        for region, mask in layer.masks.items():
+            w = (np.asarray(mask, np.float32) / 255.0) * alpha
+            a = acc.setdefault(region, [0.0, 0.0, 0.0])
+            a[0] += float(w.sum()); a[1] += float((lab[..., 0] * w).sum()); a[2] += float((chroma * w).sum())
+    pooled = {r: [round(a[1] / a[0], 5), round(a[2] / a[0], 5)] for r, a in acc.items() if a[0] > 0}
+    for layer in layers:
+        layer.region_tone = {r: pooled[r] for r in layer.masks if r in pooled}
 
 
 # ---------------------------------------------------------------- layers
@@ -347,8 +440,8 @@ def _split_head(head: Image.Image, window: np.ndarray, skin: np.ndarray, ow: int
 
 
 def _anatomy_original(part: str, img: Image.Image, slot: str, hair_hint: bool) -> Layer:
-    masks, lumas = skin_masks(img)
-    return Layer(part, "anatomy", slot, img, masks, lumas)
+    masks, tones = skin_masks(img)
+    return Layer(part, "anatomy", slot, img, masks, tones)
 
 
 def _finish(race_dir, variant, imgs, layers, notes, skin, window_found, overrides, ow, ocolor, doc) -> PackSeparation:
@@ -378,7 +471,7 @@ def _finish(race_dir, variant, imgs, layers, notes, skin, window_found, override
     armor_layers = [l for l in layers if l.kind in ("armor", "headgear")]
     model = RegionModel(armor_layers, hair_region=overrides.get("hair_region"))
     for layer in armor_layers:
-        layer.masks, layer.region_luma = model.masks(layer.image, layer.kind)
+        layer.masks, layer.region_tone = model.masks(layer.image, layer.kind)
     # bare head layers carry skin + (where the head is skin) nothing else
     faces: List[Layer] = []
     pid = scml.pack_id(race_dir, variant)
@@ -387,6 +480,7 @@ def _finish(race_dir, variant, imgs, layers, notes, skin, window_found, override
         img = Image.open(path).convert("RGBA")
         em, el = eye_mask(img)
         faces.append(Layer(stem, "face", "head", img, em, el))
+    pool_tones(layers + faces)
     return PackSeparation(race_dir, variant, layers, notes, tuple(float(c) for c in skin), window_found, faces)
 
 

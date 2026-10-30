@@ -1,10 +1,5 @@
 {
  "schemaVersion": 1,
- "headpieceNominal": {
-  "width": 380.0,
-  "anchorU": 260.0,
-  "anchorV": 400.0
- },
  "items": [
   {
    "id": "weapon.shard",
@@ -114,36 +109,6 @@
    "imageSize": [
     160,
     160
-   ]
-  },
-  {
-   "id": "head.starhat",
-   "name": "Starlit Cap",
-   "kind": "headpiece",
-   "resource": "store_head_starhat",
-   "imageSize": [
-    520,
-    640
-   ]
-  },
-  {
-   "id": "head.hood",
-   "name": "Shadow Hood",
-   "kind": "headpiece",
-   "resource": "store_head_hood",
-   "imageSize": [
-    520,
-    640
-   ]
-  },
-  {
-   "id": "head.dragoncrest",
-   "name": "Dragoncrest Helm",
-   "kind": "headpiece",
-   "resource": "store_head_dragoncrest",
-   "imageSize": [
-    520,
-    640
    ]
   }
  ]

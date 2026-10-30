@@ -19,21 +19,6 @@ nonisolated struct StringAnchors: Codable, Equatable, Sendable {
     let bottom: [Double]
 }
 
-nonisolated struct HeadFit: Codable, Equatable, Sendable {
-    /// Head-PNG pixels: horizontal centre, brim line, and the width a headpiece should span.
-    let cx: Double
-    let baseY: Double
-    let widthPx: Double
-    let headPngSize: [Double]
-}
-
-nonisolated struct HeadpieceNominal: Codable, Equatable, Sendable {
-    /// Headpiece art is authored with its brim line at (anchorU, anchorV) and `width` px of dome at that line.
-    let width: Double
-    let anchorU: Double
-    let anchorV: Double
-}
-
 /// Per-art-pack anchor data. `hold` is where the pack's own baked weapon/shield is gripped, in SCML
 /// units relative to the anchor pivot (y-down); `pivotPx` is that pivot measured from the image's top-left.
 nonisolated struct PackAnchors: Codable, Equatable, Sendable {
@@ -43,13 +28,12 @@ nonisolated struct PackAnchors: Codable, Equatable, Sendable {
     let shieldAnchor: String
     let shieldPivotPx: [Double]
     let shieldHold: [Double]
-    let headFit: HeadFit
     /// Arrow-tail (nock) position in arrow-image pixels; present only on bow packs.
     let arrowNock: [Double]?
 }
 
 nonisolated enum HeldGearKind: String, Codable, Sendable {
-    case sword, bow, staff, hammer, shield, headpiece
+    case sword, bow, staff, hammer, shield
 }
 
 nonisolated struct HeldGearEntry: Codable, Equatable, Sendable, Identifiable {
@@ -66,19 +50,17 @@ nonisolated struct HeldGearEntry: Codable, Equatable, Sendable, Identifiable {
     let gripPx: [Double]
     let scale: Double
     let rotationDegrees: Double
-    /// front (drawn last) or overHead (headpieces: on the bare head, under the face overlay).
+    /// Always "front" today (held gear is drawn after the body).
     let layer: String
     let supportedPacks: [String]
     let maskResources: [String: String]
-    let regionLuma: [String: Double]
+    let regionTone: [String: [Double]]
     let stringAnchors: StringAnchors?
-    /// Opaque pixel bounds [x0, y0, x1, y1] in image pixels (headpieces use it so empty margins don't enlarge the canvas).
-    let contentBox: [Double]?
     let verification: AssetVerificationRecord
 
     private enum CodingKeys: String, CodingKey {
         case id, name, kind, slot, resourceName, group, imageWidth, imageHeight, gripPx, scale
-        case rotationDegrees, layer, supportedPacks, maskResources, regionLuma, stringAnchors, contentBox, verification
+        case rotationDegrees, layer, supportedPacks, maskResources, regionTone, stringAnchors, verification
     }
 
     init(from decoder: Decoder) throws {
@@ -97,9 +79,8 @@ nonisolated struct HeldGearEntry: Codable, Equatable, Sendable, Identifiable {
         layer = (try? c.decodeIfPresent(String.self, forKey: .layer)) ?? "front"
         supportedPacks = try c.decode([String].self, forKey: .supportedPacks)
         maskResources = (try? c.decodeIfPresent([String: String].self, forKey: .maskResources)) ?? [:]
-        regionLuma = (try? c.decodeIfPresent([String: Double].self, forKey: .regionLuma)) ?? [:]
+        regionTone = (try? c.decodeIfPresent([String: [Double]].self, forKey: .regionTone)) ?? [:]
         stringAnchors = try? c.decodeIfPresent(StringAnchors.self, forKey: .stringAnchors)
-        contentBox = try? c.decodeIfPresent([Double].self, forKey: .contentBox)
         verification = (try? c.decodeIfPresent(AssetVerificationRecord.self, forKey: .verification)) ?? .init(status: .mapped)
     }
 }
@@ -107,7 +88,6 @@ nonisolated struct HeldGearEntry: Codable, Equatable, Sendable, Identifiable {
 nonisolated struct ModularGearManifest: Codable, Equatable, Sendable {
     let schemaVersion: Int
     let titanScale: Double
-    let headpieceNominal: HeadpieceNominal?
     let packs: [String: PackAnchors]
     let items: [HeldGearEntry]
 }

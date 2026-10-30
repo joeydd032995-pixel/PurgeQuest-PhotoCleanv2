@@ -2,57 +2,91 @@
 //  MaterialRecolorer.swift
 //  PurgeQuest
 //
-//  Mask-aware recolor with Core Image. For each region the player coloured,
-//  the layer is run through a colour matrix (target * luminance ratio, see
-//  RecolorMath) and blended back through that region's soft mask. Outlines,
-//  highlights and painted texture survive because the mask excludes outlines
-//  and the matrix preserves relative luminance. Replaces the whole-part
-//  semi-transparent `sourceAtop` tint for any asset that ships masks.
+//  Mask-aware recolor. For every region the player coloured, each pixel is
+//  re-toned in OKLab (RecolorMath.recolor): it keeps its lightness offset from
+//  the region's mean, so shading, highlights and painted texture survive, takes
+//  the target's hue, and blends in through that region's soft mask. Outlines are
+//  never in a mask, and mask edges follow the fills (the offline tools snap
+//  edge pixels to their interior neighbours), so colour sticks to the model.
+//  The per-pixel math is pure and shared with the offline reference; this type
+//  only moves pixels in and out of CoreGraphics.
 //
 
 import UIKit
-import CoreImage
 
 @MainActor
 final class MaterialRecolorer {
     struct Region {
         let region: MaterialRegion
         let mask: UIImage
-        let referenceLuma: Double?
+        let tone: RegionTone?
     }
 
-    /// Colour management is off so the matrix runs on the same gamma-encoded values the offline
-    /// tools use (tools/modular_assets/qa.py recolor), keeping previews and device output aligned.
-    private let context = CIContext(options: [
-        .workingColorSpace: NSNull(),
-        .outputColorSpace: NSNull()
-    ])
+    private struct Active {
+        let weights: [UInt8]
+        let color: MaterialRGBA
+        let tone: RegionTone?
+    }
 
-    /// Returns `base` unchanged when nothing applies, so callers never get a blank image.
+    /// Returns `base` unchanged when nothing applies or a buffer can't be built, so callers never get a blank image.
     func recolor(_ base: UIImage, regions: [Region], colors: CharacterMaterialSet?) -> UIImage {
-        guard let colors, var current = CIImage(image: base) else { return base }
-        var applied = false
+        guard let colors, let source = base.cgImage else { return base }
+        let width = source.width, height = source.height
+        guard width > 0, height > 0 else { return base }
+
+        var active: [Active] = []
         for entry in regions {
             guard let selection = MaterialPalette.selection(colors, entry.region),
-                  let maskCI = CIImage(image: entry.mask) else { continue }
-            let rows = RecolorMath.matrixRows(target: selection.color, referenceLuma: entry.referenceLuma)
-            let tinted = current.applyingFilter("CIColorMatrix", parameters: [
-                "inputRVector": CIVector(values: rows.r.map { CGFloat($0) }, count: 4),
-                "inputGVector": CIVector(values: rows.g.map { CGFloat($0) }, count: 4),
-                "inputBVector": CIVector(values: rows.b.map { CGFloat($0) }, count: 4),
-                "inputAVector": CIVector(x: 0, y: 0, z: 0, w: 1),
-                "inputBiasVector": CIVector(x: 0, y: 0, z: 0, w: 0)
-            ])
-            let alphaMask = maskCI.applyingFilter("CIMaskToAlpha")
-            current = tinted.applyingFilter("CIBlendWithAlphaMask", parameters: [
-                kCIInputBackgroundImageKey: current,
-                kCIInputMaskImageKey: alphaMask
-            ])
-            applied = true
+                  let weights = Self.grayscale(entry.mask, width: width, height: height) else { continue }
+            active.append(Active(weights: weights, color: selection.color, tone: entry.tone))
         }
-        guard applied else { return base }
-        let extent = CGRect(origin: .zero, size: CGSize(width: base.size.width * base.scale, height: base.size.height * base.scale))
-        guard let cg = context.createCGImage(current, from: extent) else { return base }
-        return UIImage(cgImage: cg, scale: base.scale, orientation: .up)
+        guard !active.isEmpty else { return base }
+
+        var pixels = [UInt8](repeating: 0, count: width * height * 4)
+        let rendered: CGImage? = pixels.withUnsafeMutableBytes { buffer -> CGImage? in
+            guard let context = CGContext(
+                data: buffer.baseAddress, width: width, height: height, bitsPerComponent: 8, bytesPerRow: width * 4,
+                space: CGColorSpace(name: CGColorSpace.sRGB) ?? CGColorSpaceCreateDeviceRGB(),
+                bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
+            context.draw(source, in: CGRect(x: 0, y: 0, width: width, height: height))
+            let bytes = buffer.bindMemory(to: UInt8.self)
+            for index in 0..<(width * height) {
+                let offset = index * 4
+                let alpha = Double(bytes[offset + 3]) / 255
+                guard alpha > 0 else { continue }
+                // CoreGraphics stores premultiplied colour; the math wants straight colour.
+                var rgb = (r: min(Double(bytes[offset]) / 255 / alpha, 1),
+                           g: min(Double(bytes[offset + 1]) / 255 / alpha, 1),
+                           b: min(Double(bytes[offset + 2]) / 255 / alpha, 1))
+                var changed = false
+                for layer in active {
+                    let weight = Double(layer.weights[index]) / 255
+                    guard weight > 0 else { continue }
+                    rgb = RecolorMath.recolor(pixel: rgb, target: layer.color, tone: layer.tone, mask: weight)
+                    changed = true
+                }
+                guard changed else { continue }
+                bytes[offset] = UInt8(min(max(rgb.r * alpha * 255 + 0.5, 0), 255))
+                bytes[offset + 1] = UInt8(min(max(rgb.g * alpha * 255 + 0.5, 0), 255))
+                bytes[offset + 2] = UInt8(min(max(rgb.b * alpha * 255 + 0.5, 0), 255))
+            }
+            return context.makeImage()
+        }
+        guard let rendered else { return base }
+        return UIImage(cgImage: rendered, scale: base.scale, orientation: .up)
+    }
+
+    /// 8-bit grayscale weights for a mask image at the layer's pixel size; nil when the sizes disagree.
+    private static func grayscale(_ image: UIImage, width: Int, height: Int) -> [UInt8]? {
+        guard let cg = image.cgImage, cg.width == width, cg.height == height else { return nil }
+        var weights = [UInt8](repeating: 0, count: width * height)
+        let ok: Bool = weights.withUnsafeMutableBytes { buffer in
+            guard let context = CGContext(
+                data: buffer.baseAddress, width: width, height: height, bitsPerComponent: 8, bytesPerRow: width,
+                space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue) else { return false }
+            context.draw(cg, in: CGRect(x: 0, y: 0, width: width, height: height))
+            return true
+        }
+        return ok ? weights : nil
     }
 }

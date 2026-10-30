@@ -42,7 +42,6 @@ struct HeroSpriteView: View {
         SpriteLoadout(
             weaponID: equipped.first(where: { $0.type == .weapon })?.id,
             shieldID: equipped.first(where: { $0.type == .shield })?.id,
-            headID: equipped.first(where: { $0.type == .head })?.id,
             titanWeapon: hero.titanWeaponUnlocked,
             gearMaterials: look.gearMaterials
         )
@@ -94,7 +93,7 @@ struct HeroSpriteView: View {
         .accessibilityLabel("\(race.displayName) hero sprite")
     }
 
-    /// Keeps the character the same size when a Titan blade or headpiece enlarges the canvas: the extra
+    /// Keeps the character the same size when a Titan blade enlarges the canvas: the extra
     /// canvas overflows the layout box instead of shrinking the hero to fit it.
     @ViewBuilder private func spriteImage(_ frame: SpriteFrame) -> some View {
         if frame.layout == .zero {

@@ -330,7 +330,7 @@ nonisolated struct HeroAppearance: Equatable, Codable {
     var armorDye: ArmorDye
     /// Mask-aware colours for body/armor regions. nil until the player picks a colour in the Forge.
     var materials: CharacterMaterialSet?
-    /// Mask-aware colours for held gear and headpieces (weapon, shield, head).
+    /// Mask-aware colours for held gear (weapon, shield).
     var gearMaterials: CharacterMaterialSet?
 
     init(

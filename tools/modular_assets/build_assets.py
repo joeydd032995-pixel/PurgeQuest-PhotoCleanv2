@@ -10,7 +10,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 from typing import Dict, List
 
@@ -202,7 +204,7 @@ def manifest_entries(sep: PackSeparation, resources: Dict[str, str], checks: dic
             "kind": layer.kind,
             "paintVariant": sep.variant,
             "maskResources": {r: f"{layer_base(sep.pid, layer)}_mask_{r}" for r in sorted(layer.masks)},
-            "regionLuma": {r: round(v, 4) for r, v in layer.region_luma.items()},
+            "regionTone": layer.region_tone,
             "verification": {
                 "status": "candidate" if ok else "mapped",
                 "automated": {"reassembly": checks["reassembly"], "masks": mm},
@@ -224,6 +226,11 @@ def build_pack(race: str, variant: int, with_sheets: bool = True) -> dict:
             "entries": manifest_entries(sep, resources, checks)}
 
 
+def _build_job(job):
+    race, v, sheets = job
+    return build_pack(race, v, sheets)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--packs", default="")
@@ -231,11 +238,12 @@ def main() -> None:
     args = ap.parse_args()
     wanted = set(filter(None, args.packs.split(",")))
     packs, entries, report = [], [], {}
-    for race, v in scml.PACKS:
+    jobs = [(race, v, not args.no_sheets) for race, v in scml.PACKS if not wanted or scml.pack_id(race, v) in wanted]
+    # packs are independent (each writes its own files), so build them across cores; map() keeps manifest order stable
+    with ProcessPoolExecutor(max_workers=max(1, min(4, os.cpu_count() or 1, len(jobs)))) as pool:
+        results = list(pool.map(_build_job, jobs))
+    for (race, v, _), res in zip(jobs, results):
         pid = scml.pack_id(race, v)
-        if wanted and pid not in wanted:
-            continue
-        res = build_pack(race, v, not args.no_sheets)
         print(pid, "window" if res["windowFound"] else "no-window",
               {k: (x["mean"], x["bad"]) for k, x in res["checks"]["reassembly"].items()}, flush=True)
         entries += res["entries"]
