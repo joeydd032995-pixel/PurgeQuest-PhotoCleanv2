@@ -69,8 +69,11 @@ struct ModularAssetBundleTests {
                                                               loadout: SpriteLoadout(titanWeapon: true)))
         #expect(titan.image.size.width > plain.image.size.width)
         #expect(titan.layout != SpriteCanvasLayout.zero)
+        // No equipped item and no Titan: no extra canvas. The image is rounded up to whole pixels at 0.5 scale,
+        // so compare with a 2pt tolerance rather than exact equality with the fractional canvas size.
+        #expect(plain.layout == SpriteCanvasLayout.zero)
         let base = try #require(SpriteRenderer.shared.canvasSize(race: .valkyrie, variant: 1))
-        #expect(plain.image.size == base)
+        #expect(abs(plain.image.size.width - base.width) <= 2 && abs(plain.image.size.height - base.height) <= 2)
     }
 
     @Test func heldGearRendersForEverySupportedPackWithoutBlankFrames() throws {
