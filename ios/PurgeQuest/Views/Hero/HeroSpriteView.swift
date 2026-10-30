@@ -97,7 +97,7 @@ struct HeroSpriteView: View {
     /// Keeps the character the same size when a Titan blade or headpiece enlarges the canvas: the extra
     /// canvas overflows the layout box instead of shrinking the hero to fit it.
     @ViewBuilder private func spriteImage(_ frame: SpriteFrame) -> some View {
-        if frame.layout == .none {
+        if frame.layout == .zero {
             Image(uiImage: frame.image)
                 .resizable()
                 .scaledToFit()

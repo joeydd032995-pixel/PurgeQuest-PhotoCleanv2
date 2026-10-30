@@ -84,3 +84,11 @@ A `HeldGearFit` record per item and race group captures grip position and pivot 
 ## Completion gate
 
 An asset becomes selectable in modular rendering only when it is `verified`. Until reviewers approve candidates (via `tools/modular_assets/approve.py`, which records the ledger entry), the app behaves exactly as before for character rendering, while held gear gains per-item fit, Titan 2×, and the Forge/save fixes.
+
+## Implementation status (this change)
+
+Done and checked in CI/locally: separation pipeline and masks for all 27 packs; held-gear fits for 8 signature weapons (including the Elven Recurve bow), 40 staves, 40 shields and the 14 store items; Titan Blade at `2.0x` about the grip with an expanded canvas; manifests, validator, approvals ledger and generated checklist; verified-only planner gate; Forge Gear/Colors, draft-until-Save, atomic save with rollback and a visible error, explicit ancestry choices; HeroAppearance v4 (additive); Elven v3 attack-animation fix; Swift Testing suites (pure logic run on Linux, bundle tests and Forge UI tests on the CI simulator).
+
+Deliberately *not* claimed: every asset is `candidate`, not `verified` — approval is a human act recorded in `docs/modular/approvals.json`. Body colours are therefore inert until a look's layers are approved (the Forge says so); gear colours are live. Physical-iPhone checks (small previews, combat rendering, relaunch persistence, memory) remain open in `docs/modular/CHECKLIST.md`.
+
+Findings worth knowing: Elven variant 3 is a sword pack with no `Shooting` animation (the Recurve is therefore unsupported there, and v3 previously never attacked); the baked weapon anchor is hidden in Idle but a swapped item is still drawn there, so the canvas now includes hidden anchors; shields on packs without a baked shield were squashed into the 128px left-hand rect and now draw at native size.

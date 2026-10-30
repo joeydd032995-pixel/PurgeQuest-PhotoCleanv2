@@ -1,0 +1,2274 @@
+{
+ "blood_alchemist_v1.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v1.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v1.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "blood_alchemist_v1.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "blood_alchemist_v1.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "blood_alchemist_v1.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v1.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v1.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v1.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v1.left_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v1.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v1.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v1.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v1.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v1.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v1.right_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v1.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v1.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.left_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.right_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v2.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.left_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.right_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "blood_alchemist_v3.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "dark_oracle_v1.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v1.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "dark_oracle_v1.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "dark_oracle_v1.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "dark_oracle_v1.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "dark_oracle_v1.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v1.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "dark_oracle_v1.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v1.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "dark_oracle_v1.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v1.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v1.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "dark_oracle_v1.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v1.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "dark_oracle_v1.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v1.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v1.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "dark_oracle_v2.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v2.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "dark_oracle_v2.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "dark_oracle_v2.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "dark_oracle_v2.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "dark_oracle_v2.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v2.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "dark_oracle_v2.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v2.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "dark_oracle_v2.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v2.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v2.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "dark_oracle_v2.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v2.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "dark_oracle_v2.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v2.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v2.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.right_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "dark_oracle_v3.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "forest_ranger_v1.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v1.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "forest_ranger_v1.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "forest_ranger_v1.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "forest_ranger_v1.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "forest_ranger_v1.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v1.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "forest_ranger_v1.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v1.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "forest_ranger_v1.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v1.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v1.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "forest_ranger_v1.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v1.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "forest_ranger_v1.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v1.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v1.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "forest_ranger_v2.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v2.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "forest_ranger_v2.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "forest_ranger_v2.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "forest_ranger_v2.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "forest_ranger_v2.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v2.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "forest_ranger_v2.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v2.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "forest_ranger_v2.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v2.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v2.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "forest_ranger_v2.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v2.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "forest_ranger_v2.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v2.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v2.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.left_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.right_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "forest_ranger_v3.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "golem_v1.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v1.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "golem_v1.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "golem_v1.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "golem_v1.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "golem_v1.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v1.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v1.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "golem_v1.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v1.left_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "golem_v1.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v1.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "golem_v1.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v1.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "golem_v1.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v1.right_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "golem_v1.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v1.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "golem_v2.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v2.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "golem_v2.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "golem_v2.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "golem_v2.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v2.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v2.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v2.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v2.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v2.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v2.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v3.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v3.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "golem_v3.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "golem_v3.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "golem_v3.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "golem_v3.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v3.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v3.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v3.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v3.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v3.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "golem_v3.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "head.dragoncrest": {
+  "kind": "headpiece",
+  "status": "candidate"
+ },
+ "head.hood": {
+  "kind": "headpiece",
+  "status": "candidate"
+ },
+ "head.starhat": {
+  "kind": "headpiece",
+  "status": "candidate"
+ },
+ "necromancer_v1.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v1.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "necromancer_v1.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "necromancer_v1.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "necromancer_v1.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "necromancer_v1.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v1.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "necromancer_v1.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v1.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "necromancer_v1.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v1.left_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "necromancer_v1.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v1.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "necromancer_v1.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v1.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "necromancer_v1.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v1.right_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "necromancer_v1.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v1.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "necromancer_v2.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v2.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "necromancer_v2.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "necromancer_v2.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "necromancer_v2.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "necromancer_v2.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v2.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "necromancer_v2.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v2.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "necromancer_v2.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v2.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v2.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "necromancer_v2.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v2.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "necromancer_v2.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v2.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v2.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "necromancer_v3.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v3.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "necromancer_v3.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "necromancer_v3.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "necromancer_v3.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "necromancer_v3.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v3.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "necromancer_v3.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v3.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "necromancer_v3.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v3.left_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "necromancer_v3.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v3.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "necromancer_v3.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v3.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "necromancer_v3.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v3.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "necromancer_v3.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "seer_v1.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v1.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "seer_v1.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "seer_v1.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "seer_v1.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v1.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "seer_v1.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v1.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v1.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v1.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "seer_v1.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v1.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v1.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v1.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "seer_v2.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v2.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "seer_v2.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "seer_v2.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "seer_v2.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "seer_v2.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v2.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "seer_v2.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v2.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "seer_v2.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v2.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v2.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "seer_v2.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v2.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "seer_v2.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v2.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v2.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "seer_v3.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v3.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "seer_v3.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "seer_v3.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "seer_v3.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "seer_v3.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v3.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "seer_v3.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v3.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "seer_v3.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v3.left_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "seer_v3.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v3.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "seer_v3.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v3.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "seer_v3.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v3.right_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "seer_v3.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v3.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "shield.crux": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.1.1": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.1.2": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.1.3": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.1.4": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.1.5": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.2.1": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.2.2": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.2.3": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.2.4": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.2.5": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.3.1": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.3.2": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.3.3": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.3.4": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.3.5": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.4.1": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.4.2": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.4.3": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.4.4": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.4.5": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.5.1": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.5.2": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.5.3": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.5.4": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.5.5": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.6.1": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.6.2": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.6.3": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.6.4": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.6.5": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.7.1": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.7.2": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.7.3": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.7.4": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.7.5": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.8.1": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.8.2": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.8.3": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.8.4": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.set.8.5": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "shield.templar": {
+  "kind": "shield",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.left_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.right_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v1.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.left_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.right_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v2.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.left_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.right_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_crusader_v3.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v1.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v1.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v1.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v1.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v1.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v1.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v1.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v1.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v1.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v1.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v1.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v1.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v1.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v1.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v1.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.left_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.right_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v2.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v3.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v3.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v3.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v3.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v3.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v3.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v3.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v3.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v3.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v3.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v3.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v3.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v3.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v3.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v3.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "skeleton_warrior_v3.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v1.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v1.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v1.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "valkyrie_v1.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "valkyrie_v1.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "valkyrie_v1.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v1.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "valkyrie_v1.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v1.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v1.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v1.left_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v1.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v1.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v1.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v1.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v1.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v1.right_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v1.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v1.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v2.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v2.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v2.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "valkyrie_v2.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "valkyrie_v2.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "valkyrie_v2.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v2.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "valkyrie_v2.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v2.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v2.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v2.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v2.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v2.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v2.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v2.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v2.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v2.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v3.body.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v3.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v3.face_01.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "valkyrie_v3.face_02.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "valkyrie_v3.face_03.face": {
+  "kind": "face",
+  "status": "candidate"
+ },
+ "valkyrie_v3.head.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v3.head.headgear": {
+  "kind": "headgear",
+  "status": "candidate"
+ },
+ "valkyrie_v3.left_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v3.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v3.left_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v3.left_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v3.left_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v3.left_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v3.right_arm.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v3.right_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v3.right_hand.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v3.right_hand.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "valkyrie_v3.right_leg.anatomy": {
+  "kind": "anatomy",
+  "status": "candidate"
+ },
+ "valkyrie_v3.right_leg.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
+ "weapon.arcane": {
+  "kind": "sword",
+  "status": "candidate"
+ },
+ "weapon.blood_alchemist": {
+  "kind": "sword",
+  "status": "candidate"
+ },
+ "weapon.chevron": {
+  "kind": "sword",
+  "status": "candidate"
+ },
+ "weapon.dark_oracle": {
+  "kind": "sword",
+  "status": "candidate"
+ },
+ "weapon.fireworkBlade": {
+  "kind": "sword",
+  "status": "candidate"
+ },
+ "weapon.forest_ranger": {
+  "kind": "bow",
+  "status": "candidate"
+ },
+ "weapon.gem": {
+  "kind": "hammer",
+  "status": "candidate"
+ },
+ "weapon.golem": {
+  "kind": "sword",
+  "status": "candidate"
+ },
+ "weapon.necromancer": {
+  "kind": "sword",
+  "status": "candidate"
+ },
+ "weapon.reel": {
+  "kind": "sword",
+  "status": "candidate"
+ },
+ "weapon.ruby": {
+  "kind": "sword",
+  "status": "candidate"
+ },
+ "weapon.seer": {
+  "kind": "sword",
+  "status": "candidate"
+ },
+ "weapon.shard": {
+  "kind": "sword",
+  "status": "candidate"
+ },
+ "weapon.skeleton_crusader": {
+  "kind": "sword",
+  "status": "candidate"
+ },
+ "weapon.staff": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.1.1": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.1.2": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.1.3": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.1.4": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.1.5": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.2.1": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.2.2": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.2.3": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.2.4": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.2.5": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.3.1": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.3.2": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.3.3": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.3.4": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.3.5": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.4.1": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.4.2": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.4.3": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.4.4": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.4.5": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.5.1": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.5.2": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.5.3": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.5.4": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.5.5": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.6.1": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.6.2": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.6.3": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.6.4": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.6.5": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.7.1": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.7.2": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.7.3": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.7.4": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.7.5": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.8.1": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.8.2": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.8.3": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.8.4": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.staff.8.5": {
+  "kind": "staff",
+  "status": "candidate"
+ },
+ "weapon.stormblade": {
+  "kind": "sword",
+  "status": "candidate"
+ },
+ "weapon.valkyrie": {
+  "kind": "sword",
+  "status": "candidate"
+ }
+}

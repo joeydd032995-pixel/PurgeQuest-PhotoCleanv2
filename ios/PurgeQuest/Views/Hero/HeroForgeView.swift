@@ -87,8 +87,12 @@ struct HeroForgeView: View {
     /// Set when persisting fails; the Forge stays open and shows it.
     @State private var saveError: String?
 
-    init(hero: Hero) {
+    /// Persisting hook; nil uses the model context. UI tests inject a failing one to exercise save errors.
+    private let persistOverride: (() throws -> Void)?
+
+    init(hero: Hero, persistOverride: (() throws -> Void)? = nil) {
         self.hero = hero
+        self.persistOverride = persistOverride
         _draft = State(initialValue: hero.appearance)
     }
 
@@ -793,7 +797,7 @@ struct HeroForgeView: View {
                     }
                 }
             },
-            persist: { try modelContext.save() },
+            persist: { try (persistOverride ?? { try modelContext.save() })() },
             rollback: {
                 hero.appearance = previousAppearance
                 for item in cosmetics {

@@ -66,7 +66,7 @@ nonisolated struct SpriteCanvasLayout: Equatable, Sendable {
     let right: Double
     let bottom: Double
 
-    static let none = SpriteCanvasLayout(left: 0, top: 0, right: 0, bottom: 0)
+    static let zero = SpriteCanvasLayout(left: 0, top: 0, right: 0, bottom: 0)
 
     /// Origins are world-space (y-up) lower-left corners; sizes in canvas units.
     static func around(baseOrigin: (x: Double, y: Double), baseSize: (w: Double, h: Double),

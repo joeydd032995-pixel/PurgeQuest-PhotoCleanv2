@@ -1,0 +1,40 @@
+name: Modular assets
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  assets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Pillow and NumPy
+        run: python -m pip install pillow numpy
+      - name: Validate manifests, resources, masks, fits, approvals, catalog
+        run: python -I tools/modular_assets/validate.py
+      - name: Asset unit tests
+        run: python -I tools/modular_assets/tests/test_modular_assets.py
+      - name: Checklist is up to date
+        run: |
+          python -I tools/modular_assets/checklist.py
+          git diff --exit-code docs/modular/CHECKLIST.md docs/modular/asset_status.json
+
+  swift-pure-logic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container: swift:6.2-noble
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and test the pure-Foundation sources
+        run: tools/swift_harness/run.sh

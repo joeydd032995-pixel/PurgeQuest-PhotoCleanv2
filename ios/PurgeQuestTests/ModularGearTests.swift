@@ -72,7 +72,7 @@ struct ModularGearTests {
     @Test func canvasLayoutKeepsTheCharacterSizeWhenTheCanvasGrows() {
         let layout = SpriteCanvasLayout.around(baseOrigin: (0, 0), baseSize: (100, 80), frameOrigin: (-20, -10), frameSize: (180, 130))
         #expect(layout == SpriteCanvasLayout(left: 20, top: 40, right: 60, bottom: 10))
-        #expect(SpriteCanvasLayout.around(baseOrigin: (0, 0), baseSize: (100, 80), frameOrigin: (0, 0), frameSize: (100, 80)) == .none)
+        #expect(SpriteCanvasLayout.around(baseOrigin: (0, 0), baseSize: (100, 80), frameOrigin: (0, 0), frameSize: (100, 80)) == .zero)
         #expect(SpriteCanvasLayout.pointsPerUnit(height: 160, baseHeight: 80) == 2)
     }
 
