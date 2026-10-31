@@ -1,5 +1,34 @@
 {
   "_doc": "Per-pack separation overrides. Keys are pack ids (<race>_v<n>). Used only where the generic heuristics in separate.py cannot segment a pack.",
-  "dark_oracle_v3": {"face_ellipse": true},
-  "necromancer_v3": {"face_ellipse": true}
+  "dark_oracle_v3": {
+    "face_ellipse": true
+  },
+  "necromancer_v3": {
+    "face_ellipse": true
+  },
+  "necromancer_v1": {
+    "anatomy_parts": [
+      "left_hand",
+      "right_hand"
+    ]
+  },
+  "forest_ranger_v1": {
+    "anatomy_parts": [
+      "left_hand",
+      "right_hand"
+    ]
+  },
+  "seer_v2": {
+    "anatomy_parts": [
+      "left_hand",
+      "right_hand"
+    ],
+    "armor_parts": [
+      "body",
+      "left_arm",
+      "right_arm",
+      "left_leg",
+      "right_leg"
+    ]
+  }
 }

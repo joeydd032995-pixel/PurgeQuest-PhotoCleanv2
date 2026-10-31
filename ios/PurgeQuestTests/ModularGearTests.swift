@@ -352,3 +352,32 @@ struct ModularGearTests {
 private extension String {
     var wrapped: String { "[\(self)]" }
 }
+
+
+extension ModularGearTests {
+    @Test func materialBoundariesSampleOriginalShadingRegardlessOfRegionOrder() {
+        let source = (r: 0.4, g: 0.3, b: 0.2)
+        let red = MaterialRGBA(red: 0.8, green: 0.1, blue: 0.1)
+        let blue = MaterialRGBA(red: 0.1, green: 0.3, blue: 0.8)
+        let tone = RegionTone(lightness: 0.5, chroma: 0.1)
+        var forward = MaterialRecolorBlend(source: source)
+        forward.add(target: red, tone: tone, mask: 0.6)
+        forward.add(target: blue, tone: tone, mask: 0.4)
+        var reverse = MaterialRecolorBlend(source: source)
+        reverse.add(target: blue, tone: tone, mask: 0.4)
+        reverse.add(target: red, tone: tone, mask: 0.6)
+        let a = RecolorMath.recolor(pixel: source, target: red, tone: tone, mask: 1)
+        let b = RecolorMath.recolor(pixel: source, target: blue, tone: tone, mask: 1)
+        #expect(abs(forward.result.r - reverse.result.r) < 1e-12)
+        #expect(abs(forward.result.g - reverse.result.g) < 1e-12)
+        #expect(abs(forward.result.b - reverse.result.b) < 1e-12)
+        #expect(abs(forward.result.r - (a.r * 0.6 + b.r * 0.4)) < 1e-12)
+        #expect(abs(forward.result.g - (a.g * 0.6 + b.g * 0.4)) < 1e-12)
+        #expect(abs(forward.result.b - (a.b * 0.6 + b.b * 0.4)) < 1e-12)
+    }
+
+    @Test func emptyMaterialMasksPreserveThePixel() {
+        let blend = MaterialRecolorBlend(source: (0.4, 0.3, 0.2))
+        #expect(blend.result.r == 0.4 && blend.result.g == 0.3 && blend.result.b == 0.2)
+    }
+}

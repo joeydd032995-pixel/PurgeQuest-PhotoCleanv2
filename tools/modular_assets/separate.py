@@ -42,6 +42,7 @@ class Layer:
     image: Image.Image        # RGBA, same pixel size as the original part
     masks: Dict[str, Image.Image] = field(default_factory=dict)   # region -> L
     region_tone: Dict[str, List[float]] = field(default_factory=dict)   # region -> [mean OKLab L, mean OKLab chroma]
+    mask_outline: Optional[np.ndarray] = None   # authored ink policy, when dark fabric resembles linework
 
     @property
     def suffix(self) -> str:
@@ -126,11 +127,20 @@ def _features(rgb: np.ndarray) -> np.ndarray:
     return np.concatenate([lab[..., 1:3], 0.12 * lab[..., 0:1]], axis=-1)
 
 
-def _layer_weight(img: Image.Image):
+def _layer_weight(img: Image.Image, ink_palette: bool = False, protect_ink: bool = False):
     """(rgb, alpha, body, weight, outline). `weight` keeps dark *shading* (the OKLab recolor handles it) and
     removes only the thin dark outline strokes, softly, so masks never reach the linework."""
     rgb, alpha = ops.arrays(img)
-    outline = ops.outline_mask(rgb, alpha)
+    if ink_palette:
+        # These three packs use near-neutral #1a1917 ink. Their navy cloth
+        # is dark but chromatic: treating all dark pixels as ink leaves
+        # sleeves/boots uncoloured with only their decorations changing.
+        near_ink = np.linalg.norm(rgb * 255 - np.array([26, 25, 23]), axis=-1) < 16
+        outline = ((ops.lum(rgb) < 0.10) | near_ink) & (alpha > 0.08)
+    else:
+        outline = ops.outline_mask(rgb, alpha)
+    if protect_ink:
+        outline |= (np.linalg.norm(rgb * 255 - np.array([26, 25, 23]), axis=-1) < 16) & (alpha > 0.08)
     soft_out = ops.blur(outline.astype(np.float32), 0.8)
     body = (alpha > 0.5) & ~outline
     # outline pixels get exactly zero; the feather lives on the fill side, so linework is never tinted
@@ -269,6 +279,58 @@ class RegionModel:
                 continue
             out[nm] = Image.fromarray((m * 255 + 0.5).astype(np.uint8), "L")
         return out, {}
+
+
+def semantic_masks(img: Image.Image, spec: dict):
+    """Authored material boundaries for art whose similarly coloured materials confuse clustering.
+
+    Vote over connected fill cells, not individual pigment colours: a hood highlight and
+    shadow are still the same cloth. Keep linework excluded and feather only on the fill
+    side. Unoutlined details (Seer's gold runes) have an explicit source-palette rule.
+    """
+    from PIL import ImageDraw
+    rgb, alpha, body, weight, outline = _layer_weight(img, spec.get("outline") == "ink_palette", protect_ink=True)
+    names = list(dict.fromkeys([spec["default"]] + [p["region"] for p in spec.get("polygons", [])]))
+    authored = Image.new("I", img.size, 0)
+    draw = ImageDraw.Draw(authored)
+    for polygon in spec.get("polygons", []):
+        draw.polygon([tuple(p) for p in polygon["points"]], fill=names.index(polygon["region"]))
+    hard = np.asarray(authored, dtype=np.int16)
+    cells, count = ops.label(body)
+    labels = hard.copy()
+    for cell in range(1, count + 1) if spec.get("snap_cells", True) else ():
+        pixels = cells == cell
+        votes = np.bincount(hard[pixels], minlength=len(names))
+        labels[pixels] = int(votes.argmax())
+    labels[~body] = -1
+    masks = dict(zip(names, _soft_partition(labels, len(names), weight)))
+    for detail in spec.get("details", []):
+        distance = np.min([np.linalg.norm(rgb * 255 - np.array(c), axis=-1) for c in detail["colors"]], axis=0)
+        match = 1 - ops.smoothstep(distance, detail["tolerance"] / 2, detail["tolerance"])
+        if "box" in detail:
+            x0, y0, x1, y1 = detail["box"]
+            yy, xx = np.mgrid[:alpha.shape[0], :alpha.shape[1]]
+            match *= (xx >= x0) & (xx < x1) & (yy >= y0) & (yy < y1)
+        source = detail["within"]
+        transfer = masks[source] * match
+        masks[source] = masks[source] - transfer
+        masks[detail["region"]] = masks.get(detail["region"], 0) + transfer
+    return {name: Image.fromarray((np.clip(mask, 0, 1) * 255 + 0.5).astype(np.uint8), "L")
+            for name, mask in masks.items() if mask.sum() >= 40}, {}
+
+
+def apply_semantic_masks(pid: str, layers: List["Layer"]) -> None:
+    import json
+    from pathlib import Path
+    specs = json.loads(Path(__file__).with_name("semantic_regions.json").read_text()).get(pid, {})
+    for layer in layers:
+        # Bare procedural anatomy keeps its skin mask. These rules apply to
+        # the visible painted clothing/hair; original hands are anatomy-only.
+        if layer.kind not in ("armor", "headgear") or layer.part not in specs:
+            continue
+        spec = specs[layer.part]
+        layer.masks, layer.region_tone = semantic_masks(layer.image, spec)
+        layer.mask_outline = _layer_weight(layer.image, spec.get("outline") == "ink_palette", protect_ink=True)[4]
 
 
 def skin_masks(img: Image.Image, name: str = "skin"):
@@ -472,6 +534,7 @@ def _finish(race_dir, variant, imgs, layers, notes, skin, window_found, override
     model = RegionModel(armor_layers, hair_region=overrides.get("hair_region"))
     for layer in armor_layers:
         layer.masks, layer.region_tone = model.masks(layer.image, layer.kind)
+    apply_semantic_masks(scml.pack_id(race_dir, variant), layers)
     # bare head layers carry skin + (where the head is skin) nothing else
     faces: List[Layer] = []
     pid = scml.pack_id(race_dir, variant)

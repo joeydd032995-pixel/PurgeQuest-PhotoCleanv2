@@ -1,0 +1,793 @@
+{
+  "_doc": "Authored material regions for the three reported recolor defects. Coordinates use original part pixels. Polygons vote over outline-bounded cells, so shadows/highlights of one garment stay together. Detail colors preserve intentional unoutlined glyphs. These are masks, not visual approval records.",
+  "necromancer_v1": {
+    "head": {
+      "default": "hair",
+      "polygons": [
+        {
+          "region": "skin",
+          "points": [
+            [
+              157,
+              300
+            ],
+            [
+              179,
+              267
+            ],
+            [
+              228,
+              239
+            ],
+            [
+              266,
+              219
+            ],
+            [
+              282,
+              210
+            ],
+            [
+              310,
+              227
+            ],
+            [
+              350,
+              243
+            ],
+            [
+              391,
+              256
+            ],
+            [
+              381,
+              371
+            ],
+            [
+              356,
+              402
+            ],
+            [
+              305,
+              416
+            ],
+            [
+              232,
+              416
+            ],
+            [
+              190,
+              397
+            ],
+            [
+              173,
+              368
+            ]
+          ]
+        }
+      ],
+      "snap_cells": false,
+      "details": [
+        {
+          "region": "skin",
+          "within": "hair",
+          "colors": [
+            [
+              85,
+              132,
+              159
+            ],
+            [
+              76,
+              116,
+              139
+            ],
+            [
+              232,
+              163,
+              163
+            ]
+          ],
+          "tolerance": 12
+        }
+      ]
+    },
+    "body": {
+      "default": "primary",
+      "polygons": [
+        {
+          "region": "skin",
+          "points": [
+            [
+              65,
+              140
+            ],
+            [
+              70,
+              89
+            ],
+            [
+              107,
+              71
+            ],
+            [
+              169,
+              65
+            ],
+            [
+              211,
+              91
+            ],
+            [
+              230,
+              130
+            ],
+            [
+              210,
+              127
+            ],
+            [
+              175,
+              140
+            ],
+            [
+              118,
+              139
+            ]
+          ]
+        }
+      ],
+      "outline": "ink_palette",
+      "details": [
+        {
+          "region": "trim",
+          "within": "primary",
+          "colors": [
+            [
+              51,
+              55,
+              51
+            ],
+            [
+              62,
+              68,
+              62
+            ],
+            [
+              57,
+              62,
+              56
+            ],
+            [
+              93,
+              102,
+              93
+            ]
+          ],
+          "tolerance": 5
+        }
+      ]
+    },
+    "left_arm": {
+      "default": "secondary",
+      "outline": "ink_palette",
+      "details": [
+        {
+          "region": "trim",
+          "within": "secondary",
+          "colors": [
+            [
+              62,
+              68,
+              62
+            ],
+            [
+              57,
+              62,
+              56
+            ]
+          ],
+          "tolerance": 5
+        }
+      ]
+    },
+    "right_arm": {
+      "default": "secondary",
+      "outline": "ink_palette",
+      "details": [
+        {
+          "region": "trim",
+          "within": "secondary",
+          "colors": [
+            [
+              62,
+              68,
+              62
+            ],
+            [
+              57,
+              62,
+              56
+            ]
+          ],
+          "tolerance": 5
+        }
+      ]
+    },
+    "left_leg": {
+      "default": "leather",
+      "outline": "ink_palette"
+    },
+    "right_leg": {
+      "default": "leather",
+      "outline": "ink_palette"
+    }
+  },
+  "forest_ranger_v1": {
+    "head": {
+      "default": "primary",
+      "polygons": [
+        {
+          "region": "skin",
+          "points": [
+            [
+              241,
+              387
+            ],
+            [
+              268,
+              363
+            ],
+            [
+              282,
+              369
+            ],
+            [
+              302,
+              362
+            ],
+            [
+              328,
+              365
+            ],
+            [
+              352,
+              355
+            ],
+            [
+              385,
+              364
+            ],
+            [
+              426,
+              350
+            ],
+            [
+              468,
+              331
+            ],
+            [
+              458,
+              443
+            ],
+            [
+              440,
+              469
+            ],
+            [
+              403,
+              490
+            ],
+            [
+              345,
+              507
+            ],
+            [
+              294,
+              500
+            ],
+            [
+              254,
+              473
+            ],
+            [
+              237,
+              427
+            ]
+          ]
+        }
+      ],
+      "snap_cells": false,
+      "details": [
+        {
+          "region": "hair",
+          "within": "primary",
+          "colors": [
+            [
+              78,
+              57,
+              19
+            ],
+            [
+              48,
+              35,
+              12
+            ],
+            [
+              67,
+              49,
+              16
+            ],
+            [
+              58,
+              43,
+              14
+            ],
+            [
+              43,
+              31,
+              10
+            ]
+          ],
+          "tolerance": 10,
+          "box": [
+            235,
+            315,
+            371,
+            382
+          ]
+        },
+        {
+          "region": "skin",
+          "within": "primary",
+          "colors": [
+            [
+              239,
+              183,
+              125
+            ],
+            [
+              179,
+              137,
+              94
+            ],
+            [
+              245,
+              212,
+              175
+            ],
+            [
+              203,
+              156,
+              106
+            ],
+            [
+              184,
+              159,
+              131
+            ]
+          ],
+          "tolerance": 12
+        }
+      ]
+    },
+    "body": {
+      "default": "secondary",
+      "polygons": [
+        {
+          "region": "primary",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              125,
+              0
+            ],
+            [
+              125,
+              105
+            ],
+            [
+              54,
+              119
+            ],
+            [
+              0,
+              119
+            ]
+          ]
+        },
+        {
+          "region": "primary",
+          "points": [
+            [
+              93,
+              74
+            ],
+            [
+              141,
+              56
+            ],
+            [
+              202,
+              65
+            ],
+            [
+              233,
+              100
+            ],
+            [
+              224,
+              137
+            ],
+            [
+              205,
+              177
+            ],
+            [
+              168,
+              159
+            ],
+            [
+              121,
+              131
+            ],
+            [
+              86,
+              103
+            ]
+          ]
+        }
+      ],
+      "details": [
+        {
+          "region": "primary",
+          "within": "secondary",
+          "colors": [
+            [
+              79,
+              93,
+              31
+            ],
+            [
+              105,
+              124,
+              41
+            ],
+            [
+              141,
+              160,
+              58
+            ]
+          ],
+          "tolerance": 12
+        },
+        {
+          "region": "trim",
+          "within": "primary",
+          "colors": [
+            [
+              147,
+              104,
+              24
+            ],
+            [
+              185,
+              140,
+              32
+            ],
+            [
+              166,
+              122,
+              28
+            ]
+          ],
+          "tolerance": 8
+        },
+        {
+          "region": "trim",
+          "within": "secondary",
+          "colors": [
+            [
+              147,
+              104,
+              24
+            ],
+            [
+              185,
+              140,
+              32
+            ],
+            [
+              166,
+              122,
+              28
+            ]
+          ],
+          "tolerance": 8
+        }
+      ],
+      "outline": "ink_palette"
+    },
+    "left_arm": {
+      "default": "primary",
+      "polygons": [
+        {
+          "region": "leather",
+          "points": [
+            [
+              0,
+              78
+            ],
+            [
+              128,
+              78
+            ],
+            [
+              128,
+              128
+            ],
+            [
+              0,
+              128
+            ]
+          ]
+        }
+      ],
+      "outline": "ink_palette"
+    },
+    "right_arm": {
+      "default": "primary",
+      "polygons": [
+        {
+          "region": "leather",
+          "points": [
+            [
+              0,
+              78
+            ],
+            [
+              128,
+              78
+            ],
+            [
+              128,
+              128
+            ],
+            [
+              0,
+              128
+            ]
+          ]
+        }
+      ],
+      "outline": "ink_palette"
+    },
+    "left_leg": {
+      "default": "leather",
+      "outline": "ink_palette"
+    },
+    "right_leg": {
+      "default": "leather",
+      "outline": "ink_palette"
+    }
+  },
+  "seer_v2": {
+    "head": {
+      "default": "primary",
+      "polygons": [
+        {
+          "region": "skin",
+          "points": [
+            [
+              150,
+              292
+            ],
+            [
+              168,
+              265
+            ],
+            [
+              194,
+              246
+            ],
+            [
+              235,
+              248
+            ],
+            [
+              275,
+              263
+            ],
+            [
+              307,
+              279
+            ],
+            [
+              333,
+              262
+            ],
+            [
+              366,
+              254
+            ],
+            [
+              399,
+              265
+            ],
+            [
+              396,
+              329
+            ],
+            [
+              385,
+              379
+            ],
+            [
+              350,
+              407
+            ],
+            [
+              305,
+              417
+            ],
+            [
+              240,
+              416
+            ],
+            [
+              196,
+              393
+            ],
+            [
+              171,
+              371
+            ]
+          ]
+        }
+      ],
+      "details": [
+        {
+          "region": "trim",
+          "within": "primary",
+          "colors": [
+            [
+              150,
+              107,
+              48
+            ],
+            [
+              112,
+              80,
+              36
+            ]
+          ],
+          "tolerance": 6
+        },
+        {
+          "region": "skin",
+          "within": "primary",
+          "colors": [
+            [
+              184,
+              121,
+              58
+            ],
+            [
+              138,
+              91,
+              43
+            ],
+            [
+              212,
+              169,
+              81
+            ],
+            [
+              157,
+              103,
+              49
+            ]
+          ],
+          "tolerance": 12
+        }
+      ],
+      "snap_cells": false
+    },
+    "body": {
+      "default": "primary",
+      "outline": "ink_palette",
+      "polygons": [
+        {
+          "region": "secondary",
+          "points": [
+            [
+              87,
+              87
+            ],
+            [
+              138,
+              55
+            ],
+            [
+              187,
+              62
+            ],
+            [
+              223,
+              92
+            ],
+            [
+              235,
+              117
+            ],
+            [
+              223,
+              150
+            ],
+            [
+              194,
+              167
+            ],
+            [
+              158,
+              151
+            ],
+            [
+              118,
+              130
+            ],
+            [
+              99,
+              107
+            ]
+          ]
+        }
+      ],
+      "details": [
+        {
+          "region": "trim",
+          "within": "primary",
+          "colors": [
+            [
+              131,
+              99,
+              55
+            ],
+            [
+              121,
+              89,
+              49
+            ]
+          ],
+          "tolerance": 6,
+          "box": [
+            188,
+            162,
+            215,
+            199
+          ]
+        }
+      ],
+      "snap_cells": false
+    },
+    "left_arm": {
+      "default": "primary",
+      "outline": "ink_palette"
+    },
+    "right_arm": {
+      "default": "primary",
+      "outline": "ink_palette"
+    },
+    "left_leg": {
+      "default": "leather",
+      "outline": "ink_palette"
+    },
+    "right_leg": {
+      "default": "leather",
+      "outline": "ink_palette"
+    }
+  }
+}

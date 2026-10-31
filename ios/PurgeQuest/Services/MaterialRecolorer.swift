@@ -55,20 +55,22 @@ final class MaterialRecolorer {
                 let alpha = Double(bytes[offset + 3]) / 255
                 guard alpha > 0 else { continue }
                 // CoreGraphics stores premultiplied colour; the math wants straight colour.
-                var rgb = (r: min(Double(bytes[offset]) / 255 / alpha, 1),
+                let rgb = (r: min(Double(bytes[offset]) / 255 / alpha, 1),
                            g: min(Double(bytes[offset + 1]) / 255 / alpha, 1),
                            b: min(Double(bytes[offset + 2]) / 255 / alpha, 1))
+                var blend = MaterialRecolorBlend(source: rgb)
                 var changed = false
                 for layer in active {
                     let weight = Double(layer.weights[index]) / 255
                     guard weight > 0 else { continue }
-                    rgb = RecolorMath.recolor(pixel: rgb, target: layer.color, tone: layer.tone, mask: weight)
+                    blend.add(target: layer.color, tone: layer.tone, mask: weight)
                     changed = true
                 }
                 guard changed else { continue }
-                bytes[offset] = UInt8(min(max(rgb.r * alpha * 255 + 0.5, 0), 255))
-                bytes[offset + 1] = UInt8(min(max(rgb.g * alpha * 255 + 0.5, 0), 255))
-                bytes[offset + 2] = UInt8(min(max(rgb.b * alpha * 255 + 0.5, 0), 255))
+                let result = blend.result
+                bytes[offset] = UInt8(min(max(result.r * alpha * 255 + 0.5, 0), 255))
+                bytes[offset + 1] = UInt8(min(max(result.g * alpha * 255 + 0.5, 0), 255))
+                bytes[offset + 2] = UInt8(min(max(result.b * alpha * 255 + 0.5, 0), 255))
             }
             return context.makeImage()
         }

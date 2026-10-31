@@ -12,19 +12,24 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
+    "leather": "valkyrie_v1_sword_mask_leather",
     "primary": "valkyrie_v1_sword_mask_primary",
     "trim": "valkyrie_v1_sword_mask_trim"
    },
    "name": "Valkyrie Blade",
    "profileOverrides": {},
    "regionTone": {
+    "leather": [
+     0.35501,
+     0.00634
+    ],
     "primary": [
-     0.61893,
-     0.0118
+     0.56548,
+     0.01234
     ],
     "trim": [
-     0.55242,
-     0.03329
+     0.53329,
+     0.03164
     ]
    },
    "resourceName": "valkyrie_v1_sword",
@@ -80,7 +85,14 @@
        1.64
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.986399,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -98,19 +110,19 @@
    "kind": "bow",
    "layer": "front",
    "maskResources": {
-    "primary": "forest_ranger_v1_bow_mask_primary",
-    "trim": "forest_ranger_v1_bow_mask_trim"
+    "leather": "forest_ranger_v1_bow_mask_leather",
+    "primary": "forest_ranger_v1_bow_mask_primary"
    },
    "name": "Elven Recurve",
    "profileOverrides": {},
    "regionTone": {
-    "primary": [
-     0.46119,
-     0.08815
+    "leather": [
+     0.29929,
+     0.02519
     ],
-    "trim": [
-     0.366,
-     0.03389
+    "primary": [
+     0.43104,
+     0.08018
     ]
    },
    "resourceName": "forest_ranger_v1_bow",
@@ -152,6 +164,13 @@
       ]
      },
      "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.982614,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     },
      "stringAlignment": {
       "forest_ranger_v1": {
        "frames": 3,
@@ -181,19 +200,24 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
+    "emissive": "seer_v1_sword_mask_emissive",
     "primary": "seer_v1_sword_mask_primary",
     "secondary": "seer_v1_sword_mask_secondary"
    },
    "name": "Seer's Edge",
    "profileOverrides": {},
    "regionTone": {
+    "emissive": [
+     0.4933,
+     0.08866
+    ],
     "primary": [
-     0.52046,
-     0.10009
+     0.43463,
+     0.07746
     ],
     "secondary": [
-     0.50004,
-     0.09348
+     0.49377,
+     0.09166
     ]
    },
    "resourceName": "seer_v1_sword",
@@ -249,7 +273,14 @@
        1.584
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.003922,
+      "coverage": 0.995859,
+      "overlap": 0.003922,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -267,24 +298,24 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
+    "leather": "blood_alchemist_v1_sword_mask_leather",
     "primary": "blood_alchemist_v1_sword_mask_primary",
-    "secondary": "blood_alchemist_v1_sword_mask_secondary",
-    "trim": "blood_alchemist_v1_sword_mask_trim"
+    "secondary": "blood_alchemist_v1_sword_mask_secondary"
    },
    "name": "Vampyri Cleaver",
    "profileOverrides": {},
    "regionTone": {
+    "leather": [
+     0.33355,
+     0.03538
+    ],
     "primary": [
-     0.71783,
-     0.02977
+     0.71938,
+     0.02523
     ],
     "secondary": [
-     0.60823,
-     0.17384
-    ],
-    "trim": [
-     0.38081,
-     0.04266
+     0.60204,
+     0.17602
     ]
    },
    "resourceName": "blood_alchemist_v1_sword",
@@ -340,7 +371,14 @@
        1.493
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.990335,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -358,19 +396,24 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
+    "emissive": "dark_oracle_v1_sword_mask_emissive",
     "primary": "dark_oracle_v1_sword_mask_primary",
     "secondary": "dark_oracle_v1_sword_mask_secondary"
    },
    "name": "Scarred Fang",
    "profileOverrides": {},
    "regionTone": {
+    "emissive": [
+     0.41509,
+     0.05062
+    ],
     "primary": [
-     0.31164,
-     0.00989
+     0.30472,
+     0.01529
     ],
     "secondary": [
-     0.51625,
-     0.05536
+     0.56154,
+     0.01633
     ]
    },
    "resourceName": "dark_oracle_v1_sword",
@@ -426,7 +469,14 @@
        1.643
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.993236,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -444,14 +494,19 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
+    "leather": "necromancer_v1_sword_mask_leather",
     "primary": "necromancer_v1_sword_mask_primary"
    },
    "name": "Shadowbrand",
    "profileOverrides": {},
    "regionTone": {
+    "leather": [
+     0.36331,
+     0.01438
+    ],
     "primary": [
-     0.43966,
-     0.01955
+     0.3413,
+     0.01286
     ]
    },
    "resourceName": "necromancer_v1_sword",
@@ -507,7 +562,14 @@
        1.554
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.97253,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -533,16 +595,16 @@
    "profileOverrides": {},
    "regionTone": {
     "leather": [
-     0.37157,
-     0.02587
+     0.36271,
+     0.03043
     ],
     "primary": [
-     0.72358,
-     0.05685
+     0.79884,
+     0.04843
     ],
     "secondary": [
-     0.92542,
-     0.01534
+     0.43944,
+     0.05118
     ]
    },
    "resourceName": "skeleton_crusader_v1_sword",
@@ -598,7 +660,14 @@
        1.625
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.985074,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -617,23 +686,18 @@
    "layer": "front",
    "maskResources": {
     "leather": "golem_v1_sword_mask_leather",
-    "primary": "golem_v1_sword_mask_primary",
-    "secondary": "golem_v1_sword_mask_secondary"
+    "primary": "golem_v1_sword_mask_primary"
    },
    "name": "Vaultcracker",
    "profileOverrides": {},
    "regionTone": {
     "leather": [
-     0.79391,
-     0.05178
+     0.63572,
+     0.02319
     ],
     "primary": [
-     0.75082,
-     0.02877
-    ],
-    "secondary": [
-     0.67601,
-     0.02549
+     0.73758,
+     0.03104
     ]
    },
    "resourceName": "golem_v1_sword",
@@ -689,7 +753,14 @@
        1.507
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.985668,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -713,8 +784,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.46746,
-     0.06816
+     0.4505,
+     0.06475
     ]
    },
    "resourceName": "staff_1_1",
@@ -770,7 +841,14 @@
        1.669
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.98301,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -788,14 +866,19 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_1_2_mask_primary"
+    "primary": "staff_1_2_mask_primary",
+    "secondary": "staff_1_2_mask_secondary"
    },
    "name": "Ashen Bough II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.46835,
-     0.06947
+     0.43995,
+     0.06294
+    ],
+    "secondary": [
+     0.44888,
+     0.10992
     ]
    },
    "resourceName": "staff_1_2",
@@ -851,7 +934,14 @@
        1.669
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.982545,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -869,19 +959,19 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "emissive": "staff_1_3_mask_emissive",
-    "primary": "staff_1_3_mask_primary"
+    "primary": "staff_1_3_mask_primary",
+    "secondary": "staff_1_3_mask_secondary"
    },
    "name": "Ashen Bough III",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.57521,
-     0.11177
-    ],
     "primary": [
-     0.49737,
-     0.09562
+     0.45627,
+     0.0841
+    ],
+    "secondary": [
+     0.41624,
+     0.09901
     ]
    },
    "resourceName": "staff_1_3",
@@ -937,7 +1027,14 @@
        1.666
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.981831,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -955,24 +1052,24 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "emissive": "staff_1_4_mask_emissive",
     "primary": "staff_1_4_mask_primary",
-    "secondary": "staff_1_4_mask_secondary"
+    "secondary": "staff_1_4_mask_secondary",
+    "trim": "staff_1_4_mask_trim"
    },
    "name": "Ashen Bough IV",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.56969,
-     0.11087
-    ],
     "primary": [
-     0.49419,
-     0.09372
+     0.45224,
+     0.08299
     ],
     "secondary": [
-     0.46653,
-     0.1194
+     0.41246,
+     0.09777
+    ],
+    "trim": [
+     0.35471,
+     0.08326
     ]
    },
    "resourceName": "staff_1_4",
@@ -1028,7 +1125,14 @@
        1.677
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.980958,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1046,14 +1150,24 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_1_5_mask_primary"
+    "primary": "staff_1_5_mask_primary",
+    "secondary": "staff_1_5_mask_secondary",
+    "trim": "staff_1_5_mask_trim"
    },
    "name": "Ashen Bough V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.42187,
-     0.08534
+     0.35209,
+     0.06576
+    ],
+    "secondary": [
+     0.44702,
+     0.10799
+    ],
+    "trim": [
+     0.34591,
+     0.08025
     ]
    },
    "resourceName": "staff_1_5",
@@ -1109,7 +1223,14 @@
        1.692
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.979986,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1134,12 +1255,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.73605,
-     0.02225
+     0.72842,
+     0.022
     ],
     "secondary": [
-     0.47311,
-     0.00883
+     0.40479,
+     0.00741
     ]
    },
    "resourceName": "staff_2_1",
@@ -1195,7 +1316,14 @@
        1.696
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.989856,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1220,12 +1348,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.62392,
-     0.05569
+     0.69514,
+     0.06146
     ],
     "secondary": [
-     0.23168,
-     0.01225
+     0.37324,
+     0.03054
     ]
    },
    "resourceName": "staff_2_2",
@@ -1281,7 +1409,14 @@
        1.69
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.989703,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1300,23 +1435,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_2_3_mask_primary",
-    "secondary": "staff_2_3_mask_secondary",
-    "trim": "staff_2_3_mask_trim"
+    "secondary": "staff_2_3_mask_secondary"
    },
    "name": "Verdant Coil III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.69037,
-     0.05539
+     0.68463,
+     0.05471
     ],
     "secondary": [
-     0.22395,
-     0.01178
-    ],
-    "trim": [
-     0.47412,
-     0.04316
+     0.40219,
+     0.03289
     ]
    },
    "resourceName": "staff_2_3",
@@ -1372,7 +1502,14 @@
        1.688
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.989779,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1390,7 +1527,6 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "leather": "staff_2_4_mask_leather",
     "primary": "staff_2_4_mask_primary",
     "secondary": "staff_2_4_mask_secondary",
     "trim": "staff_2_4_mask_trim"
@@ -1398,21 +1534,17 @@
    "name": "Verdant Coil IV",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.36221,
-     0.03833
-    ],
     "primary": [
-     0.67494,
-     0.07765
+     0.66933,
+     0.07674
     ],
     "secondary": [
-     0.20099,
-     0.01605
+     0.30287,
+     0.04479
     ],
     "trim": [
-     0.34273,
-     0.05534
+     0.35744,
+     0.03721
     ]
    },
    "resourceName": "staff_2_4",
@@ -1468,7 +1600,14 @@
        1.683
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.990657,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1487,18 +1626,23 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_2_5_mask_primary",
-    "secondary": "staff_2_5_mask_secondary"
+    "secondary": "staff_2_5_mask_secondary",
+    "trim": "staff_2_5_mask_trim"
    },
    "name": "Verdant Coil V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.6594,
-     0.08423
+     0.65321,
+     0.08314
     ],
     "secondary": [
-     0.22273,
-     0.01454
+     0.28865,
+     0.02468
+    ],
+    "trim": [
+     0.307,
+     0.02875
     ]
    },
    "resourceName": "staff_2_5",
@@ -1554,7 +1698,14 @@
        1.69
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.989422,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1573,23 +1724,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_3_1_mask_primary",
-    "secondary": "staff_3_1_mask_secondary",
-    "trim": "staff_3_1_mask_trim"
+    "secondary": "staff_3_1_mask_secondary"
    },
    "name": "Tidecaller I",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.64743,
-     0.11432
+     0.69459,
+     0.11003
     ],
     "secondary": [
-     0.49535,
-     0.07496
-    ],
-    "trim": [
-     0.87197,
-     0.10999
+     0.49166,
+     0.07422
     ]
    },
    "resourceName": "staff_3_1",
@@ -1645,7 +1791,14 @@
        1.66
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.986387,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1670,12 +1823,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.56679,
-     0.10755
+     0.66855,
+     0.1166
     ],
     "secondary": [
-     0.21481,
-     0.01252
+     0.46338,
+     0.09442
     ]
    },
    "resourceName": "staff_3_2",
@@ -1731,7 +1884,14 @@
        1.656
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.986623,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1750,18 +1910,23 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_3_3_mask_primary",
-    "secondary": "staff_3_3_mask_secondary"
+    "secondary": "staff_3_3_mask_secondary",
+    "trim": "staff_3_3_mask_trim"
    },
    "name": "Tidecaller III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.58106,
-     0.12359
+     0.59339,
+     0.12461
     ],
     "secondary": [
-     0.28295,
-     0.03379
+     0.42103,
+     0.0785
+    ],
+    "trim": [
+     0.70303,
+     0.12966
     ]
    },
    "resourceName": "staff_3_3",
@@ -1817,7 +1982,14 @@
        1.652
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.988203,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1836,18 +2008,23 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_3_4_mask_primary",
-    "secondary": "staff_3_4_mask_secondary"
+    "secondary": "staff_3_4_mask_secondary",
+    "trim": "staff_3_4_mask_trim"
    },
    "name": "Tidecaller IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.61725,
-     0.16111
+     0.59938,
+     0.15521
     ],
     "secondary": [
-     0.66474,
-     0.11713
+     0.67275,
+     0.12104
+    ],
+    "trim": [
+     0.37571,
+     0.02012
     ]
    },
    "resourceName": "staff_3_4",
@@ -1903,7 +2080,14 @@
        1.663
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.987422,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1922,18 +2106,23 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_3_5_mask_primary",
-    "secondary": "staff_3_5_mask_secondary"
+    "secondary": "staff_3_5_mask_secondary",
+    "trim": "staff_3_5_mask_trim"
    },
    "name": "Tidecaller V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.46758,
-     0.13104
+     0.4255,
+     0.11716
     ],
     "secondary": [
-     0.47392,
-     0.04221
+     0.39566,
+     0.02037
+    ],
+    "trim": [
+     0.37347,
+     0.01979
     ]
    },
    "resourceName": "staff_3_5",
@@ -1989,7 +2178,14 @@
        1.673
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.984138,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2014,12 +2210,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.50322,
-     0.00939
+     0.47649,
+     0.00905
     ],
     "secondary": [
-     0.60144,
-     0.11605
+     0.58068,
+     0.11062
     ]
    },
    "resourceName": "staff_4_1",
@@ -2075,7 +2271,14 @@
        1.683
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.980784,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2100,12 +2303,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.45355,
-     0.02735
+     0.38371,
+     0.02214
     ],
     "secondary": [
-     0.61513,
-     0.14601
+     0.5934,
+     0.13876
     ]
    },
    "resourceName": "staff_4_2",
@@ -2161,7 +2364,14 @@
        1.681
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.983265,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2180,18 +2390,23 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_4_3_mask_primary",
-    "secondary": "staff_4_3_mask_secondary"
+    "secondary": "staff_4_3_mask_secondary",
+    "trim": "staff_4_3_mask_trim"
    },
    "name": "Ember Scepter III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.51717,
-     0.0473
+     0.45463,
+     0.03984
     ],
     "secondary": [
-     0.65139,
-     0.12402
+     0.62735,
+     0.11766
+    ],
+    "trim": [
+     0.39765,
+     0.05649
     ]
    },
    "resourceName": "staff_4_3",
@@ -2247,7 +2462,14 @@
        1.672
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.983338,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2266,18 +2488,23 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_4_4_mask_primary",
+    "secondary": "staff_4_4_mask_secondary",
     "trim": "staff_4_4_mask_trim"
    },
    "name": "Ember Scepter IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.52288,
-     0.07898
+     0.44734,
+     0.066
+    ],
+    "secondary": [
+     0.6949,
+     0.11091
     ],
     "trim": [
-     0.71516,
-     0.11495
+     0.31187,
+     0.0243
     ]
    },
    "resourceName": "staff_4_4",
@@ -2333,7 +2560,14 @@
        1.667
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.983152,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2351,24 +2585,24 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "emissive": "staff_4_5_mask_emissive",
     "primary": "staff_4_5_mask_primary",
-    "secondary": "staff_4_5_mask_secondary"
+    "secondary": "staff_4_5_mask_secondary",
+    "trim": "staff_4_5_mask_trim"
    },
    "name": "Ember Scepter V",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.83571,
-     0.15259
-    ],
     "primary": [
-     0.44207,
-     0.03759
+     0.46823,
+     0.0893
     ],
     "secondary": [
-     0.54488,
-     0.10863
+     0.81035,
+     0.14688
+    ],
+    "trim": [
+     0.31962,
+     0.02501
     ]
    },
    "resourceName": "staff_4_5",
@@ -2424,7 +2658,14 @@
        1.653
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.982687,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2442,14 +2683,19 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_5_1_mask_primary"
+    "primary": "staff_5_1_mask_primary",
+    "secondary": "staff_5_1_mask_secondary"
    },
    "name": "Storm Spire I",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.47971,
-     0.07024
+     0.44236,
+     0.06339
+    ],
+    "secondary": [
+     0.37248,
+     0.08136
     ]
    },
    "resourceName": "staff_5_1",
@@ -2505,7 +2751,14 @@
        1.654
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.983732,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2523,14 +2776,19 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_5_2_mask_primary"
+    "primary": "staff_5_2_mask_primary",
+    "secondary": "staff_5_2_mask_secondary"
    },
    "name": "Storm Spire II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.46844,
-     0.07092
+     0.42311,
+     0.0583
+    ],
+    "secondary": [
+     0.43642,
+     0.11955
     ]
    },
    "resourceName": "staff_5_2",
@@ -2586,7 +2844,14 @@
        1.65
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.981474,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2604,24 +2869,19 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "emissive": "staff_5_3_mask_emissive",
-    "secondary": "staff_5_3_mask_secondary",
-    "trim": "staff_5_3_mask_trim"
+    "primary": "staff_5_3_mask_primary",
+    "secondary": "staff_5_3_mask_secondary"
    },
    "name": "Storm Spire III",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.78459,
-     0.16212
+    "primary": [
+     0.69404,
+     0.1397
     ],
     "secondary": [
-     0.55861,
-     0.10432
-    ],
-    "trim": [
-     0.54412,
-     0.1612
+     0.47145,
+     0.13584
     ]
    },
    "resourceName": "staff_5_3",
@@ -2677,7 +2937,14 @@
        1.647
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.978386,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2696,23 +2963,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_5_4_mask_primary",
-    "secondary": "staff_5_4_mask_secondary",
-    "trim": "staff_5_4_mask_trim"
+    "secondary": "staff_5_4_mask_secondary"
    },
    "name": "Storm Spire IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.45719,
-     0.0079
+     0.47152,
+     0.03342
     ],
     "secondary": [
-     0.64564,
-     0.12099
-    ],
-    "trim": [
-     0.5215,
-     0.15202
+     0.42004,
+     0.11999
     ]
    },
    "resourceName": "staff_5_4",
@@ -2768,7 +3030,14 @@
        1.649
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.978173,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2786,24 +3055,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_5_5_mask_primary",
-    "secondary": "staff_5_5_mask_secondary",
-    "trim": "staff_5_5_mask_trim"
+    "primary": "staff_5_5_mask_primary"
    },
    "name": "Storm Spire V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.43588,
-     0.02528
-    ],
-    "secondary": [
-     0.45778,
-     0.10337
-    ],
-    "trim": [
-     0.54824,
-     0.09992
+     0.40273,
+     0.04221
     ]
    },
    "resourceName": "staff_5_5",
@@ -2859,7 +3118,14 @@
        1.695
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.979714,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2883,8 +3149,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.46283,
-     0.01416
+     0.40806,
+     0.01245
     ]
    },
    "resourceName": "staff_6_1",
@@ -2940,7 +3206,14 @@
        1.679
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.988849,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2958,19 +3231,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_6_2_mask_primary",
-    "secondary": "staff_6_2_mask_secondary"
+    "primary": "staff_6_2_mask_primary"
    },
    "name": "Gilded Crook II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.21128,
-     0.0205
-    ],
-    "secondary": [
-     0.3049,
-     0.05107
+     0.28098,
+     0.04541
     ]
    },
    "resourceName": "staff_6_2",
@@ -3026,7 +3294,14 @@
        1.675
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.989132,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3044,19 +3319,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_6_3_mask_primary",
-    "secondary": "staff_6_3_mask_secondary"
+    "primary": "staff_6_3_mask_primary"
    },
    "name": "Gilded Crook III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.44697,
-     0.09106
-    ],
-    "secondary": [
-     0.46792,
-     0.09313
+     0.38682,
+     0.07432
     ]
    },
    "resourceName": "staff_6_3",
@@ -3112,7 +3382,14 @@
        1.697
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.989128,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3131,18 +3408,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_6_4_mask_primary",
-    "secondary": "staff_6_4_mask_secondary"
+    "trim": "staff_6_4_mask_trim"
    },
    "name": "Gilded Crook IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.42057,
-     0.09855
+     0.36521,
+     0.08649
     ],
-    "secondary": [
-     0.45184,
-     0.11275
+    "trim": [
+     0.3789,
+     0.01922
     ]
    },
    "resourceName": "staff_6_4",
@@ -3198,7 +3475,14 @@
        1.678
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.988012,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3216,14 +3500,24 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_6_5_mask_primary"
+    "primary": "staff_6_5_mask_primary",
+    "secondary": "staff_6_5_mask_secondary",
+    "trim": "staff_6_5_mask_trim"
    },
    "name": "Gilded Crook V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.31146,
-     0.04362
+     0.30073,
+     0.0415
+    ],
+    "secondary": [
+     0.49606,
+     0.11524
+    ],
+    "trim": [
+     0.54721,
+     0.07588
     ]
    },
    "resourceName": "staff_6_5",
@@ -3279,7 +3573,14 @@
        1.669
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.983093,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3297,29 +3598,19 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "leather": "staff_7_1_mask_leather",
     "primary": "staff_7_1_mask_primary",
-    "secondary": "staff_7_1_mask_secondary",
-    "trim": "staff_7_1_mask_trim"
+    "secondary": "staff_7_1_mask_secondary"
    },
    "name": "Bone Reliquary I",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.88315,
-     0.02183
-    ],
     "primary": [
-     0.67073,
-     0.07481
+     0.71074,
+     0.06188
     ],
     "secondary": [
-     0.46079,
-     0.06702
-    ],
-    "trim": [
-     0.49331,
-     0.07254
+     0.45315,
+     0.06522
     ]
    },
    "resourceName": "staff_7_1",
@@ -3375,7 +3666,14 @@
        1.657
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.988694,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3394,23 +3692,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_7_2_mask_primary",
-    "secondary": "staff_7_2_mask_secondary",
-    "trim": "staff_7_2_mask_trim"
+    "secondary": "staff_7_2_mask_secondary"
    },
    "name": "Bone Reliquary II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.72501,
-     0.09631
+     0.7189,
+     0.09512
     ],
     "secondary": [
-     0.52277,
-     0.07405
-    ],
-    "trim": [
-     0.59735,
-     0.0003
+     0.5153,
+     0.05775
     ]
    },
    "resourceName": "staff_7_2",
@@ -3466,7 +3759,14 @@
        1.65
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.988696,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3484,24 +3784,24 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "emissive": "staff_7_3_mask_emissive",
+    "primary": "staff_7_3_mask_primary",
     "secondary": "staff_7_3_mask_secondary",
     "trim": "staff_7_3_mask_trim"
    },
    "name": "Bone Reliquary III",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.75861,
-     0.12238
+    "primary": [
+     0.7523,
+     0.12092
     ],
     "secondary": [
-     0.55121,
-     0.10432
+     0.5937,
+     0.11509
     ],
     "trim": [
-     0.798,
-     0.16555
+     0.71995,
+     0.14944
     ]
    },
    "resourceName": "staff_7_3",
@@ -3557,7 +3857,14 @@
        1.642
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.98906,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3575,24 +3882,24 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "emissive": "staff_7_4_mask_emissive",
+    "primary": "staff_7_4_mask_primary",
     "secondary": "staff_7_4_mask_secondary",
     "trim": "staff_7_4_mask_trim"
    },
    "name": "Bone Reliquary IV",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.77421,
-     0.17315
+    "primary": [
+     0.76845,
+     0.17132
     ],
     "secondary": [
-     0.50406,
-     0.09656
+     0.4632,
+     0.06839
     ],
     "trim": [
-     0.47287,
-     0.0082
+     0.44421,
+     0.00761
     ]
    },
    "resourceName": "staff_7_4",
@@ -3648,7 +3955,14 @@
        1.652
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.987838,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3666,24 +3980,24 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "emissive": "staff_7_5_mask_emissive",
+    "primary": "staff_7_5_mask_primary",
     "secondary": "staff_7_5_mask_secondary",
     "trim": "staff_7_5_mask_trim"
    },
    "name": "Bone Reliquary V",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.77819,
-     0.19921
+    "primary": [
+     0.76627,
+     0.19535
     ],
     "secondary": [
-     0.43874,
-     0.08618
+     0.3706,
+     0.05486
     ],
     "trim": [
-     0.42588,
-     0.02456
+     0.37975,
+     0.02017
     ]
    },
    "resourceName": "staff_7_5",
@@ -3739,7 +4053,14 @@
        1.657
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.985868,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3764,12 +4085,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.7509,
-     0.02572
+     0.74435,
+     0.02541
     ],
     "secondary": [
-     0.50504,
-     0.0746
+     0.46622,
+     0.06749
     ]
    },
    "resourceName": "staff_8_1",
@@ -3825,7 +4146,14 @@
        1.658
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.988369,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3843,24 +4171,19 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "leather": "staff_8_2_mask_leather",
     "primary": "staff_8_2_mask_primary",
     "secondary": "staff_8_2_mask_secondary"
    },
    "name": "Voidspike II",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.88519,
-     0.01937
-    ],
     "primary": [
-     0.74369,
-     0.05868
+     0.75747,
+     0.05175
     ],
     "secondary": [
-     0.48391,
-     0.06945
+     0.44418,
+     0.06172
     ]
    },
    "resourceName": "staff_8_2",
@@ -3916,7 +4239,14 @@
        1.662
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.988614,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3941,12 +4271,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.81566,
-     0.06373
+     0.80742,
+     0.06285
     ],
     "secondary": [
-     0.55794,
-     0.10616
+     0.52016,
+     0.09773
     ]
    },
    "resourceName": "staff_8_3",
@@ -4002,7 +4332,14 @@
        1.656
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.989483,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4027,12 +4364,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.83648,
-     0.09194
+     0.82745,
+     0.09066
     ],
     "secondary": [
-     0.55401,
-     0.10633
+     0.50501,
+     0.096
     ]
    },
    "resourceName": "staff_8_4",
@@ -4088,7 +4425,14 @@
        1.651
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.988277,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4107,23 +4451,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_8_5_mask_primary",
-    "secondary": "staff_8_5_mask_secondary",
-    "trim": "staff_8_5_mask_trim"
+    "secondary": "staff_8_5_mask_secondary"
    },
    "name": "Voidspike V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.8346,
-     0.11367
+     0.82009,
+     0.11136
     ],
     "secondary": [
-     0.45998,
-     0.09006
-    ],
-    "trim": [
-     0.46354,
-     0.11836
+     0.40051,
+     0.07753
     ]
    },
    "resourceName": "staff_8_5",
@@ -4179,7 +4518,14 @@
        1.685
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.985827,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4203,8 +4549,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.39579,
-     0.04175
+     0.355,
+     0.03612
     ]
    },
    "resourceName": "shield_1_1",
@@ -4260,7 +4606,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.986924,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4278,19 +4631,19 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "leather": "shield_1_2_mask_leather",
-    "primary": "shield_1_2_mask_primary"
+    "primary": "shield_1_2_mask_primary",
+    "secondary": "shield_1_2_mask_secondary"
    },
    "name": "Oaken Ward II",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.41951,
-     0.01533
-    ],
     "primary": [
-     0.45962,
-     0.04362
+     0.41602,
+     0.03832
+    ],
+    "secondary": [
+     0.40795,
+     0.01195
     ]
    },
    "resourceName": "shield_1_2",
@@ -4346,7 +4699,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.988743,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4364,29 +4724,19 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "leather": "shield_1_3_mask_leather",
     "primary": "shield_1_3_mask_primary",
-    "secondary": "shield_1_3_mask_secondary",
-    "trim": "shield_1_3_mask_trim"
+    "secondary": "shield_1_3_mask_secondary"
    },
    "name": "Oaken Ward III",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.41149,
-     0.015
-    ],
     "primary": [
-     0.40385,
-     0.05186
+     0.34565,
+     0.04134
     ],
     "secondary": [
-     0.73812,
-     0.00705
-    ],
-    "trim": [
-     0.41614,
-     0.05271
+     0.66471,
+     0.00762
     ]
    },
    "resourceName": "shield_1_3",
@@ -4442,7 +4792,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.980599,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4468,16 +4825,16 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.72252,
-     0.00725
+     0.33779,
+     0.03954
     ],
     "secondary": [
-     0.38436,
-     0.04956
+     0.69181,
+     0.00731
     ],
     "trim": [
-     0.44646,
-     0.05925
+     0.71536,
+     0.00631
     ]
    },
    "resourceName": "shield_1_4",
@@ -4533,7 +4890,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.973235,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4559,16 +4923,16 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.46769,
-     0.0079
+     0.4338,
+     0.01058
     ],
     "secondary": [
-     0.64495,
-     0.00942
+     0.63525,
+     0.0063
     ],
     "trim": [
-     0.45813,
-     0.03591
+     0.43589,
+     0.03343
     ]
    },
    "resourceName": "shield_1_5",
@@ -4624,7 +4988,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.976389,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4642,24 +5013,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_2_1_mask_primary",
-    "secondary": "shield_2_1_mask_secondary",
-    "trim": "shield_2_1_mask_trim"
+    "primary": "shield_2_1_mask_primary"
    },
    "name": "Templar Aegis I",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.24347,
-     0.01195
-    ],
-    "secondary": [
-     0.32644,
-     0.0405
-    ],
-    "trim": [
-     0.42754,
-     0.05707
+     0.32114,
+     0.03887
     ]
    },
    "resourceName": "shield_2_1",
@@ -4715,7 +5076,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.985231,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4739,8 +5107,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.43701,
-     0.05892
+     0.32142,
+     0.03888
     ]
    },
    "resourceName": "shield_2_2",
@@ -4796,7 +5164,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.984027,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4822,16 +5197,16 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.64812,
-     0.00626
+     0.31952,
+     0.03816
     ],
     "secondary": [
-     0.70305,
-     0.00455
+     0.61694,
+     0.00698
     ],
     "trim": [
-     0.43688,
-     0.05892
+     0.6857,
+     0.00451
     ]
    },
    "resourceName": "shield_2_3",
@@ -4887,7 +5262,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.976036,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4906,18 +5288,23 @@
    "layer": "front",
    "maskResources": {
     "primary": "shield_2_4_mask_primary",
-    "secondary": "shield_2_4_mask_secondary"
+    "secondary": "shield_2_4_mask_secondary",
+    "trim": "shield_2_4_mask_trim"
    },
    "name": "Templar Aegis IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.43491,
-     0.00601
+     0.38867,
+     0.0053
     ],
     "secondary": [
-     0.65797,
-     0.00591
+     0.62456,
+     0.00615
+    ],
+    "trim": [
+     0.68647,
+     0.00448
     ]
    },
    "resourceName": "shield_2_4",
@@ -4973,7 +5360,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.979824,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4998,12 +5392,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.51324,
-     0.01084
+     0.48367,
+     0.01056
     ],
     "trim": [
-     0.50515,
-     0.04371
+     0.49035,
+     0.04169
     ]
    },
    "resourceName": "shield_2_5",
@@ -5059,7 +5453,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.989123,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5083,8 +5484,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.42899,
-     0.01867
+     0.37317,
+     0.01557
     ]
    },
    "resourceName": "shield_3_1",
@@ -5140,7 +5541,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.982272,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5158,24 +5566,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "leather": "shield_3_2_mask_leather",
-    "primary": "shield_3_2_mask_primary",
-    "secondary": "shield_3_2_mask_secondary"
+    "primary": "shield_3_2_mask_primary"
    },
    "name": "Scaled Bulwark II",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.4883,
-     0.03631
-    ],
     "primary": [
-     0.43413,
-     0.03205
-    ],
-    "secondary": [
-     0.56582,
-     0.04319
+     0.42505,
+     0.03053
     ]
    },
    "resourceName": "shield_3_2",
@@ -5231,7 +5629,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.981668,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5250,18 +5655,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "shield_3_3_mask_primary",
-    "trim": "shield_3_3_mask_trim"
+    "secondary": "shield_3_3_mask_secondary"
    },
    "name": "Scaled Bulwark III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.59067,
-     0.0239
+     0.41787,
+     0.02999
     ],
-    "trim": [
-     0.55043,
-     0.04179
+    "secondary": [
+     0.63961,
+     0.01887
     ]
    },
    "resourceName": "shield_3_3",
@@ -5317,7 +5722,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.974404,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5342,12 +5754,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.55036,
-     0.01523
+     0.53219,
+     0.01504
     ],
     "secondary": [
-     0.52524,
-     0.01333
+     0.70217,
+     0.01931
     ]
    },
    "resourceName": "shield_3_4",
@@ -5403,7 +5815,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.983843,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5422,23 +5841,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "shield_3_5_mask_primary",
-    "secondary": "shield_3_5_mask_secondary",
     "trim": "shield_3_5_mask_trim"
    },
    "name": "Scaled Bulwark V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.61533,
-     0.02335
-    ],
-    "secondary": [
-     0.61515,
-     0.06288
+     0.71353,
+     0.04639
     ],
     "trim": [
-     0.77095,
-     0.108
+     0.7525,
+     0.10456
     ]
    },
    "resourceName": "shield_3_5",
@@ -5494,7 +5908,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.988743,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5518,8 +5939,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.44142,
-     0.05928
+     0.39495,
+     0.05139
     ]
    },
    "resourceName": "shield_4_1",
@@ -5575,7 +5996,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.984993,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5593,19 +6021,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_4_2_mask_primary",
-    "secondary": "shield_4_2_mask_secondary"
+    "primary": "shield_4_2_mask_primary"
    },
    "name": "Runic Disc II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.44686,
-     0.04382
-    ],
-    "secondary": [
-     0.37598,
-     0.03529
+     0.43344,
+     0.04167
     ]
    },
    "resourceName": "shield_4_2",
@@ -5661,7 +6084,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.98442,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5686,12 +6116,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.44589,
-     0.04684
+     0.42109,
+     0.04281
     ],
     "secondary": [
-     0.50826,
-     0.00479
+     0.65859,
+     0.00489
     ]
    },
    "resourceName": "shield_4_3",
@@ -5747,7 +6177,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.980661,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5766,23 +6203,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "shield_4_4_mask_primary",
-    "secondary": "shield_4_4_mask_secondary",
-    "trim": "shield_4_4_mask_trim"
+    "secondary": "shield_4_4_mask_secondary"
    },
    "name": "Runic Disc IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.4336,
-     0.02042
+     0.39911,
+     0.01815
     ],
     "secondary": [
-     0.43243,
-     0.00593
-    ],
-    "trim": [
-     0.56248,
-     0.0095
+     0.59536,
+     0.00816
     ]
    },
    "resourceName": "shield_4_4",
@@ -5838,7 +6270,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.986197,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5856,29 +6295,19 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "leather": "shield_4_5_mask_leather",
     "primary": "shield_4_5_mask_primary",
-    "secondary": "shield_4_5_mask_secondary",
-    "trim": "shield_4_5_mask_trim"
+    "secondary": "shield_4_5_mask_secondary"
    },
    "name": "Runic Disc V",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.36156,
-     0.03572
-    ],
     "primary": [
-     0.59683,
-     0.0079
+     0.43499,
+     0.04602
     ],
     "secondary": [
-     0.72715,
-     0.00529
-    ],
-    "trim": [
-     0.46315,
-     0.05052
+     0.6141,
+     0.00737
     ]
    },
    "resourceName": "shield_4_5",
@@ -5934,7 +6363,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.987629,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5959,12 +6395,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.47889,
-     0.01383
+     0.34244,
+     0.01063
     ],
     "secondary": [
-     0.38985,
-     0.01329
+     0.42263,
+     0.01189
     ]
    },
    "resourceName": "shield_5_1",
@@ -6020,7 +6456,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.979792,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6039,18 +6482,23 @@
    "layer": "front",
    "maskResources": {
     "primary": "shield_5_2_mask_primary",
-    "secondary": "shield_5_2_mask_secondary"
+    "secondary": "shield_5_2_mask_secondary",
+    "trim": "shield_5_2_mask_trim"
    },
    "name": "Valkyrie Wing II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.43352,
-     0.01355
+     0.37971,
+     0.01094
     ],
     "secondary": [
-     0.71049,
-     0.00795
+     0.66694,
+     0.00774
+    ],
+    "trim": [
+     0.69095,
+     0.00902
     ]
    },
    "resourceName": "shield_5_2",
@@ -6106,7 +6554,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.976559,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6124,24 +6579,24 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "leather": "shield_5_3_mask_leather",
     "primary": "shield_5_3_mask_primary",
-    "secondary": "shield_5_3_mask_secondary"
+    "secondary": "shield_5_3_mask_secondary",
+    "trim": "shield_5_3_mask_trim"
    },
    "name": "Valkyrie Wing III",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.52949,
-     0.01719
-    ],
     "primary": [
-     0.61288,
-     0.00151
+     0.39798,
+     0.0247
     ],
     "secondary": [
-     0.48461,
-     0.03325
+     0.55788,
+     0.00178
+    ],
+    "trim": [
+     0.51319,
+     0.01629
     ]
    },
    "resourceName": "shield_5_3",
@@ -6197,7 +6652,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.976118,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6215,24 +6677,24 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "leather": "shield_5_4_mask_leather",
     "primary": "shield_5_4_mask_primary",
-    "secondary": "shield_5_4_mask_secondary"
+    "secondary": "shield_5_4_mask_secondary",
+    "trim": "shield_5_4_mask_trim"
    },
    "name": "Valkyrie Wing IV",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.65196,
-     0.02919
-    ],
     "primary": [
-     0.5442,
-     0.01002
+     0.52927,
+     0.00956
     ],
     "secondary": [
-     0.74537,
-     0.00132
+     0.72791,
+     0.00138
+    ],
+    "trim": [
+     0.63262,
+     0.02788
     ]
    },
    "resourceName": "shield_5_4",
@@ -6288,7 +6750,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.983385,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6306,14 +6775,24 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_5_5_mask_primary"
+    "primary": "shield_5_5_mask_primary",
+    "secondary": "shield_5_5_mask_secondary",
+    "trim": "shield_5_5_mask_trim"
    },
    "name": "Valkyrie Wing V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.35141,
-     0.0067
+     0.56774,
+     0.0037
+    ],
+    "secondary": [
+     0.28494,
+     0.01256
+    ],
+    "trim": [
+     0.39139,
+     0.04298
     ]
    },
    "resourceName": "shield_5_5",
@@ -6369,7 +6848,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.976225,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6394,12 +6880,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.4011,
-     0.04176
+     0.36305,
+     0.03578
     ],
     "secondary": [
-     0.43622,
-     0.04615
+     0.36274,
+     0.03558
     ]
    },
    "resourceName": "shield_6_1",
@@ -6455,7 +6941,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.980525,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6473,29 +6966,19 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "leather": "shield_6_2_mask_leather",
     "primary": "shield_6_2_mask_primary",
-    "secondary": "shield_6_2_mask_secondary",
-    "trim": "shield_6_2_mask_trim"
+    "secondary": "shield_6_2_mask_secondary"
    },
    "name": "Iron Moon II",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.50586,
-     0.06323
-    ],
     "primary": [
-     0.41925,
-     0.05119
+     0.44854,
+     0.05398
     ],
     "secondary": [
-     0.46676,
-     0.05751
-    ],
-    "trim": [
-     0.64312,
-     0.07853
+     0.48899,
+     0.05867
     ]
    },
    "resourceName": "shield_6_2",
@@ -6551,7 +7034,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.979509,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6570,23 +7060,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "shield_6_3_mask_primary",
-    "secondary": "shield_6_3_mask_secondary",
-    "trim": "shield_6_3_mask_trim"
+    "secondary": "shield_6_3_mask_secondary"
    },
    "name": "Iron Moon III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.67364,
-     0.00145
+     0.42706,
+     0.04997
     ],
     "secondary": [
-     0.474,
-     0.05863
-    ],
-    "trim": [
-     0.38637,
-     0.04574
+     0.6544,
+     0.00151
     ]
    },
    "resourceName": "shield_6_3",
@@ -6642,7 +7127,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.98032,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6667,12 +7159,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.60243,
-     0.05031
+     0.59038,
+     0.04889
     ],
     "secondary": [
-     0.50866,
-     0.00288
+     0.6657,
+     0.00154
     ]
    },
    "resourceName": "shield_6_4",
@@ -6728,7 +7220,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.981107,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6747,23 +7246,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "shield_6_5_mask_primary",
-    "secondary": "shield_6_5_mask_secondary",
-    "trim": "shield_6_5_mask_trim"
+    "secondary": "shield_6_5_mask_secondary"
    },
    "name": "Iron Moon V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.62015,
-     0.04772
+     0.69782,
+     0.03725
     ],
     "secondary": [
-     0.81837,
-     0.02306
-    ],
-    "trim": [
-     0.55893,
-     0.00145
+     0.53397,
+     0.00153
     ]
    },
    "resourceName": "shield_6_5",
@@ -6819,7 +7313,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.991068,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6837,19 +7338,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_7_1_mask_primary",
-    "secondary": "shield_7_1_mask_secondary"
+    "primary": "shield_7_1_mask_primary"
    },
    "name": "Bone Paragon I",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.40031,
-     0.06483
-    ],
-    "secondary": [
-     0.42604,
-     0.06959
+     0.34913,
+     0.05409
     ]
    },
    "resourceName": "shield_7_1",
@@ -6905,7 +7401,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.986099,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6923,19 +7426,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_7_2_mask_primary",
-    "secondary": "shield_7_2_mask_secondary"
+    "primary": "shield_7_2_mask_primary"
    },
    "name": "Bone Paragon II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.43061,
-     0.04435
-    ],
-    "secondary": [
-     0.46466,
-     0.0483
+     0.38003,
+     0.0377
     ]
    },
    "resourceName": "shield_7_2",
@@ -6991,7 +7489,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.983358,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7010,18 +7515,23 @@
    "layer": "front",
    "maskResources": {
     "primary": "shield_7_3_mask_primary",
+    "secondary": "shield_7_3_mask_secondary",
     "trim": "shield_7_3_mask_trim"
    },
    "name": "Bone Paragon III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.45556,
-     0.01421
+     0.33444,
+     0.02222
+    ],
+    "secondary": [
+     0.57046,
+     0.02166
     ],
     "trim": [
-     0.45962,
-     0.02336
+     0.45358,
+     0.02063
     ]
    },
    "resourceName": "shield_7_3",
@@ -7077,7 +7587,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.970958,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7102,12 +7619,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.43862,
-     0.01949
+     0.33584,
+     0.02066
     ],
     "secondary": [
-     0.62273,
-     0.07829
+     0.68258,
+     0.0582
     ]
    },
    "resourceName": "shield_7_4",
@@ -7163,7 +7680,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.986008,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7181,24 +7705,19 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "emissive": "shield_7_5_mask_emissive",
     "primary": "shield_7_5_mask_primary",
     "secondary": "shield_7_5_mask_secondary"
    },
    "name": "Bone Paragon V",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.7776,
-     0.13579
-    ],
     "primary": [
-     0.30346,
-     0.01307
+     0.48302,
+     0.0377
     ],
     "secondary": [
-     0.84436,
-     0.09842
+     0.82325,
+     0.10265
     ]
    },
    "resourceName": "shield_7_5",
@@ -7254,7 +7773,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.984552,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7272,24 +7798,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "leather": "shield_8_1_mask_leather",
-    "primary": "shield_8_1_mask_primary",
-    "secondary": "shield_8_1_mask_secondary"
+    "primary": "shield_8_1_mask_primary"
    },
    "name": "Verdigris Sigil I",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.47181,
-     0.0241
-    ],
     "primary": [
-     0.45983,
-     0.02341
-    ],
-    "secondary": [
-     0.47226,
-     0.02416
+     0.40308,
+     0.01938
     ]
    },
    "resourceName": "shield_8_1",
@@ -7345,7 +7861,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.978976,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7369,8 +7892,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.49033,
-     0.01989
+     0.47513,
+     0.01903
     ]
    },
    "resourceName": "shield_8_2",
@@ -7426,7 +7949,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.980075,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7445,18 +7975,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "shield_8_3_mask_primary",
-    "trim": "shield_8_3_mask_trim"
+    "secondary": "shield_8_3_mask_secondary"
    },
    "name": "Verdigris Sigil III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.44572,
-     0.01345
+     0.38046,
+     0.01649
     ],
-    "trim": [
-     0.44257,
-     0.02019
+    "secondary": [
+     0.61417,
+     0.02173
     ]
    },
    "resourceName": "shield_8_3",
@@ -7512,7 +8042,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.977372,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7537,12 +8074,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.3723,
-     0.00569
+     0.33947,
+     0.00623
     ],
     "secondary": [
-     0.60547,
-     0.01047
+     0.61071,
+     0.00931
     ]
    },
    "resourceName": "shield_8_4",
@@ -7598,7 +8135,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.980747,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7616,24 +8160,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_8_5_mask_primary",
-    "secondary": "shield_8_5_mask_secondary",
-    "trim": "shield_8_5_mask_trim"
+    "primary": "shield_8_5_mask_primary"
    },
    "name": "Verdigris Sigil V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.27384,
-     0.00472
-    ],
-    "secondary": [
-     0.63823,
-     0.02077
-    ],
-    "trim": [
-     0.79859,
-     0.01008
+     0.68405,
+     0.01553
     ]
    },
    "resourceName": "shield_8_5",
@@ -7689,7 +8223,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.975125,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7707,19 +8248,29 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
+    "leather": "store_weapon_shard_mask_leather",
     "primary": "store_weapon_shard_mask_primary",
-    "secondary": "store_weapon_shard_mask_secondary"
+    "secondary": "store_weapon_shard_mask_secondary",
+    "trim": "store_weapon_shard_mask_trim"
    },
    "name": "Crystal Shard",
    "profileOverrides": {},
    "regionTone": {
+    "leather": [
+     0.42568,
+     0.04101
+    ],
     "primary": [
-     0.84778,
-     0.03665
+     0.76881,
+     0.06339
     ],
     "secondary": [
-     0.72721,
-     0.09949
+     0.65412,
+     0.04547
+    ],
+    "trim": [
+     0.58322,
+     0.03808
     ]
    },
    "resourceName": "store_weapon_shard",
@@ -7775,7 +8326,14 @@
        1.699
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.992438,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7793,19 +8351,29 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
+    "leather": "store_weapon_reel_mask_leather",
     "primary": "store_weapon_reel_mask_primary",
-    "secondary": "store_weapon_reel_mask_secondary"
+    "secondary": "store_weapon_reel_mask_secondary",
+    "trim": "store_weapon_reel_mask_trim"
    },
    "name": "Film Reel Blade",
    "profileOverrides": {},
    "regionTone": {
+    "leather": [
+     0.36142,
+     0.03442
+    ],
     "primary": [
-     0.80994,
-     0.01616
+     0.76755,
+     0.0149
     ],
     "secondary": [
-     0.80499,
-     0.01536
+     0.36185,
+     0.03315
+    ],
+    "trim": [
+     0.73846,
+     0.01555
     ]
    },
    "resourceName": "store_weapon_reel",
@@ -7861,7 +8429,14 @@
        1.689
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.991803,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7881,22 +8456,27 @@
    "maskResources": {
     "emissive": "store_weapon_gem_mask_emissive",
     "primary": "store_weapon_gem_mask_primary",
-    "secondary": "store_weapon_gem_mask_secondary"
+    "secondary": "store_weapon_gem_mask_secondary",
+    "trim": "store_weapon_gem_mask_trim"
    },
    "name": "Gem Hammer",
    "profileOverrides": {},
    "regionTone": {
     "emissive": [
-     0.74989,
-     0.1158
+     0.81983,
+     0.12571
     ],
     "primary": [
-     0.68545,
-     0.03021
+     0.64544,
+     0.02499
     ],
     "secondary": [
-     0.47379,
-     0.06436
+     0.43519,
+     0.05581
+    ],
+    "trim": [
+     0.70656,
+     0.10397
     ]
    },
    "resourceName": "store_weapon_gem",
@@ -7952,7 +8532,14 @@
        1.687
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.993506,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7970,19 +8557,29 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
+    "emissive": "store_weapon_staff_mask_emissive",
     "primary": "store_weapon_staff_mask_primary",
-    "secondary": "store_weapon_staff_mask_secondary"
+    "secondary": "store_weapon_staff_mask_secondary",
+    "trim": "store_weapon_staff_mask_trim"
    },
    "name": "Archmage Staff",
    "profileOverrides": {},
    "regionTone": {
+    "emissive": [
+     0.69009,
+     0.10798
+    ],
     "primary": [
-     0.52388,
-     0.07441
+     0.42696,
+     0.05421
     ],
     "secondary": [
-     0.70118,
-     0.11005
+     0.57834,
+     0.0857
+    ],
+    "trim": [
+     0.65177,
+     0.10003
     ]
    },
    "resourceName": "store_weapon_staff",
@@ -8038,7 +8635,14 @@
        1.694
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.9882,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -8057,18 +8661,33 @@
    "layer": "front",
    "maskResources": {
     "emissive": "store_weapon_stormblade_mask_emissive",
-    "primary": "store_weapon_stormblade_mask_primary"
+    "leather": "store_weapon_stormblade_mask_leather",
+    "primary": "store_weapon_stormblade_mask_primary",
+    "secondary": "store_weapon_stormblade_mask_secondary",
+    "trim": "store_weapon_stormblade_mask_trim"
    },
    "name": "Storm Cleaver",
    "profileOverrides": {},
    "regionTone": {
     "emissive": [
-     0.87823,
-     0.14848
+     0.87207,
+     0.14783
+    ],
+    "leather": [
+     0.40486,
+     0.03809
     ],
     "primary": [
-     0.82089,
-     0.02605
+     0.79928,
+     0.02364
+    ],
+    "secondary": [
+     0.6966,
+     0.03309
+    ],
+    "trim": [
+     0.60815,
+     0.02812
     ]
    },
    "resourceName": "store_weapon_stormblade",
@@ -8124,7 +8743,14 @@
        1.687
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.995108,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -8142,14 +8768,29 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
-    "primary": "store_weapon_chevron_mask_primary"
+    "leather": "store_weapon_chevron_mask_leather",
+    "primary": "store_weapon_chevron_mask_primary",
+    "secondary": "store_weapon_chevron_mask_secondary",
+    "trim": "store_weapon_chevron_mask_trim"
    },
    "name": "Oathbreaker Greatsword",
    "profileOverrides": {},
    "regionTone": {
+    "leather": [
+     0.38138,
+     0.03247
+    ],
     "primary": [
-     0.76624,
-     0.02372
+     0.73759,
+     0.01931
+    ],
+    "secondary": [
+     0.5837,
+     0.03219
+    ],
+    "trim": [
+     0.54283,
+     0.02893
     ]
    },
    "resourceName": "store_weapon_chevron",
@@ -8205,7 +8846,14 @@
        1.682
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.989948,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -8223,6 +8871,7 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
+    "leather": "store_weapon_ruby_mask_leather",
     "primary": "store_weapon_ruby_mask_primary",
     "secondary": "store_weapon_ruby_mask_secondary",
     "trim": "store_weapon_ruby_mask_trim"
@@ -8230,17 +8879,21 @@
    "name": "Ruby Fang",
    "profileOverrides": {},
    "regionTone": {
+    "leather": [
+     0.32176,
+     0.03594
+    ],
     "primary": [
-     0.60972,
-     0.16958
+     0.56192,
+     0.15064
     ],
     "secondary": [
-     0.71424,
-     0.11393
+     0.68773,
+     0.10878
     ],
     "trim": [
-     0.30956,
-     0.03357
+     0.62053,
+     0.12432
     ]
    },
    "resourceName": "store_weapon_ruby",
@@ -8296,7 +8949,14 @@
        1.694
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.990609,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -8315,23 +8975,33 @@
    "layer": "front",
    "maskResources": {
     "emissive": "store_weapon_arcane_mask_emissive",
+    "leather": "store_weapon_arcane_mask_leather",
     "primary": "store_weapon_arcane_mask_primary",
-    "secondary": "store_weapon_arcane_mask_secondary"
+    "secondary": "store_weapon_arcane_mask_secondary",
+    "trim": "store_weapon_arcane_mask_trim"
    },
    "name": "Arcane Edge",
    "profileOverrides": {},
    "regionTone": {
     "emissive": [
-     0.75957,
-     0.11693
+     0.94302,
+     0.04818
+    ],
+    "leather": [
+     0.40253,
+     0.03535
     ],
     "primary": [
-     0.74984,
-     0.10794
+     0.66778,
+     0.09396
     ],
     "secondary": [
-     0.55688,
-     0.04158
+     0.71898,
+     0.10804
+    ],
+    "trim": [
+     0.65294,
+     0.09943
     ]
    },
    "resourceName": "store_weapon_arcane",
@@ -8387,7 +9057,14 @@
        1.683
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.003922,
+      "coverage": 0.990094,
+      "overlap": 0.003922,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -8405,19 +9082,34 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
+    "emissive": "store_weapon_fireworkBlade_mask_emissive",
+    "leather": "store_weapon_fireworkBlade_mask_leather",
     "primary": "store_weapon_fireworkBlade_mask_primary",
-    "secondary": "store_weapon_fireworkBlade_mask_secondary"
+    "secondary": "store_weapon_fireworkBlade_mask_secondary",
+    "trim": "store_weapon_fireworkBlade_mask_trim"
    },
    "name": "Firework Blade",
    "profileOverrides": {},
    "regionTone": {
+    "emissive": [
+     0.75781,
+     0.14394
+    ],
+    "leather": [
+     0.37875,
+     0.03784
+    ],
     "primary": [
-     0.8657,
-     0.02245
+     0.79835,
+     0.01082
     ],
     "secondary": [
-     0.73091,
-     0.11651
+     0.72024,
+     0.02922
+    ],
+    "trim": [
+     0.65247,
+     0.02476
     ]
    },
    "resourceName": "store_weapon_fireworkBlade",
@@ -8473,7 +9165,14 @@
        1.684
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.0,
+      "coverage": 0.989882,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -8491,24 +9190,24 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "emissive": "store_shield_crux_mask_emissive",
     "primary": "store_shield_crux_mask_primary",
-    "secondary": "store_shield_crux_mask_secondary"
+    "secondary": "store_shield_crux_mask_secondary",
+    "trim": "store_shield_crux_mask_trim"
    },
    "name": "Azure Aegis",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.8019,
-     0.13096
-    ],
     "primary": [
-     0.59224,
-     0.10931
+     0.58692,
+     0.11001
     ],
     "secondary": [
-     0.70262,
-     0.05463
+     0.65107,
+     0.05549
+    ],
+    "trim": [
+     0.79617,
+     0.13099
     ]
    },
    "resourceName": "store_shield_crux",
@@ -8564,7 +9263,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.003922,
+      "coverage": 0.995824,
+      "overlap": 0.003922,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -8583,18 +9289,23 @@
    "layer": "front",
    "maskResources": {
     "primary": "store_shield_templar_mask_primary",
-    "secondary": "store_shield_templar_mask_secondary"
+    "secondary": "store_shield_templar_mask_secondary",
+    "trim": "store_shield_templar_mask_trim"
    },
    "name": "Templar Bulwark",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.83495,
-     0.02283
+     0.93493,
+     0.01301
     ],
     "secondary": [
-     0.53715,
-     0.17079
+     0.65889,
+     0.02692
+    ],
+    "trim": [
+     0.54143,
+     0.16796
     ]
    },
    "resourceName": "store_shield_templar",
@@ -8650,7 +9361,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "authored-surfaces-v1",
+      "alphaLeak": 0.003922,
+      "coverage": 0.995896,
+      "overlap": 0.003922,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"

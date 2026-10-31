@@ -871,10 +871,6 @@
   "kind": "anatomy",
   "status": "candidate"
  },
- "necromancer_v1.left_hand.armor": {
-  "kind": "armor",
-  "status": "candidate"
- },
  "necromancer_v1.left_leg.anatomy": {
   "kind": "anatomy",
   "status": "candidate"
@@ -893,10 +889,6 @@
  },
  "necromancer_v1.right_hand.anatomy": {
   "kind": "anatomy",
-  "status": "candidate"
- },
- "necromancer_v1.right_hand.armor": {
-  "kind": "armor",
   "status": "candidate"
  },
  "necromancer_v1.right_leg.anatomy": {

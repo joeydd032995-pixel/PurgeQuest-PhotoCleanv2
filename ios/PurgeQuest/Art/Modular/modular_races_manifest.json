@@ -4575,8 +4575,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.81193,
-     0.09794
+     0.81196,
+     0.09754
     ]
    },
    "representation": "modular",
@@ -4633,14 +4633,14 @@
    "id": "forest_ranger_v1.head.headgear",
    "kind": "headgear",
    "maskResources": {
+    "hair": "forest_ranger_v1_head_headgear_mask_hair",
     "primary": "forest_ranger_v1_head_headgear_mask_primary",
-    "secondary": "forest_ranger_v1_head_headgear_mask_secondary",
-    "trim": "forest_ranger_v1_head_headgear_mask_trim"
+    "skin": "forest_ranger_v1_head_headgear_mask_skin"
    },
    "materialRegions": [
+    "hair",
     "primary",
-    "secondary",
-    "trim"
+    "skin"
    ],
    "nativeProfiles": [
     "slender"
@@ -4670,17 +4670,17 @@
    },
    "referenceProfile": "slender",
    "regionTone": {
+    "hair": [
+     0.30747,
+     0.05001
+    ],
     "primary": [
-     0.51517,
-     0.10067
+     0.50597,
+     0.09743
     ],
-    "secondary": [
-     0.23006,
-     0.00767
-    ],
-    "trim": [
-     0.38019,
-     0.06415
+    "skin": [
+     0.81196,
+     0.09754
     ]
    },
    "representation": "modular",
@@ -4701,7 +4701,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.9896,
+      "coverage": 0.9879,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -4771,8 +4771,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.81193,
-     0.09794
+     0.81196,
+     0.09754
     ]
    },
    "representation": "modular",
@@ -4867,16 +4867,16 @@
    "referenceProfile": "slender",
    "regionTone": {
     "primary": [
-     0.51517,
-     0.10067
+     0.50597,
+     0.09743
     ],
     "secondary": [
-     0.23006,
-     0.00767
+     0.34914,
+     0.06366
     ],
     "trim": [
-     0.38019,
-     0.06415
+     0.57859,
+     0.11122
     ]
    },
    "representation": "modular",
@@ -4897,7 +4897,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.9503,
+      "coverage": 0.9617,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -4944,8 +4944,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.81193,
-     0.09794
+     0.81196,
+     0.09754
     ]
    },
    "representation": "modular",
@@ -5000,12 +5000,12 @@
    "id": "forest_ranger_v1.left_arm.armor",
    "kind": "armor",
    "maskResources": {
-    "primary": "forest_ranger_v1_left_arm_armor_mask_primary",
-    "trim": "forest_ranger_v1_left_arm_armor_mask_trim"
+    "leather": "forest_ranger_v1_left_arm_armor_mask_leather",
+    "primary": "forest_ranger_v1_left_arm_armor_mask_primary"
    },
    "materialRegions": [
-    "primary",
-    "trim"
+    "leather",
+    "primary"
    ],
    "nativeProfiles": [
     "slender"
@@ -5023,13 +5023,13 @@
    },
    "referenceProfile": "slender",
    "regionTone": {
-    "primary": [
-     0.51517,
-     0.10067
+    "leather": [
+     0.35181,
+     0.06493
     ],
-    "trim": [
-     0.38019,
-     0.06415
+    "primary": [
+     0.50597,
+     0.09743
     ]
    },
    "representation": "modular",
@@ -5050,7 +5050,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.9349,
+      "coverage": 0.9596,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -5097,8 +5097,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.81193,
-     0.09794
+     0.81196,
+     0.09754
     ]
    },
    "representation": "modular",
@@ -5153,12 +5153,12 @@
    "id": "forest_ranger_v1.right_arm.armor",
    "kind": "armor",
    "maskResources": {
-    "primary": "forest_ranger_v1_right_arm_armor_mask_primary",
-    "trim": "forest_ranger_v1_right_arm_armor_mask_trim"
+    "leather": "forest_ranger_v1_right_arm_armor_mask_leather",
+    "primary": "forest_ranger_v1_right_arm_armor_mask_primary"
    },
    "materialRegions": [
-    "primary",
-    "trim"
+    "leather",
+    "primary"
    ],
    "nativeProfiles": [
     "slender"
@@ -5176,13 +5176,13 @@
    },
    "referenceProfile": "slender",
    "regionTone": {
-    "primary": [
-     0.51517,
-     0.10067
+    "leather": [
+     0.35181,
+     0.06493
     ],
-    "trim": [
-     0.38019,
-     0.06415
+    "primary": [
+     0.50597,
+     0.09743
     ]
    },
    "representation": "modular",
@@ -5203,7 +5203,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.9359,
+      "coverage": 0.9607,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -5250,8 +5250,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.81193,
-     0.09794
+     0.81196,
+     0.09754
     ]
    },
    "representation": "modular",
@@ -5319,8 +5319,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.81193,
-     0.09794
+     0.81196,
+     0.09754
     ]
    },
    "representation": "modular",
@@ -5397,8 +5397,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.81193,
-     0.09794
+     0.81196,
+     0.09754
     ]
    },
    "representation": "modular",
@@ -5453,12 +5453,10 @@
    "id": "forest_ranger_v1.left_leg.armor",
    "kind": "armor",
    "maskResources": {
-    "secondary": "forest_ranger_v1_left_leg_armor_mask_secondary",
-    "trim": "forest_ranger_v1_left_leg_armor_mask_trim"
+    "leather": "forest_ranger_v1_left_leg_armor_mask_leather"
    },
    "materialRegions": [
-    "secondary",
-    "trim"
+    "leather"
    ],
    "nativeProfiles": [
     "slender"
@@ -5476,13 +5474,9 @@
    },
    "referenceProfile": "slender",
    "regionTone": {
-    "secondary": [
-     0.23006,
-     0.00767
-    ],
-    "trim": [
-     0.38019,
-     0.06415
+    "leather": [
+     0.35181,
+     0.06493
     ]
    },
    "representation": "modular",
@@ -5503,7 +5497,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.9847,
+      "coverage": 0.9606,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -5559,8 +5553,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.81193,
-     0.09794
+     0.81196,
+     0.09754
     ]
    },
    "representation": "modular",
@@ -5615,12 +5609,10 @@
    "id": "forest_ranger_v1.right_leg.armor",
    "kind": "armor",
    "maskResources": {
-    "secondary": "forest_ranger_v1_right_leg_armor_mask_secondary",
-    "trim": "forest_ranger_v1_right_leg_armor_mask_trim"
+    "leather": "forest_ranger_v1_right_leg_armor_mask_leather"
    },
    "materialRegions": [
-    "secondary",
-    "trim"
+    "leather"
    ],
    "nativeProfiles": [
     "slender"
@@ -5638,13 +5630,9 @@
    },
    "referenceProfile": "slender",
    "regionTone": {
-    "secondary": [
-     0.23006,
-     0.00767
-    ],
-    "trim": [
-     0.38019,
-     0.06415
+    "leather": [
+     0.35181,
+     0.06493
     ]
    },
    "representation": "modular",
@@ -5665,7 +5653,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.9853,
+      "coverage": 0.9632,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -9798,8 +9786,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.62552,
-     0.11022
+     0.62494,
+     0.11008
     ]
    },
    "representation": "modular",
@@ -9857,11 +9845,13 @@
    "kind": "headgear",
    "maskResources": {
     "primary": "seer_v2_head_headgear_mask_primary",
-    "secondary": "seer_v2_head_headgear_mask_secondary"
+    "skin": "seer_v2_head_headgear_mask_skin",
+    "trim": "seer_v2_head_headgear_mask_trim"
    },
    "materialRegions": [
     "primary",
-    "secondary"
+    "skin",
+    "trim"
    ],
    "nativeProfiles": [
     "slender"
@@ -9892,12 +9882,16 @@
    "referenceProfile": "slender",
    "regionTone": {
     "primary": [
-     0.41463,
-     0.05744
+     0.40713,
+     0.05587
     ],
-    "secondary": [
-     0.23112,
-     0.01155
+    "skin": [
+     0.62494,
+     0.11008
+    ],
+    "trim": [
+     0.51176,
+     0.0833
     ]
    },
    "representation": "modular",
@@ -9918,7 +9912,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.9925,
+      "coverage": 0.9888,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -9988,8 +9982,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.62552,
-     0.11022
+     0.62494,
+     0.11008
     ]
    },
    "representation": "modular",
@@ -10084,16 +10078,16 @@
    "referenceProfile": "slender",
    "regionTone": {
     "primary": [
-     0.41463,
-     0.05744
+     0.40713,
+     0.05587
     ],
     "secondary": [
-     0.23112,
-     0.01155
+     0.3275,
+     0.03648
     ],
     "trim": [
-     0.38578,
-     0.0701
+     0.51176,
+     0.0833
     ]
    },
    "representation": "modular",
@@ -10114,7 +10108,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.9715,
+      "coverage": 0.9744,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -10161,8 +10155,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.62552,
-     0.11022
+     0.62494,
+     0.11008
     ]
    },
    "representation": "modular",
@@ -10217,12 +10211,10 @@
    "id": "seer_v2.left_arm.armor",
    "kind": "armor",
    "maskResources": {
-    "primary": "seer_v2_left_arm_armor_mask_primary",
-    "trim": "seer_v2_left_arm_armor_mask_trim"
+    "primary": "seer_v2_left_arm_armor_mask_primary"
    },
    "materialRegions": [
-    "primary",
-    "trim"
+    "primary"
    ],
    "nativeProfiles": [
     "slender"
@@ -10241,12 +10233,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "primary": [
-     0.41463,
-     0.05744
-    ],
-    "trim": [
-     0.38578,
-     0.0701
+     0.40713,
+     0.05587
     ]
    },
    "representation": "modular",
@@ -10267,7 +10255,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.9482,
+      "coverage": 0.9602,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -10314,8 +10302,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.62552,
-     0.11022
+     0.62494,
+     0.11008
     ]
    },
    "representation": "modular",
@@ -10370,12 +10358,10 @@
    "id": "seer_v2.right_arm.armor",
    "kind": "armor",
    "maskResources": {
-    "primary": "seer_v2_right_arm_armor_mask_primary",
-    "trim": "seer_v2_right_arm_armor_mask_trim"
+    "primary": "seer_v2_right_arm_armor_mask_primary"
    },
    "materialRegions": [
-    "primary",
-    "trim"
+    "primary"
    ],
    "nativeProfiles": [
     "slender"
@@ -10394,12 +10380,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "primary": [
-     0.41463,
-     0.05744
-    ],
-    "trim": [
-     0.38578,
-     0.0701
+     0.40713,
+     0.05587
     ]
    },
    "representation": "modular",
@@ -10420,7 +10402,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.9537,
+      "coverage": 0.9607,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -10467,8 +10449,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.62552,
-     0.11022
+     0.62494,
+     0.11008
     ]
    },
    "representation": "modular",
@@ -10536,8 +10518,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.62552,
-     0.11022
+     0.62494,
+     0.11008
     ]
    },
    "representation": "modular",
@@ -10614,8 +10596,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.62552,
-     0.11022
+     0.62494,
+     0.11008
     ]
    },
    "representation": "modular",
@@ -10670,14 +10652,10 @@
    "id": "seer_v2.left_leg.armor",
    "kind": "armor",
    "maskResources": {
-    "primary": "seer_v2_left_leg_armor_mask_primary",
-    "secondary": "seer_v2_left_leg_armor_mask_secondary",
-    "trim": "seer_v2_left_leg_armor_mask_trim"
+    "leather": "seer_v2_left_leg_armor_mask_leather"
    },
    "materialRegions": [
-    "primary",
-    "secondary",
-    "trim"
+    "leather"
    ],
    "nativeProfiles": [
     "slender"
@@ -10695,17 +10673,9 @@
    },
    "referenceProfile": "slender",
    "regionTone": {
-    "primary": [
-     0.41463,
-     0.05744
-    ],
-    "secondary": [
-     0.23112,
-     0.01155
-    ],
-    "trim": [
-     0.38578,
-     0.0701
+    "leather": [
+     0.28382,
+     0.04421
     ]
    },
    "representation": "modular",
@@ -10726,7 +10696,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.9855,
+      "coverage": 0.9601,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -10782,8 +10752,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.62552,
-     0.11022
+     0.62494,
+     0.11008
     ]
    },
    "representation": "modular",
@@ -10838,14 +10808,10 @@
    "id": "seer_v2.right_leg.armor",
    "kind": "armor",
    "maskResources": {
-    "primary": "seer_v2_right_leg_armor_mask_primary",
-    "secondary": "seer_v2_right_leg_armor_mask_secondary",
-    "trim": "seer_v2_right_leg_armor_mask_trim"
+    "leather": "seer_v2_right_leg_armor_mask_leather"
    },
    "materialRegions": [
-    "primary",
-    "secondary",
-    "trim"
+    "leather"
    ],
    "nativeProfiles": [
     "slender"
@@ -10863,17 +10829,9 @@
    },
    "referenceProfile": "slender",
    "regionTone": {
-    "primary": [
-     0.41463,
-     0.05744
-    ],
-    "secondary": [
-     0.23112,
-     0.01155
-    ],
-    "trim": [
-     0.38578,
-     0.0701
+    "leather": [
+     0.28382,
+     0.04421
     ]
    },
    "representation": "modular",
@@ -10894,7 +10852,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.9864,
+      "coverage": 0.9627,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -21545,8 +21503,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.58755,
-     0.06528
+     0.57918,
+     0.06354
     ]
    },
    "representation": "modular",
@@ -21603,12 +21561,12 @@
    "id": "necromancer_v1.head.headgear",
    "kind": "headgear",
    "maskResources": {
-    "primary": "necromancer_v1_head_headgear_mask_primary",
-    "secondary": "necromancer_v1_head_headgear_mask_secondary"
+    "hair": "necromancer_v1_head_headgear_mask_hair",
+    "skin": "necromancer_v1_head_headgear_mask_skin"
    },
    "materialRegions": [
-    "primary",
-    "secondary"
+    "hair",
+    "skin"
    ],
    "nativeProfiles": [
     "slender"
@@ -21638,13 +21596,13 @@
    },
    "referenceProfile": "slender",
    "regionTone": {
-    "primary": [
-     0.49254,
-     0.03841
+    "hair": [
+     0.53307,
+     0.03808
     ],
-    "secondary": [
-     0.24727,
-     0.0098
+    "skin": [
+     0.57918,
+     0.06354
     ]
    },
    "representation": "modular",
@@ -21665,7 +21623,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.9851,
+      "coverage": 0.9842,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -21735,8 +21693,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.58755,
-     0.06528
+     0.57918,
+     0.06354
     ]
    },
    "representation": "modular",
@@ -21794,11 +21752,13 @@
    "kind": "armor",
    "maskResources": {
     "primary": "necromancer_v1_body_armor_mask_primary",
-    "secondary": "necromancer_v1_body_armor_mask_secondary"
+    "skin": "necromancer_v1_body_armor_mask_skin",
+    "trim": "necromancer_v1_body_armor_mask_trim"
    },
    "materialRegions": [
     "primary",
-    "secondary"
+    "skin",
+    "trim"
    ],
    "nativeProfiles": [
     "slender"
@@ -21829,12 +21789,16 @@
    "referenceProfile": "slender",
    "regionTone": {
     "primary": [
-     0.49254,
-     0.03841
+     0.27485,
+     0.03243
     ],
-    "secondary": [
-     0.24727,
-     0.0098
+    "skin": [
+     0.57918,
+     0.06354
+    ],
+    "trim": [
+     0.36704,
+     0.01176
     ]
    },
    "representation": "modular",
@@ -21855,7 +21819,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.9875,
+      "coverage": 0.9766,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -21902,8 +21866,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.58755,
-     0.06528
+     0.57918,
+     0.06354
     ]
    },
    "representation": "modular",
@@ -21958,10 +21922,12 @@
    "id": "necromancer_v1.left_arm.armor",
    "kind": "armor",
    "maskResources": {
-    "secondary": "necromancer_v1_left_arm_armor_mask_secondary"
+    "secondary": "necromancer_v1_left_arm_armor_mask_secondary",
+    "trim": "necromancer_v1_left_arm_armor_mask_trim"
    },
    "materialRegions": [
-    "secondary"
+    "secondary",
+    "trim"
    ],
    "nativeProfiles": [
     "slender"
@@ -21980,8 +21946,12 @@
    "referenceProfile": "slender",
    "regionTone": {
     "secondary": [
-     0.24727,
-     0.0098
+     0.28394,
+     0.02572
+    ],
+    "trim": [
+     0.36704,
+     0.01176
     ]
    },
    "representation": "modular",
@@ -22002,7 +21972,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.8358,
+      "coverage": 0.959,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -22049,8 +22019,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.58755,
-     0.06528
+     0.57918,
+     0.06354
     ]
    },
    "representation": "modular",
@@ -22105,10 +22075,12 @@
    "id": "necromancer_v1.right_arm.armor",
    "kind": "armor",
    "maskResources": {
-    "secondary": "necromancer_v1_right_arm_armor_mask_secondary"
+    "secondary": "necromancer_v1_right_arm_armor_mask_secondary",
+    "trim": "necromancer_v1_right_arm_armor_mask_trim"
    },
    "materialRegions": [
-    "secondary"
+    "secondary",
+    "trim"
    ],
    "nativeProfiles": [
     "slender"
@@ -22127,8 +22099,12 @@
    "referenceProfile": "slender",
    "regionTone": {
     "secondary": [
-     0.24727,
-     0.0098
+     0.28394,
+     0.02572
+    ],
+    "trim": [
+     0.36704,
+     0.01176
     ]
    },
    "representation": "modular",
@@ -22149,7 +22125,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.838,
+      "coverage": 0.9602,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -22196,12 +22172,12 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.58755,
-     0.06528
+     0.57918,
+     0.06354
     ]
    },
    "representation": "modular",
-   "resourceBaseName": "necromancer_v1_left_hand_anatomy",
+   "resourceBaseName": "necromancer_v1_left_hand",
    "rigID": "humanoid_v1",
    "scaleXRange": {
     "max": 1.1,
@@ -22212,75 +22188,6 @@
     "min": 0.9
    },
    "slot": "leftHand",
-   "sourceRace": "necromancer",
-   "verification": {
-    "approvedBy": null,
-    "approvedProfiles": [],
-    "automated": {
-     "masks": {
-      "coverage": 0.9476,
-      "outlineLeak": 0.0,
-      "overlap": 0.0
-     },
-     "reassembly": {
-      "Idle": {
-       "bad": 6e-05,
-       "frames": 4,
-       "max": 0.4,
-       "mean": 6.7e-05
-      },
-      "Slashing": {
-       "bad": 0.000137,
-       "frames": 11,
-       "max": 0.4,
-       "mean": 7.6e-05
-      }
-     }
-    },
-    "automatedPass": true,
-    "status": "candidate"
-   }
-  },
-  {
-   "adaptedProfiles": [],
-   "coverageTags": [
-    "left_hand",
-    "armor"
-   ],
-   "id": "necromancer_v1.left_hand.armor",
-   "kind": "armor",
-   "maskResources": {
-    "primary": "necromancer_v1_left_hand_armor_mask_primary"
-   },
-   "materialRegions": [
-    "primary"
-   ],
-   "nativeProfiles": [
-    "slender"
-   ],
-   "pack": "necromancer_v1",
-   "paintVariant": 1,
-   "part": "left_hand",
-   "profileOverrides": {},
-   "referenceProfile": "slender",
-   "regionTone": {
-    "primary": [
-     0.49254,
-     0.03841
-    ]
-   },
-   "representation": "modular",
-   "resourceBaseName": "necromancer_v1_left_hand_armor",
-   "rigID": "humanoid_v1",
-   "scaleXRange": {
-    "max": 1.1,
-    "min": 0.9
-   },
-   "scaleYRange": {
-    "max": 1.1,
-    "min": 0.9
-   },
-   "slot": "leftGauntlet",
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
@@ -22334,12 +22241,12 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.58755,
-     0.06528
+     0.57918,
+     0.06354
     ]
    },
    "representation": "modular",
-   "resourceBaseName": "necromancer_v1_right_hand_anatomy",
+   "resourceBaseName": "necromancer_v1_right_hand",
    "rigID": "humanoid_v1",
    "scaleXRange": {
     "max": 1.1,
@@ -22350,75 +22257,6 @@
     "min": 0.9
    },
    "slot": "rightHand",
-   "sourceRace": "necromancer",
-   "verification": {
-    "approvedBy": null,
-    "approvedProfiles": [],
-    "automated": {
-     "masks": {
-      "coverage": 0.9604,
-      "outlineLeak": 0.0,
-      "overlap": 0.0
-     },
-     "reassembly": {
-      "Idle": {
-       "bad": 6e-05,
-       "frames": 4,
-       "max": 0.4,
-       "mean": 6.7e-05
-      },
-      "Slashing": {
-       "bad": 0.000137,
-       "frames": 11,
-       "max": 0.4,
-       "mean": 7.6e-05
-      }
-     }
-    },
-    "automatedPass": true,
-    "status": "candidate"
-   }
-  },
-  {
-   "adaptedProfiles": [],
-   "coverageTags": [
-    "right_hand",
-    "armor"
-   ],
-   "id": "necromancer_v1.right_hand.armor",
-   "kind": "armor",
-   "maskResources": {
-    "primary": "necromancer_v1_right_hand_armor_mask_primary"
-   },
-   "materialRegions": [
-    "primary"
-   ],
-   "nativeProfiles": [
-    "slender"
-   ],
-   "pack": "necromancer_v1",
-   "paintVariant": 1,
-   "part": "right_hand",
-   "profileOverrides": {},
-   "referenceProfile": "slender",
-   "regionTone": {
-    "primary": [
-     0.49254,
-     0.03841
-    ]
-   },
-   "representation": "modular",
-   "resourceBaseName": "necromancer_v1_right_hand_armor",
-   "rigID": "humanoid_v1",
-   "scaleXRange": {
-    "max": 1.1,
-    "min": 0.9
-   },
-   "scaleYRange": {
-    "max": 1.1,
-    "min": 0.9
-   },
-   "slot": "rightGauntlet",
    "sourceRace": "necromancer",
    "verification": {
     "approvedBy": null,
@@ -22481,8 +22319,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.58755,
-     0.06528
+     0.57918,
+     0.06354
     ]
    },
    "representation": "modular",
@@ -22537,10 +22375,10 @@
    "id": "necromancer_v1.left_leg.armor",
    "kind": "armor",
    "maskResources": {
-    "secondary": "necromancer_v1_left_leg_armor_mask_secondary"
+    "leather": "necromancer_v1_left_leg_armor_mask_leather"
    },
    "materialRegions": [
-    "secondary"
+    "leather"
    ],
    "nativeProfiles": [
     "slender"
@@ -22558,9 +22396,9 @@
    },
    "referenceProfile": "slender",
    "regionTone": {
-    "secondary": [
-     0.24727,
-     0.0098
+    "leather": [
+     0.27694,
+     0.02724
     ]
    },
    "representation": "modular",
@@ -22581,7 +22419,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.9877,
+      "coverage": 0.9602,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -22637,8 +22475,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.58755,
-     0.06528
+     0.57918,
+     0.06354
     ]
    },
    "representation": "modular",
@@ -22693,10 +22531,10 @@
    "id": "necromancer_v1.right_leg.armor",
    "kind": "armor",
    "maskResources": {
-    "secondary": "necromancer_v1_right_leg_armor_mask_secondary"
+    "leather": "necromancer_v1_right_leg_armor_mask_leather"
    },
    "materialRegions": [
-    "secondary"
+    "leather"
    ],
    "nativeProfiles": [
     "slender"
@@ -22714,9 +22552,9 @@
    },
    "referenceProfile": "slender",
    "regionTone": {
-    "secondary": [
-     0.24727,
-     0.0098
+    "leather": [
+     0.27694,
+     0.02724
     ]
    },
    "representation": "modular",
@@ -22737,7 +22575,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.988,
+      "coverage": 0.9631,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
