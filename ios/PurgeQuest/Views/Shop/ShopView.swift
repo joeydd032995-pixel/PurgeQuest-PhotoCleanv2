@@ -37,6 +37,11 @@ struct ShopView: View {
     @State private var isPurchasing: Bool = false
     @State private var store = StoreKitService.shared
 
+    /// The item that just unlocked, so only its tile celebrates.
+    @State private var unlockedItemID: String?
+    /// Increments on every unlock; drives the shard burst on the winning tile.
+    @State private var burstTick = 0
+
     private var hero: Hero? { heroes.first }
 
     /// Whether the Titan Blade's gating achievement has been earned.
@@ -91,6 +96,12 @@ struct ShopView: View {
                             ) {
                                 purchase(item)
                             }
+                            .unlockBurst(
+                                trigger: unlockedItemID == item.id ? burstTick : 0,
+                                palette: item.isVideoThemed
+                                    ? [.videoSapphire, .questAmber, .gemEmerald]
+                                    : [.questAmber, .gemEmerald, .combatCrimson]
+                            )
                         }
                     }
                     if filter == .all { storeKitSection }
@@ -219,7 +230,7 @@ struct ShopView: View {
                 hero.gems -= item.priceGems
                 item.isUnlocked = true
                 hero.titanWeaponUnlocked = true
-                HapticsService.shared.comboBurst()
+                celebrateUnlock(of: item)
             } else {
                 purchaseError = "You need \(item.priceGems - hero.gems) more gems."
                 HapticsService.shared.warning()
@@ -237,13 +248,21 @@ struct ShopView: View {
             if hero.gems >= item.priceGems {
                 hero.gems -= item.priceGems
                 item.isUnlocked = true
-                HapticsService.shared.comboBurst()
+                celebrateUnlock(of: item)
             } else {
                 purchaseError = "You need \(item.priceGems - hero.gems) more gems."
                 HapticsService.shared.warning()
             }
         }
         try? modelContext.save()
+    }
+
+    /// Marks the tile that just unlocked so its shard burst plays, and
+    /// fires the multi-tap purchase haptic.
+    private func celebrateUnlock(of item: CosmeticItem) {
+        unlockedItemID = item.id
+        burstTick += 1
+        HapticsService.shared.comboBurst()
     }
 
     private func buy(_ product: Product) async {

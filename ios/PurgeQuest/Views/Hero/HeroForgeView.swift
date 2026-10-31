@@ -84,6 +84,8 @@ struct HeroForgeView: View {
     @State private var draftEquipped: [String: String]?
     /// A race change waiting on the player's whole-look / anatomy-only / cancel choice.
     @State private var pendingRace: HeroRace?
+    /// Increments when a paint job, dye, or colour lands; drives the preview's light-sweep flash.
+    @State private var paintTick = 0
     /// Set when persisting fails; the Forge stays open and shows it.
     @State private var saveError: String?
 
@@ -145,6 +147,8 @@ struct HeroForgeView: View {
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 14) {
                         preview
+                            .forgePaintFlash(trigger: paintTick)
+                            .padding(.top, 2)
                         contextToggle
                         categoryBar
                         lockBanner
@@ -766,13 +770,21 @@ struct HeroForgeView: View {
             apply(value)
             lockMessage = nil
         }
+        // Paint, dye, and colour picks get the light-sweep tick on the preview;
+        // structural picks (face, brows, mood…) don't need one.
+        if Self.flashingCategories.contains(category) {
+            paintTick += 1
+        }
     }
+
+    private static let flashingCategories: Set<ForgeCategory> = [.paint, .skin, .eyes, .hair, .armorDye, .colors]
 
     private func resetToDefault() {
         HapticsService.shared.heavy()
         withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
             draft = .default(for: hero.race)
         }
+        paintTick += 1
     }
 
     /// Applies the draft and persists it. On failure the previous look and equipment are restored, the Forge
