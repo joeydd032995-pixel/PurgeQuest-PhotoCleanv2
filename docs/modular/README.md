@@ -61,3 +61,5 @@ Each item stores its grip (image px). Each pack stores the *hold* where its own 
 ## Local Swift checks
 
 `SWIFT_BIN=/path/to/swift tools/swift_harness/run.sh` compiles and runs the pure-Foundation suites on Linux (Swift 6.2). UIKit/SwiftUI code (`SpriteEngine`, Forge views) is compiled and tested only by Xcode/CI.
+
+See [Gear visual views](gear-visual-views.md) for original/recolored texture comparisons of all 99 weapons and shields.
