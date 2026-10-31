@@ -13,6 +13,11 @@ Everything here is produced by `tools/modular_assets/` (Python 3, Pillow + NumPy
 | 11 store weapon/shield sprites | `Art/Gear/store/` | `store_gear.py` |
 | QA sheets (layers, fit per body profile, gear, Titan) | `docs/modular/verification/` | the scripts above |
 | Checklist + status | `docs/modular/CHECKLIST.md`, `asset_status.json` | `checklist.py` |
+| **Versioned inventory of every asset** (set version, per-asset revision, content hash, attention flags) | `docs/modular/ASSET_INVENTORY.md`, `asset_inventory.json` | `inventory.py` |
+
+## Which set am I looking at?
+
+`inventory.py` stamps every asset from git, so the numbers cannot drift from the files: **set `vN`** is the Nth commit that changed the shipped art (`+wip` = uncommitted art changes), **`rK`** counts how many sets changed that asset, and **`#xxxxxxxx`** is a hash of its pixels, so two renders showing the same hash are the same asset. `python3 -I tools/modular_assets/inventory.py --sheets DIR` also writes contact sheets (one PNG per pack and gear group, each with the set banner and the same stamps) and a single PDF. The "Needs attention" section of `ASSET_INVENTORY.md` lists assets worth a second look: computed signals (tiny or stray regions, low mask coverage) plus issues recorded by hand from reviewing renders (`KNOWN_ISSUES` in the script). A flag means *look*, not *wrong*; notes (regions merged since the previous set, unsupported body profiles) are information.
 
 ## Regenerate
 

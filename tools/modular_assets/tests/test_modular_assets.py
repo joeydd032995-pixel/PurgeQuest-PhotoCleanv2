@@ -177,6 +177,47 @@ class GearRegions(unittest.TestCase):
         self.assertNotEqual(rim_owner, owner[0], "steel and wood are different materials")
 
 
+class Inventory(unittest.TestCase):
+    """Holds at any git depth (CI clones shallowly), so it asserts structure, not history."""
+
+    @classmethod
+    def setUpClass(cls):
+        import inventory
+        cls.inv = inventory.collect()
+        cls.md = inventory.markdown(cls.inv)
+
+    def test_lists_every_manifest_asset_once(self):
+        races = json.loads(validate.RACES.read_text())["parts"]
+        gear = json.loads(validate.GEAR.read_text())["items"]
+        self.assertEqual(sorted(a["id"] for a in self.inv["parts"]), sorted(p["id"] for p in races))
+        self.assertEqual(sorted(a["id"] for a in self.inv["gear"]), sorted(g["id"] for g in gear))
+        for a in self.inv["gear"]:
+            self.assertIn(f"`{a['id']}`", self.md)
+        for pack in {a["pack"] for a in self.inv["parts"]}:
+            self.assertIn(f"### {pack}", self.md)
+
+    def test_set_versions_are_consecutive_and_hashes_are_content_hashes(self):
+        import re
+        versions = [s["version"] for s in self.inv["sets"]]
+        self.assertEqual(versions, list(range(1, len(versions) + 1)))
+        self.assertEqual(self.inv["setVersion"], versions[-1])
+        for a in self.inv["parts"] + self.inv["gear"]:
+            self.assertRegex(a["hash"], r"^[0-9a-f]{8}$")
+            if a["lastChangedIn"] is None:
+                self.assertEqual(a["revision"], 0)
+            else:
+                self.assertGreaterEqual(a["revision"], 1)
+                self.assertLessEqual(a["lastChangedIn"], self.inv["setVersion"])
+
+    def test_untouched_source_art_is_only_face_overlays(self):
+        # held-gear and layer assets always have masks or layers in the modular set; only the baked face overlays are source art
+        if len(self.inv["sets"]) < 2:
+            self.skipTest("shallow git history: every asset reads as changed in the only set")
+        for a in self.inv["parts"]:
+            if a["lastChangedIn"] is None:
+                self.assertEqual(a["kind"], "face", a["id"])
+
+
 class Rasterizer(unittest.TestCase):
     def test_valkyrie_frame_and_swapped_weapon(self):
         doc = scml.load_doc("valkyrie", 1)
