@@ -18,6 +18,7 @@ from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).parent))
 import fit as fitmod
+import gear_materials
 import scml
 
 REPO = Path(__file__).resolve().parents[2]
@@ -164,12 +165,27 @@ def main() -> int:
             errors.append(f"{iid}: grip outside image")
         if not set(item["supportedPacks"]) <= packs:
             errors.append(f"{iid}: unknown supported pack")
+        material_masks = {}
         for region, mask_name in item["maskResources"].items():
             mp = png(mask_name)
             if mp is None:
                 errors.append(f"{iid}: missing mask {mask_name}.png")
-            elif Image.open(mp).mode != "L" or Image.open(mp).size != im.size:
-                errors.append(f"{iid}: mask {mask_name} wrong mode/size")
+                continue
+            with Image.open(mp) as mask:
+                if mask.mode != "L" or mask.size != im.size:
+                    errors.append(f"{iid}: mask {mask_name} wrong mode/size")
+                    continue
+                material_masks[region] = mask.copy()
+        if material_masks:
+            source = im.convert("RGBA")
+            protected = gear_materials.protected_ink(source,
+                exterior=item["resourceName"] not in gear_materials.HALO_RESOURCES)
+            actual = gear_materials.quality(source, material_masks, protected)
+            if not gear_materials.quality_passes(actual):
+                errors.append(f"{iid}: material mask coverage/ink/alpha failure: {actual}")
+            recorded = item["verification"]["automated"].get("materialMasks", {})
+            if recorded.get("algorithm") != "authored-surfaces-v1":
+                errors.append(f"{iid}: missing topology-aware material checks (regenerate gear masks)")
         if not item["maskResources"]:
             errors.append(f"{iid}: no recolor masks")
         for region in item["maskResources"]:
