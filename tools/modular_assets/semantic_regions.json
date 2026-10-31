@@ -699,6 +699,53 @@
     "body": {
       "default": "primary",
       "outline": "ink_palette",
+      "polygons": [
+        {
+          "region": "secondary",
+          "points": [
+            [
+              87,
+              87
+            ],
+            [
+              138,
+              55
+            ],
+            [
+              187,
+              62
+            ],
+            [
+              223,
+              92
+            ],
+            [
+              235,
+              117
+            ],
+            [
+              223,
+              150
+            ],
+            [
+              194,
+              167
+            ],
+            [
+              158,
+              151
+            ],
+            [
+              118,
+              130
+            ],
+            [
+              99,
+              107
+            ]
+          ]
+        }
+      ],
       "details": [
         {
           "region": "trim",
@@ -723,7 +770,8 @@
             199
           ]
         }
-      ]
+      ],
+      "snap_cells": false
     },
     "left_arm": {
       "default": "primary",

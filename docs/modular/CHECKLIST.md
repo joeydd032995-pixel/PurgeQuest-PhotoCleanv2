@@ -25,7 +25,7 @@ Columns — **Layers**: anatomy/armor/headgear layers produced · **Masks**: mat
 | `forest_ranger_v2` Elven | 8/5/1 | eyes, primary, secondary, skin, trim | 3.3e-05 / 2.8e-05 | slender* | candidate | 0/17 |
 | `forest_ranger_v3` Elven | 8/7/1 | eyes, primary, secondary, skin, trim | 5.0e-05 / 4.8e-05 | slender* | candidate | 0/19 |
 | `seer_v1` Seer | 8/2/1 | primary, secondary, skin, trim | 5.2e-05 / 5.4e-05 | slender* | candidate | 0/14 |
-| `seer_v2` Seer | 8/5/1 | eyes, leather, primary, skin, trim | 3.3e-05 / 3.4e-05 | slender* | candidate | 0/17 |
+| `seer_v2` Seer | 8/5/1 | eyes, leather, primary, secondary, skin, trim | 3.3e-05 / 3.4e-05 | slender* | candidate | 0/17 |
 | `seer_v3` Seer | 8/7/1 | eyes, leather, primary, secondary, skin, trim | 9.5e-05 / 9.3e-05 | slender* | candidate | 0/19 |
 | `blood_alchemist_v1` Vampyri | 8/7/0 | leather, primary, secondary, skin, trim | 0.0e+00 / 0.0e+00 | standard, athletic* | candidate | 0/18 |
 | `blood_alchemist_v2` Vampyri | 8/7/1 | eyes, primary, secondary, skin, trim | 5.4e-05 / 5.2e-05 | standard, athletic* | candidate | 0/19 |

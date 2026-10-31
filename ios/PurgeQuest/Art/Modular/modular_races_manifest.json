@@ -9882,16 +9882,16 @@
    "referenceProfile": "slender",
    "regionTone": {
     "primary": [
-     0.40141,
-     0.05447
+     0.40713,
+     0.05587
     ],
     "skin": [
      0.62494,
      0.11008
     ],
     "trim": [
-     0.51175,
-     0.08329
+     0.51176,
+     0.0833
     ]
    },
    "representation": "modular",
@@ -10041,10 +10041,12 @@
    "kind": "armor",
    "maskResources": {
     "primary": "seer_v2_body_armor_mask_primary",
+    "secondary": "seer_v2_body_armor_mask_secondary",
     "trim": "seer_v2_body_armor_mask_trim"
    },
    "materialRegions": [
     "primary",
+    "secondary",
     "trim"
    ],
    "nativeProfiles": [
@@ -10076,12 +10078,16 @@
    "referenceProfile": "slender",
    "regionTone": {
     "primary": [
-     0.40141,
-     0.05447
+     0.40713,
+     0.05587
+    ],
+    "secondary": [
+     0.3275,
+     0.03648
     ],
     "trim": [
-     0.51175,
-     0.08329
+     0.51176,
+     0.0833
     ]
    },
    "representation": "modular",
@@ -10227,8 +10233,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "primary": [
-     0.40141,
-     0.05447
+     0.40713,
+     0.05587
     ]
    },
    "representation": "modular",
@@ -10374,8 +10380,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "primary": [
-     0.40141,
-     0.05447
+     0.40713,
+     0.05587
     ]
    },
    "representation": "modular",
