@@ -1,0 +1,115 @@
+{
+ "schemaVersion": 1,
+ "items": [
+  {
+   "id": "weapon.shard",
+   "name": "Crystal Shard",
+   "kind": "sword",
+   "resource": "store_weapon_shard",
+   "imageSize": [
+    400,
+    128
+   ]
+  },
+  {
+   "id": "weapon.reel",
+   "name": "Film Reel Blade",
+   "kind": "sword",
+   "resource": "store_weapon_reel",
+   "imageSize": [
+    400,
+    128
+   ]
+  },
+  {
+   "id": "weapon.gem",
+   "name": "Gem Hammer",
+   "kind": "hammer",
+   "resource": "store_weapon_gem",
+   "imageSize": [
+    400,
+    128
+   ]
+  },
+  {
+   "id": "weapon.staff",
+   "name": "Archmage Staff",
+   "kind": "staff",
+   "resource": "store_weapon_staff",
+   "imageSize": [
+    400,
+    128
+   ]
+  },
+  {
+   "id": "weapon.stormblade",
+   "name": "Storm Cleaver",
+   "kind": "sword",
+   "resource": "store_weapon_stormblade",
+   "imageSize": [
+    400,
+    128
+   ]
+  },
+  {
+   "id": "weapon.chevron",
+   "name": "Oathbreaker Greatsword",
+   "kind": "sword",
+   "resource": "store_weapon_chevron",
+   "imageSize": [
+    400,
+    128
+   ]
+  },
+  {
+   "id": "weapon.ruby",
+   "name": "Ruby Fang",
+   "kind": "sword",
+   "resource": "store_weapon_ruby",
+   "imageSize": [
+    400,
+    128
+   ]
+  },
+  {
+   "id": "weapon.arcane",
+   "name": "Arcane Edge",
+   "kind": "sword",
+   "resource": "store_weapon_arcane",
+   "imageSize": [
+    400,
+    128
+   ]
+  },
+  {
+   "id": "weapon.fireworkBlade",
+   "name": "Firework Blade",
+   "kind": "sword",
+   "resource": "store_weapon_fireworkBlade",
+   "imageSize": [
+    400,
+    128
+   ]
+  },
+  {
+   "id": "shield.crux",
+   "name": "Azure Aegis",
+   "kind": "shield",
+   "resource": "store_shield_crux",
+   "imageSize": [
+    160,
+    160
+   ]
+  },
+  {
+   "id": "shield.templar",
+   "name": "Templar Bulwark",
+   "kind": "shield",
+   "resource": "store_shield_templar",
+   "imageSize": [
+    160,
+    160
+   ]
+  }
+ ]
+}

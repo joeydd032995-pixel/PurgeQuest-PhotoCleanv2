@@ -47,3 +47,14 @@ jobs:
             -only-testing:PurgeQuestTests \
             CODE_SIGNING_ALLOWED=NO \
             test
+      - name: Run Forge UI tests
+        run: |
+          xcodebuild \
+            -project ios/PurgeQuest.xcodeproj \
+            -scheme PurgeQuest \
+            -configuration Debug \
+            -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
+            -parallel-testing-enabled NO \
+            -only-testing:PurgeQuestUITests/ForgeUITests \
+            CODE_SIGNING_ALLOWED=NO \
+            test

@@ -1,0 +1,66 @@
+{
+ "head.dragoncrest": {
+  "price": 650,
+  "unlocked": false
+ },
+ "head.hood": {
+  "price": 500,
+  "unlocked": false
+ },
+ "head.iron": {
+  "price": 0,
+  "unlocked": true
+ },
+ "head.starhat": {
+  "price": 300,
+  "unlocked": false
+ },
+ "shield.crux": {
+  "price": 500,
+  "unlocked": false
+ },
+ "shield.templar": {
+  "price": 850,
+  "unlocked": false
+ },
+ "upgrade.titanBlade": {
+  "price": 3000,
+  "unlocked": false
+ },
+ "weapon.arcane": {
+  "price": 900,
+  "unlocked": false
+ },
+ "weapon.chevron": {
+  "price": 750,
+  "unlocked": false
+ },
+ "weapon.fireworkBlade": {
+  "price": 750,
+  "unlocked": false
+ },
+ "weapon.gem": {
+  "price": 800,
+  "unlocked": false
+ },
+ "weapon.reel": {
+  "price": 600,
+  "unlocked": false
+ },
+ "weapon.ruby": {
+  "price": 700,
+  "unlocked": false
+ },
+ "weapon.shard": {
+  "price": 0,
+  "unlocked": true
+ },
+ "weapon.staff": {
+  "price": 500,
+  "unlocked": false
+ },
+ "weapon.stormblade": {
+  "price": 700,
+  "unlocked": false
+ }
+}

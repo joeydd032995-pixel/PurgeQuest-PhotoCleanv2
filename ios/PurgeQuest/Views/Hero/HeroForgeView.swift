@@ -26,7 +26,7 @@ protocol ForgeSwatch: Hashable {
 
 /// Forge categories, in display order.
 enum ForgeCategory: String, CaseIterable, Identifiable {
-    case race, paint, skin, face, eyes, brows, mouth, hair, expression, armorDye, backdrop
+    case race, paint, skin, face, eyes, brows, mouth, hair, expression, armorDye, gear, colors, backdrop
 
     var id: String { rawValue }
 
@@ -42,6 +42,8 @@ enum ForgeCategory: String, CaseIterable, Identifiable {
         case .hair: return "Hair"
         case .expression: return "Mood"
         case .armorDye: return "Armor Dye"
+        case .gear: return "Gear"
+        case .colors: return "Colors"
         case .backdrop: return "Backdrop"
         }
     }
@@ -58,6 +60,8 @@ enum ForgeCategory: String, CaseIterable, Identifiable {
         case .hair: return "comb"
         case .expression: return "theatermasks"
         case .armorDye: return "paintpalette.fill"
+        case .gear: return "shield.lefthalf.filled"
+        case .colors: return "paintpalette"
         case .backdrop: return "rectangle.inset.filled"
         }
     }
@@ -76,15 +80,52 @@ struct HeroForgeView: View {
     @State private var showStripPreview: Bool = false
     /// Requirement text shown after tapping a locked dye.
     @State private var lockMessage: String?
+    /// Equipment edits (slot raw value -> item id). nil until the player touches Gear; Save applies it, Cancel drops it.
+    @State private var draftEquipped: [String: String]?
+    /// A race change waiting on the player's whole-look / anatomy-only / cancel choice.
+    @State private var pendingRace: HeroRace?
+    /// Set when persisting fails; the Forge stays open and shows it.
+    @State private var saveError: String?
 
-    init(hero: Hero) {
+    /// Persisting hook; nil uses the model context. UI tests inject a failing one to exercise save errors.
+    private let persistOverride: (() throws -> Void)?
+
+    init(hero: Hero, persistOverride: (() throws -> Void)? = nil) {
         self.hero = hero
+        self.persistOverride = persistOverride
         _draft = State(initialValue: hero.appearance)
     }
 
     private var equippedItems: [CosmeticItem] { cosmetics.filter { $0.isEquipped } }
 
-    private var isDirty: Bool { draft != hero.appearance }
+    private static let managedSlots: Set<CosmeticType> = [.weapon, .shield]
+
+    /// What is equipped right now, by managed slot.
+    private var currentEquipped: [String: String] {
+        Dictionary(equippedItems.filter { Self.managedSlots.contains($0.type) }.map { ($0.type.rawValue, $0.id) },
+                   uniquingKeysWith: { first, _ in first })
+    }
+
+    private var equippedMap: Binding<[String: String]> {
+        Binding(get: { draftEquipped ?? currentEquipped }, set: { draftEquipped = $0 })
+    }
+
+    /// Equipment as the preview should draw it: the draft's picks, other slots as they are.
+    private var previewItems: [CosmeticItem] {
+        guard let draftEquipped else { return equippedItems }
+        let picked = Set(draftEquipped.values)
+        return cosmetics.filter { item in
+            Self.managedSlots.contains(item.type) ? picked.contains(item.id) : item.isEquipped
+        }
+    }
+
+    private var draftRace: HeroRace { draft.race ?? hero.race }
+    private var draftVariant: Int { min(max(draft.paintVariant, 1), draftRace.variantCount) }
+
+    private var isDirty: Bool {
+        ForgeDraft(appearance: draft, equipped: equippedMap.wrappedValue)
+            .isDirty(comparedTo: ForgeDraft(appearance: hero.appearance, equipped: currentEquipped))
+    }
     private var isDefaultLook: Bool { draft == .default(for: hero.race) }
 
     private var tier: GearTier {
@@ -117,6 +158,27 @@ struct HeroForgeView: View {
             }
         }
         .preferredColorScheme(.dark)
+        .onChange(of: draft.race) { _, _ in pruneIncompatibleEquipment() }
+        .onChange(of: draft.paintVariant) { _, _ in pruneIncompatibleEquipment() }
+        .confirmationDialog(
+            "Change ancestry to \(pendingRace?.displayName ?? "")?",
+            isPresented: Binding(get: { pendingRace != nil }, set: { if !$0 { pendingRace = nil } }),
+            titleVisibility: .visible
+        ) {
+            Button("Whole look") { resolveRaceChange(.wholeLook) }
+            Button("Anatomy only") { resolveRaceChange(.anatomyOnly) }
+            Button("Cancel", role: .cancel) { resolveRaceChange(.cancel) }
+        } message: {
+            Text("Whole look takes the new ancestry's designed look. Anatomy only keeps your face, colours and dyes.")
+        }
+        .alert(
+            "Couldn't save your hero",
+            isPresented: Binding(get: { saveError != nil }, set: { if !$0 { saveError = nil } })
+        ) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("\(saveError ?? "") Your changes are still in the Forge; nothing was applied.")
+        }
     }
 
     // MARK: - Header
@@ -163,7 +225,7 @@ struct HeroForgeView: View {
                     Circle()
                         .fill(Color.dungeonStoneLight)
                         .overlay(Circle().stroke(tier.accent.opacity(0.6), lineWidth: 1))
-                    MiniAvatarView(hero: hero, equipped: equippedItems, size: 88, appearance: draft)
+                    MiniAvatarView(hero: hero, equipped: previewItems, size: 88, appearance: draft)
                         .frame(width: 52, height: 62)
                         .clipped()
                 }
@@ -187,7 +249,7 @@ struct HeroForgeView: View {
                     .overlay(RoundedRectangle(cornerRadius: 12).stroke(tier.accent.opacity(0.35), lineWidth: 1))
             )
         } else {
-            CharacterAvatarView(hero: hero, equipped: equippedItems, size: 230, appearance: draft)
+            CharacterAvatarView(hero: hero, equipped: previewItems, size: 230, appearance: draft)
                 .frame(maxWidth: .infinity)
         }
     }
@@ -201,7 +263,7 @@ struct HeroForgeView: View {
             .pickerStyle(.segmented)
             .frame(maxWidth: 300)
             .accessibilityLabel("Preview size")
-            Text("Gear is equipped in the Armory. The forge shapes the hero underneath.")
+            Text("Gear and colours here are a draft until you tap Save Hero. Buy gear in the Armory.")
                 .font(.caption2)
                 .foregroundStyle(.textTertiary)
         }
@@ -282,9 +344,85 @@ struct HeroForgeView: View {
                 selected: draft.armorDye,
                 lockInfo: { lockRequirement($0.requiredAchievementID) }
             ) { draft.armorDye = $0 }
+        case .gear:
+            ForgeGearPicker(cosmetics: cosmetics, race: draftRace, variant: draftVariant, equipped: equippedMap)
+        case .colors:
+            colorsSection
         case .backdrop:
             optionSection("Backdrop", options: BackdropStyle.allCases, selected: draft.backdropStyle) { draft.backdropStyle = $0 }
         }
+    }
+
+    // MARK: - Colors
+
+    /// Regions the equipped gear's masks expose.
+    private var gearRegions: [MaterialRegion] {
+        var found = Set<MaterialRegion>()
+        for item in previewItems where Self.managedSlots.contains(item.type) {
+            if let entry = ModularAssetCatalog.shared.gearItem(id: item.id) {
+                found.formUnion(entry.maskResources.keys.compactMap(MaterialRegion.init(rawValue:)))
+            }
+        }
+        return Array(found)
+    }
+
+    private var bodyRegions: [MaterialRegion] {
+        var found = Set<MaterialRegion>()
+        for part in ModularAssetCatalog.shared.parts(forPack: draftRace.artBase(variant: draftVariant)) {
+            found.formUnion(part.materialRegions)
+        }
+        return Array(found)
+    }
+
+    /// Body colours only render through the modular path, which needs every layer of the look approved.
+    private var bodyColorsActive: Bool {
+        let layers = ModularAssetCatalog.shared.parts(forPack: draftRace.artBase(variant: draftVariant)).filter { $0.kind != "face" }
+        return !layers.isEmpty && layers.allSatisfy { $0.verification.status == .verified }
+    }
+
+    private var colorsSection: some View {
+        ForgeColorSection(
+            gearRegions: gearRegions,
+            bodyRegions: bodyRegions,
+            bodyColorsActive: bodyColorsActive,
+            gearMaterials: Binding(get: { draft.gearMaterials }, set: { draft.gearMaterials = $0 }),
+            bodyMaterials: Binding(get: { draft.materials }, set: { draft.materials = $0 })
+        )
+    }
+
+    // MARK: - Ancestry and equipment compatibility
+
+    /// A race change that would overwrite customisation waits for an explicit choice.
+    private func requestRaceChange(_ race: HeroRace) {
+        let current = draftRace
+        guard race != current else { return }
+        if AncestryChange.hasCustomization(draft, currentRace: current) {
+            HapticsService.shared.light()
+            pendingRace = race
+        } else {
+            select(race) { draft = AncestryChange.apply(.wholeLook, to: draft, newRace: $0) }
+        }
+    }
+
+    private func resolveRaceChange(_ choice: AncestryChoice) {
+        defer { pendingRace = nil }
+        guard let race = pendingRace, choice != .cancel else { return }
+        select(race) { draft = AncestryChange.apply(choice, to: draft, newRace: $0) }
+    }
+
+    /// Drops equipment the new body can't wear (e.g. the Elven Recurve on a sword-pack paint job) and says so.
+    private func pruneIncompatibleEquipment() {
+        var map = equippedMap.wrappedValue
+        var removed: [String] = []
+        for (slot, id) in map {
+            guard let entry = ModularAssetCatalog.shared.gearItem(id: id),
+                  !GearCompatibility.isSupported(entry, race: draftRace, variant: draftVariant) else { continue }
+            map.removeValue(forKey: slot)
+            removed.append(entry.name)
+        }
+        guard !removed.isEmpty else { return }
+        draftEquipped = map
+        lockMessage = "Unequipped \(removed.joined(separator: ", ")): not supported on this body."
     }
 
     /// The achievement id gating a dye, or nil when the dye is free or the
@@ -323,7 +461,7 @@ struct HeroForgeView: View {
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 96), spacing: 10)], spacing: 12) {
                 ForEach(HeroRace.allCases, id: \.self) { race in
                     Button {
-                        select(race) { draft.race = $0 }
+                        requestRaceChange(race)
                     } label: {
                         VStack(spacing: 6) {
                             HeroSpriteView(hero: hero, appearance: .default(for: race), size: 76)
@@ -637,11 +775,45 @@ struct HeroForgeView: View {
         }
     }
 
+    /// Applies the draft and persists it. On failure the previous look and equipment are restored, the Forge
+    /// stays open, and the error is shown; the success haptic and dismissal happen only after a real save.
     private func save() {
-        hero.appearance = draft
-        try? modelContext.save()
-        HapticsService.shared.success()
-        dismiss()
+        var committed = draft
+        committed.materials = MaterialPalette.normalized(committed.materials)
+        committed.gearMaterials = MaterialPalette.normalized(committed.gearMaterials)
+        if committed.materials != nil || committed.gearMaterials != nil {
+            committed.schemaVersion = HeroAppearance.currentSchemaVersion
+        }
+        let previousAppearance = hero.appearance
+        let previousEquipped = Dictionary(cosmetics.map { ($0.id, $0.isEquipped) }, uniquingKeysWith: { first, _ in first })
+        let wanted = draftEquipped.map { Set($0.values) }
+
+        let outcome = ForgeSaveCoordinator.commit(
+            apply: {
+                hero.appearance = committed
+                if let wanted {
+                    for item in cosmetics where Self.managedSlots.contains(item.type) {
+                        item.isEquipped = wanted.contains(item.id)
+                    }
+                }
+            },
+            persist: { try (persistOverride ?? { try modelContext.save() })() },
+            rollback: {
+                hero.appearance = previousAppearance
+                for item in cosmetics {
+                    if let was = previousEquipped[item.id] { item.isEquipped = was }
+                }
+                modelContext.rollback()
+            }
+        )
+        switch outcome {
+        case .saved:
+            HapticsService.shared.success()
+            dismiss()
+        case .failed(let message):
+            HapticsService.shared.warning()
+            saveError = message
+        }
     }
 }
 

@@ -27,7 +27,8 @@ struct PurgeQuestApp: App {
             MediaFingerprintRecord.self,
             MonsterSightingRecord.self
         ])
-        let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        // UI tests run against an in-memory store so they never touch real data.
+        let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: CommandLine.arguments.contains("-UITestForge"))
         do {
             return try ModelContainer(for: schema, configurations: [configuration])
         } catch {
@@ -43,9 +44,19 @@ struct PurgeQuestApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(appState)
-                .preferredColorScheme(.dark)
+            Group {
+                #if DEBUG
+                if CommandLine.arguments.contains("-UITestForge") {
+                    ForgeUITestRoot()
+                } else {
+                    ContentView()
+                }
+                #else
+                ContentView()
+                #endif
+            }
+            .environment(appState)
+            .preferredColorScheme(.dark)
         }
         .modelContainer(sharedModelContainer)
     }

@@ -108,6 +108,12 @@ nonisolated enum HeroRace: String, CaseIterable, Codable, Sendable {
     /// Bundled attack animation name in the Spriter project.
     var attackAnimationName: String { self == .elven ? "Shooting" : "Slashing" }
 
+    /// The attack animation a paint variant actually ships. Elven variant 3 is a sword pack with only
+    /// "Slashing", so the race-level "Shooting" never played for it.
+    func attackAnimationName(variant: Int) -> String {
+        self == .elven && variant != 3 ? "Shooting" : "Slashing"
+    }
+
     /// The class the forge recommends for this race's silhouette.
     var recommendedClass: HeroClass {
         switch self {
