@@ -87,7 +87,7 @@ def _same_as_original(layer: Layer, original: Path) -> bool:
 def mask_metrics(layer: Layer) -> Dict[str, float]:
     import imgops as ops
     rgb, alpha = ops.arrays(layer.image)
-    outline = ops.outline_mask(rgb, alpha)
+    outline = layer.mask_outline if layer.mask_outline is not None else ops.outline_mask(rgb, alpha)
     body = (alpha > 0.5) & ~outline
     if not layer.masks or body.sum() == 0:
         return {"coverage": 0.0, "outlineLeak": 0.0, "overlap": 0.0}
@@ -235,6 +235,8 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--packs", default="")
     ap.add_argument("--no-sheets", action="store_true")
+    ap.add_argument("--update-manifest", action="store_true",
+                    help="Merge --packs results into the existing manifest and build report")
     args = ap.parse_args()
     wanted = set(filter(None, args.packs.split(",")))
     packs, entries, report = [], [], {}
@@ -249,13 +251,24 @@ def main() -> None:
         entries += res["entries"]
         report[pid] = {"notes": res["notes"], "checks": res["checks"]}
         packs.append(pid)
-    if not wanted:
-        manifest = {"schemaVersion": 1, "rigID": "humanoid_v1", "generatedBy": "tools/modular_assets/build_assets.py",
-                    "packs": packs, "parts": entries}
-        (OUT_ROOT / "modular_races_manifest.json").write_text(json.dumps(manifest, indent=1, sort_keys=True) + "\n")
-        (REPO / "docs" / "modular").mkdir(parents=True, exist_ok=True)
-        (REPO / "docs" / "modular" / "race_build_report.json").write_text(json.dumps(report, indent=1, sort_keys=True) + "\n")
-        print("manifest parts:", len(entries))
+    if not wanted or args.update_manifest:
+        manifest_path = OUT_ROOT / "modular_races_manifest.json"
+        report_path = REPO / "docs" / "modular" / "race_build_report.json"
+        if wanted:
+            manifest = json.loads(manifest_path.read_text())
+            updated = {pid: [e for e in entries if e["pack"] == pid] for pid in packs}
+            manifest["parts"] = [entry for pid in manifest["packs"]
+                                 for entry in updated.get(pid, [p for p in manifest["parts"] if p["pack"] == pid])]
+            previous_report = json.loads(report_path.read_text())
+            previous_report.update(report)
+            report = previous_report
+        else:
+            manifest = {"schemaVersion": 1, "rigID": "humanoid_v1", "generatedBy": "tools/modular_assets/build_assets.py",
+                        "packs": packs, "parts": entries}
+        manifest_path.write_text(json.dumps(manifest, indent=1, sort_keys=True) + "\n")
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        report_path.write_text(json.dumps(report, indent=1, sort_keys=True) + "\n")
+        print("manifest parts:", len(manifest["parts"]))
 
 
 if __name__ == "__main__":

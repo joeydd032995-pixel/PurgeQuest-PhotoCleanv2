@@ -270,3 +270,22 @@ def region_tone(rgb: np.ndarray, weight: np.ndarray):
         return None
     lab = rgb_to_oklab(rgb)
     return float((lab[..., 0] * w).sum() / tot), float((np.hypot(lab[..., 1], lab[..., 2]) * w).sum() / tot)
+
+
+def recolor_materials(rgb: np.ndarray, masks: dict, tones: dict, colors: dict) -> np.ndarray:
+    """Order-independent material blend, matching MaterialRecolorBlend in Swift.
+
+    Soft mask boundaries must sample the original shading for each region,
+    rather than recolouring a previous region's result. Excess weights are
+    normalized, retaining source alpha and untouched pixels in the caller.
+    """
+    out = np.zeros_like(rgb, dtype=np.float64)
+    weight = np.zeros(rgb.shape[:-1], dtype=np.float64)
+    for name, color in colors.items():
+        if name not in masks:
+            continue
+        m = np.clip(np.asarray(masks[name], np.float64) / 255.0, 0, 1)
+        value = recolor_pixels(rgb, color, tones.get(name) or [0.6, 0.1], np.ones_like(m))
+        out += value * m[..., None]
+        weight += m
+    return rgb * np.maximum(0, 1 - weight)[..., None] + out / np.maximum(1, weight)[..., None]

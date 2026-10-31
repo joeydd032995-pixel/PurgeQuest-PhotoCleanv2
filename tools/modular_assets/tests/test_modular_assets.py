@@ -206,5 +206,108 @@ class ApprovalGate(unittest.TestCase):
             shutil.rmtree(tmp)
 
 
+class RecolorMaterials(unittest.TestCase):
+    def test_soft_boundaries_sample_original_shading_and_ignore_region_order(self):
+        import numpy as np
+        import imgops as ops
+        rgb = np.array([[[0.4, 0.3, 0.2], [0.7, 0.6, 0.5]]])
+        masks = {"primary": np.array([[153, 0]], dtype=np.uint8),
+                 "trim": np.array([[102, 0]], dtype=np.uint8)}
+        colors = {"primary": (0.8, 0.1, 0.1), "trim": (0.1, 0.3, 0.8)}
+        tones = {"primary": [0.5, 0.1], "trim": [0.4, 0.1]}
+        forward = ops.recolor_materials(rgb, masks, tones, colors)
+        backward = ops.recolor_materials(rgb, masks, tones, dict(reversed(list(colors.items()))))
+        np.testing.assert_allclose(forward, backward, atol=1e-12)
+        red = ops.recolor_pixels(rgb, colors["primary"], tones["primary"], np.ones((1, 2)))
+        blue = ops.recolor_pixels(rgb, colors["trim"], tones["trim"], np.ones((1, 2)))
+        np.testing.assert_allclose(forward[0, 0], red[0, 0] * .6 + blue[0, 0] * .4)
+        np.testing.assert_array_equal(forward[0, 1], rgb[0, 1])
+
+    def test_overlapping_masks_normalize_instead_of_oversaturating(self):
+        import numpy as np
+        import imgops as ops
+        rgb = np.array([[[0.4, 0.3, 0.2]]])
+        masks = {r: np.array([[255]], dtype=np.uint8) for r in ["primary", "trim"]}
+        colors = {"primary": (0.8, 0.1, 0.1), "trim": (0.1, 0.3, 0.8)}
+        out = ops.recolor_materials(rgb, masks, {}, colors)
+        expected = sum(ops.recolor_pixels(rgb, c, [0.6, 0.1], np.ones((1, 1))) for c in colors.values()) / 2
+        np.testing.assert_allclose(out, expected)
+
+
+class ReportedModelMasks(unittest.TestCase):
+    def setUp(self):
+        import numpy as np
+        self.np = np
+        self.parts = json.loads(validate.RACES.read_text())["parts"]
+        self.by_id = {p["id"]: p for p in self.parts}
+        self.resources = {p.stem: p for p in scml.ART_ROOT.rglob("*.png")}
+
+    def masks(self, part_id):
+        from PIL import Image
+        return {r: self.np.asarray(Image.open(self.resources[name]), dtype=float) / 255
+                for r, name in self.by_id[part_id]["maskResources"].items()}
+
+    def test_lost_souls_hands_are_skin_and_hair_has_its_own_region(self):
+        head = self.masks("necromancer_v1.head.headgear")
+        self.assertIn("hair", head)
+        self.assertGreater(head["hair"][100, 180], .9)
+        for hand in ["left_hand", "right_hand"]:
+            part = self.by_id[f"necromancer_v1.{hand}.anatomy"]
+            self.assertEqual(part["materialRegions"], ["skin"])
+            self.assertNotIn(f"necromancer_v1.{hand}.armor", self.by_id)
+
+    def test_clothing_colors_leave_visible_face_pigments_unchanged(self):
+        from PIL import Image
+        colors = {"hair": (.8, .1, .1), "primary": (.1, .5, .9), "secondary": (.9, .7, .1), "trim": (.8, .6, .1)}
+        import qa
+        cases = {"necromancer_v1": [[85,132,159], [76,116,139], [232,163,163]],
+                 "forest_ranger_v1": [[239,183,125], [179,137,94], [245,212,175]],
+                 "seer_v2": [[184,121,58], [138,91,43], [212,169,81]]}
+        for pid, pigments in cases.items():
+            checked = 0
+            for kind in ["anatomy", "headgear"]:
+                part = self.by_id[f"{pid}.head.{kind}"]
+                image = Image.open(self.resources[part["resourceBaseName"]]).convert("RGBA")
+                source = self.np.asarray(image)
+                visible = source[..., 3] > 200
+                skin = self.np.zeros(visible.shape, dtype=bool)
+                for pigment in pigments:
+                    skin |= (source[..., :3] == pigment).all(-1)
+                selected = visible & skin
+                checked += int(selected.sum())
+                if not selected.any():
+                    continue
+                recolored = self.np.asarray(qa.recolor(image,
+                    {r: Image.open(self.resources[name]) for r, name in part["maskResources"].items()},
+                    part["regionTone"], colors))
+                self.assertLessEqual(self.np.abs(recolored.astype(int) - source.astype(int))[selected].max(), 1, (pid, kind))
+            self.assertGreater(checked, 100, pid)
+
+    def test_elven_hood_highlight_shadow_and_lining_share_primary(self):
+        head = self.masks("forest_ranger_v1.head.headgear")
+        for x, y in [(300, 200), (158, 350), (485, 425)]:
+            self.assertGreater(head["primary"][y, x], .8, (x, y))
+        self.assertIn("hair", head)
+
+    def test_dark_sleeves_are_recolorable_and_ink_stays_untouched(self):
+        from PIL import Image
+        for pid in ["necromancer_v1", "forest_ranger_v1", "seer_v2"]:
+            masks = self.masks(f"{pid}.left_arm.armor")
+            cloth = "secondary" if pid == "necromancer_v1" else "primary"
+            self.assertGreater(masks[cloth][55, 60], .8, pid)
+            for part in [p for p in self.parts if p["pack"] == pid and p["kind"] in ["armor", "headgear"]]:
+                source = self.np.asarray(Image.open(self.resources[part["resourceBaseName"]]).convert("RGBA"))
+                ink = (source[..., :3] == [27, 26, 24]).all(-1) & (source[..., 3] > 200)
+                if ink.any():
+                    total = sum(self.masks(part["id"]).values())
+                    self.assertEqual(total[ink].max(), 0, part["id"])
+
+    def test_seer_runes_use_trim_and_cloth_uses_primary(self):
+        head = self.masks("seer_v2.head.headgear")
+        self.assertGreater(head["primary"][100, 200], .9)
+        self.assertGreater(head["trim"][166, 245], .8)
+
+
+
 if __name__ == "__main__":
     unittest.main()

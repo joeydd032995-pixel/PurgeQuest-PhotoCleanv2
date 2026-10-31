@@ -120,6 +120,38 @@ nonisolated enum RecolorMath {
     }
 }
 
+/// Blend soft material boundaries from the same original pixel. Recolouring
+/// the result of another region changes shading twice and makes mask order visible.
+nonisolated struct MaterialRecolorBlend {
+    let source: (r: Double, g: Double, b: Double)
+    private var red = 0.0
+    private var green = 0.0
+    private var blue = 0.0
+    private var weight = 0.0
+
+    init(source: (r: Double, g: Double, b: Double)) {
+        self.source = source
+    }
+
+    mutating func add(target: MaterialRGBA, tone: RegionTone?, mask: Double) {
+        let m = min(max(mask, 0), 1)
+        guard m > 0 else { return }
+        let color = RecolorMath.recolor(pixel: source, target: target, tone: tone, mask: 1)
+        red += color.r * m
+        green += color.g * m
+        blue += color.b * m
+        weight += m
+    }
+
+    var result: (r: Double, g: Double, b: Double) {
+        let originalWeight = max(0, 1 - weight)
+        let divisor = max(1, weight)
+        return (source.r * originalWeight + red / divisor,
+                source.g * originalWeight + green / divisor,
+                source.b * originalWeight + blue / divisor)
+    }
+}
+
 /// Material regions a piece of gear can expose in the Forge, in display order.
 nonisolated enum MaterialPalette {
     static let displayOrder: [MaterialRegion] = [.skin, .hair, .eyes, .primary, .secondary, .trim, .leather, .emissive]

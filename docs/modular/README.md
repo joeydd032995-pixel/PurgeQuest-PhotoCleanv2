@@ -50,6 +50,10 @@ The recolor itself runs in OKLab (`imgops.recolor_pixels`, mirrored in `RecolorM
 
 Limits to review: bare anatomy is procedural (flat fill, matching outline), not hand-painted; hair is not separately masked where it is baked into headgear; Golem/skeleton parts that *are* the material have no separate armor art.
 
+For the three reported model fixes and their idle/attack comparisons, see [Recolor fixes](recolor-fixes.md).
+Their authored semantic masks override clustering for the affected paints. Soft region boundaries in both Python and
+Swift blend independently from the original pixel, so applying multiple colors cannot recolor shading twice or depend on region order.
+
 ## Held gear model
 
 Each item stores its grip (image px). Each pack stores the *hold* where its own baked weapon sits. `offset(s) = hold - s * (grip - pivotPx)` keeps the grip in the hand at any scale, so the Titan Blade (`HeldGearFit.titanScale = 2`) grows about the grip. The renderer unions the pack canvas with the item rect over every frame (hidden anchors included) so nothing clips; the view keeps the character's size and lets the blade overflow.

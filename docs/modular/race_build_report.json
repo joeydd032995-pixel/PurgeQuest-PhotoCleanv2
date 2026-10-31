@@ -639,7 +639,7 @@
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9503,
+     "coverage": 0.9617,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
@@ -649,7 +649,7 @@
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.9896,
+     "coverage": 0.9879,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
@@ -659,7 +659,7 @@
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9349,
+     "coverage": 0.9596,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
@@ -674,7 +674,7 @@
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9847,
+     "coverage": 0.9606,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
@@ -684,7 +684,7 @@
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.9359,
+     "coverage": 0.9607,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
@@ -699,7 +699,7 @@
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9853,
+     "coverage": 0.9632,
      "outlineLeak": 0.0,
      "overlap": 0.0
     }
@@ -1229,7 +1229,7 @@
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9875,
+     "coverage": 0.9766,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
@@ -1239,7 +1239,7 @@
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.9851,
+     "coverage": 0.9842,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
@@ -1249,16 +1249,11 @@
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.8358,
+     "coverage": 0.959,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "left_hand:anatomy": {
-     "coverage": 0.9476,
-     "outlineLeak": 0.0,
-     "overlap": 0.0
-    },
-    "left_hand:armor": {
      "coverage": 0.9294,
      "outlineLeak": 0.0,
      "overlap": 0.0
@@ -1269,7 +1264,7 @@
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9877,
+     "coverage": 0.9602,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
@@ -1279,16 +1274,11 @@
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.838,
+     "coverage": 0.9602,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
     "right_hand:anatomy": {
-     "coverage": 0.9604,
-     "outlineLeak": 0.0,
-     "overlap": 0.0
-    },
-    "right_hand:armor": {
      "coverage": 0.9662,
      "outlineLeak": 0.0,
      "overlap": 0.0
@@ -1299,7 +1289,7 @@
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.988,
+     "coverage": 0.9631,
      "outlineLeak": 0.0,
      "overlap": 0.0
     }
@@ -1324,8 +1314,8 @@
    "body: skin-match=0.26 -> armor",
    "left_arm: skin-match=0.00 -> armor",
    "right_arm: skin-match=0.00 -> armor",
-   "left_hand: skin-match=0.42 -> armor",
-   "right_hand: skin-match=0.16 -> armor",
+   "left_hand: skin-match=0.42 -> anatomy",
+   "right_hand: skin-match=0.16 -> anatomy",
    "left_leg: skin-match=0.00 -> armor",
    "right_leg: skin-match=0.00 -> armor"
   ]
@@ -1625,7 +1615,7 @@
      "overlap": 0.0
     },
     "body:armor": {
-     "coverage": 0.9715,
+     "coverage": 0.9744,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
@@ -1635,7 +1625,7 @@
      "overlap": 0.0
     },
     "head:headgear": {
-     "coverage": 0.9925,
+     "coverage": 0.9888,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
@@ -1645,7 +1635,7 @@
      "overlap": 0.0
     },
     "left_arm:armor": {
-     "coverage": 0.9482,
+     "coverage": 0.9602,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
@@ -1660,7 +1650,7 @@
      "overlap": 0.0
     },
     "left_leg:armor": {
-     "coverage": 0.9855,
+     "coverage": 0.9601,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
@@ -1670,7 +1660,7 @@
      "overlap": 0.0
     },
     "right_arm:armor": {
-     "coverage": 0.9537,
+     "coverage": 0.9607,
      "outlineLeak": 0.0,
      "overlap": 0.0
     },
@@ -1685,7 +1675,7 @@
      "overlap": 0.0
     },
     "right_leg:armor": {
-     "coverage": 0.9864,
+     "coverage": 0.9627,
      "outlineLeak": 0.0,
      "overlap": 0.0
     }
