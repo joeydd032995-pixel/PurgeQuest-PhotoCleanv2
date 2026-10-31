@@ -6,6 +6,11 @@ The example palette uses blue Primary, red Secondary, gold Trim, brown Leather, 
 
 Regenerate with `python3 -I tools/modular_assets/gear_recolor_review.py`.
 
+> **Which masks these are (asset pass v6).** The tiles above show the *shipped* gear masks, made by the `chroma-cells-v5` algorithm
+> (the v5 pass: `gear_masks_chroma.py`). The "Before and after" section below is PR #11's record of its own pass: it compares
+> the earlier clustering masks with `authored-surfaces-v1` (`gear_materials.py`), which is still in the repo and still tested,
+> and can be shipped again with `held_gear.py --masks-only --algorithm authored-surfaces-v1`. See the README for how the two differ.
+
 ## Before and after the gear-mask fix
 
 All 99 masks now use authored material boundaries instead of color clustering. These comparisons use the exact prior masks from commit `35819112018927206952159dfc4426487ac055c6` and identical blue/red/gold preference values. See [the fix details](gear-recolor-fixes.md).

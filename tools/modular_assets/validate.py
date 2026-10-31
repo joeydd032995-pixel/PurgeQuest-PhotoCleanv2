@@ -18,6 +18,7 @@ from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).parent))
 import fit as fitmod
+import gear_algorithms
 import gear_materials
 import scml
 
@@ -178,14 +179,18 @@ def main() -> int:
                 material_masks[region] = mask.copy()
         if material_masks:
             source = im.convert("RGBA")
-            protected = gear_materials.protected_ink(source,
-                exterior=item["resourceName"] not in gear_materials.HALO_RESOURCES)
-            actual = gear_materials.quality(source, material_masks, protected)
-            if not gear_materials.quality_passes(actual):
-                errors.append(f"{iid}: material mask coverage/ink/alpha failure: {actual}")
             recorded = item["verification"]["automated"].get("materialMasks", {})
-            if recorded.get("algorithm") != "authored-surfaces-v1":
-                errors.append(f"{iid}: missing topology-aware material checks (regenerate gear masks)")
+            name = recorded.get("algorithm")
+            algo = gear_algorithms.ALGORITHMS.get(name)
+            if algo is None:
+                errors.append(f"{iid}: missing or unknown material mask algorithm {name!r} (regenerate gear masks)")
+            else:
+                # each algorithm is held to its own gate: authored-surfaces-v1 protects dark ink, chroma-cells-v5 line work
+                protected = algo.protected_ink(source,
+                    exterior=item["resourceName"] not in gear_materials.HALO_RESOURCES)
+                actual = algo.quality(source, material_masks, protected)
+                if not algo.quality_passes(actual):
+                    errors.append(f"{iid}: material mask coverage/ink/alpha failure ({name}): {actual}")
         if not item["maskResources"]:
             errors.append(f"{iid}: no recolor masks")
         for region in item["maskResources"]:

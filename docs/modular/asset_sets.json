@@ -1,0 +1,13 @@
+{
+  "_doc": "Named asset passes. A pass is one deliberate change to the shipped modular art. inventory.py groups git commits into passes by the commit prefixes listed here (a commit in no pass joins the last pass in the list) and stamps every asset with the pass that last changed it. 'current' is the pass the working tree represents; edit it, and add the new pass below, when a new pass lands. The label (v5, v6, ...) is the stable name; the commit hash is the identity.",
+  "current": "v6",
+  "passes": [
+    {"label": "v1", "name": "First separated anatomy/armor layers, masks, held-gear fits, store sprites", "commits": ["e4e6944"]},
+    {"label": "v2", "name": "Held-gear fit, Titan 2x, masked recolor, verified-only planner gate", "commits": ["ad7b6cd"]},
+    {"label": "v3", "name": "Headpieces redrawn and seated on the bare head", "commits": ["fe0fefc"]},
+    {"label": "v4", "name": "Headpieces removed; OKLab recolor with adhesive masks", "commits": ["a0f7b84"]},
+    {"label": "v4.1", "name": "PR #11: authored-surface gear masks (authored-surfaces-v1) and corrected Lost Souls 1 / Elven 1 / Seer 2 character masks (developed in parallel from v4)", "commits": ["82d6c22", "499723d", "4aecd6e", "3581911", "951dc1a"]},
+    {"label": "v5", "name": "PR #12: chroma-cell gear and shield masks (chroma-cells-v5), also pinned at archive/asset-set-v5 (developed in parallel from v4)", "commits": ["0cbec13"]},
+    {"label": "v6", "name": "Landed: v5 gear masks (all 99 gear items) with PR #11's characters and tooling; each gear item records which algorithm made its masks", "commits": []}
+  ]
+}

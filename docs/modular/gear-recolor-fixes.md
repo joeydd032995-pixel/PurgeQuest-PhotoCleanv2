@@ -1,3 +1,8 @@
+> **Status (asset pass v6).** This page documents PR #11's gear pass (`authored-surfaces-v1`, `gear_materials.py`). The shipped
+> gear masks are now `chroma-cells-v5` (`gear_masks_chroma.py`), chosen for its look: they keep one material across its shading
+> and never touch line work, but they also recolour dark fill that this pass deliberately protects. Both algorithms stay in the
+> repo behind `gear_algorithms.py`; each item records which one made its masks and `validate.py` holds it to that algorithm's own gate.
+
 # Gear recolor fixes
 
 All **99 held/store gear assets** have regenerated material masks and source tones. The correction covers the reported Verdant Coil and Tidecaller staves, the 40 shield variants, and the same defects in other staves, signature weapons, and store items.

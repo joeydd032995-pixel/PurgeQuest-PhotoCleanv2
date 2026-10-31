@@ -13,18 +13,25 @@ Everything here is produced by `tools/modular_assets/` (Python 3, Pillow + NumPy
 | 11 store weapon/shield sprites | `Art/Gear/store/` | `store_gear.py` |
 | QA sheets (layers, fit per body profile, gear, Titan) | `docs/modular/verification/` | the scripts above |
 | Checklist + status | `docs/modular/CHECKLIST.md`, `asset_status.json` | `checklist.py` |
+| **Versioned inventory of every asset** (pass label, per-asset revision, content hash, attention flags) | `docs/modular/ASSET_INVENTORY.md`, `asset_inventory.json`; pass names in `asset_sets.json` | `inventory.py` |
+
+## Which set am I looking at?
+
+Assets ship in named **passes** (`asset_sets.json`): v4 = OKLab recolor; v4.1 = PR #11 (authored gear surfaces, corrected Lost Souls 1 / Elven 1 / Seer 2); v5 = PR #12 (chroma-cell gear and shield masks, also pinned at the `archive/asset-set-v5` branch); **v6 = the landed set**: every gear item uses the v5 masks, characters and tooling are #11's. `inventory.py` stamps every asset from git, so the numbers cannot drift from the files: **`rK`** counts how many passes changed that asset, **`last changed`** names the pass that last did (a gear mask that is pixel-identical to v5 reads v5, a character mask from #11 reads v4.1), and **`#xxxxxxxx`** is a hash of its pixels, so two renders showing the same hash are the same asset. The commit hash is the identity; the label is the name. `python3 -I tools/modular_assets/inventory.py --sheets DIR` also writes contact sheets (one PNG per pack and gear group, each with the set banner and the same stamps) and a single PDF. The "Needs attention" section of `ASSET_INVENTORY.md` lists assets worth a second look: computed signals (tiny or stray regions, low mask coverage, gear masks that leave a lot of what `authored-surfaces-v1` would recolour untouched) plus issues recorded by hand from reviewing renders (`KNOWN_ISSUES` in the script). A flag means *look*, not *wrong*.
 
 ## Regenerate
 
 ```sh
 python3 -I tools/modular_assets/store_gear.py        # store sprites + spec
 python3 -I tools/modular_assets/build_assets.py      # race layers, masks, races manifest, sheets (~6 min)
-python3 -I tools/modular_assets/held_gear.py         # held-gear manifest, authored material masks, fit sheets
-# Rebuild just materials while retaining all fitting/anchor data:
+python3 -I tools/modular_assets/held_gear.py         # held-gear manifest, material masks (default algorithm), fit sheets
+# Rebuild just materials while retaining all fitting/anchor data; pick the algorithm with --algorithm:
 python3 -I tools/modular_assets/held_gear.py --masks-only --no-sheets
+python3 -I tools/modular_assets/held_gear.py --masks-only --algorithm authored-surfaces-v1
 python3 -I tools/modular_assets/approvals.py apply   # re-stamp statuses from the ledger
 python3 -I tools/modular_assets/validate.py          # must exit 0
 python3 -I tools/modular_assets/checklist.py
+python3 -I tools/modular_assets/inventory.py         # versioned inventory (add --sheets DIR for contact sheets + PDF)
 python3 -I tools/modular_assets/tests/test_modular_assets.py
 ```
 
@@ -66,4 +73,14 @@ Each item stores its grip (image px). Each pack stores the *hold* where its own 
 
 See [Gear visual views](gear-visual-views.md) for original/recolored texture comparisons of all 99 weapons and shields.
 
-Held gear uses explicit surfaces in `gear_materials.py`: one material stays together across its highlights and shadows. The source's ink, exterior drop shadow and disconnected antialias pixels are protected. See [gear recolor fixes](gear-recolor-fixes.md) for the issue examples, checks, and reproduction commands.
+Held gear masks come from one of two algorithms, listed in `gear_algorithms.py`. Each gear item records which one made its masks (`verification.automated.materialMasks.algorithm`) and `validate.py` holds it to **that algorithm's own gate**, so neither is weakened by the other:
+
+| | `chroma-cells-v5` (shipped, `DEFAULT_ALGORITHM`) | `authored-surfaces-v1` (PR #11) |
+|---|---|---|
+| Source | `gear_masks_chroma.py` | `gear_materials.py` + `semantic_regions.json` |
+| Idea | derived from the sprite: lightness-independent colour clusters inside outline-bounded cells; same-hue shades and tints merge, so one material is one region | authored polygons per shield/staff set, aligned to the source outline; rims, bosses and inlays are separate regions |
+| Line work | found from the sprite (strokes, the dark glow band along the edge, rings in the outline's own colour); exactly zero weight | "protected ink": the known ink and border-shadow colours; never recoloured |
+| Dark fill | recoloured when it is clearly not the outline colour; the very darkest browns stay dark | very dark fill is protected |
+| Gate | coverage of paintable area at least 0.80; zero weight on line work; no alpha leak; overlap at most 0.02 | coverage at least 0.80 of its own paintable area; zero weight on protected ink; same alpha/overlap limits |
+
+To ship the other one: `python3 -I tools/modular_assets/held_gear.py --masks-only --algorithm authored-surfaces-v1`, then validate, test and regenerate the inventory. The tests in `GearMaterialRegression` check the authored algorithm on its own output; `ChromaCellsV5Assets` checks that the shipped masks regenerate pixel for pixel. See [gear recolor fixes](gear-recolor-fixes.md) (the authored pass) and [gear visual views](gear-visual-views.md) (the shipped masks).

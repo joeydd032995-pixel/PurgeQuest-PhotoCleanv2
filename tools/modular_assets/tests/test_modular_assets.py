@@ -68,7 +68,7 @@ class RecolorReference(unittest.TestCase):
 
 
 class CellMerging(unittest.TestCase):
-    """One outline-bounded cell is one material: shading splits merge, a different hue stays its own region."""
+    """chroma-cells-v5: one outline-bounded cell is one material: shading splits merge, a different hue stays its own region."""
 
     @staticmethod
     def _cell(colors, widths):
@@ -85,7 +85,7 @@ class CellMerging(unittest.TestCase):
 
     def test_highlight_of_the_same_hue_joins_the_cloth(self):
         import numpy as np
-        import separate
+        import gear_masks_chroma as separate
         rgb, alpha, outline, labels = self._cell([(0.35, 0.22, 0.12), (0.62, 0.45, 0.25), (0.2, 0.35, 0.85)], [60, 25, 15])
         out = separate.merge_shading_splits(labels, rgb, alpha, outline, 3)
         self.assertTrue(np.all(out[:, 60:85] == 0), "tan highlight on brown cloth is shading")
@@ -93,18 +93,182 @@ class CellMerging(unittest.TestCase):
 
     def test_light_and_dark_neutrals_in_one_cell_merge(self):
         import numpy as np
-        import separate
+        import gear_masks_chroma as separate
         rgb, alpha, outline, labels = self._cell([(0.30, 0.30, 0.31), (0.62, 0.62, 0.63)], [70, 30])
         out = separate.merge_shading_splits(labels, rgb, alpha, outline, 2)
         self.assertTrue(np.all(out == 0))
 
     def test_cells_separated_by_outline_keep_their_own_labels(self):
         import numpy as np
-        import separate
+        import gear_masks_chroma as separate
         rgb, alpha, outline, labels = self._cell([(0.35, 0.22, 0.12), (0.62, 0.45, 0.25)], [50, 50])
         outline[:, 49:51] = True          # linework splits it into two cells
         out = separate.merge_shading_splits(labels, rgb, alpha, outline, 2)
         self.assertTrue(np.all(out[:, :49] == 0) and np.all(out[:, 51:] == 1))
+
+
+class GearRegions(unittest.TestCase):
+    """chroma-cells-v5 regressions from shield recolors: a coloured arc above the silhouette, planks split by lightness, dark wood
+    treated as linework, one crystal split in two."""
+    LINE = (0.11, 0.10, 0.09)
+
+    @staticmethod
+    def _sprite():
+        import numpy as np
+        rgb = np.zeros((90, 90, 3), np.float32)
+        alpha = np.zeros((90, 90), np.float32)
+        alpha[10:80, 10:80] = 1
+        rgb[10:80, 10:80] = GearRegions.LINE
+        rgb[34:66, 24:66] = (0.55, 0.35, 0.22)          # fill inside a 14px outline, with a doubled (24px) top stroke
+        return rgb, alpha
+
+    def test_thick_top_stroke_and_glow_band_are_line_work(self):
+        import numpy as np
+        import gear_masks_chroma
+        rgb, alpha = self._sprite()
+        rgb[10:14, 10:80] = (0.23, 0.22, 0.21)            # dark-grey glow band along the very top edge
+        out = gear_masks_chroma._outline_mask(rgb, alpha)
+        self.assertTrue(out[16:32, 30:60].all(), "the thick top stroke must be outline, however thick")
+        self.assertTrue(out[10:14, 20:70].all(), "the dark glow band at the edge must be outline")
+        self.assertFalse(out[40:60, 30:60].any(), "the fill must not be outline")
+
+    def test_dark_brown_fill_is_not_line_work(self):
+        import numpy as np
+        import gear_masks_chroma
+        rgb, alpha = self._sprite()
+        rgb[38:62, 30:50] = (0.25, 0.13, 0.10)            # very dark wood: dark, but clearly not the outline colour
+        out = gear_masks_chroma._outline_mask(rgb, alpha)
+        self.assertFalse(out[42:58, 34:46].any(), "dark brown planks are paintable fill")
+
+    def test_hue_rule_merges_a_tint_but_not_a_neutral_or_another_hue(self):
+        import numpy as np
+        import gear_masks_chroma as separate
+        ang = lambda deg: (np.cos(np.radians(deg)), np.sin(np.radians(deg)))
+        spec = [((-0.03, -0.13), -104, 0.11, 400), ((-0.02, -0.065), -112, 0.04, 400),   # blue and its pale tint
+                ((0.0, 0.13), 90, 0.13, 300), ((0.0, 0.0), -120, 0.01, 300)]             # gold, grey
+        centers = np.array([s[0] for s in spec])
+        members = np.concatenate([[i] * s[3] for i, s in enumerate(spec)])
+        units = np.concatenate([[ang(s[1])] * s[3] for s in spec])
+        chroma = np.concatenate([[s[2]] * s[3] for s in spec])
+        merged, out = separate._merge_close(centers, members, separate.MERGE_DISTANCE, units, chroma)
+        self.assertEqual(len(merged), 3)
+        self.assertEqual(out[0], out[400], "pale tint of the same hue joins its base")
+        self.assertEqual(len({out[0], out[800], out[1100]}), 3, "gold and grey stay separate regions")
+
+    def test_one_wood_in_light_and_dark_planks_is_one_region(self):
+        import numpy as np
+        from types import SimpleNamespace
+        import imgops
+        import gear_masks_chroma as separate
+        rgb, alpha = self._sprite()
+        # four planks of one wood, alternating light and dark, divided by outline-coloured seams
+        shades = [(0.52, 0.33, 0.21), (0.36, 0.22, 0.14), (0.52, 0.33, 0.21), (0.36, 0.22, 0.14)]
+        for i, c in enumerate(shades):
+            rgb[34:76, 26 + i * 10: 34 + i * 10] = c
+            rgb[34:76, 34 + i * 10: 36 + i * 10] = self.LINE
+        rgb[12:24, 20:70] = (0.60, 0.61, 0.62)             # a steel rim above: neutral, a different material
+        img = imgops.from_arrays(rgb, alpha)
+        layer = SimpleNamespace(image=img)
+        masks, _ = separate.RegionModel([layer]).masks(img)
+        weights = {r: np.asarray(m, np.float32) / 255 for r, m in masks.items()}
+        owner = [max(weights, key=lambda r: weights[r][50, 29 + i * 10]) for i in range(4)]
+        self.assertEqual(len(set(owner)), 1, f"planks split across regions: {owner}")
+        rim_owner = max(weights, key=lambda r: weights[r][17, 45])
+        self.assertNotEqual(rim_owner, owner[0], "steel and wood are different materials")
+
+
+class ChromaCellsV5Assets(unittest.TestCase):
+    """The shipped gear masks are exactly what the algorithm recorded on each item produces, so they can be regenerated."""
+
+    @classmethod
+    def setUpClass(cls):
+        import held_gear
+        cls.items = json.loads(validate.GEAR.read_text())["items"]
+        cls.sources = {i["resource"]: i["path"] for i in held_gear.build_items()}
+
+    def test_every_item_records_an_algorithm_and_it_is_the_default(self):
+        import gear_algorithms
+        recorded = {i["verification"]["automated"]["materialMasks"]["algorithm"] for i in self.items}
+        self.assertEqual(recorded, {gear_algorithms.DEFAULT_ALGORITHM},
+                         "mixed or non-default shipped algorithms: regenerate with held_gear.py --masks-only")
+
+    def test_sampled_shipped_masks_regenerate_pixel_for_pixel(self):
+        import numpy as np
+        from PIL import Image
+        import gear_algorithms
+        from separate import Layer, pool_tones
+        index = {p.stem: p for p in scml.ART_ROOT.rglob("*.png")}
+        for item in self.items[::4]:                 # every 4th item keeps this fast; validate.py gates all 99
+            resource = item["resourceName"]
+            algo = gear_algorithms.get(item["verification"]["automated"]["materialMasks"]["algorithm"])
+            with Image.open(self.sources[resource]) as im:
+                rgba = im.convert("RGBA")
+            masks, protected = algo.masks_for(resource, rgba)
+            self.assertEqual(sorted(masks), sorted(item["maskResources"]), resource)
+            for region, mask in masks.items():
+                with Image.open(index[item["maskResources"][region]]) as shipped:
+                    self.assertTrue(np.array_equal(np.asarray(mask), np.asarray(shipped.convert("L"))), (resource, region))
+            layer = Layer(resource, "armor", item["slot"], rgba, masks)
+            pool_tones([layer])
+            self.assertEqual(layer.region_tone, item["regionTone"], resource)
+            self.assertTrue(algo.quality_passes(algo.quality(rgba, masks, protected)), resource)
+
+
+class Inventory(unittest.TestCase):
+    """Holds at any git depth (CI clones shallowly), so it asserts structure, not history."""
+
+    @classmethod
+    def setUpClass(cls):
+        import inventory
+        cls.inv = inventory.collect()
+        cls.md = inventory.markdown(cls.inv)
+
+    def test_lists_every_manifest_asset_once(self):
+        races = json.loads(validate.RACES.read_text())["parts"]
+        gear = json.loads(validate.GEAR.read_text())["items"]
+        self.assertEqual(sorted(a["id"] for a in self.inv["parts"]), sorted(p["id"] for p in races))
+        self.assertEqual(sorted(a["id"] for a in self.inv["gear"]), sorted(g["id"] for g in gear))
+        for a in self.inv["gear"]:
+            self.assertIn(f"`{a['id']}`", self.md)
+        for pack in {a["pack"] for a in self.inv["parts"]}:
+            self.assertIn(f"### {pack}", self.md)
+
+    def test_set_versions_are_consecutive_and_hashes_are_content_hashes(self):
+        import re
+        versions = [s["version"] for s in self.inv["sets"]]
+        self.assertEqual(versions, list(range(1, len(versions) + 1)))
+        self.assertEqual(self.inv["setVersion"], versions[-1])
+        for a in self.inv["parts"] + self.inv["gear"]:
+            self.assertRegex(a["hash"], r"^[0-9a-f]{8}$")
+            if a["lastChangedIn"] is None:
+                self.assertEqual(a["revision"], 0)
+            else:
+                self.assertGreaterEqual(a["revision"], 1)
+                self.assertLessEqual(a["lastChangedIn"], self.inv["setVersion"])
+
+    def test_passes_are_named_and_every_stamp_names_a_known_pass(self):
+        import inventory
+        cfg = json.loads(inventory.ASSET_SETS.read_text())
+        labels = [s["label"] for s in self.inv["sets"]]
+        self.assertIn(cfg["current"], labels)
+        self.assertEqual(self.inv["currentLabel"], cfg["current"])
+        self.assertEqual(len(set(labels)), len(labels), "pass labels must be unique")
+        for a in self.inv["parts"] + self.inv["gear"]:
+            if a["lastChangedIn"] is not None:
+                self.assertIn(a["lastChangedLabel"], labels, a["id"])
+
+    def test_every_gear_item_names_the_algorithm_that_made_its_masks(self):
+        import gear_algorithms
+        for a in self.inv["gear"]:
+            self.assertIn(a["maskAlgorithm"], gear_algorithms.ALGORITHMS, a["id"])
+
+    def test_untouched_source_art_is_only_face_overlays(self):
+        # held-gear and layer assets always have masks or layers in the modular set; only the baked face overlays are source art
+        if len(self.inv["sets"]) < 2:
+            self.skipTest("shallow git history: every asset reads as changed in the only set")
+        for a in self.inv["parts"]:
+            if a["lastChangedIn"] is None:
+                self.assertEqual(a["kind"], "face", a["id"])
 
 
 class Rasterizer(unittest.TestCase):
@@ -310,26 +474,36 @@ class ReportedModelMasks(unittest.TestCase):
 
 
 class GearMaterialRegression(unittest.TestCase):
-    """Source-art regressions: one material across its painted light bands,
+    """authored-surfaces-v1 (PR #11) source-art regressions: one material across its painted light bands,
     dark wood remains editable, and drop shadows never become bright caps.
+
+    These assert what *that algorithm* must produce, so they run on its own output, not on the shipped masks: the shipped
+    gear may use another algorithm (see gear_algorithms.py; the shipped set is checked in ChromaCellsV5Assets and by
+    validate.py, each against its own gate).
     """
     @classmethod
     def setUpClass(cls):
         import numpy as np
         from PIL import Image
+        import gear_materials
+        import held_gear
+        from separate import Layer, pool_tones
         cls.np = np
         cls.items = json.loads(validate.GEAR.read_text())["items"]
         cls.by_resource = {i["resourceName"]: i for i in cls.items}
-        resources = {p.stem:p for p in scml.ART_ROOT.rglob("*.png")}
-        cls.images, cls.masks = {}, {}
+        sources = {i["resource"]: i["path"] for i in held_gear.build_items()}
+        cls.images, cls.masks, cls.metrics, cls.tones = {}, {}, {}, {}
         for item in cls.items:
             resource = item["resourceName"]
-            with Image.open(resources[resource]) as image:
-                cls.images[resource] = np.array(image.convert("RGBA"))
-            cls.masks[resource] = {}
-            for region,name in item["maskResources"].items():
-                with Image.open(resources[name]) as mask:
-                    cls.masks[resource][region] = np.array(mask,dtype=float)/255
+            with Image.open(sources[resource]) as image:
+                rgba = image.convert("RGBA")
+            cls.images[resource] = np.array(rgba)
+            produced, protected = gear_materials.masks_for(resource, rgba)
+            cls.masks[resource] = {r: np.array(m, dtype=float) / 255 for r, m in produced.items()}
+            cls.metrics[resource] = gear_materials.quality(rgba, produced, protected)
+            layer = Layer(resource, "armor", item["slot"], rgba, produced)
+            pool_tones([layer])
+            cls.tones[resource] = layer.region_tone
 
     def assert_pigments_share_material(self, resource, region, pigments, box=None):
         image = self.images[resource]
@@ -391,13 +565,13 @@ class GearMaterialRegression(unittest.TestCase):
             for color in [(27,26,24),(20,18,14),(27,26,33),(58,55,53)]:
                 ink |= (image[...,:3]==color).all(-1)&(alpha>0)
             self.assertEqual(float(total[ink].max(initial=0)),0,resource)
-            metrics = self.by_resource[resource]["verification"]["automated"]["materialMasks"]
+            metrics = self.metrics[resource]
             self.assertGreaterEqual(metrics["coverage"],.80,resource)
             self.assertEqual(metrics["protectedLeak"],0,resource)
             if resource in selected_for_render:
                 rendered = self.np.asarray(qa.recolor(Image.fromarray(image),
                     {r:Image.fromarray(self.np.round(m*255).astype("uint8")) for r,m in masks.items()},
-                    self.by_resource[resource]["regionTone"], colors))
+                    self.tones[resource], colors))
                 self.np.testing.assert_array_equal(rendered[...,3],image[...,3])
                 self.np.testing.assert_array_equal(rendered[ink],image[ink])
 

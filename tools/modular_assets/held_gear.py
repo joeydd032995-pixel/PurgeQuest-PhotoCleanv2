@@ -22,7 +22,7 @@ from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).parent))
 import imgops as ops
-import gear_materials
+import gear_algorithms
 import qa
 import scml
 import separate
@@ -234,7 +234,8 @@ def arrow_nock(pid: str) -> list:
     return [float(x0), (y0 + y1) / 2]
 
 
-def analyze() -> dict:
+def analyze(algorithm: str = gear_algorithms.DEFAULT_ALGORITHM) -> dict:
+    algo = gear_algorithms.get(algorithm)
     holds = {scml.pack_id(r, v): pack_holds(r, v) for r, v in scml.PACKS}
     items = build_items()
     out_items = []
@@ -248,14 +249,14 @@ def analyze() -> dict:
         grip = detect_grip(img, kind if kind in ("bow", "shield") else "sword")
         # recolor masks
         layer = Layer(it["resource"], "armor", it["slot"], img)
-        masks, protected = gear_materials.masks_for(it["resource"], img)
+        masks, protected = algo.masks_for(it["resource"], img)
         layer.masks = masks
         pool_tones([layer])
         tones = layer.region_tone
         for region, m in masks.items():
             m.save(MASK_DIR / f"{it['resource']}_mask_{region}.png", optimize=True)
         checks = {"gripOnItem": bool(_alpha_near(img, grip, 10) > 0.5), "bbox": list(bbox),
-                  "materialMasks": gear_materials.quality(img, masks, protected)}
+                  "materialMasks": algo.quality(img, masks, protected)}
         packs = supported_packs(it)
         growth = {"1x": [1.0, 1.0], "titan": [1.0, 1.0]}
         for pid in packs:
@@ -274,7 +275,7 @@ def analyze() -> dict:
                                       "bottom": [round(float(np.nonzero(a_[bbox[3]])[0].mean()), 1), bbox[3]]}
             checks["stringAlignment"] = {pid: bow_string_alignment(pid.rsplit("_v", 1)[0], int(pid.rsplit("_v", 1)[1]), img) for pid in packs}
         ok = (checks["gripOnItem"] and max(growth["titan"]) <= 1.9 and bool(masks)
-              and gear_materials.quality_passes(checks["materialMasks"]))
+              and algo.quality_passes(checks["materialMasks"]))
         out_items.append({
             "id": it["id"], "name": it["name"], "kind": kind, "slot": it["slot"], "resourceName": it["resource"],
             "group": it["group"], "imageWidth": img.size[0], "imageHeight": img.size[1],
@@ -354,12 +355,13 @@ def sheets(manifest: dict) -> None:
     qa.sheet(rows).convert("RGB").save(SHEETS / "gear_signature.png", optimize=True)
 
 
-def update_material_masks() -> dict:
+def update_material_masks(algorithm: str = gear_algorithms.DEFAULT_ALGORITHM) -> dict:
     """Replace material masks/tones while preserving every grip, fit, catalog ID, and source image.
 
     Precompute and validate all 99 items before writing, so an incomplete layout
     cannot silently replace the bundled manifest with a partial gear library.
     """
+    algo = gear_algorithms.get(algorithm)
     path = OUT / "modular_gear_manifest.json"
     manifest = json.loads(path.read_text())
     sources = {i["id"]: i for i in build_items()}
@@ -370,9 +372,9 @@ def update_material_masks() -> dict:
             raise ValueError(f"Resource changed for {entry['id']}")
         with Image.open(source["path"]) as loaded:
             image = loaded.convert("RGBA")
-        masks, protected = gear_materials.masks_for(entry["resourceName"], image)
-        metrics = gear_materials.quality(image, masks, protected)
-        if not masks or not gear_materials.quality_passes(metrics):
+        masks, protected = algo.masks_for(entry["resourceName"], image)
+        metrics = algo.quality(image, masks, protected)
+        if not masks or not algo.quality_passes(metrics):
             raise ValueError(f"Incomplete material masks for {entry['id']}: {metrics}")
         layer = Layer(entry["resourceName"], "armor", entry["slot"], image, masks)
         pool_tones([layer])
@@ -395,7 +397,8 @@ def update_material_masks() -> dict:
 
 
 def main() -> None:
-    manifest = update_material_masks() if "--masks-only" in sys.argv else analyze()
+    name = sys.argv[sys.argv.index("--algorithm") + 1] if "--algorithm" in sys.argv else gear_algorithms.DEFAULT_ALGORITHM
+    manifest = update_material_masks(name) if "--masks-only" in sys.argv else analyze(name)
     (OUT / "modular_gear_manifest.json").write_text(json.dumps(manifest, indent=1, sort_keys=True) + "\n")
     summary = {"items": len(manifest["items"]),
                "candidate": sum(i["verification"]["status"] == "candidate" for i in manifest["items"]),
