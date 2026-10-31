@@ -158,6 +158,25 @@ private struct PaintFlashModifier: ViewModifier {
     }
 }
 
+// MARK: - Equipped badge glow
+
+private struct EquippedGlowModifier: ViewModifier {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var glowing = false
+
+    func body(content: Content) -> some View {
+        content
+            .shadow(color: .gemEmerald.opacity(glowing ? 0.85 : 0.30), radius: glowing ? 9 : 3.5)
+            .onAppear {
+                // Reduce Motion keeps a steady, softly lit badge — no breathing.
+                guard !reduceMotion else { return }
+                withAnimation(.easeInOut(duration: 1.4).repeatForever(autoreverses: true)) {
+                    glowing = true
+                }
+            }
+    }
+}
+
 // MARK: - Convenience
 
 extension View {
@@ -172,5 +191,11 @@ extension View {
     /// player applies a paint job, dye, or colour.
     func forgePaintFlash(trigger: Int) -> some View {
         modifier(PaintFlashModifier(trigger: trigger))
+    }
+
+    /// A gentle repeating emerald glow for the equipped badge, so the item
+    /// the hero is currently wearing reads at a glance in the Armory.
+    func equippedGlow() -> some View {
+        modifier(EquippedGlowModifier())
     }
 }
