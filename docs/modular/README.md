@@ -19,7 +19,9 @@ Everything here is produced by `tools/modular_assets/` (Python 3, Pillow + NumPy
 ```sh
 python3 -I tools/modular_assets/store_gear.py        # store sprites + spec
 python3 -I tools/modular_assets/build_assets.py      # race layers, masks, races manifest, sheets (~6 min)
-python3 -I tools/modular_assets/held_gear.py         # held-gear manifest, masks, sheets
+python3 -I tools/modular_assets/held_gear.py         # held-gear manifest, authored material masks, fit sheets
+# Rebuild just materials while retaining all fitting/anchor data:
+python3 -I tools/modular_assets/held_gear.py --masks-only --no-sheets
 python3 -I tools/modular_assets/approvals.py apply   # re-stamp statuses from the ledger
 python3 -I tools/modular_assets/validate.py          # must exit 0
 python3 -I tools/modular_assets/checklist.py
@@ -44,7 +46,7 @@ The art closes every region with a dark outline. The head's skin "face window" i
 
 ## Recoloring
 
-Masks are *adhesive*: each pixel is first assigned to a material region by colour, but pixels beside an outline or the silhouette edge (anti-aliased blends whose colour is misleading) inherit the region of their nearest confident interior pixel, and a 5x5 vote removes speckle. Thin outlines and the small dark blobs where outlines meet are excluded, so linework never recolors. Region names (`primary`, `secondary`, ...) are clustered per art pack, so they mean the same material on every part.
+Race-layer masks are *adhesive*: each pixel is first assigned to a material region by colour, but pixels beside an outline or the silhouette edge (anti-aliased blends whose colour is misleading) inherit the region of their nearest confident interior pixel, and a 5x5 vote removes speckle. Thin outlines and the small dark blobs where outlines meet are excluded, so linework never recolors. Region names (`primary`, `secondary`, ...) are clustered per art pack, so they mean the same material on every part.
 
 The recolor itself runs in OKLab (`imgops.recolor_pixels`, mirrored in `RecolorMath.swift`): a pixel keeps its lightness offset from its region's mean, so shadows, highlights and painted texture survive, re-centred on the chosen colour's lightness; the hue becomes the chosen colour's; chroma follows it, is modulated by how the source's chroma varied, and is fitted into the sRGB gamut so saturated colours desaturate instead of clipping. The region means (`regionTone`) are measured over the whole pack, so parts of one material keep their relative brightness. `tests/` and `ModularGearTests.swiftRecolorMatchesThePythonReference` pin the two implementations to each other.
 
@@ -63,3 +65,5 @@ Each item stores its grip (image px). Each pack stores the *hold* where its own 
 `SWIFT_BIN=/path/to/swift tools/swift_harness/run.sh` compiles and runs the pure-Foundation suites on Linux (Swift 6.2). UIKit/SwiftUI code (`SpriteEngine`, Forge views) is compiled and tested only by Xcode/CI.
 
 See [Gear visual views](gear-visual-views.md) for original/recolored texture comparisons of all 99 weapons and shields.
+
+Held gear uses explicit surfaces in `gear_materials.py`: one material stays together across its highlights and shadows. The source's ink, exterior drop shadow and disconnected antialias pixels are protected. See [gear recolor fixes](gear-recolor-fixes.md) for the issue examples, checks, and reproduction commands.

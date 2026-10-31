@@ -1,0 +1,1949 @@
+{
+ "assets": [
+  {
+   "afterRegions": [
+    "leather",
+    "primary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.986399,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.valkyrie",
+   "name": "Valkyrie Blade"
+  },
+  {
+   "afterRegions": [
+    "leather",
+    "primary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.982614,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.forest_ranger",
+   "name": "Elven Recurve"
+  },
+  {
+   "afterRegions": [
+    "emissive",
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.003922,
+    "coverage": 0.995859,
+    "overlap": 0.003922,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.seer",
+   "name": "Seer's Edge"
+  },
+  {
+   "afterRegions": [
+    "leather",
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.990335,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.blood_alchemist",
+   "name": "Vampyri Cleaver"
+  },
+  {
+   "afterRegions": [
+    "emissive",
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.993236,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.dark_oracle",
+   "name": "Scarred Fang"
+  },
+  {
+   "afterRegions": [
+    "leather",
+    "primary"
+   ],
+   "beforeRegions": [
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.97253,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.necromancer",
+   "name": "Shadowbrand"
+  },
+  {
+   "afterRegions": [
+    "leather",
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "leather",
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.985074,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.skeleton_crusader",
+   "name": "Undead Claymore"
+  },
+  {
+   "afterRegions": [
+    "leather",
+    "primary"
+   ],
+   "beforeRegions": [
+    "leather",
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.985668,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.golem",
+   "name": "Vaultcracker"
+  },
+  {
+   "afterRegions": [
+    "primary"
+   ],
+   "beforeRegions": [
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.98301,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.1.1",
+   "name": "Ashen Bough I"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.982545,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.1.2",
+   "name": "Ashen Bough II"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "emissive",
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.981831,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.1.3",
+   "name": "Ashen Bough III"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "emissive",
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.980958,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.1.4",
+   "name": "Ashen Bough IV"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.979986,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.1.5",
+   "name": "Ashen Bough V"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.989856,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.2.1",
+   "name": "Verdant Coil I"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.989703,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.2.2",
+   "name": "Verdant Coil II"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.989779,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.2.3",
+   "name": "Verdant Coil III"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "leather",
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.990657,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.2.4",
+   "name": "Verdant Coil IV"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.989422,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.2.5",
+   "name": "Verdant Coil V"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.986387,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.3.1",
+   "name": "Tidecaller I"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.986623,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.3.2",
+   "name": "Tidecaller II"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.988203,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.3.3",
+   "name": "Tidecaller III"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.987422,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.3.4",
+   "name": "Tidecaller IV"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.984138,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.3.5",
+   "name": "Tidecaller V"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.980784,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.4.1",
+   "name": "Ember Scepter I"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.983265,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.4.2",
+   "name": "Ember Scepter II"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.983338,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.4.3",
+   "name": "Ember Scepter III"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.983152,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.4.4",
+   "name": "Ember Scepter IV"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "emissive",
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.982687,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.4.5",
+   "name": "Ember Scepter V"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.983732,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.5.1",
+   "name": "Storm Spire I"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.981474,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.5.2",
+   "name": "Storm Spire II"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "emissive",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.978386,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.5.3",
+   "name": "Storm Spire III"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.978173,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.5.4",
+   "name": "Storm Spire IV"
+  },
+  {
+   "afterRegions": [
+    "primary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.979714,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.5.5",
+   "name": "Storm Spire V"
+  },
+  {
+   "afterRegions": [
+    "primary"
+   ],
+   "beforeRegions": [
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.988849,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.6.1",
+   "name": "Gilded Crook I"
+  },
+  {
+   "afterRegions": [
+    "primary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.989132,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.6.2",
+   "name": "Gilded Crook II"
+  },
+  {
+   "afterRegions": [
+    "primary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.989128,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.6.3",
+   "name": "Gilded Crook III"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.988012,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.6.4",
+   "name": "Gilded Crook IV"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.983093,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.6.5",
+   "name": "Gilded Crook V"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "leather",
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.988694,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.7.1",
+   "name": "Bone Reliquary I"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.988696,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.7.2",
+   "name": "Bone Reliquary II"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "emissive",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.98906,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.7.3",
+   "name": "Bone Reliquary III"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "emissive",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.987838,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.7.4",
+   "name": "Bone Reliquary IV"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "emissive",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.985868,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.7.5",
+   "name": "Bone Reliquary V"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.988369,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.8.1",
+   "name": "Voidspike I"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "leather",
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.988614,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.8.2",
+   "name": "Voidspike II"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.989483,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.8.3",
+   "name": "Voidspike III"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.988277,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.8.4",
+   "name": "Voidspike IV"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.985827,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff.8.5",
+   "name": "Voidspike V"
+  },
+  {
+   "afterRegions": [
+    "primary"
+   ],
+   "beforeRegions": [
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.986924,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.1.1",
+   "name": "Oaken Ward I"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "leather",
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.988743,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.1.2",
+   "name": "Oaken Ward II"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "leather",
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.980599,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.1.3",
+   "name": "Oaken Ward III"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.973235,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.1.4",
+   "name": "Oaken Ward IV"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.976389,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.1.5",
+   "name": "Oaken Ward V"
+  },
+  {
+   "afterRegions": [
+    "primary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.985231,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.2.1",
+   "name": "Templar Aegis I"
+  },
+  {
+   "afterRegions": [
+    "primary"
+   ],
+   "beforeRegions": [
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.984027,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.2.2",
+   "name": "Templar Aegis II"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.976036,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.2.3",
+   "name": "Templar Aegis III"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.979824,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.2.4",
+   "name": "Templar Aegis IV"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.989123,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.2.5",
+   "name": "Templar Aegis V"
+  },
+  {
+   "afterRegions": [
+    "primary"
+   ],
+   "beforeRegions": [
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.982272,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.3.1",
+   "name": "Scaled Bulwark I"
+  },
+  {
+   "afterRegions": [
+    "primary"
+   ],
+   "beforeRegions": [
+    "leather",
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.981668,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.3.2",
+   "name": "Scaled Bulwark II"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.974404,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.3.3",
+   "name": "Scaled Bulwark III"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.983843,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.3.4",
+   "name": "Scaled Bulwark IV"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.988743,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.3.5",
+   "name": "Scaled Bulwark V"
+  },
+  {
+   "afterRegions": [
+    "primary"
+   ],
+   "beforeRegions": [
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.984993,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.4.1",
+   "name": "Runic Disc I"
+  },
+  {
+   "afterRegions": [
+    "primary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.98442,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.4.2",
+   "name": "Runic Disc II"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.980661,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.4.3",
+   "name": "Runic Disc III"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.986197,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.4.4",
+   "name": "Runic Disc IV"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "leather",
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.987629,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.4.5",
+   "name": "Runic Disc V"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.979792,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.5.1",
+   "name": "Valkyrie Wing I"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.976559,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.5.2",
+   "name": "Valkyrie Wing II"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "leather",
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.976118,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.5.3",
+   "name": "Valkyrie Wing III"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "leather",
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.983385,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.5.4",
+   "name": "Valkyrie Wing IV"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.976225,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.5.5",
+   "name": "Valkyrie Wing V"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.980525,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.6.1",
+   "name": "Iron Moon I"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "leather",
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.979509,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.6.2",
+   "name": "Iron Moon II"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.98032,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.6.3",
+   "name": "Iron Moon III"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.981107,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.6.4",
+   "name": "Iron Moon IV"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.991068,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.6.5",
+   "name": "Iron Moon V"
+  },
+  {
+   "afterRegions": [
+    "primary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.986099,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.7.1",
+   "name": "Bone Paragon I"
+  },
+  {
+   "afterRegions": [
+    "primary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.983358,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.7.2",
+   "name": "Bone Paragon II"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.970958,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.7.3",
+   "name": "Bone Paragon III"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.986008,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.7.4",
+   "name": "Bone Paragon IV"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "emissive",
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.984552,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.7.5",
+   "name": "Bone Paragon V"
+  },
+  {
+   "afterRegions": [
+    "primary"
+   ],
+   "beforeRegions": [
+    "leather",
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.978976,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.8.1",
+   "name": "Verdigris Sigil I"
+  },
+  {
+   "afterRegions": [
+    "primary"
+   ],
+   "beforeRegions": [
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.980075,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.8.2",
+   "name": "Verdigris Sigil II"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.977372,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.8.3",
+   "name": "Verdigris Sigil III"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.980747,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.8.4",
+   "name": "Verdigris Sigil IV"
+  },
+  {
+   "afterRegions": [
+    "primary"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.975125,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.set.8.5",
+   "name": "Verdigris Sigil V"
+  },
+  {
+   "afterRegions": [
+    "leather",
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.992438,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.shard",
+   "name": "Crystal Shard"
+  },
+  {
+   "afterRegions": [
+    "leather",
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.991803,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.reel",
+   "name": "Film Reel Blade"
+  },
+  {
+   "afterRegions": [
+    "emissive",
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "emissive",
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.993506,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.gem",
+   "name": "Gem Hammer"
+  },
+  {
+   "afterRegions": [
+    "emissive",
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.9882,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.staff",
+   "name": "Archmage Staff"
+  },
+  {
+   "afterRegions": [
+    "emissive",
+    "leather",
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "emissive",
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.995108,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.stormblade",
+   "name": "Storm Cleaver"
+  },
+  {
+   "afterRegions": [
+    "leather",
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.989948,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.chevron",
+   "name": "Oathbreaker Greatsword"
+  },
+  {
+   "afterRegions": [
+    "leather",
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.990609,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.ruby",
+   "name": "Ruby Fang"
+  },
+  {
+   "afterRegions": [
+    "emissive",
+    "leather",
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "emissive",
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.003922,
+    "coverage": 0.990094,
+    "overlap": 0.003922,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.arcane",
+   "name": "Arcane Edge"
+  },
+  {
+   "afterRegions": [
+    "emissive",
+    "leather",
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.0,
+    "coverage": 0.989882,
+    "overlap": 0.0,
+    "protectedLeak": 0.0
+   },
+   "id": "weapon.fireworkBlade",
+   "name": "Firework Blade"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "emissive",
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.003922,
+    "coverage": 0.995824,
+    "overlap": 0.003922,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.crux",
+   "name": "Azure Aegis"
+  },
+  {
+   "afterRegions": [
+    "primary",
+    "secondary",
+    "trim"
+   ],
+   "beforeRegions": [
+    "primary",
+    "secondary"
+   ],
+   "checks": {
+    "algorithm": "authored-surfaces-v1",
+    "alphaLeak": 0.003922,
+    "coverage": 0.995896,
+    "overlap": 0.003922,
+    "protectedLeak": 0.0
+   },
+   "id": "shield.templar",
+   "name": "Templar Bulwark"
+  }
+ ],
+ "baselineCommit": "35819112018927206952159dfc4426487ac055c6"
+}

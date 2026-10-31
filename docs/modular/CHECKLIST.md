@@ -56,14 +56,14 @@ Grip, hold, scale, rotation, layering and profile overrides are recorded per ite
 
 | ID | Name | Grip px | Masks | Titan canvas growth | Packs | Status |
 |---|---|---|---|---|---|---|
-| `weapon.valkyrie` | Valkyrie Blade | [52.1, 63.5] | primary, trim | 1.64x | 27 | candidate |
-| `weapon.forest_ranger` | Elven Recurve | [111.5, 159.5] | primary, trim | 1.03x | 2 | candidate |
-| `weapon.seer` | Seer's Edge | [65.9, 63.5] | primary, secondary | 1.58x | 27 | candidate |
-| `weapon.blood_alchemist` | Vampyri Cleaver | [88.7, 63.5] | primary, secondary, trim | 1.49x | 27 | candidate |
-| `weapon.dark_oracle` | Scarred Fang | [49.1, 69.5] | primary, secondary | 1.64x | 27 | candidate |
-| `weapon.necromancer` | Shadowbrand | [73.5, 63.5] | primary | 1.55x | 27 | candidate |
+| `weapon.valkyrie` | Valkyrie Blade | [52.1, 63.5] | leather, primary, trim | 1.64x | 27 | candidate |
+| `weapon.forest_ranger` | Elven Recurve | [111.5, 159.5] | leather, primary | 1.03x | 2 | candidate |
+| `weapon.seer` | Seer's Edge | [65.9, 63.5] | emissive, primary, secondary | 1.58x | 27 | candidate |
+| `weapon.blood_alchemist` | Vampyri Cleaver | [88.7, 63.5] | leather, primary, secondary | 1.49x | 27 | candidate |
+| `weapon.dark_oracle` | Scarred Fang | [49.1, 69.5] | emissive, primary, secondary | 1.64x | 27 | candidate |
+| `weapon.necromancer` | Shadowbrand | [73.5, 63.5] | leather, primary | 1.55x | 27 | candidate |
 | `weapon.skeleton_crusader` | Undead Claymore | [55.9, 63.5] | leather, primary, secondary | 1.62x | 27 | candidate |
-| `weapon.golem` | Vaultcracker | [85.4, 63.0] | leather, primary, secondary | 1.51x | 27 | candidate |
+| `weapon.golem` | Vaultcracker | [85.4, 63.0] | leather, primary | 1.51x | 27 | candidate |
 
 **Elven Recurve (checked separately from swords):** supported only on `forest_ranger_v1`/`v2` (v3 is a sword pack with no Shooting animation). The bow art has no string; the renderer draws one from the recorded tip anchors {'bottom': [30.5, 299], 'top': [30.5, 20]} through the arrow nock while the arrow is drawn (nock to chord 97.85px mean over 3 frames).
 
@@ -73,11 +73,11 @@ Grip, hold, scale, rotation, layering and profile overrides are recorded per ite
 |---|---|---|---|---|---|---|---|
 | Ashen Bough | candidate | candidate | candidate | candidate | candidate | primary | 1.69x |
 | Verdant Coil | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.70x |
-| Tidecaller | candidate | candidate | candidate | candidate | candidate | primary, secondary, trim | 1.67x |
+| Tidecaller | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.67x |
 | Ember Scepter | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.68x |
-| Storm Spire | candidate | candidate | candidate | candidate | candidate | primary | 1.70x |
+| Storm Spire | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.70x |
 | Gilded Crook | candidate | candidate | candidate | candidate | candidate | primary | 1.70x |
-| Bone Reliquary | candidate | candidate | candidate | candidate | candidate | leather, primary, secondary, trim | 1.66x |
+| Bone Reliquary | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.66x |
 | Voidspike | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.69x |
 
 ### Shields (40)
@@ -85,13 +85,13 @@ Grip, hold, scale, rotation, layering and profile overrides are recorded per ite
 | Set | I | II | III | IV | V | Masks (set I) | Max Titan growth |
 |---|---|---|---|---|---|---|---|
 | Oaken Ward | candidate | candidate | candidate | candidate | candidate | primary | 1.00x |
-| Templar Aegis | candidate | candidate | candidate | candidate | candidate | primary, secondary, trim | 1.00x |
+| Templar Aegis | candidate | candidate | candidate | candidate | candidate | primary | 1.00x |
 | Scaled Bulwark | candidate | candidate | candidate | candidate | candidate | primary | 1.00x |
 | Runic Disc | candidate | candidate | candidate | candidate | candidate | primary | 1.00x |
 | Valkyrie Wing | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.00x |
 | Iron Moon | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.00x |
-| Bone Paragon | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.00x |
-| Verdigris Sigil | candidate | candidate | candidate | candidate | candidate | leather, primary, secondary | 1.00x |
+| Bone Paragon | candidate | candidate | candidate | candidate | candidate | primary | 1.00x |
+| Verdigris Sigil | candidate | candidate | candidate | candidate | candidate | primary | 1.00x |
 
 ## Remaining store gear (IDs, prices, ownership, unlocks unchanged)
 
@@ -101,17 +101,17 @@ The three headpieces (Starlit Cap, Shadow Hood, Dragoncrest Helm) were drawn and
 
 | ID | Name | Kind | Masks | Packs | Status |
 |---|---|---|---|---|---|
-| `weapon.shard` | Crystal Shard | sword | primary, secondary | 27 | candidate |
-| `weapon.reel` | Film Reel Blade | sword | primary, secondary | 27 | candidate |
-| `weapon.gem` | Gem Hammer | hammer | emissive, primary, secondary | 27 | candidate |
-| `weapon.staff` | Archmage Staff | staff | primary, secondary | 27 | candidate |
-| `weapon.stormblade` | Storm Cleaver | sword | emissive, primary | 27 | candidate |
-| `weapon.chevron` | Oathbreaker Greatsword | sword | primary | 27 | candidate |
-| `weapon.ruby` | Ruby Fang | sword | primary, secondary, trim | 27 | candidate |
-| `weapon.arcane` | Arcane Edge | sword | emissive, primary, secondary | 27 | candidate |
-| `weapon.fireworkBlade` | Firework Blade | sword | primary, secondary | 27 | candidate |
-| `shield.crux` | Azure Aegis | shield | emissive, primary, secondary | 27 | candidate |
-| `shield.templar` | Templar Bulwark | shield | primary, secondary | 27 | candidate |
+| `weapon.shard` | Crystal Shard | sword | leather, primary, secondary, trim | 27 | candidate |
+| `weapon.reel` | Film Reel Blade | sword | leather, primary, secondary, trim | 27 | candidate |
+| `weapon.gem` | Gem Hammer | hammer | emissive, primary, secondary, trim | 27 | candidate |
+| `weapon.staff` | Archmage Staff | staff | emissive, primary, secondary, trim | 27 | candidate |
+| `weapon.stormblade` | Storm Cleaver | sword | emissive, leather, primary, secondary, trim | 27 | candidate |
+| `weapon.chevron` | Oathbreaker Greatsword | sword | leather, primary, secondary, trim | 27 | candidate |
+| `weapon.ruby` | Ruby Fang | sword | leather, primary, secondary, trim | 27 | candidate |
+| `weapon.arcane` | Arcane Edge | sword | emissive, leather, primary, secondary, trim | 27 | candidate |
+| `weapon.fireworkBlade` | Firework Blade | sword | emissive, leather, primary, secondary, trim | 27 | candidate |
+| `shield.crux` | Azure Aegis | shield | primary, secondary, trim | 27 | candidate |
+| `shield.templar` | Templar Bulwark | shield | primary, secondary, trim | 27 | candidate |
 
 ## Open gates (cannot be closed from an automated session)
 

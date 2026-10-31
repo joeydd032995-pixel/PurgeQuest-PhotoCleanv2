@@ -6,6 +6,16 @@ The example palette uses blue Primary, red Secondary, gold Trim, brown Leather, 
 
 Regenerate with `python3 -I tools/modular_assets/gear_recolor_review.py`.
 
+## Before and after the gear-mask fix
+
+All 99 masks now use authored material boundaries instead of color clustering. These comparisons use the exact prior masks from commit `35819112018927206952159dfc4426487ac055c6` and identical blue/red/gold preference values. See [the fix details](gear-recolor-fixes.md).
+
+![Reported staff fixes](verification/gear_fix_reported_staves.png)
+
+![Reported shield fixes](verification/gear_fix_reported_shields.png)
+
+Full comparisons: [40 staves](verification/gear_fix_staffs_all.png), [40 shields](verification/gear_fix_shields_all.png), [8 signature weapons](verification/gear_fix_signature_all.png), [11 store items](verification/gear_fix_store_all.png).
+
 ## Eight signature weapons
 
 ![Signature weapons](verification/gear_assets_signature.png)

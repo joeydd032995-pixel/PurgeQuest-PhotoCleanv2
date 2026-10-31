@@ -22,10 +22,11 @@ from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).parent))
 import imgops as ops
+import gear_materials
 import qa
 import scml
 import separate
-from separate import Layer, RegionModel, pool_tones
+from separate import Layer, pool_tones
 
 REPO = Path(__file__).resolve().parents[2]
 OUT = scml.ART_ROOT / "Modular"
@@ -247,14 +248,14 @@ def analyze() -> dict:
         grip = detect_grip(img, kind if kind in ("bow", "shield") else "sword")
         # recolor masks
         layer = Layer(it["resource"], "armor", it["slot"], img)
-        model = RegionModel([layer])
-        masks, _ = model.masks(img)
+        masks, protected = gear_materials.masks_for(it["resource"], img)
         layer.masks = masks
         pool_tones([layer])
         tones = layer.region_tone
         for region, m in masks.items():
             m.save(MASK_DIR / f"{it['resource']}_mask_{region}.png", optimize=True)
-        checks = {"gripOnItem": bool(_alpha_near(img, grip, 10) > 0.5), "bbox": list(bbox)}
+        checks = {"gripOnItem": bool(_alpha_near(img, grip, 10) > 0.5), "bbox": list(bbox),
+                  "materialMasks": gear_materials.quality(img, masks, protected)}
         packs = supported_packs(it)
         growth = {"1x": [1.0, 1.0], "titan": [1.0, 1.0]}
         for pid in packs:
@@ -272,7 +273,8 @@ def analyze() -> dict:
             extra["stringAnchors"] = {"top": [round(float(np.nonzero(a_[bbox[1]])[0].mean()), 1), bbox[1]],
                                       "bottom": [round(float(np.nonzero(a_[bbox[3]])[0].mean()), 1), bbox[3]]}
             checks["stringAlignment"] = {pid: bow_string_alignment(pid.rsplit("_v", 1)[0], int(pid.rsplit("_v", 1)[1]), img) for pid in packs}
-        ok = checks["gripOnItem"] and max(growth["titan"]) <= 1.9 and bool(masks)
+        ok = (checks["gripOnItem"] and max(growth["titan"]) <= 1.9 and bool(masks)
+              and gear_materials.quality_passes(checks["materialMasks"]))
         out_items.append({
             "id": it["id"], "name": it["name"], "kind": kind, "slot": it["slot"], "resourceName": it["resource"],
             "group": it["group"], "imageWidth": img.size[0], "imageHeight": img.size[1],
@@ -352,8 +354,48 @@ def sheets(manifest: dict) -> None:
     qa.sheet(rows).convert("RGB").save(SHEETS / "gear_signature.png", optimize=True)
 
 
+def update_material_masks() -> dict:
+    """Replace material masks/tones while preserving every grip, fit, catalog ID, and source image.
+
+    Precompute and validate all 99 items before writing, so an incomplete layout
+    cannot silently replace the bundled manifest with a partial gear library.
+    """
+    path = OUT / "modular_gear_manifest.json"
+    manifest = json.loads(path.read_text())
+    sources = {i["id"]: i for i in build_items()}
+    generated = []
+    for entry in manifest["items"]:
+        source = sources[entry["id"]]
+        if source["resource"] != entry["resourceName"]:
+            raise ValueError(f"Resource changed for {entry['id']}")
+        with Image.open(source["path"]) as loaded:
+            image = loaded.convert("RGBA")
+        masks, protected = gear_materials.masks_for(entry["resourceName"], image)
+        metrics = gear_materials.quality(image, masks, protected)
+        if not masks or not gear_materials.quality_passes(metrics):
+            raise ValueError(f"Incomplete material masks for {entry['id']}: {metrics}")
+        layer = Layer(entry["resourceName"], "armor", entry["slot"], image, masks)
+        pool_tones([layer])
+        generated.append((entry, masks, layer.region_tone, metrics))
+    for entry, masks, tones, metrics in generated:
+        resource = entry["resourceName"]
+        for old in MASK_DIR.glob(f"{resource}_mask_*.png"):
+            old.unlink()
+        for region, mask in masks.items():
+            mask.save(MASK_DIR / f"{resource}_mask_{region}.png", optimize=True)
+        entry["maskResources"] = {r:f"{resource}_mask_{r}" for r in sorted(masks)}
+        entry["regionTone"] = tones
+        entry["verification"]["automated"]["materialMasks"] = metrics
+        prior_pass = entry["verification"].get("automatedPass", entry["verification"]["status"] in ("candidate", "verified"))
+        entry["verification"]["automatedPass"] = prior_pass
+        # Changed artwork is a candidate for review, not a new human approval.
+        entry["verification"].update(status="candidate" if prior_pass else "mapped", approvedBy=None, approvedProfiles=[])
+    path.write_text(json.dumps(manifest, indent=1, sort_keys=True) + "\n")
+    return manifest
+
+
 def main() -> None:
-    manifest = analyze()
+    manifest = update_material_masks() if "--masks-only" in sys.argv else analyze()
     (OUT / "modular_gear_manifest.json").write_text(json.dumps(manifest, indent=1, sort_keys=True) + "\n")
     summary = {"items": len(manifest["items"]),
                "candidate": sum(i["verification"]["status"] == "candidate" for i in manifest["items"]),
