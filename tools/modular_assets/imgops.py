@@ -77,8 +77,9 @@ def rgb_to_lab(rgb: np.ndarray) -> np.ndarray:
     return np.stack([116 * f[..., 1] - 16, 500 * (f[..., 0] - f[..., 1]), 200 * (f[..., 1] - f[..., 2])], axis=-1)
 
 
-def measure_outline(rgb: np.ndarray, alpha: np.ndarray, max_r: int = 16) -> Tuple[int, np.ndarray]:
-    """Estimate outline thickness (px) and colour from the silhouette boundary rings."""
+def measure_outline(rgb: np.ndarray, alpha: np.ndarray, max_r: int = 16, lum_limit: float = 0.34) -> Tuple[int, np.ndarray]:
+    """Estimate outline thickness (px) and colour from the silhouette boundary rings. A ring whose mean luminance
+    exceeds lum_limit is already fill."""
     solid = alpha > 0.5
     prev = solid
     width = 2
@@ -89,7 +90,7 @@ def measure_outline(rgb: np.ndarray, alpha: np.ndarray, max_r: int = 16) -> Tupl
         if ring.sum() == 0:
             break
         mean_l = float(lum(rgb)[ring].mean())
-        if mean_l > 0.34 and k > 1:
+        if mean_l > lum_limit and k > 1:
             width = k - 1
             break
         ring_colors.append(rgb[ring].mean(axis=0))
@@ -129,9 +130,14 @@ def outline_mask(rgb: np.ndarray, alpha: np.ndarray, dark_thresh: float = 0.22, 
     than a stroke but nowhere near the area of a real dark fill). Only dark regions clearly thicker than the stroke and
     big enough to be a fill (black robes, dark shading) are treated as fill, so they stay recolorable. The window is
     round and sized from the measured stroke width: a square one cuts thin dark strips into rectangular steps."""
-    dark_all = (lum(rgb) < dark_thresh) & (alpha > 0.08)    # includes the faint anti-aliased halo around the silhouette
+    # A stricter ring limit than the default: dark wood (lum ~0.3) must not be mistaken for outline, which would
+    # inflate the stroke width and contaminate the outline colour.
+    width, line_color = measure_outline(rgb, alpha, lum_limit=0.26)
+    # Dark is not the same as line work: dark brown planks or a navy robe are fill. Only pixels near the sprite's own
+    # outline colour (or faint, mostly transparent edge pixels) are candidates.
+    off_line = (np.abs(rgb - line_color).max(axis=-1) > 0.09) & (alpha > 0.5)
+    dark_all = (lum(rgb) < dark_thresh) & (alpha > 0.08) & ~off_line   # includes the faint anti-aliased halo
     dark = dark_all & (alpha > 0.5)
-    width, _ = measure_outline(rgb, alpha)
     thick = thick or max(7, (width + 1) // 2 + 3)
     fill_dark = _disk_dilate(_disk_erode(dark, thick), thick + 1) & dark
     if fill_dark.any():
@@ -142,7 +148,48 @@ def outline_mask(rgb: np.ndarray, alpha: np.ndarray, dark_thresh: float = 0.22, 
             keep = np.zeros(n + 1, bool)
             keep[1:] = sizes[1:] >= min_area
             fill_dark = keep[labels]
-    return dark_all & ~fill_dark
+    # The outline can be thicker in places (a doubled stroke along the top of a shield) and often has a dark-grey
+    # glow band outside it. Both are line work, whatever their thickness:
+    #  - dark pixels within a stroke's width of the silhouette edge, and
+    #  - pixels of exactly the outline's own colour that are connected to that edge.
+    depth = _edge_depth(alpha > 0.5, width + 3)
+    rim = (depth <= min(width + 2, 10)) & (lum(rgb) < 0.32) & (alpha > 0.08)
+    same_color = (np.abs(rgb - line_color).max(axis=-1) < 0.04) & (alpha > 0.5)
+    if same_color.any():
+        labels, n = label(same_color)
+        touching = np.unique(labels[(depth <= 2) & same_color])
+        keep = np.zeros_like(same_color)
+        for cid in touching[touching > 0]:
+            comp = labels == cid
+            # A stroke is a ring around some other fill. A solid near-black mass that encloses nothing (a black robe
+            # or limb drawn in the outline's own colour) is fill, and is left to the thickness test above.
+            if (_fill_holes(comp) & ~comp).sum() >= 0.25 * comp.sum():
+                keep |= comp
+        same_color = keep
+    return (dark_all & ~fill_dark) | rim | same_color
+
+
+def _fill_holes(mask: np.ndarray) -> np.ndarray:
+    """mask plus every background region that does not touch the image border."""
+    labels, n = label(~mask)
+    if n == 0:
+        return mask
+    border = set(np.unique(np.concatenate([labels[0], labels[-1], labels[:, 0], labels[:, -1]])).tolist())
+    holes = np.isin(labels, [i for i in range(1, n + 1) if i not in border])
+    return mask | holes
+
+
+def _edge_depth(solid: np.ndarray, limit: int) -> np.ndarray:
+    """Pixels from the silhouette edge (1 = outermost ring), capped at limit + 1."""
+    depth = np.full(solid.shape, limit + 1, np.int32)
+    cur = solid
+    for k in range(1, limit + 1):
+        nxt = erode(cur, 1)
+        depth[cur & ~nxt] = k
+        cur = nxt
+        if not cur.any():
+            break
+    return depth
 
 
 def smoothstep(x: np.ndarray, lo: float, hi: float) -> np.ndarray:

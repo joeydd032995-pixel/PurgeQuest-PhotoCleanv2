@@ -107,6 +107,76 @@ class CellMerging(unittest.TestCase):
         self.assertTrue(np.all(out[:, :49] == 0) and np.all(out[:, 51:] == 1))
 
 
+class GearRegions(unittest.TestCase):
+    """Regressions from shield recolors: a coloured arc above the silhouette, planks split by lightness, dark wood
+    treated as linework, one crystal split in two."""
+    LINE = (0.11, 0.10, 0.09)
+
+    @staticmethod
+    def _sprite():
+        import numpy as np
+        rgb = np.zeros((90, 90, 3), np.float32)
+        alpha = np.zeros((90, 90), np.float32)
+        alpha[10:80, 10:80] = 1
+        rgb[10:80, 10:80] = GearRegions.LINE
+        rgb[34:66, 24:66] = (0.55, 0.35, 0.22)          # fill inside a 14px outline, with a doubled (24px) top stroke
+        return rgb, alpha
+
+    def test_thick_top_stroke_and_glow_band_are_line_work(self):
+        import numpy as np
+        import imgops
+        rgb, alpha = self._sprite()
+        rgb[10:14, 10:80] = (0.23, 0.22, 0.21)            # dark-grey glow band along the very top edge
+        out = imgops.outline_mask(rgb, alpha)
+        self.assertTrue(out[16:32, 30:60].all(), "the thick top stroke must be outline, however thick")
+        self.assertTrue(out[10:14, 20:70].all(), "the dark glow band at the edge must be outline")
+        self.assertFalse(out[40:60, 30:60].any(), "the fill must not be outline")
+
+    def test_dark_brown_fill_is_not_line_work(self):
+        import numpy as np
+        import imgops
+        rgb, alpha = self._sprite()
+        rgb[38:62, 30:50] = (0.25, 0.13, 0.10)            # very dark wood: dark, but clearly not the outline colour
+        out = imgops.outline_mask(rgb, alpha)
+        self.assertFalse(out[42:58, 34:46].any(), "dark brown planks are paintable fill")
+
+    def test_hue_rule_merges_a_tint_but_not_a_neutral_or_another_hue(self):
+        import numpy as np
+        import separate
+        ang = lambda deg: (np.cos(np.radians(deg)), np.sin(np.radians(deg)))
+        spec = [((-0.03, -0.13), -104, 0.11, 400), ((-0.02, -0.065), -112, 0.04, 400),   # blue and its pale tint
+                ((0.0, 0.13), 90, 0.13, 300), ((0.0, 0.0), -120, 0.01, 300)]             # gold, grey
+        centers = np.array([s[0] for s in spec])
+        members = np.concatenate([[i] * s[3] for i, s in enumerate(spec)])
+        units = np.concatenate([[ang(s[1])] * s[3] for s in spec])
+        chroma = np.concatenate([[s[2]] * s[3] for s in spec])
+        merged, out = separate._merge_close(centers, members, separate.MERGE_DISTANCE, units, chroma)
+        self.assertEqual(len(merged), 3)
+        self.assertEqual(out[0], out[400], "pale tint of the same hue joins its base")
+        self.assertEqual(len({out[0], out[800], out[1100]}), 3, "gold and grey stay separate regions")
+
+    def test_one_wood_in_light_and_dark_planks_is_one_region(self):
+        import numpy as np
+        from PIL import Image
+        import imgops
+        import separate
+        rgb, alpha = self._sprite()
+        # four planks of one wood, alternating light and dark, divided by outline-coloured seams
+        shades = [(0.52, 0.33, 0.21), (0.36, 0.22, 0.14), (0.52, 0.33, 0.21), (0.36, 0.22, 0.14)]
+        for i, c in enumerate(shades):
+            rgb[34:76, 26 + i * 10: 34 + i * 10] = c
+            rgb[34:76, 34 + i * 10: 36 + i * 10] = self.LINE
+        rgb[12:24, 20:70] = (0.60, 0.61, 0.62)             # a steel rim above: neutral, a different material
+        img = imgops.from_arrays(rgb, alpha)
+        layer = separate.Layer("t", "armor", "mainHand", img)
+        masks, _ = separate.RegionModel([layer]).masks(img)
+        weights = {r: np.asarray(m, np.float32) / 255 for r, m in masks.items()}
+        owner = [max(weights, key=lambda r: weights[r][50, 29 + i * 10]) for i in range(4)]
+        self.assertEqual(len(set(owner)), 1, f"planks split across regions: {owner}")
+        rim_owner = max(weights, key=lambda r: weights[r][17, 45])
+        self.assertNotEqual(rim_owner, owner[0], "steel and wood are different materials")
+
+
 class Rasterizer(unittest.TestCase):
     def test_valkyrie_frame_and_swapped_weapon(self):
         doc = scml.load_doc("valkyrie", 1)

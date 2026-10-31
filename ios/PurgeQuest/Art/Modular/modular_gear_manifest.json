@@ -12,19 +12,14 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
-    "primary": "valkyrie_v1_sword_mask_primary",
-    "trim": "valkyrie_v1_sword_mask_trim"
+    "primary": "valkyrie_v1_sword_mask_primary"
    },
    "name": "Valkyrie Blade",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.61893,
-     0.0118
-    ],
-    "trim": [
-     0.55242,
-     0.03329
+     0.55516,
+     0.01244
     ]
    },
    "resourceName": "valkyrie_v1_sword",
@@ -99,18 +94,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "forest_ranger_v1_bow_mask_primary",
-    "trim": "forest_ranger_v1_bow_mask_trim"
+    "secondary": "forest_ranger_v1_bow_mask_secondary"
    },
    "name": "Elven Recurve",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.46119,
-     0.08815
+     0.45084,
+     0.08603
     ],
-    "trim": [
-     0.366,
-     0.03389
+    "secondary": [
+     0.30949,
+     0.02683
     ]
    },
    "resourceName": "forest_ranger_v1_bow",
@@ -181,19 +176,14 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
-    "primary": "seer_v1_sword_mask_primary",
-    "secondary": "seer_v1_sword_mask_secondary"
+    "primary": "seer_v1_sword_mask_primary"
    },
    "name": "Seer's Edge",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.52046,
-     0.10009
-    ],
-    "secondary": [
-     0.50004,
-     0.09348
+     0.50603,
+     0.09531
     ]
    },
    "resourceName": "seer_v1_sword",
@@ -268,23 +258,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "blood_alchemist_v1_sword_mask_primary",
-    "secondary": "blood_alchemist_v1_sword_mask_secondary",
-    "trim": "blood_alchemist_v1_sword_mask_trim"
+    "secondary": "blood_alchemist_v1_sword_mask_secondary"
    },
    "name": "Vampyri Cleaver",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.71783,
-     0.02977
+     0.63413,
+     0.0337
     ],
     "secondary": [
-     0.60823,
-     0.17384
-    ],
-    "trim": [
-     0.38081,
-     0.04266
+     0.60616,
+     0.17587
     ]
    },
    "resourceName": "blood_alchemist_v1_sword",
@@ -365,12 +350,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.31164,
-     0.00989
+     0.46761,
+     0.01581
     ],
     "secondary": [
-     0.51625,
-     0.05536
+     0.56763,
+     0.08263
     ]
    },
    "resourceName": "dark_oracle_v1_sword",
@@ -450,8 +435,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.43966,
-     0.01955
+     0.3576,
+     0.01451
     ]
    },
    "resourceName": "necromancer_v1_sword",
@@ -525,24 +510,14 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
-    "leather": "skeleton_crusader_v1_sword_mask_leather",
-    "primary": "skeleton_crusader_v1_sword_mask_primary",
-    "secondary": "skeleton_crusader_v1_sword_mask_secondary"
+    "primary": "skeleton_crusader_v1_sword_mask_primary"
    },
    "name": "Undead Claymore",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.37157,
-     0.02587
-    ],
     "primary": [
-     0.72358,
-     0.05685
-    ],
-    "secondary": [
-     0.92542,
-     0.01534
+     0.75609,
+     0.04905
     ]
    },
    "resourceName": "skeleton_crusader_v1_sword",
@@ -616,24 +591,14 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
-    "leather": "golem_v1_sword_mask_leather",
-    "primary": "golem_v1_sword_mask_primary",
-    "secondary": "golem_v1_sword_mask_secondary"
+    "primary": "golem_v1_sword_mask_primary"
    },
    "name": "Vaultcracker",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.79391,
-     0.05178
-    ],
     "primary": [
-     0.75082,
-     0.02877
-    ],
-    "secondary": [
-     0.67601,
-     0.02549
+     0.75253,
+     0.03173
     ]
    },
    "resourceName": "golem_v1_sword",
@@ -713,8 +678,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.46746,
-     0.06816
+     0.4705,
+     0.0686
     ]
    },
    "resourceName": "staff_1_1",
@@ -794,8 +759,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.46835,
-     0.06947
+     0.46837,
+     0.06823
     ]
    },
    "resourceName": "staff_1_2",
@@ -869,19 +834,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "emissive": "staff_1_3_mask_emissive",
     "primary": "staff_1_3_mask_primary"
    },
    "name": "Ashen Bough III",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.57521,
-     0.11177
-    ],
     "primary": [
-     0.49737,
-     0.09562
+     0.49529,
+     0.09431
     ]
    },
    "resourceName": "staff_1_3",
@@ -955,24 +915,19 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "emissive": "staff_1_4_mask_emissive",
     "primary": "staff_1_4_mask_primary",
     "secondary": "staff_1_4_mask_secondary"
    },
    "name": "Ashen Bough IV",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.56969,
-     0.11087
-    ],
     "primary": [
-     0.49419,
-     0.09372
+     0.47929,
+     0.08925
     ],
     "secondary": [
-     0.46653,
-     0.1194
+     0.37829,
+     0.09236
     ]
    },
    "resourceName": "staff_1_4",
@@ -1052,8 +1007,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.42187,
-     0.08534
+     0.37704,
+     0.07342
     ]
    },
    "resourceName": "staff_1_5",
@@ -1127,19 +1082,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_2_1_mask_primary",
-    "secondary": "staff_2_1_mask_secondary"
+    "primary": "staff_2_1_mask_primary"
    },
    "name": "Verdant Coil I",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.73605,
-     0.02225
-    ],
-    "secondary": [
-     0.47311,
-     0.00883
+     0.58628,
+     0.01534
     ]
    },
    "resourceName": "staff_2_1",
@@ -1213,19 +1163,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_2_2_mask_primary",
-    "secondary": "staff_2_2_mask_secondary"
+    "primary": "staff_2_2_mask_primary"
    },
    "name": "Verdant Coil II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.62392,
-     0.05569
-    ],
-    "secondary": [
-     0.23168,
-     0.01225
+     0.5752,
+     0.0502
     ]
    },
    "resourceName": "staff_2_2",
@@ -1300,23 +1245,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_2_3_mask_primary",
-    "secondary": "staff_2_3_mask_secondary",
-    "trim": "staff_2_3_mask_trim"
+    "secondary": "staff_2_3_mask_secondary"
    },
    "name": "Verdant Coil III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.69037,
-     0.05539
+     0.69248,
+     0.05558
     ],
     "secondary": [
-     0.22395,
-     0.01178
-    ],
-    "trim": [
-     0.47412,
-     0.04316
+     0.41568,
+     0.03551
     ]
    },
    "resourceName": "staff_2_3",
@@ -1390,7 +1330,6 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "leather": "staff_2_4_mask_leather",
     "primary": "staff_2_4_mask_primary",
     "secondary": "staff_2_4_mask_secondary",
     "trim": "staff_2_4_mask_trim"
@@ -1398,21 +1337,17 @@
    "name": "Verdant Coil IV",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.36221,
-     0.03833
-    ],
     "primary": [
-     0.67494,
-     0.07765
+     0.67618,
+     0.07781
     ],
     "secondary": [
-     0.20099,
-     0.01605
+     0.30292,
+     0.04713
     ],
     "trim": [
-     0.34273,
-     0.05534
+     0.38628,
+     0.04195
     ]
    },
    "resourceName": "staff_2_4",
@@ -1493,12 +1428,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.6594,
-     0.08423
+     0.66009,
+     0.08428
     ],
     "secondary": [
-     0.22273,
-     0.01454
+     0.31145,
+     0.02831
     ]
    },
    "resourceName": "staff_2_5",
@@ -1573,23 +1508,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_3_1_mask_primary",
-    "secondary": "staff_3_1_mask_secondary",
-    "trim": "staff_3_1_mask_trim"
+    "secondary": "staff_3_1_mask_secondary"
    },
    "name": "Tidecaller I",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.64743,
-     0.11432
+     0.55264,
+     0.09121
     ],
     "secondary": [
-     0.49535,
-     0.07496
-    ],
-    "trim": [
-     0.87197,
-     0.10999
+     0.88017,
+     0.10715
     ]
    },
    "resourceName": "staff_3_1",
@@ -1670,12 +1600,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.56679,
-     0.10755
+     0.56938,
+     0.10734
     ],
     "secondary": [
-     0.21481,
-     0.01252
+     0.80156,
+     0.09511
     ]
    },
    "resourceName": "staff_3_2",
@@ -1756,12 +1686,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.58106,
-     0.12359
+     0.51792,
+     0.10432
     ],
     "secondary": [
-     0.28295,
-     0.03379
+     0.73641,
+     0.13695
     ]
    },
    "resourceName": "staff_3_3",
@@ -1836,18 +1766,23 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_3_4_mask_primary",
-    "secondary": "staff_3_4_mask_secondary"
+    "secondary": "staff_3_4_mask_secondary",
+    "trim": "staff_3_4_mask_trim"
    },
    "name": "Tidecaller IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.61725,
-     0.16111
+     0.6134,
+     0.15985
     ],
     "secondary": [
-     0.66474,
-     0.11713
+     0.67418,
+     0.12133
+    ],
+    "trim": [
+     0.39503,
+     0.02199
     ]
    },
    "resourceName": "staff_3_4",
@@ -1928,12 +1863,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.46758,
-     0.13104
+     0.43196,
+     0.11936
     ],
     "secondary": [
-     0.47392,
-     0.04221
+     0.40264,
+     0.03162
     ]
    },
    "resourceName": "staff_3_5",
@@ -2014,12 +1949,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.50322,
-     0.00939
+     0.4943,
+     0.00922
     ],
     "secondary": [
-     0.60144,
-     0.11605
+     0.61063,
+     0.11794
     ]
    },
    "resourceName": "staff_4_1",
@@ -2100,12 +2035,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.45355,
-     0.02735
+     0.41874,
+     0.02484
     ],
     "secondary": [
-     0.61513,
-     0.14601
+     0.62355,
+     0.14852
     ]
    },
    "resourceName": "staff_4_2",
@@ -2186,12 +2121,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.51717,
-     0.0473
+     0.47851,
+     0.04351
     ],
     "secondary": [
-     0.65139,
-     0.12402
+     0.65679,
+     0.12571
     ]
    },
    "resourceName": "staff_4_3",
@@ -2266,18 +2201,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_4_4_mask_primary",
-    "trim": "staff_4_4_mask_trim"
+    "secondary": "staff_4_4_mask_secondary"
    },
    "name": "Ember Scepter IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.52288,
-     0.07898
+     0.48475,
+     0.07171
     ],
-    "trim": [
-     0.71516,
-     0.11495
+    "secondary": [
+     0.66206,
+     0.11776
     ]
    },
    "resourceName": "staff_4_4",
@@ -2352,23 +2287,18 @@
    "layer": "front",
    "maskResources": {
     "emissive": "staff_4_5_mask_emissive",
-    "primary": "staff_4_5_mask_primary",
-    "secondary": "staff_4_5_mask_secondary"
+    "primary": "staff_4_5_mask_primary"
    },
    "name": "Ember Scepter V",
    "profileOverrides": {},
    "regionTone": {
     "emissive": [
-     0.83571,
-     0.15259
+     0.84495,
+     0.15449
     ],
     "primary": [
-     0.44207,
-     0.03759
-    ],
-    "secondary": [
-     0.54488,
-     0.10863
+     0.49602,
+     0.09555
     ]
    },
    "resourceName": "staff_4_5",
@@ -2448,8 +2378,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.47971,
-     0.07024
+     0.46353,
+     0.06742
     ]
    },
    "resourceName": "staff_5_1",
@@ -2523,14 +2453,19 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_5_2_mask_primary"
+    "primary": "staff_5_2_mask_primary",
+    "secondary": "staff_5_2_mask_secondary"
    },
    "name": "Storm Spire II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.46844,
-     0.07092
+     0.44478,
+     0.06239
+    ],
+    "secondary": [
+     0.47415,
+     0.13356
     ]
    },
    "resourceName": "staff_5_2",
@@ -2605,23 +2540,23 @@
    "layer": "front",
    "maskResources": {
     "emissive": "staff_5_3_mask_emissive",
-    "secondary": "staff_5_3_mask_secondary",
-    "trim": "staff_5_3_mask_trim"
+    "primary": "staff_5_3_mask_primary",
+    "secondary": "staff_5_3_mask_secondary"
    },
    "name": "Storm Spire III",
    "profileOverrides": {},
    "regionTone": {
     "emissive": [
-     0.78459,
-     0.16212
+     0.78865,
+     0.163
+    ],
+    "primary": [
+     0.54068,
+     0.10053
     ],
     "secondary": [
-     0.55861,
-     0.10432
-    ],
-    "trim": [
-     0.54412,
-     0.1612
+     0.50931,
+     0.14986
     ]
    },
    "resourceName": "staff_5_3",
@@ -2703,16 +2638,16 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.45719,
-     0.0079
+     0.45161,
+     0.00776
     ],
     "secondary": [
-     0.64564,
-     0.12099
+     0.61734,
+     0.11518
     ],
     "trim": [
-     0.5215,
-     0.15202
+     0.4529,
+     0.13168
     ]
    },
    "resourceName": "staff_5_4",
@@ -2794,16 +2729,16 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.43588,
-     0.02528
+     0.39842,
+     0.02248
     ],
     "secondary": [
-     0.45778,
-     0.10337
+     0.49995,
+     0.09113
     ],
     "trim": [
-     0.54824,
-     0.09992
+     0.44245,
+     0.09962
     ]
    },
    "resourceName": "staff_5_5",
@@ -2883,8 +2818,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.46283,
-     0.01416
+     0.42783,
+     0.01304
     ]
    },
    "resourceName": "staff_6_1",
@@ -2958,19 +2893,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_6_2_mask_primary",
-    "secondary": "staff_6_2_mask_secondary"
+    "primary": "staff_6_2_mask_primary"
    },
    "name": "Gilded Crook II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.21128,
-     0.0205
-    ],
-    "secondary": [
-     0.3049,
-     0.05107
+     0.32627,
+     0.05563
     ]
    },
    "resourceName": "staff_6_2",
@@ -3044,19 +2974,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_6_3_mask_primary",
-    "secondary": "staff_6_3_mask_secondary"
+    "primary": "staff_6_3_mask_primary"
    },
    "name": "Gilded Crook III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.44697,
-     0.09106
-    ],
-    "secondary": [
-     0.46792,
-     0.09313
+     0.39999,
+     0.07799
     ]
    },
    "resourceName": "staff_6_3",
@@ -3130,19 +3055,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_6_4_mask_primary",
-    "secondary": "staff_6_4_mask_secondary"
+    "primary": "staff_6_4_mask_primary"
    },
    "name": "Gilded Crook IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.42057,
-     0.09855
-    ],
-    "secondary": [
-     0.45184,
-     0.11275
+     0.37801,
+     0.08939
     ]
    },
    "resourceName": "staff_6_4",
@@ -3216,14 +3136,19 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_6_5_mask_primary"
+    "primary": "staff_6_5_mask_primary",
+    "secondary": "staff_6_5_mask_secondary"
    },
    "name": "Gilded Crook V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.31146,
-     0.04362
+     0.34974,
+     0.05552
+    ],
+    "secondary": [
+     0.59449,
+     0.08412
     ]
    },
    "resourceName": "staff_6_5",
@@ -3297,7 +3222,6 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "leather": "staff_7_1_mask_leather",
     "primary": "staff_7_1_mask_primary",
     "secondary": "staff_7_1_mask_secondary",
     "trim": "staff_7_1_mask_trim"
@@ -3305,21 +3229,17 @@
    "name": "Bone Reliquary I",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.88315,
-     0.02183
-    ],
     "primary": [
-     0.67073,
-     0.07481
+     0.46544,
+     0.06767
     ],
     "secondary": [
-     0.46079,
-     0.06702
+     0.66953,
+     0.07473
     ],
     "trim": [
-     0.49331,
-     0.07254
+     0.90171,
+     0.02097
     ]
    },
    "resourceName": "staff_7_1",
@@ -3401,16 +3321,16 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.72501,
-     0.09631
+     0.72636,
+     0.09651
     ],
     "secondary": [
-     0.52277,
-     0.07405
+     0.51381,
+     0.07246
     ],
     "trim": [
-     0.59735,
-     0.0003
+     0.59721,
+     0.00035
     ]
    },
    "resourceName": "staff_7_2",
@@ -3485,23 +3405,23 @@
    "layer": "front",
    "maskResources": {
     "emissive": "staff_7_3_mask_emissive",
-    "secondary": "staff_7_3_mask_secondary",
-    "trim": "staff_7_3_mask_trim"
+    "primary": "staff_7_3_mask_primary",
+    "secondary": "staff_7_3_mask_secondary"
    },
    "name": "Bone Reliquary III",
    "profileOverrides": {},
    "regionTone": {
     "emissive": [
-     0.75861,
-     0.12238
+     0.80415,
+     0.16688
+    ],
+    "primary": [
+     0.76075,
+     0.12281
     ],
     "secondary": [
-     0.55121,
-     0.10432
-    ],
-    "trim": [
-     0.798,
-     0.16555
+     0.53748,
+     0.10116
     ]
    },
    "resourceName": "staff_7_3",
@@ -3576,23 +3496,23 @@
    "layer": "front",
    "maskResources": {
     "emissive": "staff_7_4_mask_emissive",
-    "secondary": "staff_7_4_mask_secondary",
-    "trim": "staff_7_4_mask_trim"
+    "primary": "staff_7_4_mask_primary",
+    "secondary": "staff_7_4_mask_secondary"
    },
    "name": "Bone Reliquary IV",
    "profileOverrides": {},
    "regionTone": {
     "emissive": [
-     0.77421,
-     0.17315
+     0.77498,
+     0.17332
+    ],
+    "primary": [
+     0.51323,
+     0.09831
     ],
     "secondary": [
-     0.50406,
-     0.09656
-    ],
-    "trim": [
-     0.47287,
-     0.0082
+     0.47,
+     0.00811
     ]
    },
    "resourceName": "staff_7_4",
@@ -3667,23 +3587,23 @@
    "layer": "front",
    "maskResources": {
     "emissive": "staff_7_5_mask_emissive",
-    "secondary": "staff_7_5_mask_secondary",
-    "trim": "staff_7_5_mask_trim"
+    "primary": "staff_7_5_mask_primary",
+    "secondary": "staff_7_5_mask_secondary"
    },
    "name": "Bone Reliquary V",
    "profileOverrides": {},
    "regionTone": {
     "emissive": [
-     0.77819,
-     0.19921
+     0.77776,
+     0.19905
+    ],
+    "primary": [
+     0.40001,
+     0.07683
     ],
     "secondary": [
-     0.43874,
-     0.08618
-    ],
-    "trim": [
-     0.42588,
-     0.02456
+     0.39774,
+     0.02234
     ]
    },
    "resourceName": "staff_7_5",
@@ -3764,12 +3684,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.7509,
-     0.02572
+     0.7515,
+     0.02578
     ],
     "secondary": [
-     0.50504,
-     0.0746
+     0.48555,
+     0.07118
     ]
    },
    "resourceName": "staff_8_1",
@@ -3843,24 +3763,19 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "leather": "staff_8_2_mask_leather",
     "primary": "staff_8_2_mask_primary",
     "secondary": "staff_8_2_mask_secondary"
    },
    "name": "Voidspike II",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.88519,
-     0.01937
-    ],
     "primary": [
-     0.74369,
-     0.05868
+     0.76617,
+     0.05262
     ],
     "secondary": [
-     0.48391,
-     0.06945
+     0.46139,
+     0.06514
     ]
    },
    "resourceName": "staff_8_2",
@@ -3941,12 +3856,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.81566,
-     0.06373
+     0.81589,
+     0.06379
     ],
     "secondary": [
-     0.55794,
-     0.10616
+     0.53313,
+     0.10081
     ]
    },
    "resourceName": "staff_8_3",
@@ -4027,12 +3942,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.83648,
-     0.09194
+     0.83631,
+     0.09195
     ],
     "secondary": [
-     0.55401,
-     0.10633
+     0.52248,
+     0.09992
     ]
    },
    "resourceName": "staff_8_4",
@@ -4107,23 +4022,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_8_5_mask_primary",
-    "secondary": "staff_8_5_mask_secondary",
-    "trim": "staff_8_5_mask_trim"
+    "secondary": "staff_8_5_mask_secondary"
    },
    "name": "Voidspike V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.8346,
-     0.11367
+     0.83388,
+     0.11361
     ],
     "secondary": [
-     0.45998,
-     0.09006
-    ],
-    "trim": [
-     0.46354,
-     0.11836
+     0.41593,
+     0.08163
     ]
    },
    "resourceName": "staff_8_5",
@@ -4203,8 +4113,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.39579,
-     0.04175
+     0.39127,
+     0.04116
     ]
    },
    "resourceName": "shield_1_1",
@@ -4278,19 +4188,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "leather": "shield_1_2_mask_leather",
     "primary": "shield_1_2_mask_primary"
    },
    "name": "Oaken Ward II",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.41951,
-     0.01533
-    ],
     "primary": [
-     0.45962,
-     0.04362
+     0.42755,
+     0.03714
     ]
    },
    "resourceName": "shield_1_2",
@@ -4364,29 +4269,19 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "leather": "shield_1_3_mask_leather",
     "primary": "shield_1_3_mask_primary",
-    "secondary": "shield_1_3_mask_secondary",
-    "trim": "shield_1_3_mask_trim"
+    "secondary": "shield_1_3_mask_secondary"
    },
    "name": "Oaken Ward III",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.41149,
-     0.015
-    ],
     "primary": [
-     0.40385,
-     0.05186
+     0.39448,
+     0.05003
     ],
     "secondary": [
-     0.73812,
-     0.00705
-    ],
-    "trim": [
-     0.41614,
-     0.05271
+     0.66562,
+     0.00869
     ]
    },
    "resourceName": "shield_1_3",
@@ -4461,23 +4356,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "shield_1_4_mask_primary",
-    "secondary": "shield_1_4_mask_secondary",
-    "trim": "shield_1_4_mask_trim"
+    "secondary": "shield_1_4_mask_secondary"
    },
    "name": "Oaken Ward IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.72252,
-     0.00725
+     0.71946,
+     0.00722
     ],
     "secondary": [
-     0.38436,
-     0.04956
-    ],
-    "trim": [
-     0.44646,
-     0.05925
+     0.38846,
+     0.04994
     ]
    },
    "resourceName": "shield_1_4",
@@ -4551,24 +4441,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_1_5_mask_primary",
-    "secondary": "shield_1_5_mask_secondary",
-    "trim": "shield_1_5_mask_trim"
+    "primary": "shield_1_5_mask_primary"
    },
    "name": "Oaken Ward V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.46769,
-     0.0079
-    ],
-    "secondary": [
-     0.64495,
-     0.00942
-    ],
-    "trim": [
-     0.45813,
-     0.03591
+     0.54069,
+     0.01437
     ]
    },
    "resourceName": "shield_1_5",
@@ -4642,24 +4522,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_2_1_mask_primary",
-    "secondary": "shield_2_1_mask_secondary",
-    "trim": "shield_2_1_mask_trim"
+    "primary": "shield_2_1_mask_primary"
    },
    "name": "Templar Aegis I",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.24347,
-     0.01195
-    ],
-    "secondary": [
-     0.32644,
-     0.0405
-    ],
-    "trim": [
-     0.42754,
-     0.05707
+     0.35124,
+     0.04461
     ]
    },
    "resourceName": "shield_2_1",
@@ -4739,8 +4609,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.43701,
-     0.05892
+     0.36549,
+     0.04695
     ]
    },
    "resourceName": "shield_2_2",
@@ -4815,23 +4685,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "shield_2_3_mask_primary",
-    "secondary": "shield_2_3_mask_secondary",
-    "trim": "shield_2_3_mask_trim"
+    "secondary": "shield_2_3_mask_secondary"
    },
    "name": "Templar Aegis III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.64812,
-     0.00626
+     0.6625,
+     0.0059
     ],
     "secondary": [
-     0.70305,
-     0.00455
-    ],
-    "trim": [
-     0.43688,
-     0.05892
+     0.3577,
+     0.04565
     ]
    },
    "resourceName": "shield_2_3",
@@ -4905,19 +4770,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_2_4_mask_primary",
-    "secondary": "shield_2_4_mask_secondary"
+    "primary": "shield_2_4_mask_primary"
    },
    "name": "Templar Aegis IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.43491,
-     0.00601
-    ],
-    "secondary": [
-     0.65797,
-     0.00591
+     0.58038,
+     0.00594
     ]
    },
    "resourceName": "shield_2_4",
@@ -4991,19 +4851,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_2_5_mask_primary",
-    "trim": "shield_2_5_mask_trim"
+    "primary": "shield_2_5_mask_primary"
    },
    "name": "Templar Aegis V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.51324,
-     0.01084
-    ],
-    "trim": [
-     0.50515,
-     0.04371
+     0.51208,
+     0.01334
     ]
    },
    "resourceName": "shield_2_5",
@@ -5083,8 +4938,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.42899,
-     0.01867
+     0.42557,
+     0.0185
     ]
    },
    "resourceName": "shield_3_1",
@@ -5158,24 +5013,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "leather": "shield_3_2_mask_leather",
-    "primary": "shield_3_2_mask_primary",
-    "secondary": "shield_3_2_mask_secondary"
+    "primary": "shield_3_2_mask_primary"
    },
    "name": "Scaled Bulwark II",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.4883,
-     0.03631
-    ],
     "primary": [
-     0.43413,
-     0.03205
-    ],
-    "secondary": [
-     0.56582,
-     0.04319
+     0.44211,
+     0.03247
     ]
    },
    "resourceName": "shield_3_2",
@@ -5249,19 +5094,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_3_3_mask_primary",
-    "trim": "shield_3_3_mask_trim"
+    "primary": "shield_3_3_mask_primary"
    },
    "name": "Scaled Bulwark III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.59067,
-     0.0239
-    ],
-    "trim": [
-     0.55043,
-     0.04179
+     0.54468,
+     0.02609
     ]
    },
    "resourceName": "shield_3_3",
@@ -5335,19 +5175,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_3_4_mask_primary",
-    "secondary": "shield_3_4_mask_secondary"
+    "primary": "shield_3_4_mask_primary"
    },
    "name": "Scaled Bulwark IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.55036,
-     0.01523
-    ],
-    "secondary": [
-     0.52524,
-     0.01333
+     0.62379,
+     0.01739
     ]
    },
    "resourceName": "shield_3_4",
@@ -5422,23 +5257,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "shield_3_5_mask_primary",
-    "secondary": "shield_3_5_mask_secondary",
-    "trim": "shield_3_5_mask_trim"
+    "secondary": "shield_3_5_mask_secondary"
    },
    "name": "Scaled Bulwark V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.61533,
-     0.02335
+     0.65332,
+     0.0697
     ],
     "secondary": [
-     0.61515,
-     0.06288
-    ],
-    "trim": [
-     0.77095,
-     0.108
+     0.82289,
+     0.02795
     ]
    },
    "resourceName": "shield_3_5",
@@ -5518,8 +5348,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.44142,
-     0.05928
+     0.43378,
+     0.05808
     ]
    },
    "resourceName": "shield_4_1",
@@ -5593,19 +5423,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_4_2_mask_primary",
-    "secondary": "shield_4_2_mask_secondary"
+    "primary": "shield_4_2_mask_primary"
    },
    "name": "Runic Disc II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.44686,
-     0.04382
-    ],
-    "secondary": [
-     0.37598,
-     0.03529
+     0.44601,
+     0.04373
     ]
    },
    "resourceName": "shield_4_2",
@@ -5686,12 +5511,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.44589,
-     0.04684
+     0.44508,
+     0.04664
     ],
     "secondary": [
-     0.50826,
-     0.00479
+     0.67738,
+     0.00488
     ]
    },
    "resourceName": "shield_4_3",
@@ -5765,24 +5590,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_4_4_mask_primary",
-    "secondary": "shield_4_4_mask_secondary",
-    "trim": "shield_4_4_mask_trim"
+    "primary": "shield_4_4_mask_primary"
    },
    "name": "Runic Disc IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.4336,
-     0.02042
-    ],
-    "secondary": [
-     0.43243,
-     0.00593
-    ],
-    "trim": [
-     0.56248,
-     0.0095
+     0.51691,
+     0.01451
     ]
    },
    "resourceName": "shield_4_4",
@@ -5856,29 +5671,19 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "leather": "shield_4_5_mask_leather",
     "primary": "shield_4_5_mask_primary",
-    "secondary": "shield_4_5_mask_secondary",
-    "trim": "shield_4_5_mask_trim"
+    "secondary": "shield_4_5_mask_secondary"
    },
    "name": "Runic Disc V",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.36156,
-     0.03572
-    ],
     "primary": [
-     0.59683,
-     0.0079
+     0.62508,
+     0.00736
     ],
     "secondary": [
-     0.72715,
-     0.00529
-    ],
-    "trim": [
-     0.46315,
-     0.05052
+     0.44529,
+     0.04791
     ]
    },
    "resourceName": "shield_4_5",
@@ -5952,19 +5757,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_5_1_mask_primary",
-    "secondary": "shield_5_1_mask_secondary"
+    "primary": "shield_5_1_mask_primary"
    },
    "name": "Valkyrie Wing I",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.47889,
-     0.01383
-    ],
-    "secondary": [
-     0.38985,
-     0.01329
+     0.44497,
+     0.01361
     ]
    },
    "resourceName": "shield_5_1",
@@ -6038,19 +5838,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_5_2_mask_primary",
-    "secondary": "shield_5_2_mask_secondary"
+    "primary": "shield_5_2_mask_primary"
    },
    "name": "Valkyrie Wing II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.43352,
-     0.01355
-    ],
-    "secondary": [
-     0.71049,
-     0.00795
+     0.6232,
+     0.0097
     ]
    },
    "resourceName": "shield_5_2",
@@ -6124,24 +5919,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "leather": "shield_5_3_mask_leather",
-    "primary": "shield_5_3_mask_primary",
-    "secondary": "shield_5_3_mask_secondary"
+    "primary": "shield_5_3_mask_primary"
    },
    "name": "Valkyrie Wing III",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.52949,
-     0.01719
-    ],
     "primary": [
-     0.61288,
-     0.00151
-    ],
-    "secondary": [
-     0.48461,
-     0.03325
+     0.54169,
+     0.01332
     ]
    },
    "resourceName": "shield_5_3",
@@ -6215,24 +6000,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "leather": "shield_5_4_mask_leather",
-    "primary": "shield_5_4_mask_primary",
-    "secondary": "shield_5_4_mask_secondary"
+    "primary": "shield_5_4_mask_primary"
    },
    "name": "Valkyrie Wing IV",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.65196,
-     0.02919
-    ],
     "primary": [
-     0.5442,
-     0.01002
-    ],
-    "secondary": [
-     0.74537,
-     0.00132
+     0.64632,
+     0.00709
     ]
    },
    "resourceName": "shield_5_4",
@@ -6306,14 +6081,19 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_5_5_mask_primary"
+    "primary": "shield_5_5_mask_primary",
+    "secondary": "shield_5_5_mask_secondary"
    },
    "name": "Valkyrie Wing V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.35141,
-     0.0067
+     0.40585,
+     0.00566
+    ],
+    "secondary": [
+     0.40384,
+     0.04577
     ]
    },
    "resourceName": "shield_5_5",
@@ -6387,19 +6167,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_6_1_mask_primary",
-    "secondary": "shield_6_1_mask_secondary"
+    "primary": "shield_6_1_mask_primary"
    },
    "name": "Iron Moon I",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.4011,
-     0.04176
-    ],
-    "secondary": [
-     0.43622,
-     0.04615
+     0.41067,
+     0.04285
     ]
    },
    "resourceName": "shield_6_1",
@@ -6473,29 +6248,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "leather": "shield_6_2_mask_leather",
-    "primary": "shield_6_2_mask_primary",
-    "secondary": "shield_6_2_mask_secondary",
-    "trim": "shield_6_2_mask_trim"
+    "primary": "shield_6_2_mask_primary"
    },
    "name": "Iron Moon II",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.50586,
-     0.06323
-    ],
     "primary": [
-     0.41925,
-     0.05119
-    ],
-    "secondary": [
-     0.46676,
-     0.05751
-    ],
-    "trim": [
-     0.64312,
-     0.07853
+     0.47469,
+     0.05837
     ]
    },
    "resourceName": "shield_6_2",
@@ -6570,23 +6330,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "shield_6_3_mask_primary",
-    "secondary": "shield_6_3_mask_secondary",
-    "trim": "shield_6_3_mask_trim"
+    "secondary": "shield_6_3_mask_secondary"
    },
    "name": "Iron Moon III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.67364,
-     0.00145
+     0.4625,
+     0.05686
     ],
     "secondary": [
-     0.474,
-     0.05863
-    ],
-    "trim": [
-     0.38637,
-     0.04574
+     0.67488,
+     0.00145
     ]
    },
    "resourceName": "shield_6_3",
@@ -6667,12 +6422,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.60243,
-     0.05031
+     0.60192,
+     0.05025
     ],
     "secondary": [
-     0.50866,
-     0.00288
+     0.69688,
+     0.00146
     ]
    },
    "resourceName": "shield_6_4",
@@ -6746,24 +6501,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_6_5_mask_primary",
-    "secondary": "shield_6_5_mask_secondary",
-    "trim": "shield_6_5_mask_trim"
+    "primary": "shield_6_5_mask_primary"
    },
    "name": "Iron Moon V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.62015,
-     0.04772
-    ],
-    "secondary": [
-     0.81837,
-     0.02306
-    ],
-    "trim": [
-     0.55893,
-     0.00145
+     0.68549,
+     0.03336
     ]
    },
    "resourceName": "shield_6_5",
@@ -6837,19 +6582,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_7_1_mask_primary",
-    "secondary": "shield_7_1_mask_secondary"
+    "primary": "shield_7_1_mask_primary"
    },
    "name": "Bone Paragon I",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.40031,
-     0.06483
-    ],
-    "secondary": [
-     0.42604,
-     0.06959
+     0.39641,
+     0.06405
     ]
    },
    "resourceName": "shield_7_1",
@@ -6923,19 +6663,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_7_2_mask_primary",
-    "secondary": "shield_7_2_mask_secondary"
+    "primary": "shield_7_2_mask_primary"
    },
    "name": "Bone Paragon II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.43061,
-     0.04435
-    ],
-    "secondary": [
-     0.46466,
-     0.0483
+     0.42655,
+     0.04386
     ]
    },
    "resourceName": "shield_7_2",
@@ -7009,19 +6744,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_7_3_mask_primary",
-    "trim": "shield_7_3_mask_trim"
+    "primary": "shield_7_3_mask_primary"
    },
    "name": "Bone Paragon III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.45556,
-     0.01421
-    ],
-    "trim": [
-     0.45962,
-     0.02336
+     0.55856,
+     0.0231
     ]
    },
    "resourceName": "shield_7_3",
@@ -7102,12 +6832,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.43862,
-     0.01949
+     0.5758,
+     0.03068
     ],
     "secondary": [
-     0.62273,
-     0.07829
+     0.64228,
+     0.08117
     ]
    },
    "resourceName": "shield_7_4",
@@ -7181,24 +6911,19 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "emissive": "shield_7_5_mask_emissive",
     "primary": "shield_7_5_mask_primary",
     "secondary": "shield_7_5_mask_secondary"
    },
    "name": "Bone Paragon V",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.7776,
-     0.13579
-    ],
     "primary": [
-     0.30346,
-     0.01307
+     0.83821,
+     0.10403
     ],
     "secondary": [
-     0.84436,
-     0.09842
+     0.30325,
+     0.00479
     ]
    },
    "resourceName": "shield_7_5",
@@ -7272,24 +6997,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "leather": "shield_8_1_mask_leather",
-    "primary": "shield_8_1_mask_primary",
-    "secondary": "shield_8_1_mask_secondary"
+    "primary": "shield_8_1_mask_primary"
    },
    "name": "Verdigris Sigil I",
    "profileOverrides": {},
    "regionTone": {
-    "leather": [
-     0.47181,
-     0.0241
-    ],
     "primary": [
-     0.45983,
-     0.02341
-    ],
-    "secondary": [
-     0.47226,
-     0.02416
+     0.45834,
+     0.0233
     ]
    },
    "resourceName": "shield_8_1",
@@ -7369,8 +7084,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.49033,
-     0.01989
+     0.49202,
+     0.01998
     ]
    },
    "resourceName": "shield_8_2",
@@ -7444,19 +7159,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_8_3_mask_primary",
-    "trim": "shield_8_3_mask_trim"
+    "primary": "shield_8_3_mask_primary"
    },
    "name": "Verdigris Sigil III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.44572,
-     0.01345
-    ],
-    "trim": [
-     0.44257,
-     0.02019
+     0.56232,
+     0.0216
     ]
    },
    "resourceName": "shield_8_3",
@@ -7530,19 +7240,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_8_4_mask_primary",
-    "secondary": "shield_8_4_mask_secondary"
+    "primary": "shield_8_4_mask_primary"
    },
    "name": "Verdigris Sigil IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.3723,
-     0.00569
-    ],
-    "secondary": [
-     0.60547,
-     0.01047
+     0.56734,
+     0.00896
     ]
    },
    "resourceName": "shield_8_4",
@@ -7616,24 +7321,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_8_5_mask_primary",
-    "secondary": "shield_8_5_mask_secondary",
-    "trim": "shield_8_5_mask_trim"
+    "primary": "shield_8_5_mask_primary"
    },
    "name": "Verdigris Sigil V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.27384,
-     0.00472
-    ],
-    "secondary": [
-     0.63823,
-     0.02077
-    ],
-    "trim": [
-     0.79859,
-     0.01008
+     0.7109,
+     0.0162
     ]
    },
    "resourceName": "shield_8_5",
@@ -7707,19 +7402,14 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
-    "primary": "store_weapon_shard_mask_primary",
-    "secondary": "store_weapon_shard_mask_secondary"
+    "primary": "store_weapon_shard_mask_primary"
    },
    "name": "Crystal Shard",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.84778,
-     0.03665
-    ],
-    "secondary": [
-     0.72721,
-     0.09949
+     0.79847,
+     0.06575
     ]
    },
    "resourceName": "store_weapon_shard",
@@ -7793,19 +7483,14 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
-    "primary": "store_weapon_reel_mask_primary",
-    "secondary": "store_weapon_reel_mask_secondary"
+    "primary": "store_weapon_reel_mask_primary"
    },
    "name": "Film Reel Blade",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.80994,
-     0.01616
-    ],
-    "secondary": [
-     0.80499,
-     0.01536
+     0.7759,
+     0.01875
     ]
    },
    "resourceName": "store_weapon_reel",
@@ -7879,24 +7564,24 @@
    "kind": "hammer",
    "layer": "front",
    "maskResources": {
-    "emissive": "store_weapon_gem_mask_emissive",
     "primary": "store_weapon_gem_mask_primary",
-    "secondary": "store_weapon_gem_mask_secondary"
+    "secondary": "store_weapon_gem_mask_secondary",
+    "trim": "store_weapon_gem_mask_trim"
    },
    "name": "Gem Hammer",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.74989,
-     0.1158
-    ],
     "primary": [
-     0.68545,
-     0.03021
+     0.6877,
+     0.03019
     ],
     "secondary": [
-     0.47379,
-     0.06436
+     0.47771,
+     0.06483
+    ],
+    "trim": [
+     0.75168,
+     0.11621
     ]
    },
    "resourceName": "store_weapon_gem",
@@ -7977,12 +7662,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.52388,
-     0.07441
+     0.53471,
+     0.07635
     ],
     "secondary": [
-     0.70118,
-     0.11005
+     0.70152,
+     0.1101
     ]
    },
    "resourceName": "store_weapon_staff",
@@ -8063,12 +7748,12 @@
    "profileOverrides": {},
    "regionTone": {
     "emissive": [
-     0.87823,
-     0.14848
+     0.84905,
+     0.1416
     ],
     "primary": [
-     0.82089,
-     0.02605
+     0.82937,
+     0.02563
     ]
    },
    "resourceName": "store_weapon_stormblade",
@@ -8148,8 +7833,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.76624,
-     0.02372
+     0.77395,
+     0.0238
     ]
    },
    "resourceName": "store_weapon_chevron",
@@ -8224,23 +7909,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "store_weapon_ruby_mask_primary",
-    "secondary": "store_weapon_ruby_mask_secondary",
-    "trim": "store_weapon_ruby_mask_trim"
+    "secondary": "store_weapon_ruby_mask_secondary"
    },
    "name": "Ruby Fang",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.60972,
-     0.16958
+     0.61348,
+     0.17068
     ],
     "secondary": [
-     0.71424,
-     0.11393
-    ],
-    "trim": [
-     0.30956,
-     0.03357
+     0.63751,
+     0.09936
     ]
    },
    "resourceName": "store_weapon_ruby",
@@ -8314,24 +7994,19 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
-    "emissive": "store_weapon_arcane_mask_emissive",
     "primary": "store_weapon_arcane_mask_primary",
     "secondary": "store_weapon_arcane_mask_secondary"
    },
    "name": "Arcane Edge",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.75957,
-     0.11693
-    ],
     "primary": [
-     0.74984,
-     0.10794
+     0.74347,
+     0.10323
     ],
     "secondary": [
-     0.55688,
-     0.04158
+     0.73282,
+     0.11129
     ]
    },
    "resourceName": "store_weapon_arcane",
@@ -8412,12 +8087,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.8657,
-     0.02245
+     0.88183,
+     0.01899
     ],
     "secondary": [
-     0.73091,
-     0.11651
+     0.71978,
+     0.13496
     ]
    },
    "resourceName": "store_weapon_fireworkBlade",
@@ -8491,24 +8166,19 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "emissive": "store_shield_crux_mask_emissive",
     "primary": "store_shield_crux_mask_primary",
     "secondary": "store_shield_crux_mask_secondary"
    },
    "name": "Azure Aegis",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.8019,
-     0.13096
-    ],
     "primary": [
-     0.59224,
-     0.10931
+     0.64201,
+     0.08572
     ],
     "secondary": [
-     0.70262,
-     0.05463
+     0.80371,
+     0.13127
     ]
    },
    "resourceName": "store_shield_crux",
@@ -8589,12 +8259,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.83495,
-     0.02283
+     0.83704,
+     0.02296
     ],
     "secondary": [
-     0.53715,
-     0.17079
+     0.53706,
+     0.17082
     ]
    },
    "resourceName": "store_shield_templar",

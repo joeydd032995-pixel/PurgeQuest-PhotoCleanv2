@@ -104,6 +104,13 @@ def nearest_open(mask: np.ndarray, x: int, y: int, limit: int = 60) -> Optional[
 
 # ---------------------------------------------------------------- masks
 
+# Chromaticity distance below which two colour clusters are one material (see _features), and the hue angle (with a
+# minimum chroma, so greys with an unstable hue never qualify) within which two coloured clusters are one material.
+MERGE_DISTANCE = 0.05
+HUE_MERGE_DEGREES = 15.0
+HUE_MERGE_MIN_CHROMA = 0.03
+
+
 def _kmeans(feat: np.ndarray, k: int, iters: int = 14) -> np.ndarray:
     rng = np.random.default_rng(7)
     centers = [feat[rng.integers(len(feat))]]
@@ -122,8 +129,48 @@ def _kmeans(feat: np.ndarray, k: int, iters: int = 14) -> np.ndarray:
 
 
 def _features(rgb: np.ndarray) -> np.ndarray:
-    lab = ops.rgb_to_lab(rgb)
-    return np.concatenate([lab[..., 1:3], 0.12 * lab[..., 0:1]], axis=-1)
+    """Lightness-independent chromaticity (OKLab a, b over lightness + 0.25). A light and a dark shade of one material
+    (a lit plank and a shaded one, a rim and its highlight stripes) land at the same point, so shading never splits
+    a material across regions; different hues and neutral-versus-coloured stay apart."""
+    lab = ops.rgb_to_oklab(rgb)
+    return lab[..., 1:3] / (lab[..., 0:1] + 0.25)
+
+
+def _cluster_hue(members: np.ndarray, units: np.ndarray, chroma: np.ndarray, c: int):
+    """(mean hue direction as a unit vector, mean chroma) of cluster c."""
+    sel = members == c
+    v = units[sel].mean(axis=0) if sel.any() else np.zeros(2)
+    return v / max(float(np.linalg.norm(v)), 1e-9), (float(chroma[sel].mean()) if sel.any() else 0.0)
+
+
+def _merge_close(centers: np.ndarray, members: np.ndarray, tau: float, units: np.ndarray = None,
+                 chroma: np.ndarray = None):
+    """Merge clusters that are one material, so a single material is never cut into several regions just because
+    k-means was asked for k: centres closer than tau, or two clearly coloured clusters of the same hue (a highlight
+    tint is a paler, less saturated version of its base). Returns (centers, members) with members relabelled."""
+    centers = [c.copy() for c in centers]
+    members = members.copy()
+    cos_tol = math.cos(math.radians(HUE_MERGE_DEGREES))
+    while len(centers) > 1:
+        best = None
+        for i in range(len(centers)):
+            for j in range(i + 1, len(centers)):
+                d = float(np.linalg.norm(centers[i] - centers[j]))
+                same = d < tau
+                if not same and units is not None:
+                    (ui, ci), (uj, cj) = _cluster_hue(members, units, chroma, i), _cluster_hue(members, units, chroma, j)
+                    same = ci >= HUE_MERGE_MIN_CHROMA and cj >= HUE_MERGE_MIN_CHROMA and float(ui @ uj) >= cos_tol
+                if same and (best is None or d < best[0]):
+                    best = (d, i, j)
+        if best is None:
+            break
+        _, i, j = best
+        ni, nj = int((members == i).sum()), int((members == j).sum())
+        centers[i] = (centers[i] * ni + centers[j] * nj) / max(ni + nj, 1)
+        members[members == j] = i
+        members[members > j] -= 1
+        centers.pop(j)
+    return np.array(centers), members
 
 
 def _layer_weight(img: Image.Image):
@@ -221,30 +268,34 @@ class RegionModel:
     """Pack-wide clustering so 'primary' etc. mean the same material on every armor layer."""
 
     def __init__(self, layers: List["Layer"], max_regions: int = 4, hair_region: Optional[str] = None):
-        pts = []
+        pts, lights, chromas, dirs = [], [], [], []
         for l in layers:
             rgb, alpha, body, _, _ = _layer_weight(l.image)
             if body.sum() < 30:
                 continue
-            f = _features(rgb)[body]
+            lab = ops.rgb_to_oklab(rgb)
+            f = (lab[..., 1:3] / (lab[..., 0:1] + 0.25))[body]
+            light, chroma_px = lab[..., 0][body], np.hypot(lab[..., 1], lab[..., 2])[body]
+            unit = lab[..., 1:3][body] / np.maximum(chroma_px, 1e-9)[:, None]
             # sample in proportion to area, so the primary/secondary ranking follows real pixel area
             take = np.random.default_rng(5).choice(len(f), min(len(f), max(2000, len(f) // 3)), replace=False)
-            pts.append(f[take])
+            pts.append(f[take]); lights.append(light[take]); chromas.append(chroma_px[take]); dirs.append(unit[take])
         self.valid = bool(pts)
         if not self.valid:
             return
-        feat = np.concatenate(pts)
+        feat, light, chroma_px, units = (np.concatenate(pts), np.concatenate(lights), np.concatenate(chromas),
+                                         np.concatenate(dirs))
         k = min(max_regions, 4)
-        self.centers = _kmeans(feat, k)
-        d2 = ((feat[:, None, :] - self.centers[None]) ** 2).sum(-1)
-        hard = d2.argmin(1)
+        centers = _kmeans(feat, k)
+        hard = ((feat[:, None, :] - centers[None]) ** 2).sum(-1).argmin(1)
+        self.centers, hard = _merge_close(centers, hard, MERGE_DISTANCE, units, chroma_px)
+        k = len(self.centers)
         areas = np.array([(hard == c).mean() for c in range(k)])
         self.keep = [int(c) for c in np.argsort(-areas) if areas[c] >= 0.04] or [int(np.argmax(areas))]
-        chroma = np.hypot(self.centers[:, 0], self.centers[:, 1])
         order, names = ["primary", "secondary", "trim", "leather"], []
         for c in self.keep:
-            light = self.centers[c][2] / 0.12
-            if chroma[c] > 52 and light > 58 and "emissive" not in names:
+            sel = hard == c
+            if chroma_px[sel].mean() >= 0.15 and light[sel].mean() >= 0.72 and "emissive" not in names:
                 names.append("emissive")
             else:
                 names.append(order.pop(0) if order else "trim")
