@@ -42,6 +42,7 @@ class Layer:
     image: Image.Image        # RGBA, same pixel size as the original part
     masks: Dict[str, Image.Image] = field(default_factory=dict)   # region -> L
     region_tone: Dict[str, List[float]] = field(default_factory=dict)   # region -> [mean OKLab L, mean OKLab chroma]
+    mask_outline: Optional[np.ndarray] = None   # authored ink policy, when dark fabric resembles linework
 
     @property
     def suffix(self) -> str:
@@ -104,13 +105,6 @@ def nearest_open(mask: np.ndarray, x: int, y: int, limit: int = 60) -> Optional[
 
 # ---------------------------------------------------------------- masks
 
-# Chromaticity distance below which two colour clusters are one material (see _features), and the hue angle (with a
-# minimum chroma, so greys with an unstable hue never qualify) within which two coloured clusters are one material.
-MERGE_DISTANCE = 0.05
-HUE_MERGE_DEGREES = 15.0
-HUE_MERGE_MIN_CHROMA = 0.03
-
-
 def _kmeans(feat: np.ndarray, k: int, iters: int = 14) -> np.ndarray:
     rng = np.random.default_rng(7)
     centers = [feat[rng.integers(len(feat))]]
@@ -129,55 +123,24 @@ def _kmeans(feat: np.ndarray, k: int, iters: int = 14) -> np.ndarray:
 
 
 def _features(rgb: np.ndarray) -> np.ndarray:
-    """Lightness-independent chromaticity (OKLab a, b over lightness + 0.25). A light and a dark shade of one material
-    (a lit plank and a shaded one, a rim and its highlight stripes) land at the same point, so shading never splits
-    a material across regions; different hues and neutral-versus-coloured stay apart."""
-    lab = ops.rgb_to_oklab(rgb)
-    return lab[..., 1:3] / (lab[..., 0:1] + 0.25)
+    lab = ops.rgb_to_lab(rgb)
+    return np.concatenate([lab[..., 1:3], 0.12 * lab[..., 0:1]], axis=-1)
 
 
-def _cluster_hue(members: np.ndarray, units: np.ndarray, chroma: np.ndarray, c: int):
-    """(mean hue direction as a unit vector, mean chroma) of cluster c."""
-    sel = members == c
-    v = units[sel].mean(axis=0) if sel.any() else np.zeros(2)
-    return v / max(float(np.linalg.norm(v)), 1e-9), (float(chroma[sel].mean()) if sel.any() else 0.0)
-
-
-def _merge_close(centers: np.ndarray, members: np.ndarray, tau: float, units: np.ndarray = None,
-                 chroma: np.ndarray = None):
-    """Merge clusters that are one material, so a single material is never cut into several regions just because
-    k-means was asked for k: centres closer than tau, or two clearly coloured clusters of the same hue (a highlight
-    tint is a paler, less saturated version of its base). Returns (centers, members) with members relabelled."""
-    centers = [c.copy() for c in centers]
-    members = members.copy()
-    cos_tol = math.cos(math.radians(HUE_MERGE_DEGREES))
-    while len(centers) > 1:
-        best = None
-        for i in range(len(centers)):
-            for j in range(i + 1, len(centers)):
-                d = float(np.linalg.norm(centers[i] - centers[j]))
-                same = d < tau
-                if not same and units is not None:
-                    (ui, ci), (uj, cj) = _cluster_hue(members, units, chroma, i), _cluster_hue(members, units, chroma, j)
-                    same = ci >= HUE_MERGE_MIN_CHROMA and cj >= HUE_MERGE_MIN_CHROMA and float(ui @ uj) >= cos_tol
-                if same and (best is None or d < best[0]):
-                    best = (d, i, j)
-        if best is None:
-            break
-        _, i, j = best
-        ni, nj = int((members == i).sum()), int((members == j).sum())
-        centers[i] = (centers[i] * ni + centers[j] * nj) / max(ni + nj, 1)
-        members[members == j] = i
-        members[members > j] -= 1
-        centers.pop(j)
-    return np.array(centers), members
-
-
-def _layer_weight(img: Image.Image):
+def _layer_weight(img: Image.Image, ink_palette: bool = False, protect_ink: bool = False):
     """(rgb, alpha, body, weight, outline). `weight` keeps dark *shading* (the OKLab recolor handles it) and
     removes only the thin dark outline strokes, softly, so masks never reach the linework."""
     rgb, alpha = ops.arrays(img)
-    outline = ops.outline_mask(rgb, alpha)
+    if ink_palette:
+        # These three packs use near-neutral #1a1917 ink. Their navy cloth
+        # is dark but chromatic: treating all dark pixels as ink leaves
+        # sleeves/boots uncoloured with only their decorations changing.
+        near_ink = np.linalg.norm(rgb * 255 - np.array([26, 25, 23]), axis=-1) < 16
+        outline = ((ops.lum(rgb) < 0.10) | near_ink) & (alpha > 0.08)
+    else:
+        outline = ops.outline_mask(rgb, alpha)
+    if protect_ink:
+        outline |= (np.linalg.norm(rgb * 255 - np.array([26, 25, 23]), axis=-1) < 16) & (alpha > 0.08)
     soft_out = ops.blur(outline.astype(np.float32), 0.8)
     body = (alpha > 0.5) & ~outline
     # outline pixels get exactly zero; the feather lives on the fill side, so linework is never tinted
@@ -268,34 +231,30 @@ class RegionModel:
     """Pack-wide clustering so 'primary' etc. mean the same material on every armor layer."""
 
     def __init__(self, layers: List["Layer"], max_regions: int = 4, hair_region: Optional[str] = None):
-        pts, lights, chromas, dirs = [], [], [], []
+        pts = []
         for l in layers:
             rgb, alpha, body, _, _ = _layer_weight(l.image)
             if body.sum() < 30:
                 continue
-            lab = ops.rgb_to_oklab(rgb)
-            f = (lab[..., 1:3] / (lab[..., 0:1] + 0.25))[body]
-            light, chroma_px = lab[..., 0][body], np.hypot(lab[..., 1], lab[..., 2])[body]
-            unit = lab[..., 1:3][body] / np.maximum(chroma_px, 1e-9)[:, None]
+            f = _features(rgb)[body]
             # sample in proportion to area, so the primary/secondary ranking follows real pixel area
             take = np.random.default_rng(5).choice(len(f), min(len(f), max(2000, len(f) // 3)), replace=False)
-            pts.append(f[take]); lights.append(light[take]); chromas.append(chroma_px[take]); dirs.append(unit[take])
+            pts.append(f[take])
         self.valid = bool(pts)
         if not self.valid:
             return
-        feat, light, chroma_px, units = (np.concatenate(pts), np.concatenate(lights), np.concatenate(chromas),
-                                         np.concatenate(dirs))
+        feat = np.concatenate(pts)
         k = min(max_regions, 4)
-        centers = _kmeans(feat, k)
-        hard = ((feat[:, None, :] - centers[None]) ** 2).sum(-1).argmin(1)
-        self.centers, hard = _merge_close(centers, hard, MERGE_DISTANCE, units, chroma_px)
-        k = len(self.centers)
+        self.centers = _kmeans(feat, k)
+        d2 = ((feat[:, None, :] - self.centers[None]) ** 2).sum(-1)
+        hard = d2.argmin(1)
         areas = np.array([(hard == c).mean() for c in range(k)])
         self.keep = [int(c) for c in np.argsort(-areas) if areas[c] >= 0.04] or [int(np.argmax(areas))]
+        chroma = np.hypot(self.centers[:, 0], self.centers[:, 1])
         order, names = ["primary", "secondary", "trim", "leather"], []
         for c in self.keep:
-            sel = hard == c
-            if chroma_px[sel].mean() >= 0.15 and light[sel].mean() >= 0.72 and "emissive" not in names:
+            light = self.centers[c][2] / 0.12
+            if chroma[c] > 52 and light > 58 and "emissive" not in names:
                 names.append("emissive")
             else:
                 names.append(order.pop(0) if order else "trim")
@@ -320,6 +279,58 @@ class RegionModel:
                 continue
             out[nm] = Image.fromarray((m * 255 + 0.5).astype(np.uint8), "L")
         return out, {}
+
+
+def semantic_masks(img: Image.Image, spec: dict):
+    """Authored material boundaries for art whose similarly coloured materials confuse clustering.
+
+    Vote over connected fill cells, not individual pigment colours: a hood highlight and
+    shadow are still the same cloth. Keep linework excluded and feather only on the fill
+    side. Unoutlined details (Seer's gold runes) have an explicit source-palette rule.
+    """
+    from PIL import ImageDraw
+    rgb, alpha, body, weight, outline = _layer_weight(img, spec.get("outline") == "ink_palette", protect_ink=True)
+    names = list(dict.fromkeys([spec["default"]] + [p["region"] for p in spec.get("polygons", [])]))
+    authored = Image.new("I", img.size, 0)
+    draw = ImageDraw.Draw(authored)
+    for polygon in spec.get("polygons", []):
+        draw.polygon([tuple(p) for p in polygon["points"]], fill=names.index(polygon["region"]))
+    hard = np.asarray(authored, dtype=np.int16)
+    cells, count = ops.label(body)
+    labels = hard.copy()
+    for cell in range(1, count + 1) if spec.get("snap_cells", True) else ():
+        pixels = cells == cell
+        votes = np.bincount(hard[pixels], minlength=len(names))
+        labels[pixels] = int(votes.argmax())
+    labels[~body] = -1
+    masks = dict(zip(names, _soft_partition(labels, len(names), weight)))
+    for detail in spec.get("details", []):
+        distance = np.min([np.linalg.norm(rgb * 255 - np.array(c), axis=-1) for c in detail["colors"]], axis=0)
+        match = 1 - ops.smoothstep(distance, detail["tolerance"] / 2, detail["tolerance"])
+        if "box" in detail:
+            x0, y0, x1, y1 = detail["box"]
+            yy, xx = np.mgrid[:alpha.shape[0], :alpha.shape[1]]
+            match *= (xx >= x0) & (xx < x1) & (yy >= y0) & (yy < y1)
+        source = detail["within"]
+        transfer = masks[source] * match
+        masks[source] = masks[source] - transfer
+        masks[detail["region"]] = masks.get(detail["region"], 0) + transfer
+    return {name: Image.fromarray((np.clip(mask, 0, 1) * 255 + 0.5).astype(np.uint8), "L")
+            for name, mask in masks.items() if mask.sum() >= 40}, {}
+
+
+def apply_semantic_masks(pid: str, layers: List["Layer"]) -> None:
+    import json
+    from pathlib import Path
+    specs = json.loads(Path(__file__).with_name("semantic_regions.json").read_text()).get(pid, {})
+    for layer in layers:
+        # Bare procedural anatomy keeps its skin mask. These rules apply to
+        # the visible painted clothing/hair; original hands are anatomy-only.
+        if layer.kind not in ("armor", "headgear") or layer.part not in specs:
+            continue
+        spec = specs[layer.part]
+        layer.masks, layer.region_tone = semantic_masks(layer.image, spec)
+        layer.mask_outline = _layer_weight(layer.image, spec.get("outline") == "ink_palette", protect_ink=True)[4]
 
 
 def skin_masks(img: Image.Image, name: str = "skin"):
@@ -523,6 +534,7 @@ def _finish(race_dir, variant, imgs, layers, notes, skin, window_found, override
     model = RegionModel(armor_layers, hair_region=overrides.get("hair_region"))
     for layer in armor_layers:
         layer.masks, layer.region_tone = model.masks(layer.image, layer.kind)
+    apply_semantic_masks(scml.pack_id(race_dir, variant), layers)
     # bare head layers carry skin + (where the head is skin) nothing else
     faces: List[Layer] = []
     pid = scml.pack_id(race_dir, variant)

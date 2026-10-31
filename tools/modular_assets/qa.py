@@ -63,13 +63,7 @@ def recolor(img: Image.Image, masks: Dict[str, Image.Image], tones: Dict[str, Li
             colors: Dict[str, Tuple[float, float, float]]) -> Image.Image:
     """Reference implementation of the on-device recolor (RecolorMath.recolor): OKLab, shading-preserving."""
     rgb, a = ops.arrays(img)
-    out = rgb.astype(np.float64)
-    for name, col in colors.items():
-        if name not in masks:
-            continue
-        m = np.asarray(masks[name], np.float64) / 255.0
-        tone = tones.get(name) or [0.6, 0.1]
-        out = ops.recolor_pixels(out, col, tone, m)
+    out = ops.recolor_materials(rgb, masks, tones, colors)
     return ops.from_arrays(out.astype(np.float32), a)
 
 

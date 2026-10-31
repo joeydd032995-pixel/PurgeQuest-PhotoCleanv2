@@ -75,7 +75,14 @@
        1.64
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.964392,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -147,6 +154,13 @@
       ]
      },
      "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.951508,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     },
      "stringAlignment": {
       "forest_ranger_v1": {
        "frames": 3,
@@ -239,7 +253,14 @@
        1.584
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.964971,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -325,7 +346,14 @@
        1.493
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.974765,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -411,7 +439,14 @@
        1.643
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.925173,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -492,7 +527,14 @@
        1.554
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.913014,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -573,7 +615,14 @@
        1.625
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.959953,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -654,7 +703,14 @@
        1.507
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.963334,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -735,7 +791,14 @@
        1.669
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.951934,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -816,7 +879,14 @@
        1.669
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.934722,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -897,7 +967,14 @@
        1.666
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.922772,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -983,7 +1060,14 @@
        1.677
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.933733,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1064,7 +1148,14 @@
        1.692
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.909589,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1145,7 +1236,14 @@
        1.696
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.973555,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1226,7 +1324,14 @@
        1.69
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.972996,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1312,7 +1417,14 @@
        1.688
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.967576,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1403,7 +1515,14 @@
        1.683
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.958036,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1489,7 +1608,14 @@
        1.69
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.962141,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1575,7 +1701,14 @@
        1.66
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.964646,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1661,7 +1794,14 @@
        1.656
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.964806,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1747,7 +1887,14 @@
        1.652
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.965554,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1838,7 +1985,14 @@
        1.663
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.956629,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -1924,7 +2078,14 @@
        1.673
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.921226,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2010,7 +2171,14 @@
        1.683
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.95563,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2096,7 +2264,14 @@
        1.681
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.934626,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2182,7 +2357,14 @@
        1.672
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.949989,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2268,7 +2450,14 @@
        1.667
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.943948,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2354,7 +2543,14 @@
        1.653
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.948201,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2435,7 +2631,14 @@
        1.654
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.948629,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2521,7 +2724,14 @@
        1.65
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.944901,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2612,7 +2822,14 @@
        1.647
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.909771,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2703,7 +2920,14 @@
        1.649
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.940258,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2794,7 +3018,14 @@
        1.695
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.942317,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2875,7 +3106,14 @@
        1.679
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.961738,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -2956,7 +3194,14 @@
        1.675
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.938557,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3037,7 +3282,14 @@
        1.697
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.967369,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3118,7 +3370,14 @@
        1.678
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.965791,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3204,7 +3463,14 @@
        1.669
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.944614,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3295,7 +3561,14 @@
        1.657
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.970348,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3386,7 +3659,14 @@
        1.65
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.971132,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3477,7 +3757,14 @@
        1.642
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.971802,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3568,7 +3855,14 @@
        1.652
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.963815,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3659,7 +3953,14 @@
        1.657
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.956967,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3745,7 +4046,14 @@
        1.658
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.96981,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3831,7 +4139,14 @@
        1.662
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.969768,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -3917,7 +4232,14 @@
        1.656
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.973101,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4003,7 +4325,14 @@
        1.651
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.969601,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4089,7 +4418,14 @@
        1.685
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.955983,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4170,7 +4506,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.916128,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4251,7 +4594,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.963175,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4337,7 +4687,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.891385,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4423,7 +4780,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.886207,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4504,7 +4868,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.919184,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4585,7 +4956,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.899632,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4666,7 +5044,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.857343,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4752,7 +5137,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.885742,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4833,7 +5225,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.935776,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4914,7 +5313,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.96162,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -4995,7 +5401,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.869652,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5076,7 +5489,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.932097,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5157,7 +5577,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.929609,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5238,7 +5665,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.959554,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5324,7 +5758,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.971673,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5405,7 +5846,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.89631,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5486,7 +5934,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.954997,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5572,7 +6027,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.918002,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5653,7 +6115,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.933138,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5739,7 +6208,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.961635,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5820,7 +6296,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.863506,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5901,7 +6384,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.865878,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -5982,7 +6472,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.926588,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6063,7 +6560,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.957669,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6149,7 +6653,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.971982,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6230,7 +6741,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.852918,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6311,7 +6829,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.944775,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6397,7 +6922,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.941233,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6483,7 +7015,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.949945,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6564,7 +7103,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.974517,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6645,7 +7191,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.870377,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6726,7 +7279,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.867216,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6807,7 +7367,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.872888,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6893,7 +7460,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.851409,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -6979,7 +7553,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.88875,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7060,7 +7641,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.858996,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7141,7 +7729,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.919516,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7222,7 +7817,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.909632,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7303,7 +7905,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.930512,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7384,7 +7993,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.926454,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7465,7 +8081,14 @@
        1.699
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.980988,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7546,7 +8169,14 @@
        1.689
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.97776,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7637,7 +8267,14 @@
        1.687
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.973504,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7723,7 +8360,14 @@
        1.694
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.946433,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7809,7 +8453,14 @@
        1.687
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.987646,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7890,7 +8541,14 @@
        1.682
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.969617,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -7976,7 +8634,14 @@
        1.694
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.975579,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -8062,7 +8727,14 @@
        1.683
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.970622,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -8148,7 +8820,14 @@
        1.684
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.968669,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -8234,7 +8913,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.989869,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"
@@ -8320,7 +9006,14 @@
        1.0
       ]
      },
-     "gripOnItem": true
+     "gripOnItem": true,
+     "materialMasks": {
+      "algorithm": "chroma-cells-v5",
+      "alphaLeak": 0.0,
+      "coverage": 0.989869,
+      "overlap": 0.0,
+      "protectedLeak": 0.0
+     }
     },
     "automatedPass": true,
     "status": "candidate"

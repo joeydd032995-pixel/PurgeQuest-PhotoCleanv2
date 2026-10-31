@@ -40,7 +40,6 @@ DOCS = REPO / "docs" / "modular"
 # Things a reviewer should know about specific assets (found by looking at the renders; not computed).
 KNOWN_ISSUES = [
     (r"^golem_v\d\.(head|body)\.anatomy$", "anatomy-only stone: recolours through the single skin region, with no primary/secondary/trim"),
-    (r"^skeleton_crusader_v\d\.head\.headgear", "the helm band shares the helm's hue, so it recolours with the helm (not separate)"),
     (r"^valkyrie_v\d\.head\.headgear", "right cheek guard stays near-black; right-cheek blush recolours cream while the left stays pink"),
     (r"^Bone Paragon V$", "a small separate region inside the dark centre emblem"),
     (r"^Verdigris Sigil (III|IV)$", "inner emblem stays dark (close to the outline colour)"),
@@ -56,26 +55,46 @@ def git(*args: str) -> str:
 
 # ---------------------------------------------------------------- versions
 
-def set_history() -> List[dict]:
-    """Commits that changed the shipped art, oldest first, each with the files it touched."""
+ASSET_SETS = DOCS / "asset_sets.json"
+
+
+def load_passes() -> dict:
+    try:
+        return json.loads(ASSET_SETS.read_text())
+    except Exception:    # no curated list: one open pass
+        return {"current": "v1", "passes": [{"label": "v1", "name": "(docs/modular/asset_sets.json missing)", "commits": []}]}
+
+
+def set_history() -> tuple:
+    """(passes, wip). A pass is a named, deliberate change to the shipped art (docs/modular/asset_sets.json); its commits are
+    grouped by the prefixes listed there, and a commit in no pass joins the last one. Passes come back in the file's order
+    with the files they touched; ``wip`` means the working tree has art changes that are not committed yet."""
     out = git("log", "--reverse", "--format=@@%H|%h|%ad|%s", "--date=short", "--name-only", "--", *ART_PATHS)
-    sets: List[dict] = []
+    commits: List[dict] = []
     for line in out.splitlines():
         if line.startswith("@@"):
             full, short, date, subject = line[2:].split("|", 3)
-            sets.append({"commit": full, "short": short, "date": date, "subject": subject, "files": set()})
-        elif line.strip() and sets:
-            sets[-1]["files"].add(line.strip())
-    sets = [s for s in sets if s["files"]]
-    if not sets:    # no git history available (e.g. an export): every asset reads as unversioned source art
-        sets = [{"commit": "", "short": "no git history", "date": "", "subject": "git history unavailable", "files": set()}]
-    for i, s in enumerate(sets):
-        s["version"] = i + 1
-    wip = [l for l in git("status", "--porcelain", "--", *ART_PATHS).splitlines() if l.strip()]
-    if wip:
-        sets.append({"commit": "", "short": "working tree", "date": "", "subject": "uncommitted art changes",
-                     "files": {l[3:].strip() for l in wip}, "version": len(sets) + 1})
-    return sets
+            commits.append({"commit": full, "short": short, "date": date, "files": set()})
+        elif line.strip() and commits:
+            commits[-1]["files"].add(line.strip())
+    commits = [c for c in commits if c["files"]]
+    cfg = load_passes()
+    grouped = {p["label"]: {"label": p["label"], "name": p["name"], "commits": [], "commit": "", "short": "", "date": "",
+                            "files": set()} for p in cfg["passes"]}
+    last = cfg["passes"][-1]["label"]
+    for c in commits:
+        label_ = next((p["label"] for p in cfg["passes"] if any(c["commit"].startswith(x) for x in p["commits"])), last)
+        g = grouped[label_]
+        g["commits"].append(c["short"]); g["files"] |= c["files"]
+        g["commit"], g["short"], g["date"] = c["commit"], c["short"], c["date"]
+    wip_files = {l[3:].strip() for l in git("status", "--porcelain", "--", *ART_PATHS).splitlines() if l.strip()}
+    if wip_files:
+        grouped[cfg["current"]]["files"] |= wip_files
+    sets = [grouped[p["label"]] for p in cfg["passes"]
+            if grouped[p["label"]]["commits"] or p["label"] == cfg["current"]]
+    for i, g in enumerate(sets):
+        g["version"] = i + 1
+    return sets, bool(wip_files)
 
 
 def png_index() -> Dict[str, Path]:
@@ -96,8 +115,10 @@ def digest(paths: List[Path]) -> str:
 def version_info(paths: List[Path], sets: List[dict]) -> dict:
     files = {rel(p) for p in paths}
     touched = [s["version"] for s in sets if files & s["files"]]
+    names = {s["version"]: s["label"] for s in sets}
     return {"revision": len(touched), "createdIn": min(touched) if touched else None,
-            "lastChangedIn": max(touched) if touched else None, "hash": digest(paths)}
+            "lastChangedIn": max(touched) if touched else None,
+            "lastChangedLabel": names[max(touched)] if touched else None, "hash": digest(paths)}
 
 
 def prev_regions(sets: List[dict], manifest_rel: str) -> dict:
@@ -132,6 +153,19 @@ def region_flags(masks: Dict[str, np.ndarray]) -> List[str]:
     return flags
 
 
+def authored_coverage(index: Dict[str, Path], g: dict) -> Optional[float]:
+    """How much of the area authored-surfaces-v1 would recolour these masks cover (its own coverage metric). Low means the
+    masks leave a lot of dark fill, close to the outline colour, untouched."""
+    try:
+        import gear_materials
+        img = Image.open(index[g["resourceName"]]).convert("RGBA")
+        masks = {r: Image.open(index[n]).convert("L") for r, n in g.get("maskResources", {}).items() if n in index}
+        prot = gear_materials.protected_ink(img, exterior=g["resourceName"] not in gear_materials.HALO_RESOURCES)
+        return float(gear_materials.quality(img, masks, prot)["coverage"])
+    except Exception:
+        return None
+
+
 def known(asset_id: str, name: str = "") -> List[str]:
     return [msg for pat, msg in KNOWN_ISSUES if re.search(pat, asset_id) or (name and re.search(pat, name))]
 
@@ -139,7 +173,8 @@ def known(asset_id: str, name: str = "") -> List[str]:
 # ---------------------------------------------------------------- collect
 
 def collect() -> dict:
-    sets = set_history()
+    sets, wip = set_history()
+    cfg = load_passes()
     index = png_index()
     races = json.loads(RACES.read_text())
     gear = json.loads(GEAR.read_text())
@@ -177,6 +212,15 @@ def collect() -> dict:
         files = [index[n] for n in names if n in index and (n != g["resourceName"] or "store" in index[n].parts)]
         flags, notes = list(known(g["id"], g["name"])), []
         flags += region_flags(mask_arrays(index, g.get("maskResources", {})))
+        algorithm = g["verification"]["automated"].get("materialMasks", {}).get("algorithm")
+        authored = None
+        if algorithm and algorithm != "authored-surfaces-v1" and g.get("maskResources"):
+            authored = authored_coverage(index, g)
+            if authored is not None and authored < 0.60:
+                flags.append(f"leaves {100 * (1 - authored):.0f}% of the area authored-surfaces would recolour untouched "
+                             "(very dark fill near the outline colour)")
+            elif authored is not None and authored < 0.80:
+                notes.append(f"authored-surfaces coverage {authored:.2f}: some very dark fill stays dark")
         if g["verification"]["status"] != "candidate":
             flags.append(f"status {g['verification']['status']} (automated checks did not all pass)")
         gone = old_gear.get(g["id"], set()) - set(g.get("maskResources", {}))
@@ -184,10 +228,12 @@ def collect() -> dict:
             notes.append("regions merged vs the previous set (no longer separate): " + ", ".join(sorted(gone)))
         items.append({"id": g["id"], "name": g["name"], "kind": g["kind"], "group": g["group"],
                       "status": g["verification"]["status"], "regions": sorted(g.get("maskResources", {})),
-                      "supportedPacks": len(g["supportedPacks"]), "flags": flags, "notes": notes, **version_info(files, sets)})
-    current = sets[-1]
-    return {"setVersion": current["version"], "wip": not current["commit"], "sets": [
-        {k: v for k, v in s.items() if k != "files"} | {"filesChanged": len(s["files"])} for s in sets],
+                      "supportedPacks": len(g["supportedPacks"]), "maskAlgorithm": algorithm, "authoredCoverage":
+                      None if authored is None else round(authored, 3), "flags": flags, "notes": notes, **version_info(files, sets)})
+    current = next((x for x in sets if x["label"] == cfg["current"]), sets[-1])
+    return {"setVersion": current["version"], "currentLabel": current["label"], "wip": wip,
+            "head": git("rev-parse", "--short", "HEAD").strip(), "sets": [
+        {k: v for k, v in x.items() if k != "files"} | {"filesChanged": len(x["files"])} for x in sets],
         "counts": {"parts": len(parts), "gear": len(items), "candidate": sum(a["status"] == "candidate" for a in parts + items),
                    "verified": sum(a["status"] == "verified" for a in parts + items)},
         "parts": parts, "gear": items}
@@ -196,12 +242,11 @@ def collect() -> dict:
 # ---------------------------------------------------------------- markdown
 
 def label(inv: dict) -> str:
-    cur = inv["sets"][-1]
-    return f"v{inv['setVersion']}{'+wip' if inv['wip'] else ''}"
+    return f"{inv['currentLabel']}{'+wip' if inv['wip'] else ''}"
 
 
 def row(a: dict, name: str, cur: int) -> str:
-    chg = "source art" if a["lastChangedIn"] is None else "**changed**" if a["lastChangedIn"] == cur else f"v{a['lastChangedIn']}"
+    chg = "source art" if a["lastChangedIn"] is None else "**changed**" if a["lastChangedIn"] == cur else a["lastChangedLabel"]
     rev = "-" if a["lastChangedIn"] is None else f"r{a['revision']}"
     text = "; ".join(a["flags"] + [f"note: {n}" for n in a.get("notes", [])])
     return f"| {name} | {a['status']} | {rev} | {chg} | `#{a['hash']}` | {', '.join(a['regions']) or '-'} | {text} |"
@@ -216,9 +261,10 @@ def markdown(inv: dict) -> str:
          "- **last changed** — `changed` means this asset's pixels are new in the current set; otherwise the set it last changed in.",
          f"- {inv['counts']['parts']} race parts + {inv['counts']['gear']} held-gear items; {inv['counts']['candidate']} candidate, "
          f"{inv['counts']['verified']} verified (approval is a human gate).", "",
-         "## Set history", "", "| set | commit | date | what | files |", "|---|---|---|---|---|"]
+         "## Asset passes (named in `asset_sets.json`)", "", "| pass | commits | date | what | files |", "|---|---|---|---|---|"]
     for s in inv["sets"]:
-        L.append(f"| v{s['version']} | `{s['short']}` | {s['date']} | {s['subject'][:90]} | {s['filesChanged']} |")
+        commits = ", ".join(f"`{c}`" for c in s["commits"]) or "(the current set; no art commit of its own yet)"
+        L.append(f"| {s['label']} | {commits} | {s['date']} | {s['name'][:170]} | {s['filesChanged']} |")
     flagged = [a for a in inv["parts"] + inv["gear"] if a["flags"]]
     L += ["", f"## Needs attention ({len(flagged)} assets with flags)", "",
           "Flags are either computed (tiny regions, lost regions, mask coverage, fit) or recorded by hand from reviewing renders "
@@ -295,8 +341,7 @@ def make_sheets(inv: dict, out: Path) -> List[Path]:
     index = png_index()
     races = {p["id"]: p for p in json.loads(RACES.read_text())["parts"]}
     gear = {g["id"]: g for g in json.loads(GEAR.read_text())["items"]}
-    cur = inv["sets"][-1]
-    banner = (f"PurgeQuest modular asset set {label(inv)}  ·  commit {cur['short']}  ·  {cur['date'] or 'uncommitted'}  ·  "
+    banner = (f"PurgeQuest modular asset set {label(inv)}  ·  commit {inv['head']}  ·  "
               f"{inv['counts']['candidate']} candidate / {inv['counts']['verified']} verified  ·  r = revisions, # = content hash")
     paths: List[Path] = []
 
@@ -305,7 +350,7 @@ def make_sheets(inv: dict, out: Path) -> List[Path]:
         if a["lastChangedIn"] is None:
             chg, rev = "source art (unchanged)", "-"
         else:
-            chg = "CHANGED in this set" if a["lastChangedIn"] == inv["setVersion"] else f"last changed v{a['lastChangedIn']}"
+            chg = "CHANGED in this set" if a["lastChangedIn"] == inv["setVersion"] else f"last changed {a['lastChangedLabel']}"
             rev = f"r{a['revision']}"
         return (pic, name[:46], f"{rev}  #{a['hash']}  {chg}  [{a['status']}]", "; ".join(a["flags"]) or "")
 

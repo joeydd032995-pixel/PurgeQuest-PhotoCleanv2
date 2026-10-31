@@ -13,21 +13,25 @@ Everything here is produced by `tools/modular_assets/` (Python 3, Pillow + NumPy
 | 11 store weapon/shield sprites | `Art/Gear/store/` | `store_gear.py` |
 | QA sheets (layers, fit per body profile, gear, Titan) | `docs/modular/verification/` | the scripts above |
 | Checklist + status | `docs/modular/CHECKLIST.md`, `asset_status.json` | `checklist.py` |
-| **Versioned inventory of every asset** (set version, per-asset revision, content hash, attention flags) | `docs/modular/ASSET_INVENTORY.md`, `asset_inventory.json` | `inventory.py` |
+| **Versioned inventory of every asset** (pass label, per-asset revision, content hash, attention flags) | `docs/modular/ASSET_INVENTORY.md`, `asset_inventory.json`; pass names in `asset_sets.json` | `inventory.py` |
 
 ## Which set am I looking at?
 
-`inventory.py` stamps every asset from git, so the numbers cannot drift from the files: **set `vN`** is the Nth commit that changed the shipped art (`+wip` = uncommitted art changes), **`rK`** counts how many sets changed that asset, and **`#xxxxxxxx`** is a hash of its pixels, so two renders showing the same hash are the same asset. `python3 -I tools/modular_assets/inventory.py --sheets DIR` also writes contact sheets (one PNG per pack and gear group, each with the set banner and the same stamps) and a single PDF. The "Needs attention" section of `ASSET_INVENTORY.md` lists assets worth a second look: computed signals (tiny or stray regions, low mask coverage) plus issues recorded by hand from reviewing renders (`KNOWN_ISSUES` in the script). A flag means *look*, not *wrong*; notes (regions merged since the previous set, unsupported body profiles) are information.
+Assets ship in named **passes** (`asset_sets.json`): v4 = OKLab recolor; v4.1 = PR #11 (authored gear surfaces, corrected Lost Souls 1 / Elven 1 / Seer 2); v5 = PR #12 (chroma-cell gear and shield masks, also pinned at the `archive/asset-set-v5` branch); **v6 = the landed set**: every gear item uses the v5 masks, characters and tooling are #11's. `inventory.py` stamps every asset from git, so the numbers cannot drift from the files: **`rK`** counts how many passes changed that asset, **`last changed`** names the pass that last did (a gear mask that is pixel-identical to v5 reads v5, a character mask from #11 reads v4.1), and **`#xxxxxxxx`** is a hash of its pixels, so two renders showing the same hash are the same asset. The commit hash is the identity; the label is the name. `python3 -I tools/modular_assets/inventory.py --sheets DIR` also writes contact sheets (one PNG per pack and gear group, each with the set banner and the same stamps) and a single PDF. The "Needs attention" section of `ASSET_INVENTORY.md` lists assets worth a second look: computed signals (tiny or stray regions, low mask coverage, gear masks that leave a lot of what `authored-surfaces-v1` would recolour untouched) plus issues recorded by hand from reviewing renders (`KNOWN_ISSUES` in the script). A flag means *look*, not *wrong*.
 
 ## Regenerate
 
 ```sh
 python3 -I tools/modular_assets/store_gear.py        # store sprites + spec
 python3 -I tools/modular_assets/build_assets.py      # race layers, masks, races manifest, sheets (~6 min)
-python3 -I tools/modular_assets/held_gear.py         # held-gear manifest, masks, sheets
+python3 -I tools/modular_assets/held_gear.py         # held-gear manifest, material masks (default algorithm), fit sheets
+# Rebuild just materials while retaining all fitting/anchor data; pick the algorithm with --algorithm:
+python3 -I tools/modular_assets/held_gear.py --masks-only --no-sheets
+python3 -I tools/modular_assets/held_gear.py --masks-only --algorithm authored-surfaces-v1
 python3 -I tools/modular_assets/approvals.py apply   # re-stamp statuses from the ledger
 python3 -I tools/modular_assets/validate.py          # must exit 0
 python3 -I tools/modular_assets/checklist.py
+python3 -I tools/modular_assets/inventory.py         # versioned inventory (add --sheets DIR for contact sheets + PDF)
 python3 -I tools/modular_assets/tests/test_modular_assets.py
 ```
 
@@ -49,15 +53,15 @@ The art closes every region with a dark outline. The head's skin "face window" i
 
 ## Recoloring
 
-Masks are *adhesive*: each pixel is first assigned to a material region, but pixels beside an outline or the silhouette edge (anti-aliased blends whose colour is misleading) inherit the region of their nearest confident interior pixel, and a 5x5 vote removes speckle. Region names (`primary`, `secondary`, ...) are clustered per art pack (per sprite for held gear), so they mean the same material on every part.
-
-**A material is one region, however it is shaded.** Colour is clustered on a lightness-independent chromaticity (OKLab a, b over lightness), so a lit plank and a shaded one, or a rim and its highlight stripes, land together. Clusters closer than `MERGE_DISTANCE`, or two clearly coloured clusters within `HUE_MERGE_DEGREES` of the same hue (a pale tint of its base), merge. Inside one outline-bounded cell, a split between same-hue colours is shading and merges too (`merge_shading_splits`). Different hues, and neutral versus coloured, stay separate.
-
-**Linework never recolors.** `imgops.outline_mask` treats as outline: thin strokes and the small dark blobs where strokes meet; dark pixels within a stroke's width of the silhouette edge (the dark glow band some sprites have outside their stroke); and pixels of exactly the outline's own colour that belong to a ring around other fill (a doubled stroke along the top of a shield). A dark pixel counts as line work only if it is near the sprite's own measured outline colour, so dark brown planks or a navy robe stay paintable. Weights on outline pixels are exactly zero.
+Race-layer masks are *adhesive*: each pixel is first assigned to a material region by colour, but pixels beside an outline or the silhouette edge (anti-aliased blends whose colour is misleading) inherit the region of their nearest confident interior pixel, and a 5x5 vote removes speckle. Thin outlines and the small dark blobs where outlines meet are excluded, so linework never recolors. Region names (`primary`, `secondary`, ...) are clustered per art pack, so they mean the same material on every part.
 
 The recolor itself runs in OKLab (`imgops.recolor_pixels`, mirrored in `RecolorMath.swift`): a pixel keeps its lightness offset from its region's mean, so shadows, highlights and painted texture survive, re-centred on the chosen colour's lightness; the hue becomes the chosen colour's; chroma follows it, is modulated by how the source's chroma varied, and is fitted into the sRGB gamut so saturated colours desaturate instead of clipping. The region means (`regionTone`) are measured over the whole pack, so parts of one material keep their relative brightness. `tests/` and `ModularGearTests.swiftRecolorMatchesThePythonReference` pin the two implementations to each other.
 
 Limits to review: bare anatomy is procedural (flat fill, matching outline), not hand-painted; hair is not separately masked where it is baked into headgear; Golem/skeleton parts that *are* the material have no separate armor art.
+
+For the three reported model fixes and their idle/attack comparisons, see [Recolor fixes](recolor-fixes.md).
+Their authored semantic masks override clustering for the affected paints. Soft region boundaries in both Python and
+Swift blend independently from the original pixel, so applying multiple colors cannot recolor shading twice or depend on region order.
 
 ## Held gear model
 
@@ -66,3 +70,17 @@ Each item stores its grip (image px). Each pack stores the *hold* where its own 
 ## Local Swift checks
 
 `SWIFT_BIN=/path/to/swift tools/swift_harness/run.sh` compiles and runs the pure-Foundation suites on Linux (Swift 6.2). UIKit/SwiftUI code (`SpriteEngine`, Forge views) is compiled and tested only by Xcode/CI.
+
+See [Gear visual views](gear-visual-views.md) for original/recolored texture comparisons of all 99 weapons and shields.
+
+Held gear masks come from one of two algorithms, listed in `gear_algorithms.py`. Each gear item records which one made its masks (`verification.automated.materialMasks.algorithm`) and `validate.py` holds it to **that algorithm's own gate**, so neither is weakened by the other:
+
+| | `chroma-cells-v5` (shipped, `DEFAULT_ALGORITHM`) | `authored-surfaces-v1` (PR #11) |
+|---|---|---|
+| Source | `gear_masks_chroma.py` | `gear_materials.py` + `semantic_regions.json` |
+| Idea | derived from the sprite: lightness-independent colour clusters inside outline-bounded cells; same-hue shades and tints merge, so one material is one region | authored polygons per shield/staff set, aligned to the source outline; rims, bosses and inlays are separate regions |
+| Line work | found from the sprite (strokes, the dark glow band along the edge, rings in the outline's own colour); exactly zero weight | "protected ink": the known ink and border-shadow colours; never recoloured |
+| Dark fill | recoloured when it is clearly not the outline colour; the very darkest browns stay dark | very dark fill is protected |
+| Gate | coverage of paintable area at least 0.80; zero weight on line work; no alpha leak; overlap at most 0.02 | coverage at least 0.80 of its own paintable area; zero weight on protected ink; same alpha/overlap limits |
+
+To ship the other one: `python3 -I tools/modular_assets/held_gear.py --masks-only --algorithm authored-surfaces-v1`, then validate, test and regenerate the inventory. The tests in `GearMaterialRegression` check the authored algorithm on its own output; `ChromaCellsV5Assets` checks that the shipped masks regenerate pixel for pixel. See [gear recolor fixes](gear-recolor-fixes.md) (the authored pass) and [gear visual views](gear-visual-views.md) (the shipped masks).
