@@ -246,6 +246,22 @@ class Inventory(unittest.TestCase):
                 self.assertGreaterEqual(a["revision"], 1)
                 self.assertLessEqual(a["lastChangedIn"], self.inv["setVersion"])
 
+    def test_passes_are_named_and_every_stamp_names_a_known_pass(self):
+        import inventory
+        cfg = json.loads(inventory.ASSET_SETS.read_text())
+        labels = [s["label"] for s in self.inv["sets"]]
+        self.assertIn(cfg["current"], labels)
+        self.assertEqual(self.inv["currentLabel"], cfg["current"])
+        self.assertEqual(len(set(labels)), len(labels), "pass labels must be unique")
+        for a in self.inv["parts"] + self.inv["gear"]:
+            if a["lastChangedIn"] is not None:
+                self.assertIn(a["lastChangedLabel"], labels, a["id"])
+
+    def test_every_gear_item_names_the_algorithm_that_made_its_masks(self):
+        import gear_algorithms
+        for a in self.inv["gear"]:
+            self.assertIn(a["maskAlgorithm"], gear_algorithms.ALGORITHMS, a["id"])
+
     def test_untouched_source_art_is_only_face_overlays(self):
         # held-gear and layer assets always have masks or layers in the modular set; only the baked face overlays are source art
         if len(self.inv["sets"]) < 2:

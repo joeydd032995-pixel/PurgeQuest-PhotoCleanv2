@@ -66,7 +66,7 @@ def load_passes() -> dict:
 
 
 def set_history() -> tuple:
-    """(passes, wip). A pass is a named, deliberate change to the shipped art (docs/modular/asset_sets.json); its commits are
+    """(passes, wip, commit->pass rank, uncommitted art files). A pass is a named, deliberate change to the shipped art (docs/modular/asset_sets.json); its commits are
     grouped by the prefixes listed there, and a commit in no pass joins the last one. Passes come back in the file's order
     with the files they touched; ``wip`` means the working tree has art changes that are not committed yet."""
     out = git("log", "--reverse", "--format=@@%H|%h|%ad|%s", "--date=short", "--name-only", "--", *ART_PATHS)
@@ -82,8 +82,10 @@ def set_history() -> tuple:
     grouped = {p["label"]: {"label": p["label"], "name": p["name"], "commits": [], "commit": "", "short": "", "date": "",
                             "files": set()} for p in cfg["passes"]}
     last = cfg["passes"][-1]["label"]
+    commit_pass: Dict[str, str] = {}
     for c in commits:
         label_ = next((p["label"] for p in cfg["passes"] if any(c["commit"].startswith(x) for x in p["commits"])), last)
+        commit_pass[c["commit"]] = label_
         g = grouped[label_]
         g["commits"].append(c["short"]); g["files"] |= c["files"]
         g["commit"], g["short"], g["date"] = c["commit"], c["short"], c["date"]
@@ -94,7 +96,9 @@ def set_history() -> tuple:
             if grouped[p["label"]]["commits"] or p["label"] == cfg["current"]]
     for i, g in enumerate(sets):
         g["version"] = i + 1
-    return sets, bool(wip_files)
+    rank = {g["label"]: g["version"] for g in sets}
+    commit_rank = {h: rank[l] for h, l in commit_pass.items() if l in rank}
+    return sets, bool(wip_files), commit_rank, wip_files
 
 
 def png_index() -> Dict[str, Path]:
@@ -112,9 +116,30 @@ def digest(paths: List[Path]) -> str:
     return h.hexdigest()[:8]
 
 
-def version_info(paths: List[Path], sets: List[dict]) -> dict:
-    files = {rel(p) for p in paths}
-    touched = [s["version"] for s in sets if files & s["files"]]
+def file_ranks(paths: List[str], commit_rank: Dict[str, int], wip_files: set, current: int) -> Dict[str, set]:
+    """{file: ranks of the passes that produced its history}. Per-file `git log` is exact about which commit last produced
+    the file's current content (a merge that reverted a file to the other side's version counts for the other side), which
+    a single multi-path log is not. A merge that edited the file itself counts for the current pass; older source-art commits are not passes."""
+    from concurrent.futures import ThreadPoolExecutor
+
+    def one(path: str):
+        ranks = set()
+        for line in git("log", "--format=%H %P", "--", path).splitlines():
+            h, *parents = line.split()
+            if h in commit_rank:
+                ranks.add(commit_rank[h])
+            elif len(parents) > 1:      # a merge that edited this file itself belongs to the current pass
+                ranks.add(current)
+            # any other commit is older source-art history, not a pass
+        if path in wip_files:
+            ranks.add(current)
+        return path, ranks
+    with ThreadPoolExecutor(8) as pool:
+        return dict(pool.map(one, paths))
+
+
+def version_info(paths: List[Path], sets: List[dict], ranks: Dict[str, set]) -> dict:
+    touched = sorted(set().union(*(ranks.get(rel(p), set()) for p in paths))) if paths else []
     names = {s["version"]: s["label"] for s in sets}
     return {"revision": len(touched), "createdIn": min(touched) if touched else None,
             "lastChangedIn": max(touched) if touched else None,
@@ -173,11 +198,16 @@ def known(asset_id: str, name: str = "") -> List[str]:
 # ---------------------------------------------------------------- collect
 
 def collect() -> dict:
-    sets, wip = set_history()
+    sets, wip, commit_rank, wip_files = set_history()
     cfg = load_passes()
     index = png_index()
     races = json.loads(RACES.read_text())
     gear = json.loads(GEAR.read_text())
+    current_rank = next((x["version"] for x in sets if x["label"] == cfg["current"]), sets[-1]["version"])
+    asset_files = sorted({rel(index[n]) for p in races["parts"] for n in [p["resourceBaseName"], *p.get("maskResources", {}).values()] if n in index}
+                         | {rel(index[n]) for g in gear["items"] for n in [g["resourceName"], *g.get("maskResources", {}).values()]
+                            if n in index and (n != g["resourceName"] or "store" in index[n].parts)})
+    ranks = file_ranks(asset_files, commit_rank, wip_files, current_rank)
     old_parts = prev_regions(sets, "ios/PurgeQuest/Art/Modular/modular_races_manifest.json")
     old_gear = prev_regions(sets, "ios/PurgeQuest/Art/Modular/modular_gear_manifest.json")
     parts, items = [], []
@@ -206,7 +236,7 @@ def collect() -> dict:
         parts.append({"id": p["id"], "pack": p["pack"], "part": p["part"], "kind": p["kind"], "slot": p["slot"],
                       "status": p["verification"]["status"], "regions": p.get("materialRegions", []),
                       "unsupportedProfiles": unsupported, "flags": flags, "notes": notes,
-                      **version_info(files, sets)})
+                      **version_info(files, sets, ranks)})
     for g in gear["items"]:
         names = [g["resourceName"], *g.get("maskResources", {}).values()]
         files = [index[n] for n in names if n in index and (n != g["resourceName"] or "store" in index[n].parts)]
@@ -229,7 +259,7 @@ def collect() -> dict:
         items.append({"id": g["id"], "name": g["name"], "kind": g["kind"], "group": g["group"],
                       "status": g["verification"]["status"], "regions": sorted(g.get("maskResources", {})),
                       "supportedPacks": len(g["supportedPacks"]), "maskAlgorithm": algorithm, "authoredCoverage":
-                      None if authored is None else round(authored, 3), "flags": flags, "notes": notes, **version_info(files, sets)})
+                      None if authored is None else round(authored, 3), "flags": flags, "notes": notes, **version_info(files, sets, ranks)})
     current = next((x for x in sets if x["label"] == cfg["current"]), sets[-1])
     return {"setVersion": current["version"], "currentLabel": current["label"], "wip": wip,
             "head": git("rev-parse", "--short", "HEAD").strip(), "sets": [

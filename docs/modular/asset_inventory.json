@@ -1,8 +1,8 @@
 {
- "setVersion": 6,
+ "setVersion": 7,
  "currentLabel": "v6",
- "wip": true,
- "head": "f19bbfd",
+ "wip": false,
+ "head": "c7b836c",
  "sets": [
   {
    "label": "v1",
@@ -53,6 +53,20 @@
    "filesChanged": 1154
   },
   {
+   "label": "v4.1",
+   "name": "PR #11: authored-surface gear masks (authored-surfaces-v1) and corrected Lost Souls 1 / Elven 1 / Seer 2 character masks (developed in parallel from v4)",
+   "commits": [
+    "82d6c22",
+    "4aecd6e",
+    "951dc1a"
+   ],
+   "commit": "951dc1ac3a930fede3ae6bd225b8aed3be9dc58c",
+   "short": "951dc1a",
+   "date": "2026-10-31",
+   "version": 5,
+   "filesChanged": 350
+  },
+  {
    "label": "v5",
    "name": "PR #12: chroma-cell gear and shield masks (chroma-cells-v5), also pinned at archive/asset-set-v5 (developed in parallel from v4)",
    "commits": [
@@ -61,7 +75,7 @@
    "commit": "0cbec13f5a7113b25d05186c5a5078a8e113e77a",
    "short": "0cbec13",
    "date": "2026-10-31",
-   "version": 5,
+   "version": 6,
    "filesChanged": 687
   },
   {
@@ -71,8 +85,8 @@
    "commit": "",
    "short": "",
    "date": "",
-   "version": 6,
-   "filesChanged": 701
+   "version": 7,
+   "filesChanged": 0
   }
  ],
  "counts": {
@@ -119,10 +133,10 @@
    "notes": [
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "8da41700"
   },
   {
@@ -169,10 +183,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "c1e6a3fe"
   },
   {
@@ -218,10 +232,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "7b61af45"
   },
   {
@@ -267,10 +281,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "0cd3442e"
   },
   {
@@ -315,10 +329,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "d48e4f26"
   },
   {
@@ -363,10 +377,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "bf1a0145"
   },
   {
@@ -413,10 +427,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "08eedcf4"
   },
   {
@@ -463,10 +477,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "5bf41c80"
   },
   {
@@ -577,10 +591,10 @@
     "right cheek guard stays near-black; right-cheek blush recolours cream while the left stays pink"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "893f5ba1"
   },
   {
@@ -601,10 +615,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "62ddc637"
   },
   {
@@ -627,10 +641,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "29285f76"
   },
   {
@@ -676,10 +690,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "07a6a88d"
   },
   {
@@ -725,10 +739,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "55ced920"
   },
   {
@@ -749,10 +763,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "4747e4e3"
   },
   {
@@ -773,10 +787,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "ab671428"
   },
   {
@@ -825,10 +839,10 @@
     "body fit unsupported for: brute, skeletal, slender",
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "e496e084"
   },
   {
@@ -877,10 +891,10 @@
     "body fit unsupported for: brute, skeletal, slender",
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "cf1de0c2"
   },
   {
@@ -903,10 +917,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "a67ffdc9"
   },
   {
@@ -970,10 +984,10 @@
    "unsupportedProfiles": [],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "1f0c211f"
   },
   {
@@ -993,10 +1007,10 @@
     "right cheek guard stays near-black; right-cheek blush recolours cream while the left stays pink"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "14bf043b"
   },
   {
@@ -1043,10 +1057,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "0de54e00"
   },
   {
@@ -1093,10 +1107,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "08dfbfc4"
   },
   {
@@ -1143,10 +1157,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "b0071f4b"
   },
   {
@@ -1191,10 +1205,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "456c5db1"
   },
   {
@@ -1239,10 +1253,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "0e00f393"
   },
   {
@@ -1289,10 +1303,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "24369f6b"
   },
   {
@@ -1339,10 +1353,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "9897e7cc"
   },
   {
@@ -1365,10 +1379,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "0564fc3d"
   },
   {
@@ -1391,10 +1405,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "f12b75a1"
   },
   {
@@ -1417,10 +1431,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "5956e176"
   },
   {
@@ -1463,10 +1477,10 @@
    "notes": [
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "95c111e3"
   },
   {
@@ -1507,10 +1521,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "71d0826e"
   },
   {
@@ -1560,10 +1574,10 @@
     "body fit unsupported for: athletic, brute, standard",
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "65b86112"
   },
   {
@@ -1613,10 +1627,10 @@
     "body fit unsupported for: athletic, brute, standard",
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "d340e589"
   },
   {
@@ -1639,10 +1653,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "c4311378"
   },
   {
@@ -1665,10 +1679,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "df2ba161"
   },
   {
@@ -1718,8 +1732,8 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "973a8664"
   },
   {
@@ -1769,8 +1783,8 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "90820042"
   },
   {
@@ -1793,10 +1807,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "51a86642"
   },
   {
@@ -1819,10 +1833,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "c0065072"
   },
   {
@@ -1845,10 +1859,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "fa8c171b"
   },
   {
@@ -1889,10 +1903,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "7d7b0623"
   },
   {
@@ -1933,10 +1947,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "344a0b3b"
   },
   {
@@ -1986,10 +2000,10 @@
     "body fit unsupported for: athletic, brute, standard",
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "8cee53f3"
   },
   {
@@ -2039,10 +2053,10 @@
     "body fit unsupported for: athletic, brute, standard",
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "429141f7"
   },
   {
@@ -2065,10 +2079,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "fe97ca53"
   },
   {
@@ -2091,10 +2105,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "4a848ceb"
   },
   {
@@ -2142,10 +2156,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "c225d9b7"
   },
   {
@@ -2193,10 +2207,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "76074175"
   },
   {
@@ -2219,10 +2233,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "88e6a5f8"
   },
   {
@@ -2288,10 +2302,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "bf534a71"
   },
   {
@@ -2310,10 +2324,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "56c8efdb"
   },
   {
@@ -2354,10 +2368,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "3cf6092c"
   },
   {
@@ -2406,10 +2420,10 @@
     "body fit unsupported for: athletic, brute, standard",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "fea710b0"
   },
   {
@@ -2458,10 +2472,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "1f238d57"
   },
   {
@@ -2511,10 +2525,10 @@
     "body fit unsupported for: athletic, brute, skeletal, standard",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "7a3ee88e"
   },
   {
@@ -2564,10 +2578,10 @@
     "body fit unsupported for: athletic, brute, skeletal, standard",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "fb4a7ef9"
   },
   {
@@ -2616,10 +2630,10 @@
     "body fit unsupported for: athletic, brute, skeletal",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "ddf4340b"
   },
   {
@@ -2668,10 +2682,10 @@
     "body fit unsupported for: athletic, brute, skeletal",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "17fe1169"
   },
   {
@@ -2694,10 +2708,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "901c95d7"
   },
   {
@@ -2720,10 +2734,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "9e7a4838"
   },
   {
@@ -2746,10 +2760,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "0f79c829"
   },
   {
@@ -2789,10 +2803,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "e5839b8b"
   },
   {
@@ -2810,10 +2824,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "b51979c3"
   },
   {
@@ -2836,10 +2850,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "46836191"
   },
   {
@@ -2862,10 +2876,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "f10d6cf7"
   },
   {
@@ -2888,10 +2902,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "224c0436"
   },
   {
@@ -2914,10 +2928,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "6e58e4fa"
   },
   {
@@ -2966,10 +2980,10 @@
     "body fit unsupported for: athletic, brute, skeletal",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "10ed2f84"
   },
   {
@@ -3018,10 +3032,10 @@
     "body fit unsupported for: athletic, brute, skeletal",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "11317f33"
   },
   {
@@ -3134,10 +3148,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "a42db82a"
   },
   {
@@ -3178,10 +3192,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "a8682dc7"
   },
   {
@@ -3229,10 +3243,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, standard"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "beff5514"
   },
   {
@@ -3280,10 +3294,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, standard"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "a41e6709"
   },
   {
@@ -3306,10 +3320,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "aed1cd81"
   },
   {
@@ -3332,10 +3346,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "ebce14cf"
   },
   {
@@ -3385,8 +3399,8 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "432d931a"
   },
   {
@@ -3436,8 +3450,8 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "da1c3758"
   },
   {
@@ -3460,10 +3474,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "61b18dae"
   },
   {
@@ -3529,10 +3543,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "c7bdabd3"
   },
   {
@@ -3551,10 +3565,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "65d68f78"
   },
   {
@@ -3595,10 +3609,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "4d987fde"
   },
   {
@@ -3647,10 +3661,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "be58a44c"
   },
   {
@@ -3699,10 +3713,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "62a18a78"
   },
   {
@@ -3751,10 +3765,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "c929bdd9"
   },
   {
@@ -3803,10 +3817,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "5b3c62f5"
   },
   {
@@ -3854,10 +3868,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "11b75855"
   },
   {
@@ -3905,10 +3919,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "c8b5f332"
   },
   {
@@ -3931,10 +3945,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "160f463f"
   },
   {
@@ -3998,10 +4012,10 @@
    "unsupportedProfiles": [],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "cee387c0"
   },
   {
@@ -4049,10 +4063,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "a268dca7"
   },
   {
@@ -4098,10 +4112,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "0fea34e8"
   },
   {
@@ -4147,10 +4161,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "0f6566e7"
   },
   {
@@ -4195,10 +4209,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "2cc4a9d4"
   },
   {
@@ -4243,10 +4257,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "d8509376"
   },
   {
@@ -4293,10 +4307,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "a0288cd5"
   },
   {
@@ -4343,10 +4357,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "f8718a1c"
   },
   {
@@ -4455,10 +4469,10 @@
    "unsupportedProfiles": [],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "c5f8b484"
   },
   {
@@ -4505,10 +4519,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "f0f28c5c"
   },
   {
@@ -4555,10 +4569,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "65131dbe"
   },
   {
@@ -4605,10 +4619,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "8916b53f"
   },
   {
@@ -4653,10 +4667,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "0c89f9f5"
   },
   {
@@ -4702,10 +4716,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "60dce447"
   },
   {
@@ -4753,10 +4767,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "428f8542"
   },
   {
@@ -4804,10 +4818,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "706f2057"
   },
   {
@@ -4830,10 +4844,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "777793c0"
   },
   {
@@ -4897,10 +4911,10 @@
    "unsupportedProfiles": [],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "90a3b9ab"
   },
   {
@@ -4916,10 +4930,10 @@
    "unsupportedProfiles": [],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "d55ec96c"
   },
   {
@@ -4965,10 +4979,10 @@
     "body fit unsupported for: brute, skeletal",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "caac03f4"
   },
   {
@@ -5016,10 +5030,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "7483b5c5"
   },
   {
@@ -5067,10 +5081,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "e1433ae8"
   },
   {
@@ -5115,10 +5129,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "0a503f08"
   },
   {
@@ -5163,10 +5177,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "1b2895b6"
   },
   {
@@ -5214,10 +5228,10 @@
     "body fit unsupported for: brute, skeletal, slender",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "2f8b3144"
   },
   {
@@ -5265,10 +5279,10 @@
     "body fit unsupported for: brute, skeletal, slender",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "47f46640"
   },
   {
@@ -5356,10 +5370,10 @@
    "unsupportedProfiles": [],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "61fdbfa6"
   },
   {
@@ -5375,10 +5389,10 @@
    "unsupportedProfiles": [],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "2c1a2386"
   },
   {
@@ -5417,10 +5431,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "196cc8bb"
   },
   {
@@ -5462,10 +5476,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "7a114358"
   },
   {
@@ -5507,10 +5521,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "b9511d15"
   },
   {
@@ -5531,10 +5545,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "9dd34a6e"
   },
   {
@@ -5555,10 +5569,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "1a9ac69a"
   },
   {
@@ -5603,10 +5617,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "daf59b48"
   },
   {
@@ -5651,10 +5665,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "d89c29a2"
   },
   {
@@ -5677,10 +5691,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "af553f63"
   },
   {
@@ -5744,10 +5758,10 @@
    "unsupportedProfiles": [],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "4919a29d"
   },
   {
@@ -5763,10 +5777,10 @@
    "unsupportedProfiles": [],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "370aab65"
   },
   {
@@ -5784,10 +5798,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "f679f61b"
   },
   {
@@ -5806,10 +5820,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "7a475299"
   },
   {
@@ -5830,10 +5844,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "8256e05a"
   },
   {
@@ -5852,10 +5866,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "6573cc98"
   },
   {
@@ -5876,10 +5890,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "1bf7742d"
   },
   {
@@ -5898,10 +5912,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "e762c1fa"
   },
   {
@@ -5922,10 +5936,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "b9da256b"
   },
   {
@@ -5946,10 +5960,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "46450775"
   },
   {
@@ -5970,10 +5984,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "075ad912"
   },
   {
@@ -5995,10 +6009,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "db03fc87"
   },
   {
@@ -6019,10 +6033,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "cf6ffc7a"
   },
   {
@@ -6044,10 +6058,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "e6e70d8e"
   },
   {
@@ -6135,10 +6149,10 @@
    "unsupportedProfiles": [],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "fd99681e"
   },
   {
@@ -6157,10 +6171,10 @@
    "notes": [
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "118701ed"
   },
   {
@@ -6178,10 +6192,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "905d7a6c"
   },
   {
@@ -6201,10 +6215,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "d0da4632"
   },
   {
@@ -6225,10 +6239,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "eb6f7a3c"
   },
   {
@@ -6250,10 +6264,10 @@
    "notes": [
     "regions merged vs the previous set (no longer separate): primary, secondary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "d4d0d401"
   },
   {
@@ -6274,10 +6288,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "8577fffe"
   },
   {
@@ -6299,10 +6313,10 @@
    "notes": [
     "regions merged vs the previous set (no longer separate): primary, secondary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "08af99fe"
   },
   {
@@ -6323,10 +6337,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "88c61d63"
   },
   {
@@ -6347,10 +6361,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "6a19cb9f"
   },
   {
@@ -6373,10 +6387,10 @@
     "body fit unsupported for: brute, skeletal",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "c08298a0"
   },
   {
@@ -6397,10 +6411,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "8c33e52d"
   },
   {
@@ -6423,10 +6437,10 @@
     "body fit unsupported for: brute, skeletal",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "56bf09a2"
   },
   {
@@ -6447,10 +6461,10 @@
    "notes": [
     "body fit unsupported for: brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "bf8bdd16"
   },
   {
@@ -6473,10 +6487,10 @@
     "body fit unsupported for: brute, skeletal",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "4a42bb34"
   },
   {
@@ -6499,10 +6513,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, slender"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "4d26b4d2"
   },
   {
@@ -6568,10 +6582,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "82366d58"
   },
   {
@@ -6592,10 +6606,10 @@
    "notes": [
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "b41661e6"
   },
   {
@@ -6636,10 +6650,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "daae58fc"
   },
   {
@@ -6689,10 +6703,10 @@
     "body fit unsupported for: athletic, brute, standard",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "4fe0082a"
   },
   {
@@ -6742,10 +6756,10 @@
     "body fit unsupported for: athletic, brute, standard",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "9681b79c"
   },
   {
@@ -6770,8 +6784,8 @@
    ],
    "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "600e2655"
   },
   {
@@ -6796,8 +6810,8 @@
    ],
    "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "c3a2a730"
   },
   {
@@ -6847,8 +6861,8 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "817e096d"
   },
   {
@@ -6898,8 +6912,8 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 5,
+   "lastChangedLabel": "v4.1",
    "hash": "78100369"
   },
   {
@@ -6922,10 +6936,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "ca301195"
   },
   {
@@ -6991,10 +7005,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "2bd2f564"
   },
   {
@@ -7016,10 +7030,10 @@
    "notes": [
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "6517cf33"
   },
   {
@@ -7061,10 +7075,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "52045632"
   },
   {
@@ -7114,10 +7128,10 @@
     "body fit unsupported for: athletic, brute, standard",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "1c02302b"
   },
   {
@@ -7167,10 +7181,10 @@
     "body fit unsupported for: athletic, brute, standard",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "dad032f3"
   },
   {
@@ -7193,10 +7207,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "3a85a315"
   },
   {
@@ -7219,10 +7233,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "586ddbd1"
   },
   {
@@ -7270,10 +7284,10 @@
     "body fit unsupported for: athletic, brute, skeletal",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "6479a722"
   },
   {
@@ -7321,10 +7335,10 @@
     "body fit unsupported for: athletic, brute, skeletal",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "67008b3d"
   },
   {
@@ -7414,10 +7428,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "b46eba56"
   },
   {
@@ -7437,10 +7451,10 @@
    "notes": [
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "598e49e2"
   },
   {
@@ -7481,10 +7495,10 @@
    "notes": [
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "e20e8ad5"
   },
   {
@@ -7533,10 +7547,10 @@
     "body fit unsupported for: athletic, brute, standard",
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "b42f54bc"
   },
   {
@@ -7585,10 +7599,10 @@
     "body fit unsupported for: athletic, brute, standard",
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "801eccf0"
   },
   {
@@ -7611,10 +7625,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "e7b5c2e5"
   },
   {
@@ -7637,10 +7651,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "95ec1b1e"
   },
   {
@@ -7687,10 +7701,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "a9e8f783"
   },
   {
@@ -7737,10 +7751,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "7b48d1de"
   },
   {
@@ -7830,10 +7844,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "9453bde5"
   },
   {
@@ -7853,10 +7867,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "f419bab9"
   },
   {
@@ -7906,10 +7920,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "05677fea"
   },
   {
@@ -7957,10 +7971,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "f2d65ec7"
   },
   {
@@ -8008,10 +8022,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "172d7ad7"
   },
   {
@@ -8060,10 +8074,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "f1242969"
   },
   {
@@ -8112,10 +8126,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "d0a0cd8f"
   },
   {
@@ -8165,10 +8179,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "33dad73e"
   },
   {
@@ -8218,10 +8232,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "b99f8696"
   },
   {
@@ -8311,10 +8325,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "f2a36902"
   },
   {
@@ -8362,10 +8376,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "e5e503ed"
   },
   {
@@ -8412,10 +8426,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "747b65fb"
   },
   {
@@ -8463,10 +8477,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "59292e8b"
   },
   {
@@ -8515,10 +8529,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "3d9aefce"
   },
   {
@@ -8567,10 +8581,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "bb933faa"
   },
   {
@@ -8619,10 +8633,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "dc09f95c"
   },
   {
@@ -8671,10 +8685,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "a6ab6b15"
   },
   {
@@ -8764,10 +8778,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "15d40d1d"
   },
   {
@@ -8816,10 +8830,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "45299ff9"
   },
   {
@@ -8866,10 +8880,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "729489d4"
   },
   {
@@ -8916,10 +8930,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "4455c68f"
   },
   {
@@ -8968,10 +8982,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "40bc78e2"
   },
   {
@@ -9020,10 +9034,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "32eddc74"
   },
   {
@@ -9073,10 +9087,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "e6485a46"
   },
   {
@@ -9126,10 +9140,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "f2d6d802"
   },
   {
@@ -9219,10 +9233,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "ead569f6"
   },
   {
@@ -9271,10 +9285,10 @@
     "body fit unsupported for: athletic, brute, standard",
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "6df3e7da"
   },
   {
@@ -9297,10 +9311,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "c0114395"
   },
   {
@@ -9349,10 +9363,10 @@
     "body fit unsupported for: athletic, brute",
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "65589c1d"
   },
   {
@@ -9375,10 +9389,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "ba7427ae"
   },
   {
@@ -9401,10 +9415,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "cc0409e5"
   },
   {
@@ -9427,10 +9441,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "7c95ee36"
   },
   {
@@ -9453,10 +9467,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "f83ffcee"
   },
   {
@@ -9568,10 +9582,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "8cba7bac"
   },
   {
@@ -9619,10 +9633,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "e87a8eda"
   },
   {
@@ -9669,10 +9683,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "a9ec77bf"
   },
   {
@@ -9719,10 +9733,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "b35eb9c1"
   },
   {
@@ -9771,10 +9785,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "33155ce0"
   },
   {
@@ -9823,10 +9837,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "f6eb0009"
   },
   {
@@ -9875,10 +9889,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "c7253134"
   },
   {
@@ -9927,10 +9941,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "e3ff921f"
   },
   {
@@ -10020,10 +10034,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "05147377"
   },
   {
@@ -10042,10 +10056,10 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "8a1a7be4"
   },
   {
@@ -10094,10 +10108,10 @@
     "body fit unsupported for: athletic, brute, standard",
     "regions merged vs the previous set (no longer separate): primary"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "d338ed35"
   },
   {
@@ -10120,10 +10134,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "16d526fd"
   },
   {
@@ -10171,10 +10185,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "8d22c838"
   },
   {
@@ -10197,10 +10211,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "7258d532"
   },
   {
@@ -10223,10 +10237,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "539d56d9"
   },
   {
@@ -10249,10 +10263,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "b224a2e0"
   },
   {
@@ -10275,10 +10289,10 @@
    "notes": [
     "body fit unsupported for: athletic, brute, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "15bf8736"
   },
   {
@@ -10370,10 +10384,10 @@
     "anatomy-only stone: recolours through the single skin region, with no primary/secondary/trim"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "91d97ba8"
   },
   {
@@ -10398,10 +10412,10 @@
    "notes": [
     "body fit unsupported for: athletic, skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "1ca15240"
   },
   {
@@ -10423,10 +10437,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "3893a88e"
   },
   {
@@ -10450,10 +10464,10 @@
    "notes": [
     "body fit unsupported for: athletic, skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "89b0e63f"
   },
   {
@@ -10475,10 +10489,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "93e220e8"
   },
   {
@@ -10503,10 +10517,10 @@
    "notes": [
     "body fit unsupported for: athletic, skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "6c779ca4"
   },
   {
@@ -10528,10 +10542,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "3f0aab20"
   },
   {
@@ -10553,10 +10567,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "25a1a7dd"
   },
   {
@@ -10578,10 +10592,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "e104fcff"
   },
   {
@@ -10603,10 +10617,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "2e5b199c"
   },
   {
@@ -10630,10 +10644,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "565bcf53"
   },
   {
@@ -10727,10 +10741,10 @@
     "anatomy-only stone: recolours through the single skin region, with no primary/secondary/trim"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "4fbb1671"
   },
   {
@@ -10783,10 +10797,10 @@
     "body fit unsupported for: athletic, skeletal, slender, standard",
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 3,
+   "revision": 1,
    "createdIn": 4,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "9c98d611"
   },
   {
@@ -10834,10 +10848,10 @@
    "notes": [
     "body fit unsupported for: athletic, skeletal, slender, standard"
    ],
-   "revision": 3,
+   "revision": 1,
    "createdIn": 4,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "b23e8271"
   },
   {
@@ -10885,10 +10899,10 @@
    "notes": [
     "body fit unsupported for: athletic, skeletal, slender, standard"
    ],
-   "revision": 3,
+   "revision": 1,
    "createdIn": 4,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "5a00258f"
   },
   {
@@ -10935,10 +10949,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender, standard"
    ],
-   "revision": 3,
+   "revision": 1,
    "createdIn": 4,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "ddc4c1fd"
   },
   {
@@ -10987,10 +11001,10 @@
     "body fit unsupported for: skeletal, slender, standard",
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 3,
+   "revision": 1,
    "createdIn": 4,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "be5f5825"
   },
   {
@@ -11037,10 +11051,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender, standard"
    ],
-   "revision": 3,
+   "revision": 1,
    "createdIn": 4,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "5b5eab2c"
   },
   {
@@ -11087,10 +11101,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender, standard"
    ],
-   "revision": 3,
+   "revision": 1,
    "createdIn": 4,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "3267d34f"
   },
   {
@@ -11113,10 +11127,10 @@
    "notes": [
     "body fit unsupported for: athletic, skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "826ae44d"
   },
   {
@@ -11139,10 +11153,10 @@
    "notes": [
     "body fit unsupported for: athletic, skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "93cf6149"
   },
   {
@@ -11165,10 +11179,10 @@
    "notes": [
     "body fit unsupported for: athletic, skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "dd56cc01"
   },
   {
@@ -11188,10 +11202,10 @@
     "anatomy-only stone: recolours through the single skin region, with no primary/secondary/trim"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "880c33f4"
   },
   {
@@ -11245,10 +11259,10 @@
     "body fit unsupported for: athletic, skeletal, slender, standard",
     "regions merged vs the previous set (no longer separate): trim"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "dbcec947"
   },
   {
@@ -11270,10 +11284,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "d706bf3a"
   },
   {
@@ -11295,10 +11309,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "8978169a"
   },
   {
@@ -11347,10 +11361,10 @@
     "body fit unsupported for: skeletal, slender, standard",
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 3,
+   "revision": 1,
    "createdIn": 4,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "40097338"
   },
   {
@@ -11399,10 +11413,10 @@
     "body fit unsupported for: skeletal, slender, standard",
     "regions merged vs the previous set (no longer separate): trim"
    ],
-   "revision": 3,
+   "revision": 1,
    "createdIn": 4,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "3dc012ed"
   },
   {
@@ -11451,10 +11465,10 @@
     "body fit unsupported for: skeletal, slender, standard",
     "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 3,
+   "revision": 1,
    "createdIn": 4,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "e3f5d4e5"
   },
   {
@@ -11476,10 +11490,10 @@
    "notes": [
     "body fit unsupported for: skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "5592e1b3"
   },
   {
@@ -11502,10 +11516,10 @@
    "notes": [
     "body fit unsupported for: athletic, skeletal, slender, standard"
    ],
-   "revision": 4,
+   "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedIn": 4,
+   "lastChangedLabel": "v4",
    "hash": "12880c90"
   },
   {
@@ -11572,10 +11586,10 @@
    "authoredCoverage": 0.935,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "5df832cd"
   },
   {
@@ -11595,10 +11609,10 @@
    "notes": [
     "authored-surfaces coverage 0.79: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "6883c60c"
   },
   {
@@ -11617,10 +11631,10 @@
    "notes": [
     "authored-surfaces coverage 0.67: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "d9344a43"
   },
   {
@@ -11638,10 +11652,10 @@
    "authoredCoverage": 0.948,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "f4fededd"
   },
   {
@@ -11661,10 +11675,10 @@
     "leaves 58% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "23a960c6"
   },
   {
@@ -11683,10 +11697,10 @@
    "notes": [
     "authored-surfaces coverage 0.75: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "9bc11798"
   },
   {
@@ -11703,10 +11717,10 @@
    "authoredCoverage": 0.896,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "64ef1f3f"
   },
   {
@@ -11723,10 +11737,10 @@
    "authoredCoverage": 0.925,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "5ea13d3f"
   },
   {
@@ -11743,10 +11757,10 @@
    "authoredCoverage": 0.83,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "b72ec1ef"
   },
   {
@@ -11765,10 +11779,10 @@
    "notes": [
     "authored-surfaces coverage 0.78: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "13b2cf14"
   },
   {
@@ -11787,10 +11801,10 @@
    "notes": [
     "authored-surfaces coverage 0.75: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "3b964ac4"
   },
   {
@@ -11810,10 +11824,10 @@
    "notes": [
     "authored-surfaces coverage 0.79: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "c5b26d64"
   },
   {
@@ -11832,10 +11846,10 @@
    "notes": [
     "authored-surfaces coverage 0.72: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "773f83f7"
   },
   {
@@ -11852,10 +11866,10 @@
    "authoredCoverage": 0.93,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "604fad67"
   },
   {
@@ -11872,10 +11886,10 @@
    "authoredCoverage": 0.923,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "abb7526d"
   },
   {
@@ -11893,10 +11907,10 @@
    "authoredCoverage": 0.927,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "0f2ab70d"
   },
   {
@@ -11918,10 +11932,10 @@
     "3+ colour regions: check that one material was not split"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "7b170d03"
   },
   {
@@ -11939,10 +11953,10 @@
    "authoredCoverage": 0.884,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "e3f76e79"
   },
   {
@@ -11960,10 +11974,10 @@
    "authoredCoverage": 0.946,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "c0c14a1b"
   },
   {
@@ -11983,10 +11997,10 @@
     "tiny region 'secondary' (1.4% of the painted area): check for a stray patch"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "0520753b"
   },
   {
@@ -12004,10 +12018,10 @@
    "authoredCoverage": 0.94,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "e007d915"
   },
   {
@@ -12029,10 +12043,10 @@
     "3+ colour regions: check that one material was not split"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "ed01d635"
   },
   {
@@ -12050,10 +12064,10 @@
    "authoredCoverage": 0.864,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "d1c8a9cc"
   },
   {
@@ -12071,10 +12085,10 @@
    "authoredCoverage": 0.85,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "b2bf9f9f"
   },
   {
@@ -12094,10 +12108,10 @@
    "notes": [
     "authored-surfaces coverage 0.74: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "7a36708f"
   },
   {
@@ -12115,10 +12129,10 @@
    "authoredCoverage": 0.816,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "48095a7c"
   },
   {
@@ -12138,10 +12152,10 @@
    "notes": [
     "authored-surfaces coverage 0.79: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "44c6ec07"
   },
   {
@@ -12159,10 +12173,10 @@
    "authoredCoverage": 0.813,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "41c57f58"
   },
   {
@@ -12179,10 +12193,10 @@
    "authoredCoverage": 0.817,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "151e3810"
   },
   {
@@ -12202,10 +12216,10 @@
    "notes": [
     "authored-surfaces coverage 0.77: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "a4168df2"
   },
   {
@@ -12226,10 +12240,10 @@
     "3+ colour regions: check that one material was not split"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "39663783"
   },
   {
@@ -12252,10 +12266,10 @@
    "notes": [
     "authored-surfaces coverage 0.79: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "74cffb71"
   },
   {
@@ -12278,10 +12292,10 @@
    "notes": [
     "authored-surfaces coverage 0.80: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "69154b59"
   },
   {
@@ -12298,10 +12312,10 @@
    "authoredCoverage": 0.843,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "52a56d7a"
   },
   {
@@ -12320,10 +12334,10 @@
     "leaves 45% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "c5da8c53"
   },
   {
@@ -12340,10 +12354,10 @@
    "authoredCoverage": 0.886,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "5937c645"
   },
   {
@@ -12360,10 +12374,10 @@
    "authoredCoverage": 0.875,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "85240352"
   },
   {
@@ -12383,10 +12397,10 @@
    "notes": [
     "authored-surfaces coverage 0.70: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "8feb0d28"
   },
   {
@@ -12407,10 +12421,10 @@
     "3+ colour regions: check that one material was not split"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "8c0fbca9"
   },
   {
@@ -12431,10 +12445,10 @@
     "3+ colour regions: check that one material was not split"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "163cc34e"
   },
   {
@@ -12455,10 +12469,10 @@
     "3+ colour regions: check that one material was not split"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "8b4b2857"
   },
   {
@@ -12479,10 +12493,10 @@
     "3+ colour regions: check that one material was not split"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "234aef04"
   },
   {
@@ -12503,10 +12517,10 @@
     "3+ colour regions: check that one material was not split"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "0414ef2e"
   },
   {
@@ -12524,10 +12538,10 @@
    "authoredCoverage": 0.921,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "ad81fea3"
   },
   {
@@ -12545,10 +12559,10 @@
    "authoredCoverage": 0.925,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "b2cc122e"
   },
   {
@@ -12566,10 +12580,10 @@
    "authoredCoverage": 0.946,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "3eb257a0"
   },
   {
@@ -12587,10 +12601,10 @@
    "authoredCoverage": 0.937,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "213f415e"
   },
   {
@@ -12608,10 +12622,10 @@
    "authoredCoverage": 0.908,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "43c63526"
   },
   {
@@ -12630,10 +12644,10 @@
    "notes": [
     "authored-surfaces coverage 0.61: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "61f80f3e"
   },
   {
@@ -12650,10 +12664,10 @@
    "authoredCoverage": 0.858,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "9684a7bf"
   },
   {
@@ -12673,10 +12687,10 @@
    "notes": [
     "authored-surfaces coverage 0.61: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "4e034f6c"
   },
   {
@@ -12696,10 +12710,10 @@
    "notes": [
     "authored-surfaces coverage 0.71: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "d26a42c2"
   },
   {
@@ -12718,10 +12732,10 @@
    "notes": [
     "authored-surfaces coverage 0.78: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "6c8966a8"
   },
   {
@@ -12740,10 +12754,10 @@
    "notes": [
     "authored-surfaces coverage 0.60: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "73ec6fda"
   },
   {
@@ -12762,10 +12776,10 @@
     "leaves 49% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "996a0a82"
   },
   {
@@ -12785,10 +12799,10 @@
    "notes": [
     "authored-surfaces coverage 0.69: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "225d68b4"
   },
   {
@@ -12807,10 +12821,10 @@
    "notes": [
     "authored-surfaces coverage 0.72: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "ad897422"
   },
   {
@@ -12827,10 +12841,10 @@
    "authoredCoverage": 0.828,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "3d8bdcbd"
   },
   {
@@ -12849,10 +12863,10 @@
     "leaves 48% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "77da87a9"
   },
   {
@@ -12869,10 +12883,10 @@
    "authoredCoverage": 0.805,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "f9df0640"
   },
   {
@@ -12889,10 +12903,10 @@
    "authoredCoverage": 0.826,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "3096b927"
   },
   {
@@ -12909,10 +12923,10 @@
    "authoredCoverage": 0.898,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "d10c913d"
   },
   {
@@ -12930,10 +12944,10 @@
    "authoredCoverage": 0.929,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "d56700cb"
   },
   {
@@ -12952,10 +12966,10 @@
    "notes": [
     "authored-surfaces coverage 0.62: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "4c549a53"
   },
   {
@@ -12972,10 +12986,10 @@
    "authoredCoverage": 0.855,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "bb8511c0"
   },
   {
@@ -12993,10 +13007,10 @@
    "authoredCoverage": 0.822,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "9bbb237e"
   },
   {
@@ -13015,10 +13029,10 @@
    "notes": [
     "authored-surfaces coverage 0.74: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "82816b93"
   },
   {
@@ -13036,10 +13050,10 @@
    "authoredCoverage": 0.909,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "976dc1ce"
   },
   {
@@ -13058,10 +13072,10 @@
     "leaves 46% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "5934d93b"
   },
   {
@@ -13080,10 +13094,10 @@
    "notes": [
     "authored-surfaces coverage 0.69: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "6ddcae83"
   },
   {
@@ -13102,10 +13116,10 @@
    "notes": [
     "authored-surfaces coverage 0.74: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "c66c3d44"
   },
   {
@@ -13122,10 +13136,10 @@
    "authoredCoverage": 0.893,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "f2240ea6"
   },
   {
@@ -13143,10 +13157,10 @@
    "authoredCoverage": 0.898,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "e6bc3f1c"
   },
   {
@@ -13165,10 +13179,10 @@
     "leaves 46% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "1a51829a"
   },
   {
@@ -13185,10 +13199,10 @@
    "authoredCoverage": 0.847,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "8b8c9a2d"
   },
   {
@@ -13206,10 +13220,10 @@
    "authoredCoverage": 0.821,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "9a055a17"
   },
   {
@@ -13227,10 +13241,10 @@
    "authoredCoverage": 0.888,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "b2af9945"
   },
   {
@@ -13247,10 +13261,10 @@
    "authoredCoverage": 0.945,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "fc11a19e"
   },
   {
@@ -13269,10 +13283,10 @@
     "leaves 46% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "43b072e1"
   },
   {
@@ -13291,10 +13305,10 @@
     "leaves 45% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "772d4237"
   },
   {
@@ -13313,10 +13327,10 @@
    "notes": [
     "authored-surfaces coverage 0.68: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "508c99d9"
   },
   {
@@ -13336,10 +13350,10 @@
     "leaves 55% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "f923599f"
   },
   {
@@ -13361,10 +13375,10 @@
    "notes": [
     "authored-surfaces coverage 0.66: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "b4b28601"
   },
   {
@@ -13383,10 +13397,10 @@
     "leaves 48% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "d0a28c7e"
   },
   {
@@ -13403,10 +13417,10 @@
    "authoredCoverage": 0.813,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "c171f578"
   },
   {
@@ -13427,10 +13441,10 @@
    "notes": [
     "authored-surfaces coverage 0.69: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "36a336b7"
   },
   {
@@ -13451,10 +13465,10 @@
    "notes": [
     "authored-surfaces coverage 0.74: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "36ee45b1"
   },
   {
@@ -13471,10 +13485,10 @@
    "authoredCoverage": 0.847,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "f3c8f08e"
   },
   {
@@ -13491,10 +13505,10 @@
    "authoredCoverage": 0.859,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "214383b3"
   },
   {
@@ -13513,10 +13527,10 @@
    "notes": [
     "authored-surfaces coverage 0.79: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "26e40eed"
   },
   {
@@ -13537,10 +13551,10 @@
     "3+ colour regions: check that one material was not split"
    ],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "2494c14e"
   },
   {
@@ -13560,10 +13574,10 @@
    "notes": [
     "authored-surfaces coverage 0.75: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "f619ea62"
   },
   {
@@ -13581,10 +13595,10 @@
    "authoredCoverage": 0.893,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "53e9367a"
   },
   {
@@ -13603,10 +13617,10 @@
    "notes": [
     "authored-surfaces coverage 0.79: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "eed5d7a7"
   },
   {
@@ -13624,10 +13638,10 @@
    "authoredCoverage": 0.803,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "968b55ac"
   },
   {
@@ -13647,10 +13661,10 @@
    "notes": [
     "authored-surfaces coverage 0.78: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "ebc77a5a"
   },
   {
@@ -13670,10 +13684,10 @@
    "notes": [
     "authored-surfaces coverage 0.77: some very dark fill stays dark"
    ],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "b2b4d8d8"
   },
   {
@@ -13691,10 +13705,10 @@
    "authoredCoverage": 0.921,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "6c0fe15b"
   },
   {
@@ -13712,10 +13726,10 @@
    "authoredCoverage": 0.919,
    "flags": [],
    "notes": [],
-   "revision": 4,
+   "revision": 3,
    "createdIn": 1,
    "lastChangedIn": 6,
-   "lastChangedLabel": "v6",
+   "lastChangedLabel": "v5",
    "hash": "0d5e9f91"
   }
  ]
