@@ -52,6 +52,49 @@ final class AppearanceTourUITests: XCTestCase {
         }
     }
 
+    /// Flips the palette from inside Settings, as a player would, and captures the
+    /// repaint (the earlier tests launch with a saved palette instead).
+    @MainActor
+    func testSwitchingPaletteLive() {
+        let app = launch("dark", phase: "main", palette: "classic")
+        guard app.tabBars.firstMatch.waitForExistence(timeout: 25) else {
+            XCTFail("tab bar did not appear (live switch)")
+            app.terminate()
+            return
+        }
+        dismissPhotoPrompt()
+        guard open(tab: "Settings", in: app) else {
+            app.terminate()
+            return
+        }
+        settle(1.5)
+        shot("live-1-classic-settings")
+
+        tapPalette("Verdigris", in: app)
+        shot("live-2-after-verdigris")
+        if open(tab: "Armory", in: app) {
+            settle(1.5)
+            shot("live-3-armory-verdigris")
+        }
+        if open(tab: "Settings", in: app) {
+            settle(1.0)
+            tapPalette("Classic", in: app)
+            shot("live-4-back-to-classic")
+        }
+        app.terminate()
+    }
+
+    @MainActor
+    private func tapPalette(_ name: String, in app: XCUIApplication) {
+        let segment = app.buttons[name]
+        guard segment.waitForExistence(timeout: 5) else {
+            XCTFail("palette segment \(name) not found")
+            return
+        }
+        segment.tap()
+        settle(2.0)
+    }
+
     // MARK: - Launch screens
 
     @MainActor
