@@ -5,6 +5,7 @@
 
 import SwiftUI
 import SwiftData
+import Photos
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
