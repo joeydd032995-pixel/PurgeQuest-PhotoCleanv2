@@ -408,18 +408,28 @@ private struct CosmeticTile: View {
         equipped.filter { $0.type != item.type } + [item]
     }
 
+    /// Locked and priced beyond the hero's current gems — the tile dims,
+    /// while its price tag stays fully visible.
+    private var isUnaffordable: Bool {
+        !item.isUnlocked && item.type != .upgrade && gems < item.priceGems
+    }
+
     var body: some View {
         Button(action: onTap) {
             VStack(alignment: .leading, spacing: 10) {
-                photoStage
-                Text(item.name)
-                    .font(.subheadline.weight(.bold))
-                    .foregroundStyle(.textPrimary)
-                    .lineLimit(1)
-                Text(item.subtitle)
-                    .font(.caption)
-                    .foregroundStyle(.textSecondary)
-                    .lineLimit(2)
+                Group {
+                    photoStage
+                    Text(item.name)
+                        .font(.subheadline.weight(.bold))
+                        .foregroundStyle(.textPrimary)
+                        .lineLimit(1)
+                    Text(item.subtitle)
+                        .font(.caption)
+                        .foregroundStyle(.textSecondary)
+                        .lineLimit(2)
+                }
+                .opacity(isUnaffordable ? 0.5 : 1)
+                .animation(.easeOut(duration: 0.25), value: isUnaffordable)
 
                 priceTag
             }
