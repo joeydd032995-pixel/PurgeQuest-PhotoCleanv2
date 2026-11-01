@@ -56,7 +56,8 @@ final class AppearanceTourUITests: XCTestCase {
     /// repaint (the earlier tests launch with a saved palette instead).
     @MainActor
     func testSwitchingPaletteLive() {
-        let app = launch("dark", phase: "main", palette: "classic")
+        // No palette launch argument here (see `launch`): the picker's own writes must win.
+        let app = launch("dark", phase: "main", palette: nil)
         guard app.tabBars.firstMatch.waitForExistence(timeout: 25) else {
             XCTFail("tab bar did not appear (live switch)")
             app.terminate()
@@ -67,7 +68,8 @@ final class AppearanceTourUITests: XCTestCase {
             app.terminate()
             return
         }
-        settle(1.5)
+        settle(1.0)
+        tapPalette("Classic", in: app)   // start from a known palette whatever earlier runs left behind
         shot("live-1-classic-settings")
 
         tapPalette("Verdigris", in: app)
@@ -223,9 +225,13 @@ final class AppearanceTourUITests: XCTestCase {
     }
 
     @MainActor
-    private func launch(_ mode: String, phase: String, palette: String = "classic") -> XCUIApplication {
+    /// `palette: nil` leaves the palette setting alone. Launch arguments sit in a defaults
+    /// layer that shadows anything the Settings picker writes, so a test that taps the
+    /// picker must not pass one.
+    private func launch(_ mode: String, phase: String, palette: String? = "classic") -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments += ["-UITestTour", "-UITestPhase", phase, "-pq.appearance", mode, "-pq.colorTheme", palette]
+        app.launchArguments += ["-UITestTour", "-UITestPhase", phase, "-pq.appearance", mode]
+        if let palette { app.launchArguments += ["-pq.colorTheme", palette] }
         app.launch()
         return app
     }
