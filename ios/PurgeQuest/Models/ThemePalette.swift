@@ -14,7 +14,7 @@
 import Foundation
 
 /// An sRGB color with 0...1 components.
-struct ThemeRGB: Equatable, Sendable {
+nonisolated struct ThemeRGB: Equatable, Sendable {
     let red: Double
     let green: Double
     let blue: Double
@@ -51,7 +51,7 @@ struct ThemeRGB: Equatable, Sendable {
 }
 
 /// One design token: what it resolves to in each appearance.
-struct ThemePair: Equatable, Sendable {
+nonisolated struct ThemePair: Equatable, Sendable {
     let light: ThemeRGB
     let dark: ThemeRGB
 
@@ -74,7 +74,7 @@ struct ThemePair: Equatable, Sendable {
     }
 }
 
-enum ThemePalette {
+nonisolated enum ThemePalette {
     // MARK: Neutrals
 
     /// Screen canvas.
@@ -120,7 +120,7 @@ enum ThemePalette {
 
     // MARK: Brand gold plate (identical in both appearances)
 
-    enum Gold {
+    nonisolated enum Gold {
         /// Ink printed on the gold plate.
         static let ink = ThemeRGB(hex: 0x2D1702)
         /// Outer rim of the plate.

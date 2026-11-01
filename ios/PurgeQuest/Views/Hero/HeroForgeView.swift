@@ -207,7 +207,7 @@ struct HeroForgeView: View {
                     .foregroundStyle(.textPrimary)
                 Text(tier.displayName + " gear tier")
                     .font(.caption2.weight(.semibold))
-                    .foregroundStyle(tier.accent)
+                    .foregroundStyle(tier.labelColor)
             }
 
             Spacer()

@@ -85,6 +85,15 @@ struct DesignAssetTests {
         #expect(MonsterFamily.spotlight(latestEncounters: met) == .glitchborn)
     }
 
+    @Test func tierLabelsAreNeverTheHairlineColour() {
+        // The standard tier's accent is the border hairline; as text it is unreadable.
+        #expect(GearTier.standard.accent == Color.dungeonAsh)
+        #expect(GearTier.standard.labelColor == Color.textSecondary)
+        for tier in GearTier.allCases where tier != .standard {
+            #expect(tier.labelColor == tier.accent)
+        }
+    }
+
     @Test func spinnerHeadFadesIntoAMonotonicTail() {
         #expect(GoldSpinner.opacity(forSpoke: 3, head: 3) == 1.0)
         let tail = (0..<8).map { GoldSpinner.opacity(forSpoke: (3 - $0 + 8) % 8, head: 3) }

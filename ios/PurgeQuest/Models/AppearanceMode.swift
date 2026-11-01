@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum AppearanceMode: String, CaseIterable, Identifiable, Sendable {
+nonisolated enum AppearanceMode: String, CaseIterable, Identifiable, Sendable {
     case system
     case light
     case dark
