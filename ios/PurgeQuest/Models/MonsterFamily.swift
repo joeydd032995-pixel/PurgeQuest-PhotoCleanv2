@@ -51,15 +51,26 @@ enum MonsterFamily: String, Codable, CaseIterable, Sendable {
         }
     }
 
-    /// Derived from the existing dungeon palette — no new hues.
+    /// Family hues from the Bestiary design: gold, jade, indigo, coral, steel, rose.
+    /// Every one adapts to Light and Dark and stays legible as text on cards.
     var accentColor: Color {
         switch self {
         case .clutterUndead:     return .questAmber
         case .archiveRelics:     return .xpViolet
-        case .storageBehemoths:  return .gemEmerald
-        case .duplicateDragons:  return .combatCrimson
+        case .storageBehemoths:  return .behemothIndigo
+        case .duplicateDragons:  return .dragonCoral
         case .videoPhantoms:     return .videoSapphire
-        case .glitchborn:        return .combatCrimsonDeep
+        case .glitchborn:        return .glitchRose
         }
+    }
+
+    /// Asset-catalog name of the family's line icon. It is a template image, so
+    /// tint it with `accentColor`.
+    var iconAssetName: String { "Family-\(rawValue)" }
+
+    /// The family to emphasize on the Bestiary grid: the one with the most
+    /// recent encounter, or the first family before anything has been met.
+    static func spotlight(latestEncounters: [(family: MonsterFamily, at: Date)]) -> MonsterFamily {
+        latestEncounters.max(by: { $0.at < $1.at })?.family ?? MonsterFamily.allCases[0]
     }
 }

@@ -2,8 +2,9 @@
 //  DungeonBackgroundView.swift
 //  PurgeQuest
 //
-//  Static tonal canvas: flat steel base with a faint vignette. No radial glows,
-//  drifting particles, or dot grids anywhere in the app.
+//  Static tonal canvas: flat base (green-black in Dark, cream in Light) with a
+//  faint vignette. No radial glows, drifting particles, or dot grids anywhere
+//  in the app.
 //
 
 import SwiftUI
@@ -17,7 +18,7 @@ struct DungeonBackgroundView: View {
                 .ignoresSafeArea()
 
             RadialGradient(
-                colors: [.clear, .black.opacity(0.35)],
+                colors: [.clear, .canvasVignette],
                 center: .center,
                 startRadius: 260,
                 endRadius: 720

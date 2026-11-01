@@ -91,9 +91,7 @@ struct CombatView: View {
             Button("Back to Library") {
                 exit()
             }
-            .padding(.vertical, 12).padding(.horizontal, 24)
-            .background(RoundedRectangle(cornerRadius: 10).fill(Color.questAmber))
-            .foregroundStyle(.dungeonVoid)
+            .buttonStyle(.gold)
         }
         .padding()
     }
@@ -242,30 +240,29 @@ struct CombatView: View {
                     combat.continueDeeper(hero: hero)
                 } label: {
                     Label("Continue Deeper", systemImage: "arrow.down.to.line.compact")
-                        .font(.dungeonHeader)
-                        .frame(maxWidth: .infinity).padding(.vertical, 14)
-                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.questAmber))
-                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmberDeep, lineWidth: 1))
-                        .foregroundStyle(.dungeonVoid)
                 }
+                .buttonStyle(.gold(fullWidth: true))
                 .accessibilityHint("Start another pass without returning to the Library")
             }
 
-            Button("Return to Library") {
-                exit()
+            if combat.hasMoreItems {
+                Button("Return to Library") {
+                    exit()
+                }
+                .font(.headline)
+                .padding(.vertical, 14).padding(.horizontal, 28)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.dungeonStone)
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
+                )
+                .foregroundStyle(Color.textPrimary)
+            } else {
+                Button("Return to Library") {
+                    exit()
+                }
+                .buttonStyle(.gold)
             }
-            .font(.headline)
-            .padding(.vertical, 14).padding(.horizontal, 28)
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(
-                        combat.hasMoreItems
-                            ? AnyShapeStyle(Color.dungeonStone)
-                            : AnyShapeStyle(Color.questAmber)
-                    )
-                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: combat.hasMoreItems ? 1 : 0))
-            )
-            .foregroundStyle(combat.hasMoreItems ? Color.textPrimary : Color.dungeonVoid)
         }
         .padding()
     }
@@ -304,12 +301,8 @@ struct CombatView: View {
                     combat.rally(hero: hero, context: modelContext)
                 } label: {
                     Label("Rally for \(CombatViewModel.rallyCostGems) Gems", systemImage: "diamond.fill")
-                        .font(.dungeonHeader)
-                        .frame(maxWidth: .infinity).padding(.vertical, 14)
-                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.questAmber))
-                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmberDeep, lineWidth: 1))
-                        .foregroundStyle(.dungeonVoid)
                 }
+                .buttonStyle(.gold(fullWidth: true))
                 .padding(.horizontal, 24)
                 .accessibilityHint("Spend gems to fully heal and resume the room")
             }

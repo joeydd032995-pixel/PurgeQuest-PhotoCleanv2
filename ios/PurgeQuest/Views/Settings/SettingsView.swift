@@ -17,7 +17,27 @@ struct SettingsView: View {
     @State private var confirmForgetSpared = false
     @State private var showHeroCard = false
 
+    /// Light / Dark / System, shared with the app root.
+    @AppStorage(AppearanceMode.storageKey) private var appearanceRaw = AppearanceMode.system.rawValue
+
     private var hero: Hero? { heroes.first }
+
+    private var appearance: Binding<AppearanceMode> {
+        Binding(
+            get: { AppearanceMode(storedValue: appearanceRaw) },
+            set: { appearanceRaw = $0.rawValue }
+        )
+    }
+
+    /// Classic or Verdigris palette; ContentView rebuilds the screen when it changes.
+    @AppStorage(ColorTheme.storageKey) private var colorThemeRaw = ColorTheme.classic.rawValue
+
+    private var colorTheme: Binding<ColorTheme> {
+        Binding(
+            get: { ColorTheme(storedValue: colorThemeRaw) },
+            set: { colorThemeRaw = $0.rawValue }
+        )
+    }
 
     var body: some View {
         @Bindable var appState = appState
@@ -26,6 +46,35 @@ struct SettingsView: View {
                 Text("Settings")
                     .font(.title.weight(.bold))
                     .foregroundStyle(.textPrimary)
+
+                section(title: "Appearance") {
+                    Text("Mode")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.textSecondary)
+                    Picker("Mode", selection: appearance) {
+                        ForEach(AppearanceMode.allCases) { mode in
+                            Text(mode.title).tag(mode)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    Text("System follows your iPhone's Light or Dark setting.")
+                        .font(.caption)
+                        .foregroundStyle(.textSecondary)
+
+                    Text("Palette")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.textSecondary)
+                        .padding(.top, 4)
+                    Picker("Palette", selection: colorTheme) {
+                        ForEach(ColorTheme.allCases) { theme in
+                            Text(theme.title).tag(theme)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    Text(colorTheme.wrappedValue.summary)
+                        .font(.caption)
+                        .foregroundStyle(.textSecondary)
+                }
 
                 section(title: "Cleanup") {
                     toggleRow(title: "Include Videos", subtitle: "Review photos and videos together", isOn: $appState.includeVideos)
@@ -213,11 +262,8 @@ private struct HeroCardSheet: View {
             if let img = renderedImage {
                 ShareLink(item: Image(uiImage: img), preview: SharePreview("PurgeQuest Hero Card", image: Image(uiImage: img))) {
                     Label("Share", systemImage: "square.and.arrow.up")
-                        .font(.headline)
-                        .padding(.vertical, 12).padding(.horizontal, 24)
-                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.questAmber))
-                        .foregroundStyle(.dungeonVoid)
                 }
+                .buttonStyle(.gold)
             } else {
                 ProgressView().tint(.questAmber)
             }
