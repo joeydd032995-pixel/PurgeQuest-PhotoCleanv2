@@ -31,7 +31,7 @@ struct PurgeQuestApp: App {
             MonsterSightingRecord.self
         ])
         // UI tests run against an in-memory store so they never touch real data.
-        let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: CommandLine.arguments.contains("-UITestForge"))
+        let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: CommandLine.arguments.contains("-UITestForge") || UITestSupport.isTour)
         do {
             return try ModelContainer(for: schema, configurations: [configuration])
         } catch {

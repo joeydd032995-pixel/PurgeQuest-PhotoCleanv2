@@ -21,7 +21,7 @@ struct SplashView: View {
                 EmblemView()
                     .frame(maxWidth: 230)
                 Spacer(minLength: 24)
-                GoldSpinner(size: 40)
+                GoldSpinner(size: 48)
                 Spacer(minLength: 28)
                 Text(Self.tagline)
                     .font(.body)

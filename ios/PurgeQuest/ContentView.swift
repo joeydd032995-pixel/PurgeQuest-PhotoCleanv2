@@ -102,6 +102,15 @@ struct ContentView: View {
         // Bring achievement progress in line with lifetime stats and the deletion log.
         GameDataService.syncAchievements(hero: hero, in: modelContext)
 
+        // Screenshot tours skip the permission prompt and stop on a chosen screen.
+        if UITestSupport.isTour {
+            appState.photoAuthStatus = .authorized
+            if let phase = UITestSupport.requestedPhase, phase != .launching {
+                appState.phase = phase
+            }
+            return
+        }
+
         // Determine phase
         await appState.refreshPhotoAuth()
         try? await Task.sleep(for: .milliseconds(450))

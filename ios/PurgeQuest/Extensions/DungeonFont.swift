@@ -29,6 +29,8 @@ extension Font {
     static let dungeonHeader = Font.custom("Cinzel-SemiBold", size: 17, relativeTo: .headline)
     /// Small caps-style labels in dungeon-crawler panels.
     static let dungeonCaption = Font.custom("Cinzel-Regular", size: 12, relativeTo: .caption)
+    /// Family names on Bestiary tiles (the mockup sets them around 15 pt).
+    static let dungeonTileTitle = Font.custom("Cinzel-SemiBold", size: 15, relativeTo: .subheadline)
     /// Screen titles in the Bestiary style (engraved capitals with small caps).
     static let dungeonScreenTitle = Font.custom("Cinzel-Bold", size: 30, relativeTo: .largeTitle)
     /// The PurgeQuest wordmark (splash, onboarding). Cinzel's lowercase are small caps.

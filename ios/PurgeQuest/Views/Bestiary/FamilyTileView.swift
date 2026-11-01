@@ -28,8 +28,8 @@ struct FamilyTileView: View {
             Spacer(minLength: 4)
             countPill
         }
-        .padding(14)
-        .frame(maxWidth: .infinity, minHeight: 208, alignment: .topLeading)
+        .padding(12)
+        .frame(maxWidth: .infinity, minHeight: 196, alignment: .topLeading)
         .background(plate)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityText)
@@ -52,15 +52,16 @@ struct FamilyTileView: View {
     private var titleBlock: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(family.displayName)
-                .font(.dungeonHeader)
+                .font(.dungeonTileTitle)
                 .foregroundStyle(Color.textPrimary)
                 .lineLimit(2)
-                .minimumScaleFactor(0.85)
                 .fixedSize(horizontal: false, vertical: true)
+            // Always show the whole intro: let it grow instead of truncating.
             Text(family.tagline)
                 .font(.footnote)
                 .foregroundStyle(Color.textSecondary)
-                .lineLimit(2)
+                .lineLimit(3)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
@@ -76,10 +77,12 @@ struct FamilyTileView: View {
 
     private var plate: some View {
         let shape = RoundedRectangle(cornerRadius: 16, style: .continuous)
+        // The glow comes from the opaque base fill only; casting it from the
+        // border ring as well would bleed a ghost frame inside the tile.
         return shape
             .fill(Color.dungeonStone)
+            .shadow(color: accent.opacity(glowOpacity), radius: 10)
             .overlay(shape.fill(accent.opacity(0.07)))
             .overlay(shape.strokeBorder(accent.opacity(borderOpacity), lineWidth: borderWidth))
-            .shadow(color: accent.opacity(glowOpacity), radius: 10)
     }
 }
