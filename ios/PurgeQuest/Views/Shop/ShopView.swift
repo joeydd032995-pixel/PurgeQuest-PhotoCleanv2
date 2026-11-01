@@ -92,18 +92,7 @@ struct ShopView: View {
             VStack(alignment: .leading, spacing: 16) {
                 header
                 filterBar
-
-                if filter == .bundles {
-                    storeKitSection
-                } else {
-                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                        ForEach(filtered) { item in
-                            goalTile(for: item)
-                        }
-                    }
-                    if filter == .all { storeKitSection }
-                }
-
+                contentSection
                 Color.clear.frame(height: 30)
             }
             .padding(.horizontal, 16)
@@ -111,24 +100,66 @@ struct ShopView: View {
         }
         .scrollIndicators(.hidden)
         .background(DungeonBackgroundView())
-        .overlay {
-            if let previewingItem {
-                GearPreviewOverlay(item: previewingItem, hero: hero, equipped: equippedItems, onClose: { previewingItem = nil })
-                    .transition(.opacity)
-            }
-        }
+        .overlay { previewLayer }
         .animation(.easeOut(duration: 0.2), value: previewingItem?.id)
         .task { await store.loadProducts() }
-        .alert("Heads up", isPresented: Binding(get: { purchaseError != nil }, set: { if !$0 { purchaseError = nil } })) {
+        .alert("Heads up", isPresented: purchaseErrorBinding) {
             Button("OK", role: .cancel) {}
         } message: {
             Text(purchaseError ?? "")
         }
-        .alert("Restored!", isPresented: Binding(get: { infoMessage != nil }, set: { if !$0 { infoMessage = nil } })) {
+        .alert("Restored!", isPresented: infoMessageBinding) {
             Button("OK", role: .cancel) {}
         } message: {
             Text(infoMessage ?? "")
         }
+    }
+
+    // MARK: - Body sections (kept small so the type-checker stays fast)
+
+    @ViewBuilder
+    private var contentSection: some View {
+        if filter == .bundles {
+            storeKitSection
+        } else {
+            itemGrid
+            if filter == .all { storeKitSection }
+        }
+    }
+
+    private var itemGrid: some View {
+        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+            ForEach(filtered) { item in
+                goalTile(for: item)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var previewLayer: some View {
+        if let item = previewingItem {
+            GearPreviewOverlay(
+                item: item,
+                hero: hero,
+                equipped: equippedItems,
+                onClose: { previewingItem = nil }
+            )
+            .transition(.opacity)
+        }
+    }
+
+    private var purchaseErrorBinding: Binding<Bool> {
+        Binding(
+            get: { purchaseError != nil },
+            set: { if !$0 { purchaseError = nil } }
+        )
+    }
+
+    private var infoMessageBinding: Binding<Bool> {
+        Binding(
+            get: { infoMessage != nil },
+            set: { if !$0 { infoMessage = nil } }
+        )
     }
 
     // MARK: - Header
@@ -432,10 +463,6 @@ private struct CosmeticTile: View {
     let onTap: () -> Void
 
     /// Tracks the hold so the preview overlay reverts the moment the finger lifts.
-    /// True while the preview hold gesture is physically active; resets
-    /// automatically on lift, move, or cancellation, which is what guarantees
-    /// the overlay always reverts.
-    @GestureState private var pressingPreview = false
     /// True once the hold was recognized and the preview was raised.
     @State private var previewRaised = false
 
@@ -465,12 +492,13 @@ private struct CosmeticTile: View {
             tileContent
         }
         .buttonStyle(.plain)
-        .simultaneousGesture(previewGesture)
-        .onChange(of: pressingPreview) { _, active in
-            // GestureState resets to false even when the sequence is
-            // interrupted, so this catches lifts the gesture never reports.
-            if !active { lowerPreview() }
-        }
+        .onLongPressGesture(
+            minimumDuration: 0.3,
+            perform: { raisePreview() },
+            onPressingChanged: { pressing in
+                if !pressing { lowerPreview() }
+            }
+        )
         .accessibilityHint(isWearable ? "Hold to preview on your hero" : "")
     }
 
@@ -560,34 +588,16 @@ private struct CosmeticTile: View {
         item.isEquipped ? Color.gemEmerald.opacity(0.35) : Color.dungeonAsh.opacity(0.5)
     }
 
-    /// Hold ~0.3 s to raise the full-size preview; any exit — lift, drag away,
-    /// or gesture cancellation — resets `pressingPreview`, which reverts it.
-    /// Wearable items only.
-    private var previewGesture: some Gesture {
-        LongPressGesture(minimumDuration: 0.3)
-            .sequenced(before: DragGesture(minimumDistance: 0, coordinateSpace: .local))
-            .updating($pressingPreview) { _, active, _ in active = true }
-            .onChanged { value in
-                guard isWearable else { return }
-                switch value {
-                case .first:
-                    raisePreview()
-                case .second:
-                    break
-                }
-            }
-            .onEnded { _ in lowerPreview() }
-    }
-
+    /// Hold ~0.3 s to raise the full-size preview. `onPressingChanged(false)`
+    /// fires on lift, drag-away, and cancellation alike, so every exit path
+    /// reverts the overlay. Wearable items only.
     private func raisePreview() {
-        guard !previewRaised else { return }
+        guard isWearable, !previewRaised else { return }
         previewRaised = true
         HapticsService.shared.light()
         onPreviewChange(true)
     }
 
-    /// Reverts the preview on every possible exit path, including gesture
-    /// cancellation, via the `pressingPreview` observer below.
     private func lowerPreview() {
         guard previewRaised else { return }
         previewRaised = false
