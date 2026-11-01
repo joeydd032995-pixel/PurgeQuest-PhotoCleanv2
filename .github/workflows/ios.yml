@@ -68,6 +68,9 @@ jobs:
         env:
           TEST_RUNNER_SNAPSHOT_DIR: ${{ runner.temp }}/ui-snapshots
         run: |
+          # Pre-grant photo access so the system prompt never covers the screenshots.
+          xcrun simctl boot "$SIMULATOR_UDID" 2>/dev/null || true
+          xcrun simctl privacy "$SIMULATOR_UDID" grant photos com.purgequest.app || true
           xcodebuild \
             -project ios/PurgeQuest.xcodeproj \
             -scheme PurgeQuest \
