@@ -54,6 +54,15 @@ struct ShopView: View {
     /// Currently equipped items, one per slot — the base outfit for tile previews.
     private var equippedItems: [CosmeticItem] { cosmetics.filter { $0.isEquipped } }
 
+    /// The cheapest locked item just beyond the hero's gems — the next goal,
+    /// given a subtle amber outline so it reads at a glance.
+    private var nextGoalItemID: String? {
+        filtered
+            .filter { !$0.isUnlocked && $0.type != .upgrade && $0.priceGems > (hero?.gems ?? 0) }
+            .min(by: { $0.priceGems < $1.priceGems })?
+            .id
+    }
+
     private var filtered: [CosmeticItem] {
         cosmetics.filter { c in
             switch filter {
@@ -89,24 +98,7 @@ struct ShopView: View {
                 } else {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                         ForEach(filtered) { item in
-                            CosmeticTile(
-                                item: item,
-                                gems: hero?.gems ?? 0,
-                                hero: hero,
-                                equipped: equippedItems,
-                                isGateLocked: item.type == .upgrade && !titanGateUnlocked,
-                                onPreviewChange: { holding in
-                                    previewingItem = holding ? item : nil
-                                }
-                            ) {
-                                purchase(item)
-                            }
-                            .unlockBurst(
-                                trigger: unlockedItemID == item.id ? burstTick : 0,
-                                palette: item.isVideoThemed
-                                    ? [.videoSapphire, .questAmber, .gemEmerald]
-                                    : [.questAmber, .gemEmerald, .combatCrimson]
-                            )
+                            goalTile(for: item)
                         }
                     }
                     if filter == .all { storeKitSection }
@@ -269,6 +261,34 @@ struct ShopView: View {
         try? modelContext.save()
     }
 
+    /// Raises or reverts the full-size wear preview for a held tile.
+    private func previewChange(_ item: CosmeticItem, holding: Bool) {
+        previewingItem = holding ? item : nil
+    }
+
+    /// One Armory tile, built outside `body` to keep type-checking fast:
+    /// wear preview gesture, unlock burst, and the next-goal outline.
+    private func goalTile(for item: CosmeticItem) -> some View {
+        let isGoal = item.id == nextGoalItemID
+        let burstTrigger = unlockedItemID == item.id ? burstTick : 0
+        let burstPalette: [Color] = item.isVideoThemed
+            ? [.videoSapphire, .questAmber, .gemEmerald]
+            : [.questAmber, .gemEmerald, .combatCrimson]
+        let gateLocked = item.type == .upgrade && !titanGateUnlocked
+        return CosmeticTile(
+            item: item,
+            gems: hero?.gems ?? 0,
+            hero: hero,
+            equipped: equippedItems,
+            isGateLocked: gateLocked,
+            onPreviewChange: { previewChange(item, holding: $0) },
+            isNextGoal: isGoal,
+        ) {
+            purchase(item)
+        }
+        .unlockBurst(trigger: burstTrigger, palette: burstPalette)
+    }
+
     /// Marks the tile that just unlocked so its shard burst plays, and
     /// fires the multi-tap purchase haptic.
     private func celebrateUnlock(of item: CosmeticItem) {
@@ -407,6 +427,8 @@ private struct CosmeticTile: View {
     var isGateLocked: Bool = false
     /// Reports hold/release so the Armory can raise and revert a full-size preview.
     var onPreviewChange: (Bool) -> Void = { _ in }
+    /// The cheapest locked item just out of reach — drawn with a goal outline.
+    var isNextGoal: Bool = false
     let onTap: () -> Void
 
     /// Tracks the hold so the preview overlay reverts the moment the finger lifts.
@@ -464,7 +486,13 @@ private struct CosmeticTile: View {
                     .fill(Color.dungeonStone)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(item.isEquipped ? Color.gemEmerald.opacity(0.7) : Color.dungeonAsh, lineWidth: 1)
+                            .stroke(
+                                item.isEquipped ? Color.gemEmerald.opacity(0.7)
+                                    : isNextGoal ? Color.questAmber.opacity(0.65)
+                                    : Color.dungeonAsh,
+                                lineWidth: isNextGoal && !item.isEquipped ? 1.5 : 1
+                            )
+                            .animation(.easeOut(duration: 0.3), value: isNextGoal)
                     )
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
