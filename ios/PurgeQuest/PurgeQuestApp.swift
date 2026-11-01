@@ -15,6 +15,9 @@ struct PurgeQuestApp: App {
 
     @State private var appState = AppState()
 
+    /// Light / Dark / System. Changed in Settings; System follows the device.
+    @AppStorage(AppearanceMode.storageKey) private var appearanceRaw = AppearanceMode.system.rawValue
+
     let sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Hero.self,
@@ -56,7 +59,7 @@ struct PurgeQuestApp: App {
                 #endif
             }
             .environment(appState)
-            .preferredColorScheme(.dark)
+            .preferredColorScheme(AppearanceMode(storedValue: appearanceRaw).colorScheme)
         }
         .modelContainer(sharedModelContainer)
     }

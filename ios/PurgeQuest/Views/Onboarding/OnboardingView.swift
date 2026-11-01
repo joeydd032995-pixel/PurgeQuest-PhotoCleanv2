@@ -62,20 +62,10 @@ struct OnboardingView: View {
     private var introPage: some View {
         VStack(spacing: 24) {
             Spacer()
-            Image(systemName: "shield.lefthalf.filled")
-                .font(.system(size: 52, weight: .bold))
-                .foregroundStyle(.questAmber)
-                .frame(width: 112, height: 112)
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.dungeonStone)
-                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.questAmber.opacity(0.6), lineWidth: 1))
-                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmber.opacity(0.3), lineWidth: 1).padding(3))
-                )
+            WordmarkView()
+            EmblemView()
+                .frame(maxWidth: 220)
             VStack(spacing: 12) {
-                Text("PurgeQuest")
-                    .font(.dungeonTitle)
-                    .foregroundStyle(.textPrimary)
                 Text("Your library is a dungeon.\nPhotos and videos hide as monsters.\nClear the depths and reclaim your storage.")
                     .font(.headline)
                     .foregroundStyle(.textSecondary)
@@ -113,17 +103,11 @@ struct OnboardingView: View {
                 }
             } label: {
                 HStack {
-                    if requestingPermission { ProgressView().tint(.dungeonVoid) }
+                    if requestingPermission { ProgressView() }
                     Text(appState.photoAuthStatus == .notDetermined ? "Grant Photo Library Access" : "Update Permissions")
-                        .font(.dungeonHeader)
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .background(Color.questAmber)
-                .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmberDeep, lineWidth: 1))
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .foregroundStyle(.dungeonVoid)
             }
+            .buttonStyle(.gold(fullWidth: true))
             .padding(.horizontal, 24)
             .disabled(requestingPermission)
             Spacer()
@@ -264,12 +248,12 @@ struct OnboardingView: View {
             HStack(spacing: 14) {
                 Image(systemName: hc.symbol)
                     .font(.title2)
-                    .foregroundStyle(selected ? Color.dungeonVoid : Color.questAmber)
+                    .foregroundStyle(selected ? Color.goldInk : Color.questAmber)
                     .frame(width: 48, height: 48)
                     .background(
-                        RoundedRectangle(cornerRadius: 10).fill(selected ? AnyShapeStyle(Color.questAmber) : AnyShapeStyle(Color.dungeonStoneLight))
+                        RoundedRectangle(cornerRadius: 10).fill(selected ? AnyShapeStyle(Color.goldFill) : AnyShapeStyle(Color.dungeonStoneLight))
                     )
-                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(selected ? Color.questAmberDeep : Color.dungeonAsh, lineWidth: 1))
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(selected ? Color.goldRim : Color.dungeonAsh, lineWidth: 1))
                 VStack(alignment: .leading, spacing: 2) {
                     Text(hc.displayName)
                         .font(.headline)
@@ -342,10 +326,10 @@ struct OnboardingView: View {
                             .frame(maxWidth: .infinity)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .fill(draftLook.paintVariant == variant ? AnyShapeStyle(Color.questAmber) : AnyShapeStyle(Color.dungeonStone))
-                                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(draftLook.paintVariant == variant ? Color.questAmberDeep : Color.dungeonAsh, lineWidth: 1))
+                                    .fill(draftLook.paintVariant == variant ? AnyShapeStyle(Color.goldFill) : AnyShapeStyle(Color.dungeonStone))
+                                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(draftLook.paintVariant == variant ? Color.goldRim : Color.dungeonAsh, lineWidth: 1))
                             )
-                            .foregroundStyle(draftLook.paintVariant == variant ? AnyShapeStyle(.dungeonVoid) : AnyShapeStyle(.textPrimary))
+                            .foregroundStyle(draftLook.paintVariant == variant ? AnyShapeStyle(.goldInk) : AnyShapeStyle(.textPrimary))
                     }
                     .buttonStyle(.plain)
                 }
@@ -440,16 +424,15 @@ struct OnboardingView: View {
                 advance()
             } label: {
                 Text(pageIndex == totalPages - 1 ? "Enter the Dungeon" : "Continue")
-                    .font(.dungeonHeader)
-                    .padding(.vertical, 12).padding(.horizontal, 18)
-                    .background(Color.questAmber)
-                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmberDeep, lineWidth: 1))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .foregroundStyle(.dungeonVoid)
             }
-            .disabled(pageIndex == 1 && (appState.photoAuthStatus != .authorized && appState.photoAuthStatus != .limited))
-            .opacity((pageIndex == 1 && (appState.photoAuthStatus != .authorized && appState.photoAuthStatus != .limited)) ? 0.4 : 1.0)
+            .buttonStyle(.gold)
+            .disabled(continueBlockedByPermission)
         }
+    }
+
+    /// The permission page cannot be passed until photo access is granted (full or limited).
+    private var continueBlockedByPermission: Bool {
+        pageIndex == 1 && appState.photoAuthStatus != .authorized && appState.photoAuthStatus != .limited
     }
 
     private func advance() {

@@ -218,15 +218,9 @@ struct DashboardView: View {
             HStack(spacing: 10) {
                 Image(systemName: "shield.lefthalf.filled")
                 Text("Enter the Dungeon")
-                    .font(.dungeonHeader)
             }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 16)
-            .background(Color.questAmber)
-            .foregroundStyle(.dungeonVoid)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmberDeep, lineWidth: 1))
         }
+        .buttonStyle(.gold(fullWidth: true))
         .accessibilityLabel("Enter the dungeon and start a cleanup session")
     }
 

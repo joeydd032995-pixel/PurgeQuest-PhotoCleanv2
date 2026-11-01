@@ -58,7 +58,7 @@ struct DuplicateGroupCard: View {
                 }
                 .padding(.horizontal, 10).padding(.vertical, 6)
                 .background(RoundedRectangle(cornerRadius: 6).fill(group.monsterType.accentColor.opacity(0.85)))
-                .foregroundStyle(.dungeonVoid)
+                .foregroundStyle(.onAccent)
 
                 rarityChip
                 Spacer()
@@ -153,8 +153,8 @@ struct DuplicateGroupCard: View {
                         Label("Suggested keep", systemImage: "star.fill")
                             .font(.caption2.weight(.black))
                             .padding(.horizontal, 8).padding(.vertical, 5)
-                            .background(RoundedRectangle(cornerRadius: 6).fill(Color.questAmber))
-                            .foregroundStyle(.dungeonVoid)
+                            .background(RoundedRectangle(cornerRadius: 6).fill(Color.goldFill))
+                            .foregroundStyle(.goldInk)
                             .padding(8)
                     }
                     Spacer()
@@ -261,9 +261,9 @@ struct DuplicateGroupCard: View {
             )
             .font(.headline.weight(.heavy))
             .frame(maxWidth: .infinity).padding(.vertical, 13)
-            .background(RoundedRectangle(cornerRadius: 9).fill(slayCount > 0 ? Color.combatCrimson : Color.questAmber))
-            .overlay(RoundedRectangle(cornerRadius: 9).stroke(slayCount > 0 ? Color.combatCrimsonDeep : Color.questAmberDeep, lineWidth: 1))
-            .foregroundStyle(slayCount > 0 ? .white : .dungeonVoid)
+            .background(RoundedRectangle(cornerRadius: 9).fill(slayCount > 0 ? Color.combatCrimson : Color.goldFill))
+            .overlay(RoundedRectangle(cornerRadius: 9).stroke(slayCount > 0 ? Color.combatCrimsonDeep : Color.goldRim, lineWidth: 1))
+            .foregroundStyle(slayCount > 0 ? .white : .goldInk)
         }
         .padding(.horizontal, 14)
         .padding(.bottom, 14)

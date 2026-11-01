@@ -198,10 +198,10 @@ struct ShopView: View {
                             .font(.callout.weight(.semibold))
                             .padding(.horizontal, 14).padding(.vertical, 8)
                             .background(
-                                RoundedRectangle(cornerRadius: 8).fill(filter == f ? AnyShapeStyle(Color.questAmber) : AnyShapeStyle(Color.dungeonStone))
-                                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(filter == f ? Color.questAmberDeep : Color.dungeonAsh, lineWidth: 1))
+                                RoundedRectangle(cornerRadius: 8).fill(filter == f ? AnyShapeStyle(Color.goldFill) : AnyShapeStyle(Color.dungeonStone))
+                                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(filter == f ? Color.goldRim : Color.dungeonAsh, lineWidth: 1))
                             )
-                            .foregroundStyle(filter == f ? .dungeonVoid : .textPrimary)
+                            .foregroundStyle(filter == f ? .goldInk : .textPrimary)
                     }
                 }
             }
@@ -428,11 +428,11 @@ private struct IAPRow: View {
                     RoundedRectangle(cornerRadius: 8)
                         .fill(accent)
                     if working || isPurchasing {
-                        ProgressView().tint(.dungeonVoid)
+                        ProgressView().tint(.onAccent)
                     } else {
                         Text(product.displayPrice)
                             .font(.callout.weight(.heavy))
-                            .foregroundStyle(.dungeonVoid)
+                            .foregroundStyle(.onAccent)
                             .monospacedDigit()
                     }
                 }
@@ -728,14 +728,9 @@ private struct GearPreviewOverlay: View {
                     Text("Release or tap anywhere to close — nothing is equipped.")
                         .font(.caption)
                         .foregroundStyle(.textSecondary)
-                    Button(action: onClose) {
-                        Text("Done")
-                            .font(.callout.weight(.bold))
-                            .padding(.horizontal, 22).padding(.vertical, 9)
-                            .background(RoundedRectangle(cornerRadius: 10).fill(Color.questAmber))
-                            .foregroundStyle(.dungeonVoid)
-                    }
-                    .accessibilityHint("Closes the preview")
+                    Button("Done", action: onClose)
+                        .buttonStyle(.gold)
+                        .accessibilityHint("Closes the preview")
                 }
                 .padding(.horizontal, 24)
             }

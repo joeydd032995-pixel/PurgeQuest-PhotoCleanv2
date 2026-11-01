@@ -37,6 +37,10 @@ jobs:
           fi
           echo "SIMULATOR_UDID=$simulator_udid" >> "$GITHUB_ENV"
       - name: Build and run PurgeQuest unit tests
+        env:
+          # SnapshotRenderTests saves PNG renders of the new UI here (xcodebuild
+          # strips the TEST_RUNNER_ prefix before handing it to the tests).
+          TEST_RUNNER_SNAPSHOT_DIR: ${{ runner.temp }}/ui-snapshots
         run: |
           xcodebuild \
             -project ios/PurgeQuest.xcodeproj \
@@ -47,6 +51,14 @@ jobs:
             -only-testing:PurgeQuestTests \
             CODE_SIGNING_ALLOWED=NO \
             test
+      - name: Upload UI snapshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-snapshots
+          path: ${{ runner.temp }}/ui-snapshots
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Run Forge UI tests
         run: |
           xcodebuild \

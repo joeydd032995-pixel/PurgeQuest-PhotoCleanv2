@@ -134,7 +134,7 @@ struct SwipeMediaCard: View {
             }
             .padding(.horizontal, 10).padding(.vertical, 6)
             .background(RoundedRectangle(cornerRadius: 6).fill(item.monsterType.accentColor.opacity(0.85)))
-            .foregroundStyle(.dungeonVoid)
+            .foregroundStyle(.onAccent)
             if item.monsterType.isElite {
                 eliteBadge
             }
@@ -161,8 +161,8 @@ struct SwipeMediaCard: View {
                 .tracking(0.6)
         }
         .padding(.horizontal, 8).padding(.vertical, 5)
-        .foregroundStyle(.dungeonVoid)
-        .background(RoundedRectangle(cornerRadius: 6).fill(Color.questAmber))
+        .foregroundStyle(.goldInk)
+        .background(RoundedRectangle(cornerRadius: 6).fill(Color.goldFill))
         .overlay(RoundedRectangle(cornerRadius: 6).stroke(.white.opacity(0.55), lineWidth: 0.6))
         .accessibilityHidden(true)
     }
@@ -190,8 +190,8 @@ struct SwipeMediaCard: View {
                 Label("Review carefully", systemImage: "eye.fill")
                     .font(.caption2.weight(.black))
                     .padding(.horizontal, 8).padding(.vertical, 4)
-                    .background(RoundedRectangle(cornerRadius: 6).fill(Color.questAmber.opacity(0.92)))
-                    .foregroundStyle(.dungeonVoid)
+                    .background(RoundedRectangle(cornerRadius: 6).fill(Color.goldFill.opacity(0.92)))
+                    .foregroundStyle(.goldInk)
                     .accessibilityHint("This monster deserves a close look before deciding")
             }
             HStack(spacing: 8) {
@@ -233,7 +233,7 @@ struct SwipeMediaCard: View {
                 .fill(Color.gemEmerald.opacity(0.4 * strength))
             Text("SPARE")
                 .font(.system(size: 26, weight: .black))
-                .foregroundStyle(.dungeonVoid)
+                .foregroundStyle(.onAccent)
                 .padding(10).padding(.horizontal, 6)
                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.gemEmeraldDeep))
                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(.white.opacity(0.6), lineWidth: 1))

@@ -161,7 +161,6 @@ struct HeroForgeView: View {
                 actionBar
             }
         }
-        .preferredColorScheme(.dark)
         .onChange(of: draft.race) { _, _ in pruneIncompatibleEquipment() }
         .onChange(of: draft.paintVariant) { _, _ in pruneIncompatibleEquipment() }
         .confirmationDialog(
@@ -290,10 +289,10 @@ struct HeroForgeView: View {
                             .padding(.vertical, 9)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .fill(category == c ? AnyShapeStyle(Color.questAmber) : AnyShapeStyle(Color.dungeonStone))
-                                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(category == c ? Color.questAmberDeep : Color.dungeonAsh, lineWidth: 1))
+                                    .fill(category == c ? AnyShapeStyle(Color.goldFill) : AnyShapeStyle(Color.dungeonStone))
+                                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(category == c ? Color.goldRim : Color.dungeonAsh, lineWidth: 1))
                             )
-                            .foregroundStyle(category == c ? AnyShapeStyle(.dungeonVoid) : AnyShapeStyle(.textPrimary))
+                            .foregroundStyle(category == c ? AnyShapeStyle(.goldInk) : AnyShapeStyle(.textPrimary))
                     }
                     .accessibilityLabel("\(c.displayName) options")
                     .accessibilityAddTraits(category == c ? .isSelected : [])
@@ -747,14 +746,14 @@ struct HeroForgeView: View {
                     .frame(maxWidth: .infinity, minHeight: 48)
                     .background(
                         RoundedRectangle(cornerRadius: 10)
-                            .fill(isDirty ? AnyShapeStyle(Color.questAmber) : AnyShapeStyle(Color.dungeonStone))
+                            .fill(isDirty ? AnyShapeStyle(Color.goldFill) : AnyShapeStyle(Color.dungeonStone))
                     )
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.questAmberDeep, lineWidth: 1)
+                            .stroke(Color.goldRim, lineWidth: 1)
                             .opacity(isDirty ? 1 : 0.3)
                     )
-                    .foregroundStyle(isDirty ? AnyShapeStyle(.dungeonVoid) : AnyShapeStyle(.textSecondary))
+                    .foregroundStyle(isDirty ? AnyShapeStyle(.goldInk) : AnyShapeStyle(.textSecondary))
             }
             .disabled(!isDirty)
             .accessibilityHint("Applies this look to the hero everywhere")

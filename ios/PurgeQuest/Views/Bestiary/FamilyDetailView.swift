@@ -46,9 +46,18 @@ struct FamilyDetailView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(family.tagline)
-                .font(.callout)
-                .foregroundStyle(.textSecondary)
+            HStack(spacing: 12) {
+                Image(family.iconAssetName)
+                    .renderingMode(.template)
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundStyle(family.accentColor)
+                    .frame(width: 44, height: 40)
+                    .accessibilityHidden(true)
+                Text(family.tagline)
+                    .font(.callout)
+                    .foregroundStyle(.textSecondary)
+            }
             if family == .archiveRelics {
                 Label("Old photos are memories, not junk. Reviewing is always rewarded.", systemImage: "sparkles")
                     .font(.caption.weight(.semibold))

@@ -23,30 +23,11 @@ struct ContentView: View {
                     .transition(.opacity)
             }
         }
-        .preferredColorScheme(.dark)
         .task { await bootstrap() }
     }
 
     private var splash: some View {
-        ZStack {
-            DungeonBackgroundView()
-            VStack(spacing: 20) {
-                Image(systemName: "shield.lefthalf.filled")
-                    .font(.system(size: 56, weight: .bold))
-                    .foregroundStyle(.questAmber)
-                    .frame(width: 116, height: 116)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.dungeonStone)
-                            .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.questAmber.opacity(0.6), lineWidth: 1))
-                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmber.opacity(0.3), lineWidth: 1).padding(3))
-                    )
-                Text("PurgeQuest")
-                    .font(.dungeonTitle)
-                    .foregroundStyle(.textPrimary)
-                ProgressView().tint(.questAmber)
-            }
-        }
+        SplashView()
     }
 
     private var main: some View {

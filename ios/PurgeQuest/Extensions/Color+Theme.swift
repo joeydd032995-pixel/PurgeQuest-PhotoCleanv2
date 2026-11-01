@@ -2,35 +2,93 @@
 //  Color+Theme.swift
 //  PurgeQuest
 //
-//  "Verdigris Deep" design system. Green-black vault neutrals form the
-//  utility base; dungeon accents are reserved for gamified surfaces.
+//  Adaptive design tokens. Dark is "Verdigris Deep" (green-black vault
+//  neutrals, unchanged); Light is "Parchment Gold" (cream canvas, near-black
+//  ink, deepened accents). Values live in ThemePalette so contrast is unit
+//  tested; the names below are the long-standing ones, so existing views pick
+//  up both appearances automatically.
+//
+//  Two kinds of gold on purpose:
+//   - `questAmber` is gold *as an accent*: text, icons and tints. It deepens in
+//     Light so it stays legible on cream.
+//   - `goldInk` / `LinearGradient.goldPlate` is the brand gold *plate*
+//     (buttons, badges, emblem) and looks the same in both appearances.
 //  No purple, neon, pastel, or rainbow tones anywhere.
 //
 
 import SwiftUI
+import UIKit
+
+extension UIColor {
+    convenience init(_ rgb: ThemeRGB, alpha: CGFloat = 1) {
+        self.init(red: rgb.red, green: rgb.green, blue: rgb.blue, alpha: alpha)
+    }
+
+    /// A dynamic color that resolves to `pair.light` or `pair.dark` with the
+    /// appearance of whatever it is drawn in.
+    static func adaptive(_ pair: ThemePair) -> UIColor {
+        UIColor { traits in
+            UIColor(traits.userInterfaceStyle == .dark ? pair.dark : pair.light)
+        }
+    }
+}
 
 extension Color {
-    // Verdigris Deep neutrals
-    static let dungeonVoid       = Color(red: 0.047, green: 0.082, blue: 0.071)   // canvas #0C1512
-    static let dungeonStone      = Color(red: 0.078, green: 0.129, blue: 0.110)   // surface #14211C
-    static let dungeonStoneLight = Color(red: 0.106, green: 0.165, blue: 0.141)   // raised surface #1B2A24
-    static let dungeonAsh        = Color(red: 0.149, green: 0.216, blue: 0.188)   // hairline border #263730
+    /// A color that resolves to `pair.light` or `pair.dark` with the current appearance.
+    init(_ pair: ThemePair) {
+        self.init(uiColor: UIColor.adaptive(pair))
+    }
 
-    // Dungeon accents (gamified zones only)
-    static let questAmber        = Color(red: 0.890, green: 0.702, blue: 0.255)   // treasure gold #E3B341
-    static let questAmberDeep    = Color(red: 0.659, green: 0.498, blue: 0.157)   // deep gold #A87F28
-    static let combatCrimson     = Color(red: 0.769, green: 0.357, blue: 0.306)   // brick #C45B4E
-    static let combatCrimsonDeep = Color(red: 0.561, green: 0.243, blue: 0.200)   // deep brick #8F3E33
-    static let gemEmerald        = Color(red: 0.239, green: 0.620, blue: 0.463)   // reward jade #3D9E76
-    static let gemEmeraldDeep    = Color(red: 0.141, green: 0.333, blue: 0.255)   // deep jade #245541
-    /// Arcane accent (verdigris jade #4FC49B). Historic name kept for compatibility.
-    static let xpViolet          = Color(red: 0.310, green: 0.769, blue: 0.608)
-    static let videoSapphire     = Color(red: 0.427, green: 0.608, blue: 0.710)   // steel blue #6D9BB5
+    /// A fixed color, identical in both appearances.
+    init(_ rgb: ThemeRGB) {
+        self.init(uiColor: UIColor(rgb))
+    }
+
+    // Neutrals
+    static let dungeonVoid       = Color(ThemePalette.canvas)          // canvas: #0C1512 dark, #F4F4EC light
+    static let dungeonStone      = Color(ThemePalette.surface)         // surface
+    static let dungeonStoneLight = Color(ThemePalette.surfaceRaised)   // raised surface (a recessed well in Light)
+    static let dungeonAsh        = Color(ThemePalette.hairline)        // hairline border
+
+    // Accents (gamified zones only)
+    static let questAmber        = Color(ThemePalette.amber)           // treasure gold
+    static let questAmberDeep    = Color(ThemePalette.amberDeep)
+    static let combatCrimson     = Color(ThemePalette.crimson)         // brick
+    static let combatCrimsonDeep = Color(ThemePalette.crimsonDeep)
+    static let gemEmerald        = Color(ThemePalette.emerald)         // reward jade
+    static let gemEmeraldDeep    = Color(ThemePalette.emeraldDeep)
+    /// Arcane accent (verdigris jade). Historic name kept for compatibility.
+    static let xpViolet          = Color(ThemePalette.jade)
+    static let videoSapphire     = Color(ThemePalette.sapphire)        // steel blue
+
+    // Bestiary family hues
+    static let behemothIndigo    = Color(ThemePalette.indigo)
+    static let dragonCoral       = Color(ThemePalette.coral)
+    static let glitchRose        = Color(ThemePalette.rose)
 
     // Text
-    static let textPrimary       = Color(red: 0.937, green: 0.949, blue: 0.937)   // off-white
-    static let textSecondary     = Color(red: 0.576, green: 0.651, blue: 0.612)   // quiet sage gray
-    static let textTertiary      = Color(red: 0.365, green: 0.435, blue: 0.396)
+    static let textPrimary       = Color(ThemePalette.textPrimary)
+    static let textSecondary     = Color(ThemePalette.textSecondary)
+    static let textTertiary      = Color(ThemePalette.textTertiary)
+
+    /// Ink for text/icons on an accent fill (dark on bright dark-mode accents, cream on deep light-mode ones).
+    static let onAccent          = Color(ThemePalette.onAccent)
+    /// Wordmark and display titles.
+    static let goldTitle         = Color(ThemePalette.goldTitle)
+
+    // Brand gold plate: the same in both appearances.
+    static let goldInk           = Color(ThemePalette.Gold.ink)
+    static let goldRim           = Color(ThemePalette.Gold.rim)
+    static let goldBevel         = Color(ThemePalette.Gold.bevel)
+    /// Mid-plate gold, for small fills (badges, chips) that need the brand gold.
+    static let goldFill          = Color(ThemePalette.Gold.plateStops[2].color)
+
+    /// Edge shading for the canvas: deep shadow in Dark, a faint warm tint in Light.
+    static let canvasVignette = Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor(white: 0, alpha: 0.35)
+            : UIColor(red: 0.36, green: 0.29, blue: 0.12, alpha: 0.07)
+    })
 }
 
 extension ShapeStyle where Self == Color {
@@ -46,16 +104,22 @@ extension ShapeStyle where Self == Color {
     static var gemEmeraldDeep: Color    { .gemEmeraldDeep }
     static var xpViolet: Color          { .xpViolet }
     static var videoSapphire: Color     { .videoSapphire }
+    static var behemothIndigo: Color    { .behemothIndigo }
+    static var dragonCoral: Color       { .dragonCoral }
+    static var glitchRose: Color        { .glitchRose }
     static var textPrimary: Color       { .textPrimary }
     static var textSecondary: Color     { .textSecondary }
     static var textTertiary: Color      { .textTertiary }
+    static var onAccent: Color          { .onAccent }
+    static var goldTitle: Color         { .goldTitle }
+    static var goldInk: Color           { .goldInk }
 }
 
 // Barely-tonal fills only. Harsh glow gradients are gone; these read as flat
 // color with a hint of depth for progress fills and framed panels.
 extension LinearGradient {
     static let dungeonBackground = LinearGradient(
-        colors: [Color(red: 0.031, green: 0.059, blue: 0.047), .dungeonVoid],
+        colors: [Color(ThemePalette.canvasTop), .dungeonVoid],
         startPoint: .top, endPoint: .bottom
     )
     static let amberGlow = LinearGradient(
@@ -69,5 +133,12 @@ extension LinearGradient {
     static let emeraldGlow = LinearGradient(
         colors: [.gemEmerald, .gemEmeraldDeep],
         startPoint: .topLeading, endPoint: .bottomTrailing
+    )
+
+    /// The brand gold plate (Continue button, badges). Lighter at the top,
+    /// bronze at the lower edge, identical in Light and Dark.
+    static let goldPlate = LinearGradient(
+        stops: ThemePalette.Gold.plateStops.map { Gradient.Stop(color: Color($0.color), location: $0.location) },
+        startPoint: .top, endPoint: .bottom
     )
 }
