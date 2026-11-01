@@ -57,6 +57,9 @@ final class AppearanceTourUITests: XCTestCase {
         dismissPhotoPrompt()
         settle(1.5)
         shot("\(mode)-10-library")
+        app.swipeUp()
+        settle(1.0)
+        shot("\(mode)-12-library-scrolled")
 
         // A combat room: the simulator's sample photos, or the empty state without any.
         let enter = app.buttons["Enter the dungeon and start a cleanup session"]
@@ -94,8 +97,12 @@ final class AppearanceTourUITests: XCTestCase {
     /// The Hero Forge (largest custom screen, force-dark until Light mode landed).
     @MainActor
     private func captureForge(_ app: XCUIApplication, _ mode: String) {
-        let forge = app.buttons["Forge Hero"]
-        guard forge.waitForExistence(timeout: 5) else { return }
+        // The button carries its own accessibility label, not its visible title.
+        let forge = app.buttons["Open the hero forge to customize your hero's look"]
+        guard forge.waitForExistence(timeout: 5) else {
+            XCTFail("Forge button not found on the Hero tab (\(mode))")
+            return
+        }
         forge.tap()
         settle(2.0)
         shot("\(mode)-23-forge")
