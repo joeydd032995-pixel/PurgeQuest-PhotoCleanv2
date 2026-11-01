@@ -73,6 +73,11 @@ final class AppearanceTourUITests: XCTestCase {
         shot("live-1-classic-settings")
 
         tapPalette("Verdigris", in: app)
+        // The change repaints in place: Settings stays open and shows the new summary.
+        XCTAssertTrue(
+            app.staticTexts["Green-black in Dark, pale sage in Light."].waitForExistence(timeout: 5),
+            "Settings should stay open, showing the Verdigris summary, after a palette change"
+        )
         shot("live-2-after-verdigris")
         if open(tab: "Armory", in: app) {
             settle(1.5)
@@ -81,6 +86,10 @@ final class AppearanceTourUITests: XCTestCase {
         if open(tab: "Settings", in: app) {
             settle(1.0)
             tapPalette("Classic", in: app)
+            XCTAssertTrue(
+                app.staticTexts["Charcoal in Dark, parchment in Light."].waitForExistence(timeout: 5),
+                "Settings should stay open, showing the Classic summary, after switching back"
+            )
             shot("live-4-back-to-classic")
         }
         app.terminate()

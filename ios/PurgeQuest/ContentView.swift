@@ -23,12 +23,12 @@ struct ContentView: View {
     }
 
     var body: some View {
-        let theme = colorTheme
-        // Only the visible content is rebuilt when the palette changes; the launch
-        // task below stays attached to the stable container so it does not re-run.
+        // Reading the palette here publishes it before any view below is built, and makes
+        // this body re-run when the setting changes (each tab then rebuilds; see `main`).
+        // The launch task stays on this stable container, so it does not re-run.
+        _ = colorTheme
         return ZStack {
             phaseContent
-                .id(theme)
         }
         .task { await bootstrap() }
     }
@@ -53,6 +53,10 @@ struct ContentView: View {
 
     private var main: some View {
         @Bindable var appState = appState
+        // Each tab's stack is keyed by the palette, so changing it repaints that tab (and
+        // returns its stack to the root). The TabView itself is kept, so the selected tab,
+        // including one folded under "More" such as Settings, stays where it is.
+        let theme = colorTheme
         return TabView(selection: $appState.selectedTab) {
             NavigationStack {
                 DashboardView()
@@ -63,26 +67,32 @@ struct ContentView: View {
                         CombatView()
                     }
             }
+            .id(theme)
             .tabItem { Label("Library", systemImage: "photo.stack") }
             .tag(MainTab.dashboard)
 
             NavigationStack { HeroTabView() }
+                .id(theme)
                 .tabItem { Label("Hero", systemImage: "figure.fencing") }
                 .tag(MainTab.hero)
 
             NavigationStack { BestiaryView() }
+                .id(theme)
                 .tabItem { Label("Bestiary", systemImage: "book.closed.fill") }
                 .tag(MainTab.bestiary)
 
             NavigationStack { ShopView() }
+                .id(theme)
                 .tabItem { Label("Armory", systemImage: "shield.lefthalf.filled") }
                 .tag(MainTab.shop)
 
             NavigationStack { AchievementsView() }
+                .id(theme)
                 .tabItem { Label("Trophies", systemImage: "trophy") }
                 .tag(MainTab.achievements)
 
             NavigationStack { SettingsView() }
+                .id(theme)
                 .tabItem { Label("Settings", systemImage: "gearshape") }
                 .tag(MainTab.settings)
         }
