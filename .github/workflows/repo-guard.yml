@@ -1,0 +1,20 @@
+name: Repo guard
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Offline / no-dependency / recoverable-deletion / seasonal-catalog guards
+        run: python3 -I tools/ci/repo_guard.py

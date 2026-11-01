@@ -282,7 +282,7 @@ struct ShopView: View {
             equipped: equippedItems,
             isGateLocked: gateLocked,
             onPreviewChange: { previewChange(item, holding: $0) },
-            isNextGoal: isGoal,
+            isNextGoal: isGoal
         ) {
             purchase(item)
         }
@@ -453,57 +453,101 @@ private struct CosmeticTile: View {
         !item.isUnlocked && item.type != .upgrade && gems < item.priceGems
     }
 
+    // The tile is deliberately assembled from small, explicitly typed pieces:
+    // as one expression, `body` outgrew the compiler's type-checking budget.
     var body: some View {
         Button(action: onTap) {
-            VStack(alignment: .leading, spacing: 10) {
-                Group {
-                    photoStage
-                    Text(item.name)
-                        .font(.subheadline.weight(.bold))
-                        .foregroundStyle(.textPrimary)
-                        .lineLimit(1)
-                    Text(item.subtitle)
-                        .font(.caption)
-                        .foregroundStyle(.textSecondary)
-                        .lineLimit(2)
-                }
-                .opacity(isUnaffordable ? 0.5 : 1)
-                .animation(.easeOut(duration: 0.25), value: isUnaffordable)
-
-                VStack(alignment: .leading, spacing: 4) {
-                    priceTag
-                    if isUnaffordable {
-                        Text("+\(item.priceGems - gems) gems")
-                            .font(.caption2.weight(.bold).monospacedDigit())
-                            .foregroundStyle(.questAmber)
-                            .accessibilityLabel("You need \(item.priceGems - gems) more gems")
-                    }
-                }
-            }
-            .padding(12)
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.dungeonStone)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(
-                                item.isEquipped ? Color.gemEmerald.opacity(0.7)
-                                    : isNextGoal ? Color.questAmber.opacity(0.65)
-                                    : Color.dungeonAsh,
-                                lineWidth: isNextGoal && !item.isEquipped ? 1.5 : 1
-                            )
-                            .animation(.easeOut(duration: 0.3), value: isNextGoal)
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(item.isEquipped ? Color.gemEmerald.opacity(0.35) : Color.dungeonAsh.opacity(0.5), lineWidth: 1)
-                            .padding(2)
-                    )
-            )
+            tileContent
         }
         .buttonStyle(.plain)
         .simultaneousGesture(previewGesture)
         .accessibilityHint(isWearable ? "Hold to preview on your hero" : "")
+    }
+
+    /// Stage + labels over the price footer, on the status-bordered plate.
+    private var tileContent: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            tileLabels
+            tileFooter
+        }
+        .padding(12)
+        .background(tileBackground)
+    }
+
+    /// Stage, name and subtitle — the part of the tile that dims when unaffordable.
+    private var tileLabels: some View {
+        Group {
+            photoStage
+            Text(item.name)
+                .font(.subheadline.weight(.bold))
+                .foregroundStyle(Color.textPrimary)
+                .lineLimit(1)
+            Text(item.subtitle)
+                .font(.caption)
+                .foregroundStyle(Color.textSecondary)
+                .lineLimit(2)
+        }
+        .opacity(isUnaffordable ? 0.5 : 1)
+        .animation(.easeOut(duration: 0.25), value: isUnaffordable)
+    }
+
+    /// Price tag, plus the gem shortfall when the item is out of reach.
+    private var tileFooter: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            priceTag
+            if isUnaffordable {
+                shortfallLabel
+            }
+        }
+    }
+
+    /// Gems still needed to afford the item.
+    private var gemShortfall: Int {
+        item.priceGems - gems
+    }
+
+    private var shortfallLabel: some View {
+        Text("+\(gemShortfall) gems")
+            .font(.caption2.weight(.bold).monospacedDigit())
+            .foregroundStyle(Color.questAmber)
+            .accessibilityLabel("You need \(gemShortfall) more gems")
+    }
+
+    // MARK: Plate and border
+
+    /// Stone plate with the status border and an inner hairline.
+    private var tileBackground: some View {
+        RoundedRectangle(cornerRadius: 12)
+            .fill(Color.dungeonStone)
+            .overlay(tileBorder)
+            .overlay(tileInnerHairline)
+    }
+
+    /// Emerald when equipped, amber when it is the next goal, otherwise ash.
+    private var tileBorder: some View {
+        RoundedRectangle(cornerRadius: 12)
+            .stroke(borderColor, lineWidth: borderWidth)
+            .animation(.easeOut(duration: 0.3), value: isNextGoal)
+    }
+
+    private var tileInnerHairline: some View {
+        RoundedRectangle(cornerRadius: 10)
+            .stroke(innerHairlineColor, lineWidth: 1)
+            .padding(2)
+    }
+
+    private var borderColor: Color {
+        if item.isEquipped { return Color.gemEmerald.opacity(0.7) }
+        if isNextGoal { return Color.questAmber.opacity(0.65) }
+        return Color.dungeonAsh
+    }
+
+    private var borderWidth: CGFloat {
+        isNextGoal && !item.isEquipped ? 1.5 : 1
+    }
+
+    private var innerHairlineColor: Color {
+        item.isEquipped ? Color.gemEmerald.opacity(0.35) : Color.dungeonAsh.opacity(0.5)
     }
 
     /// Hold ~0.3 s to raise the full-size preview; the gesture only ends when
