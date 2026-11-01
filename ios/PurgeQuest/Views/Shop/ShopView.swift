@@ -41,6 +41,8 @@ struct ShopView: View {
     @State private var unlockedItemID: String?
     /// Increments on every unlock; drives the shard burst on the winning tile.
     @State private var burstTick = 0
+    /// Item held down for the full-size "wear it" preview; nil when idle.
+    @State private var previewingItem: CosmeticItem?
 
     private var hero: Hero? { heroes.first }
 
@@ -92,7 +94,10 @@ struct ShopView: View {
                                 gems: hero?.gems ?? 0,
                                 hero: hero,
                                 equipped: equippedItems,
-                                isGateLocked: item.type == .upgrade && !titanGateUnlocked
+                                isGateLocked: item.type == .upgrade && !titanGateUnlocked,
+                                onPreviewChange: { holding in
+                                    previewingItem = holding ? item : nil
+                                }
                             ) {
                                 purchase(item)
                             }
@@ -114,6 +119,13 @@ struct ShopView: View {
         }
         .scrollIndicators(.hidden)
         .background(DungeonBackgroundView())
+        .overlay {
+            if let previewingItem {
+                GearPreviewOverlay(item: previewingItem, hero: hero, equipped: equippedItems)
+                    .transition(.opacity)
+            }
+        }
+        .animation(.easeOut(duration: 0.2), value: previewingItem?.id)
         .task { await store.loadProducts() }
         .alert("Heads up", isPresented: Binding(get: { purchaseError != nil }, set: { if !$0 { purchaseError = nil } })) {
             Button("OK", role: .cancel) {}
@@ -393,7 +405,12 @@ private struct CosmeticTile: View {
     let hero: Hero?
     let equipped: [CosmeticItem]
     var isGateLocked: Bool = false
+    /// Reports hold/release so the Armory can raise and revert a full-size preview.
+    var onPreviewChange: (Bool) -> Void = { _ in }
     let onTap: () -> Void
+
+    /// Tracks the hold so the preview overlay reverts the moment the finger lifts.
+    @State private var pressingPreview = false
 
     /// Whether the mini avatar renders this slot; effects and upgrades aren't drawn on the figure.
     private var isWearable: Bool {
@@ -431,7 +448,15 @@ private struct CosmeticTile: View {
                 .opacity(isUnaffordable ? 0.5 : 1)
                 .animation(.easeOut(duration: 0.25), value: isUnaffordable)
 
-                priceTag
+                VStack(alignment: .leading, spacing: 4) {
+                    priceTag
+                    if isUnaffordable {
+                        Text("+\(item.priceGems - gems) gems")
+                            .font(.caption2.weight(.bold).monospacedDigit())
+                            .foregroundStyle(.questAmber)
+                            .accessibilityLabel("You need \(item.priceGems - gems) more gems")
+                    }
+                }
             }
             .padding(12)
             .background(
@@ -449,6 +474,32 @@ private struct CosmeticTile: View {
             )
         }
         .buttonStyle(.plain)
+        .simultaneousGesture(previewGesture)
+        .accessibilityHint(isWearable ? "Hold to preview on your hero" : "")
+    }
+
+    /// Hold ~0.3 s to raise the full-size preview; the gesture only ends when
+    /// the finger lifts, which reverts the preview. Wearable items only.
+    private var previewGesture: some Gesture {
+        LongPressGesture(minimumDuration: 0.3)
+            .sequenced(before: DragGesture(minimumDistance: 0, coordinateSpace: .local))
+            .onChanged { value in
+                guard isWearable else { return }
+                switch value {
+                case .first:
+                    if !pressingPreview {
+                        pressingPreview = true
+                        HapticsService.shared.light()
+                        onPreviewChange(true)
+                    }
+                case .second:
+                    break
+                }
+            }
+            .onEnded { _ in
+                pressingPreview = false
+                onPreviewChange(false)
+            }
     }
 
     // MARK: Photo stage
@@ -530,5 +581,55 @@ private struct CosmeticTile: View {
         .padding(.vertical, 6).padding(.horizontal, 10)
         .background(RoundedRectangle(cornerRadius: 8).fill(gems >= item.priceGems ? Color.gemEmerald.opacity(0.18) : Color.dungeonStoneLight).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gemEmerald.opacity(0.5), lineWidth: 1)))
         .foregroundStyle(gems >= item.priceGems ? .gemEmerald : .textSecondary)
+    }
+}
+
+// MARK: - Long-press wear preview
+
+/// Full-size "what would this look like on me" overlay raised while a tile is
+/// held down. Purely visual — nothing is equipped, and lifting the finger
+/// dismisses it.
+private struct GearPreviewOverlay: View {
+    let item: CosmeticItem
+    let hero: Hero?
+    let equipped: [CosmeticItem]
+
+    private var previewEquipped: [CosmeticItem] {
+        equipped.filter { $0.type != item.type } + [item]
+    }
+
+    var body: some View {
+        ZStack {
+            Rectangle()
+                .fill(Color.dungeonVoid.opacity(0.88))
+                .ignoresSafeArea()
+
+            VStack(spacing: 16) {
+                if let hero {
+                    CharacterAvatarView(hero: hero, equipped: previewEquipped, size: 280)
+                        .frame(maxHeight: 400)
+                        .transition(.scale(scale: 0.92).combined(with: .opacity))
+                }
+
+                VStack(spacing: 6) {
+                    Label("Preview", systemImage: "eye.fill")
+                        .font(.caption.weight(.bold))
+                        .tracking(1)
+                        .padding(.horizontal, 10).padding(.vertical, 5)
+                        .background(RoundedRectangle(cornerRadius: 8).fill(Color.questAmber.opacity(0.16)).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.questAmber, lineWidth: 1)))
+                        .foregroundStyle(.questAmber)
+                    Text(item.name)
+                        .font(.dungeonHeader)
+                        .foregroundStyle(.textPrimary)
+                        .multilineTextAlignment(.center)
+                    Text("Release to close — nothing is equipped.")
+                        .font(.caption)
+                        .foregroundStyle(.textSecondary)
+                }
+                .padding(.horizontal, 24)
+            }
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Preview of \(item.name) on your hero. Release to close.")
     }
 }
