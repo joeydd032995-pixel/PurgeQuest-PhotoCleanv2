@@ -11,20 +11,40 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AppState.self) private var appState
 
+    /// Classic or Verdigris, chosen in Settings.
+    @AppStorage(ColorTheme.storageKey) private var colorThemeRaw = ColorTheme.classic.rawValue
+
+    /// The palette to render with. Publishing it before any child view builds is what
+    /// lets the color tokens (plain Colors, not environment values) pick it up.
+    private var colorTheme: ColorTheme {
+        let theme = ColorTheme(storedValue: colorThemeRaw)
+        ThemeStore.shared.set(theme)
+        return theme
+    }
+
     var body: some View {
-        ZStack {
-            switch appState.phase {
-            case .launching:
-                splash
-            case .onboarding:
-                OnboardingView()
-                    .transition(.opacity)
-            case .main:
-                main
-                    .transition(.opacity)
-            }
+        let theme = colorTheme
+        // Only the visible content is rebuilt when the palette changes; the launch
+        // task below stays attached to the stable container so it does not re-run.
+        return ZStack {
+            phaseContent
+                .id(theme)
         }
         .task { await bootstrap() }
+    }
+
+    @ViewBuilder
+    private var phaseContent: some View {
+        switch appState.phase {
+        case .launching:
+            splash
+        case .onboarding:
+            OnboardingView()
+                .transition(.opacity)
+        case .main:
+            main
+                .transition(.opacity)
+        }
     }
 
     private var splash: some View {

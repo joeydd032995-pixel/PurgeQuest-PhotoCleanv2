@@ -2,7 +2,7 @@
 # Compile and test the pure-Foundation Swift sources on a Linux toolchain (no Xcode needed).
 #   SWIFT_BIN=/path/to/swift tools/swift_harness/run.sh [extra swift test args]
 # Covers: ModularCharacterFoundation, ModularAssetCatalog, HeldGearFit, RecolorMath, ForgeDraft,
-# HeroAppearance, ThemePalette, AppearanceMode + their test suites. UIKit/SwiftUI/SwiftData code (SpriteEngine, Forge views) is
+# HeroAppearance, ThemePalette, AppearanceMode, ColorTheme + their test suites. UIKit/SwiftUI/SwiftData code (SpriteEngine, Forge views) is
 # compiled and tested only by Xcode / CI (.github/workflows/ios.yml).
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -13,7 +13,7 @@ APP="$REPO/ios/PurgeQuest"
 TESTS="$REPO/ios/PurgeQuestTests"
 mkdir -p "$WORK/Sources/PurgeQuest" "$WORK/Tests/PurgeQuestTests"
 cd "$WORK"
-for f in Models/ModularCharacterFoundation Models/ModularAssetCatalog Models/HeldGearFit Models/RecolorMath Models/ForgeDraft Models/HeroAppearance Models/ThemePalette Models/AppearanceMode; do
+for f in Models/ModularCharacterFoundation Models/ModularAssetCatalog Models/HeldGearFit Models/RecolorMath Models/ForgeDraft Models/HeroAppearance Models/ThemePalette Models/AppearanceMode Models/ColorTheme; do
   ln -sf "$APP/$f.swift" "Sources/PurgeQuest/$(basename "$f").swift"
 done
 # HeroRace.swift imports SwiftUI for `accent`; compile it against Foundation + the stub Color.

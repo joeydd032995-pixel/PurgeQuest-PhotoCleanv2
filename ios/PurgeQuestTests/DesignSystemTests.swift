@@ -27,27 +27,38 @@ struct AdaptiveColorTests {
         abs(value.r - rgb.red) < 0.004 && abs(value.g - rgb.green) < 0.004 && abs(value.b - rgb.blue) < 0.004
     }
 
-    @Test func everyTokenResolvesToItsLightAndDarkValue() {
+    @Test(arguments: ColorTheme.allCases)
+    func everyTokenResolvesToItsLightAndDarkValue(theme: ColorTheme) {
+        let neutrals = ThemePalette.neutrals(for: theme)
         var tokens: [(String, ThemePair)] = []
-        for background in ThemePalette.textBackgrounds { tokens.append((background.name, background.pair)) }
+        for background in neutrals.textBackgrounds { tokens.append((background.name, background.pair)) }
         for accent in ThemePalette.textAccents { tokens.append((accent.name, accent.pair)) }
-        tokens.append(("textPrimary", ThemePalette.textPrimary))
-        tokens.append(("textSecondary", ThemePalette.textSecondary))
-        tokens.append(("textTertiary", ThemePalette.textTertiary))
-        tokens.append(("hairline", ThemePalette.hairline))
-        tokens.append(("onAccent", ThemePalette.onAccent))
+        tokens.append(("textPrimary", neutrals.textPrimary))
+        tokens.append(("textSecondary", neutrals.textSecondary))
+        tokens.append(("textTertiary", neutrals.textTertiary))
+        tokens.append(("hairline", neutrals.hairline))
+        tokens.append(("onAccent", neutrals.onAccent))
         tokens.append(("goldTitle", ThemePalette.goldTitle))
         for (name, pair) in tokens {
             let color = UIColor.adaptive(pair)
-            #expect(matches(resolve(color, dark: false), pair.light), "\(name) light")
-            #expect(matches(resolve(color, dark: true), pair.dark), "\(name) dark")
+            #expect(matches(resolve(color, dark: false), pair.light), "\(theme) \(name) light")
+            #expect(matches(resolve(color, dark: true), pair.dark), "\(theme) \(name) dark")
         }
     }
 
-    @Test func canvasIsLightInLightAndDeepGreenBlackInDark() {
-        let canvas = UIColor.adaptive(ThemePalette.canvas)
+    @Test(arguments: ColorTheme.allCases)
+    func canvasIsLightInLightAndDarkInDark(theme: ColorTheme) {
+        let canvas = UIColor.adaptive(ThemePalette.neutrals(for: theme).canvas)
         #expect(resolve(canvas, dark: false).r > 0.9)
-        #expect(resolve(canvas, dark: true).r < 0.1)
+        #expect(resolve(canvas, dark: true).r < 0.15)
+    }
+
+    @Test func theTwoPalettesProduceDifferentDarkCanvases() {
+        let classic = resolve(UIColor.adaptive(ThemePalette.classic.canvas), dark: true)
+        let verdigris = resolve(UIColor.adaptive(ThemePalette.verdigris.canvas), dark: true)
+        // Verdigris is green-tinted; Classic charcoal is not.
+        #expect(verdigris.g - verdigris.r > 0.02)
+        #expect(abs(classic.g - classic.r) < 0.02)
     }
 }
 

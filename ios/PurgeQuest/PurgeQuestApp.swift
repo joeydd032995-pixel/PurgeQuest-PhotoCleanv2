@@ -11,6 +11,8 @@ struct PurgeQuestApp: App {
 
     init() {
         DungeonFont.registerAll()
+        // Publish the saved palette before the first view reads a color token.
+        ThemeStore.shared.set(ColorTheme(storedValue: UserDefaults.standard.string(forKey: ColorTheme.storageKey)))
     }
 
     @State private var appState = AppState()

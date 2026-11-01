@@ -29,6 +29,16 @@ struct SettingsView: View {
         )
     }
 
+    /// Classic or Verdigris palette; ContentView rebuilds the screen when it changes.
+    @AppStorage(ColorTheme.storageKey) private var colorThemeRaw = ColorTheme.classic.rawValue
+
+    private var colorTheme: Binding<ColorTheme> {
+        Binding(
+            get: { ColorTheme(storedValue: colorThemeRaw) },
+            set: { colorThemeRaw = $0.rawValue }
+        )
+    }
+
     var body: some View {
         @Bindable var appState = appState
         return ScrollView {
@@ -38,13 +48,30 @@ struct SettingsView: View {
                     .foregroundStyle(.textPrimary)
 
                 section(title: "Appearance") {
-                    Picker("Appearance", selection: appearance) {
+                    Text("Mode")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.textSecondary)
+                    Picker("Mode", selection: appearance) {
                         ForEach(AppearanceMode.allCases) { mode in
                             Text(mode.title).tag(mode)
                         }
                     }
                     .pickerStyle(.segmented)
                     Text("System follows your iPhone's Light or Dark setting.")
+                        .font(.caption)
+                        .foregroundStyle(.textSecondary)
+
+                    Text("Palette")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.textSecondary)
+                        .padding(.top, 4)
+                    Picker("Palette", selection: colorTheme) {
+                        ForEach(ColorTheme.allCases) { theme in
+                            Text(theme.title).tag(theme)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    Text(colorTheme.wrappedValue.summary)
                         .font(.caption)
                         .foregroundStyle(.textSecondary)
                 }

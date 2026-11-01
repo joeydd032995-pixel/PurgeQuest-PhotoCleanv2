@@ -25,6 +25,33 @@ final class AppearanceTourUITests: XCTestCase {
         }
     }
 
+    /// The optional Verdigris palette (green-black / sage): representative screens only.
+    @MainActor
+    func testVerdigrisPalette() {
+        for mode in ["light", "dark"] {
+            let app = launch(mode, phase: "main", palette: "verdigris")
+            guard app.tabBars.firstMatch.waitForExistence(timeout: 25) else {
+                XCTFail("tab bar did not appear (verdigris \(mode))")
+                app.terminate()
+                continue
+            }
+            dismissPhotoPrompt()
+            settle(1.5)
+            shot("verdigris-\(mode)-10-library")
+            for name in ["Bestiary", "Armory"] {
+                if open(tab: name, in: app) {
+                    settle(1.5)
+                    shot("verdigris-\(mode)-\(name.lowercased())")
+                }
+            }
+            if open(tab: "Settings", in: app) {
+                settle(1.5)
+                shot("verdigris-\(mode)-settings")
+            }
+            app.terminate()
+        }
+    }
+
     // MARK: - Launch screens
 
     @MainActor
@@ -153,9 +180,9 @@ final class AppearanceTourUITests: XCTestCase {
     }
 
     @MainActor
-    private func launch(_ mode: String, phase: String) -> XCUIApplication {
+    private func launch(_ mode: String, phase: String, palette: String = "classic") -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments += ["-UITestTour", "-UITestPhase", phase, "-pq.appearance", mode]
+        app.launchArguments += ["-UITestTour", "-UITestPhase", phase, "-pq.appearance", mode, "-pq.colorTheme", palette]
         app.launch()
         return app
     }

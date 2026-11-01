@@ -6,9 +6,11 @@
 //  rules can be unit tested on any platform; Color+Theme.swift turns each pair
 //  into an adaptive SwiftUI Color.
 //
-//  Dark is the original "Verdigris Deep" palette, unchanged. Light is
-//  "Parchment Gold": cream canvas, near-black ink, and deepened accents so
-//  every accent that doubles as text keeps 4.5:1 on the cream surfaces.
+//  Two palettes (ColorTheme), each with a Light and a Dark side:
+//    Classic    charcoal / parchment (default)
+//    Verdigris  the original "Verdigris Deep" green-black / pale sage
+//  Light-mode accents are deepened so every accent that doubles as text keeps
+//  4.5:1 on the light surfaces. Accents and the brand gold are shared.
 //
 
 import Foundation
@@ -74,25 +76,71 @@ nonisolated struct ThemePair: Equatable, Sendable {
     }
 }
 
-nonisolated enum ThemePalette {
-    // MARK: Neutrals
-
+/// The palette-dependent colors: canvas, surfaces, hairline, text, and the ink used
+/// on accent fills. Accents and the brand gold are shared by every palette.
+nonisolated struct ThemeNeutrals: Sendable {
     /// Screen canvas.
-    static let canvas = ThemePair(light: 0xF4F4EC, dark: ThemeRGB(red: 0.047, green: 0.082, blue: 0.071))
+    let canvas: ThemePair
     /// Top of the canvas gradient (a touch off the canvas for depth).
-    static let canvasTop = ThemePair(light: 0xF9F9F2, dark: ThemeRGB(red: 0.031, green: 0.059, blue: 0.047))
+    let canvasTop: ThemePair
     /// Cards and panels.
-    static let surface = ThemePair(light: 0xFBFAF4, dark: ThemeRGB(red: 0.078, green: 0.129, blue: 0.110))
+    let surface: ThemePair
     /// Wells, stages and raised chips inside a card.
-    static let surfaceRaised = ThemePair(light: 0xECE9DB, dark: ThemeRGB(red: 0.106, green: 0.165, blue: 0.141))
+    let surfaceRaised: ThemePair
     /// Hairline borders.
-    static let hairline = ThemePair(light: 0xD9D4C0, dark: ThemeRGB(red: 0.149, green: 0.216, blue: 0.188))
+    let hairline: ThemePair
+    let textPrimary: ThemePair
+    let textSecondary: ThemePair
+    let textTertiary: ThemePair
+    /// Ink for text and icons sitting on an accent fill: dark on the bright
+    /// Dark-mode accents, cream on the deepened Light-mode ones.
+    let onAccent: ThemePair
+    /// Tint of the faint edge shading in Light mode (Dark mode always shades with black).
+    let lightVignetteTint: ThemeRGB
 
-    // MARK: Text
+    /// Backgrounds that body text sits on.
+    var textBackgrounds: [(name: String, pair: ThemePair)] {
+        [("canvas", canvas), ("surface", surface), ("surfaceRaised", surfaceRaised)]
+    }
+}
 
-    static let textPrimary = ThemePair(light: 0x1B1B17, dark: ThemeRGB(red: 0.937, green: 0.949, blue: 0.937))
-    static let textSecondary = ThemePair(light: 0x5A574A, dark: ThemeRGB(red: 0.576, green: 0.651, blue: 0.612))
-    static let textTertiary = ThemePair(light: 0x787464, dark: ThemeRGB(red: 0.365, green: 0.435, blue: 0.396))
+nonisolated enum ThemePalette {
+    // MARK: Neutrals by palette
+
+    /// Charcoal in Dark, parchment in Light.
+    static let classic = ThemeNeutrals(
+        canvas: ThemePair(light: 0xF4F4EC, dark: ThemeRGB(hex: 0x1B1A19)),
+        canvasTop: ThemePair(light: 0xF9F9F2, dark: ThemeRGB(hex: 0x141413)),
+        surface: ThemePair(light: 0xFBFAF4, dark: ThemeRGB(hex: 0x2A2927)),
+        surfaceRaised: ThemePair(light: 0xECE9DB, dark: ThemeRGB(hex: 0x353431)),
+        hairline: ThemePair(light: 0xD9D4C0, dark: ThemeRGB(hex: 0x45433F)),
+        textPrimary: ThemePair(light: 0x1B1B17, dark: ThemeRGB(hex: 0xF2EFE9)),
+        textSecondary: ThemePair(light: 0x5A574A, dark: ThemeRGB(hex: 0xB0ACA3)),
+        textTertiary: ThemePair(light: 0x787464, dark: ThemeRGB(hex: 0x7C786F)),
+        onAccent: ThemePair(light: 0xFFFBF0, dark: ThemeRGB(hex: 0x141413)),
+        lightVignetteTint: ThemeRGB(red: 0.36, green: 0.29, blue: 0.12)
+    )
+
+    /// The original green-black ("Verdigris Deep") in Dark, pale sage in Light.
+    static let verdigris = ThemeNeutrals(
+        canvas: ThemePair(light: 0xEEF2EA, dark: ThemeRGB(red: 0.047, green: 0.082, blue: 0.071)),
+        canvasTop: ThemePair(light: 0xF4F7F1, dark: ThemeRGB(red: 0.031, green: 0.059, blue: 0.047)),
+        surface: ThemePair(light: 0xF9FBF6, dark: ThemeRGB(red: 0.078, green: 0.129, blue: 0.110)),
+        surfaceRaised: ThemePair(light: 0xE2E9DE, dark: ThemeRGB(red: 0.106, green: 0.165, blue: 0.141)),
+        hairline: ThemePair(light: 0xCCD6C7, dark: ThemeRGB(red: 0.149, green: 0.216, blue: 0.188)),
+        textPrimary: ThemePair(light: 0x13201B, dark: ThemeRGB(red: 0.937, green: 0.949, blue: 0.937)),
+        textSecondary: ThemePair(light: 0x44564E, dark: ThemeRGB(red: 0.576, green: 0.651, blue: 0.612)),
+        textTertiary: ThemePair(light: 0x66766E, dark: ThemeRGB(red: 0.365, green: 0.435, blue: 0.396)),
+        onAccent: ThemePair(light: 0xFFFBF0, dark: ThemeRGB(red: 0.047, green: 0.082, blue: 0.071)),
+        lightVignetteTint: ThemeRGB(red: 0.12, green: 0.25, blue: 0.17)
+    )
+
+    static func neutrals(for theme: ColorTheme) -> ThemeNeutrals {
+        switch theme {
+        case .classic:   return classic
+        case .verdigris: return verdigris
+        }
+    }
 
     // MARK: Accents (usable as text, icons and tints on the surfaces above)
 
@@ -109,11 +157,7 @@ nonisolated enum ThemePalette {
     // Bestiary family hues that the older palette did not have.
     static let indigo = ThemePair(light: 0x4A55A8, dark: ThemeRGB(hex: 0x8C97D6))
     static let coral = ThemePair(light: 0xA8452C, dark: ThemeRGB(hex: 0xE0785C))
-    static let rose = ThemePair(light: 0xA8353F, dark: ThemeRGB(hex: 0xD9686C))
-
-    /// Ink for text and icons sitting on an accent fill: dark on the bright
-    /// Dark-mode accents, cream on the deepened Light-mode ones.
-    static let onAccent = ThemePair(light: 0xFFFBF0, dark: canvas.dark)
+    static let rose = ThemePair(light: 0xA8353F, dark: ThemeRGB(hex: 0xDE7074))
 
     /// Wordmark and display titles: deep bronze on cream, bright gold on dark.
     static let goldTitle = ThemePair(light: 0x6B4E1C, dark: amber.dark)
@@ -143,10 +187,5 @@ nonisolated enum ThemePalette {
     static let textAccents: [(name: String, pair: ThemePair)] = [
         ("amber", amber), ("crimson", crimson), ("emerald", emerald), ("jade", jade),
         ("sapphire", sapphire), ("indigo", indigo), ("coral", coral), ("rose", rose)
-    ]
-
-    /// Backgrounds that body text sits on.
-    static let textBackgrounds: [(name: String, pair: ThemePair)] = [
-        ("canvas", canvas), ("surface", surface), ("surfaceRaised", surfaceRaised)
     ]
 }
