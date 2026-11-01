@@ -113,7 +113,7 @@ struct ShopView: View {
         .background(DungeonBackgroundView())
         .overlay {
             if let previewingItem {
-                GearPreviewOverlay(item: previewingItem, hero: hero, equipped: equippedItems)
+                GearPreviewOverlay(item: previewingItem, hero: hero, equipped: equippedItems, onClose: { previewingItem = nil })
                     .transition(.opacity)
             }
         }
@@ -432,7 +432,12 @@ private struct CosmeticTile: View {
     let onTap: () -> Void
 
     /// Tracks the hold so the preview overlay reverts the moment the finger lifts.
-    @State private var pressingPreview = false
+    /// True while the preview hold gesture is physically active; resets
+    /// automatically on lift, move, or cancellation, which is what guarantees
+    /// the overlay always reverts.
+    @GestureState private var pressingPreview = false
+    /// True once the hold was recognized and the preview was raised.
+    @State private var previewRaised = false
 
     /// Whether the mini avatar renders this slot; effects and upgrades aren't drawn on the figure.
     private var isWearable: Bool {
@@ -461,6 +466,11 @@ private struct CosmeticTile: View {
         }
         .buttonStyle(.plain)
         .simultaneousGesture(previewGesture)
+        .onChange(of: pressingPreview) { _, active in
+            // GestureState resets to false even when the sequence is
+            // interrupted, so this catches lifts the gesture never reports.
+            if !active { lowerPreview() }
+        }
         .accessibilityHint(isWearable ? "Hold to preview on your hero" : "")
     }
 
@@ -550,28 +560,38 @@ private struct CosmeticTile: View {
         item.isEquipped ? Color.gemEmerald.opacity(0.35) : Color.dungeonAsh.opacity(0.5)
     }
 
-    /// Hold ~0.3 s to raise the full-size preview; the gesture only ends when
-    /// the finger lifts, which reverts the preview. Wearable items only.
+    /// Hold ~0.3 s to raise the full-size preview; any exit — lift, drag away,
+    /// or gesture cancellation — resets `pressingPreview`, which reverts it.
+    /// Wearable items only.
     private var previewGesture: some Gesture {
         LongPressGesture(minimumDuration: 0.3)
             .sequenced(before: DragGesture(minimumDistance: 0, coordinateSpace: .local))
+            .updating($pressingPreview) { _, active, _ in active = true }
             .onChanged { value in
                 guard isWearable else { return }
                 switch value {
                 case .first:
-                    if !pressingPreview {
-                        pressingPreview = true
-                        HapticsService.shared.light()
-                        onPreviewChange(true)
-                    }
+                    raisePreview()
                 case .second:
                     break
                 }
             }
-            .onEnded { _ in
-                pressingPreview = false
-                onPreviewChange(false)
-            }
+            .onEnded { _ in lowerPreview() }
+    }
+
+    private func raisePreview() {
+        guard !previewRaised else { return }
+        previewRaised = true
+        HapticsService.shared.light()
+        onPreviewChange(true)
+    }
+
+    /// Reverts the preview on every possible exit path, including gesture
+    /// cancellation, via the `pressingPreview` observer below.
+    private func lowerPreview() {
+        guard previewRaised else { return }
+        previewRaised = false
+        onPreviewChange(false)
     }
 
     // MARK: Photo stage
@@ -665,6 +685,7 @@ private struct GearPreviewOverlay: View {
     let item: CosmeticItem
     let hero: Hero?
     let equipped: [CosmeticItem]
+    let onClose: () -> Void
 
     private var previewEquipped: [CosmeticItem] {
         equipped.filter { $0.type != item.type } + [item]
@@ -694,14 +715,24 @@ private struct GearPreviewOverlay: View {
                         .font(.dungeonHeader)
                         .foregroundStyle(.textPrimary)
                         .multilineTextAlignment(.center)
-                    Text("Release to close — nothing is equipped.")
+                    Text("Release or tap anywhere to close — nothing is equipped.")
                         .font(.caption)
                         .foregroundStyle(.textSecondary)
+                    Button(action: onClose) {
+                        Text("Done")
+                            .font(.callout.weight(.bold))
+                            .padding(.horizontal, 22).padding(.vertical, 9)
+                            .background(RoundedRectangle(cornerRadius: 10).fill(Color.questAmber))
+                            .foregroundStyle(.dungeonVoid)
+                    }
+                    .accessibilityHint("Closes the preview")
                 }
                 .padding(.horizontal, 24)
             }
         }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Preview of \(item.name) on your hero. Release to close.")
+        .contentShape(Rectangle())
+        .onTapGesture { onClose() }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Preview of \(item.name) on your hero. Release or tap to close.")
     }
 }
