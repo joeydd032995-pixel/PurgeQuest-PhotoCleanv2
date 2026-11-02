@@ -37,9 +37,9 @@ final class OnboardingResetUITests: XCTestCase {
         XCTAssertTrue(next.isEnabled, "Continue should be enabled on the permission page once photo access is granted")
         next.tap()
 
-        // Choose Lost Souls.
+        // Choose Lost Souls. Its card sits in a lazy grid, so wait for the page and scroll to it.
+        XCTAssertTrue(app.staticTexts["Choose Your Race"].waitForExistence(timeout: 10), "race page did not appear")
         let lostSouls = app.buttons["onboarding.race.necromancer"]
-        XCTAssertTrue(lostSouls.waitForExistence(timeout: 10), "race page did not appear")
         scroll(to: lostSouls, in: app)
         lostSouls.tap()
         attachScreenshot("1-lost-souls-selected")
@@ -116,6 +116,7 @@ final class OnboardingResetUITests: XCTestCase {
         }
     }
 
+    @MainActor
     private func visibleTexts(_ app: XCUIApplication) -> [String] {
         app.staticTexts.allElementsBoundByIndex.prefix(40).map(\.label)
     }
