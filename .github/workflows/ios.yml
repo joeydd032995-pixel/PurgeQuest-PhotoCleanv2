@@ -80,6 +80,25 @@ jobs:
             -only-testing:PurgeQuestUITests/AppearanceTourUITests \
             CODE_SIGNING_ALLOWED=NO \
             test
+      - name: Run onboarding reset regression test
+        # Settings > Reset all data > onboarding > Hero tab must still show a hero. Its two
+        # screenshots land in the ui-snapshots artifact. It runs after the tour on purpose:
+        # onboarding saves the chosen race in UserDefaults, which would otherwise carry into
+        # the tour's launches and change the hero the tour screenshots show.
+        env:
+          TEST_RUNNER_SNAPSHOT_DIR: ${{ runner.temp }}/ui-snapshots
+        run: |
+          xcrun simctl boot "$SIMULATOR_UDID" 2>/dev/null || true
+          xcrun simctl privacy "$SIMULATOR_UDID" grant photos com.purgequest.app || true
+          xcodebuild \
+            -project ios/PurgeQuest.xcodeproj \
+            -scheme PurgeQuest \
+            -configuration Debug \
+            -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
+            -parallel-testing-enabled NO \
+            -only-testing:PurgeQuestUITests/OnboardingResetUITests \
+            CODE_SIGNING_ALLOWED=NO \
+            test
       - name: Upload UI snapshots
         if: always()
         uses: actions/upload-artifact@v4

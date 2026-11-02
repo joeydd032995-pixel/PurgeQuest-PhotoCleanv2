@@ -100,38 +100,10 @@ struct ContentView: View {
     }
 
     private func bootstrap() async {
-        // Seed data
-        GameDataService.seedAchievementsIfNeeded(in: modelContext)
-        GameDataService.seedCosmeticsIfNeeded(in: modelContext)
-        GameDataService.refreshDailyQuestsIfNeeded(in: modelContext)
-
-        // Hero — apply onboarding choices if first launch
-        let hero = GameDataService.loadOrCreateHero(in: modelContext)
-        if let className = UserDefaults.standard.string(forKey: "pq.selectedClass") {
-            let cls = HeroClass(rawValue: className) ?? HeroClass.legacyClass(forRaw: className)
-            if let cls { hero.heroClass = cls }
-        }
-        if let raceRaw = UserDefaults.standard.string(forKey: "pq.race") {
-            // legacyRaw migrates the removed Skeleton Warrior pack.
-            hero.race = HeroRace(legacyRaw: raceRaw)
-        }
-        // Apply the look drafted during onboarding once, then clear it so
-        // later Forge edits always win.
-        if let lookData = UserDefaults.standard.data(forKey: "pq.appearanceDraft") {
-            hero.appearance = HeroAppearance.decode(lookData, for: hero.archetype)
-            UserDefaults.standard.removeObject(forKey: "pq.appearanceDraft")
-        }
-        if let archetypeRaw = UserDefaults.standard.string(forKey: "pq.archetype"),
-           let archetype = CharacterArchetype(rawValue: archetypeRaw) {
-            hero.archetype = archetype
-        }
-        if let name = UserDefaults.standard.string(forKey: "pq.heroName"), !name.isEmpty {
-            hero.name = name
-        }
-        try? modelContext.save()
-
-        // Bring achievement progress in line with lifetime stats and the deletion log.
-        GameDataService.syncAchievements(hero: hero, in: modelContext)
+        // Seed the catalogs, make sure a hero exists, and apply any saved onboarding choices.
+        // This only runs at launch; onboarding provisions again when it finishes, because
+        // "Reset all PurgeQuest data" empties the store without relaunching the app.
+        GameDataService.provision(in: modelContext)
 
         // Screenshot tours skip the permission prompt and stop on a chosen screen.
         if UITestSupport.isTour {

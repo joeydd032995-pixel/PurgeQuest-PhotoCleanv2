@@ -8,5 +8,5 @@ udid="$(xcrun simctl list -j devices available | jq -r '[.devices | to_entries[]
 run() { xcodebuild -project ios/PurgeQuest.xcodeproj -scheme PurgeQuest -configuration Debug \
   -destination "platform=iOS Simulator,id=$udid" -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO "$@"; }
 run -only-testing:PurgeQuestTests test
-[[ "${1:-}" == "--ui" ]] && run -only-testing:PurgeQuestUITests/ForgeUITests test
+[[ "${1:-}" == "--ui" ]] && run -only-testing:PurgeQuestUITests/ForgeUITests -only-testing:PurgeQuestUITests/OnboardingResetUITests test
 echo "all checks passed"
