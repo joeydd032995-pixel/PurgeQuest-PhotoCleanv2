@@ -192,4 +192,37 @@ struct OnboardingProvisioningTests {
             #expect(hero.heroClass == .paladinHoly)
         }
     }
+
+    /// The Forge can change race. Launch used to re-apply the onboarding race every time, so the
+    /// change was undone at the next launch.
+    @Test func aRaceChangedAfterOnboardingSurvivesTheNextLaunch() throws {
+        try withStore { context, defaults in
+            try saveOnboardingChoices(race: .lostSouls, to: defaults)
+            let hero = GameDataService.provision(in: context, defaults: defaults)
+            #expect(hero.race == .lostSouls)
+
+            // The player picks another race in the Forge and saves.
+            hero.race = .golem
+            try context.save()
+
+            // The next launch provisions again.
+            let relaunched = GameDataService.provision(in: context, defaults: defaults)
+
+            #expect(relaunched.id == hero.id)
+            #expect(relaunched.race == .golem)
+        }
+    }
+
+    @Test func onboardingChoicesAreClearedOnceApplied() throws {
+        try withStore { context, defaults in
+            try saveOnboardingChoices(race: .lostSouls, name: "Morrigan", to: defaults)
+            defaults.set("magician", forKey: "pq.archetype") // written by older versions
+
+            GameDataService.provision(in: context, defaults: defaults)
+
+            for key in ["pq.selectedClass", "pq.race", "pq.appearanceDraft", "pq.archetype", "pq.heroName"] {
+                #expect(defaults.object(forKey: key) == nil, "\(key) should be cleared once it is applied")
+            }
+        }
+    }
 }
