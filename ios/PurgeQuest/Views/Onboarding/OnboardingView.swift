@@ -198,6 +198,7 @@ struct OnboardingView: View {
             }
         }
         .buttonStyle(.plain)
+        .accessibilityIdentifier("onboarding.race.\(race.rawValue)")
     }
 
     // MARK: Class page
