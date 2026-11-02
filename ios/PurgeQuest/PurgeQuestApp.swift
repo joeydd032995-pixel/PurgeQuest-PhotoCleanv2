@@ -11,9 +11,14 @@ struct PurgeQuestApp: App {
 
     init() {
         DungeonFont.registerAll()
+        // Publish the saved palette before the first view reads a color token.
+        ThemeStore.shared.set(ColorTheme(storedValue: UserDefaults.standard.string(forKey: ColorTheme.storageKey)))
     }
 
     @State private var appState = AppState()
+
+    /// Light / Dark / System. Changed in Settings; System follows the device.
+    @AppStorage(AppearanceMode.storageKey) private var appearanceRaw = AppearanceMode.system.rawValue
 
     let sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -28,7 +33,7 @@ struct PurgeQuestApp: App {
             MonsterSightingRecord.self
         ])
         // UI tests run against an in-memory store so they never touch real data.
-        let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: CommandLine.arguments.contains("-UITestForge"))
+        let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: CommandLine.arguments.contains("-UITestForge") || UITestSupport.isTour)
         do {
             return try ModelContainer(for: schema, configurations: [configuration])
         } catch {
@@ -56,7 +61,7 @@ struct PurgeQuestApp: App {
                 #endif
             }
             .environment(appState)
-            .preferredColorScheme(.dark)
+            .preferredColorScheme(AppearanceMode(storedValue: appearanceRaw).colorScheme)
         }
         .modelContainer(sharedModelContainer)
     }

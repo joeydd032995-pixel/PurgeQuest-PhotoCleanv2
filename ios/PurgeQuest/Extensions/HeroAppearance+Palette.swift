@@ -80,6 +80,15 @@ extension GearTier {
         }
     }
 
+    /// Colour for the tier's text label. The standard tier's accent is the hairline
+    /// colour (right for borders, too faint for text), so it reads as secondary text.
+    var labelColor: Color {
+        switch self {
+        case .standard: return .textSecondary
+        default:        return accent
+        }
+    }
+
     var displayName: String {
         switch self {
         case .standard:  return "Standard"

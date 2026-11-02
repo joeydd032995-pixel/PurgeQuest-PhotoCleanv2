@@ -9,6 +9,8 @@ Checks:
   3. Recoverable deletion only: PHAssetChangeRequest.deleteAssets is called from PhotoLibraryService alone.
   4. Seasonal exclusiveCosmeticIDs all exist in the seeded cosmetic catalog.
   5. Every swift_harness source/test file named in run.sh exists.
+  6. Appearance contract: nothing pins the app to Light or Dark (the user's setting decides).
+  7. Design assets the code relies on exist: the emblem and one icon per Bestiary family.
 """
 import re
 import sys
@@ -82,9 +84,30 @@ for m in re.finditer(r"for t in ([^;]+); do", run_sh):
         if not (IOS / "PurgeQuestTests" / f"{n}.swift").exists():
             failures.append(f"harness: run.sh lists missing test {n}.swift")
 
+# 6. no pinned appearance
+for f in swift_files("PurgeQuest"):
+    if re.search(r"preferredColorScheme\(\s*\.(dark|light)\s*\)", strip_comments(f.read_text())):
+        failures.append(f"appearance contract: {f.relative_to(ROOT)} pins the color scheme; use AppearanceMode")
+if re.search(r"INFOPLIST_KEY_UIUserInterfaceStyle\s*=\s*(Dark|Light)", pbx):
+    failures.append("appearance contract: project.pbxproj pins UIUserInterfaceStyle")
+
+# 7. design assets exist
+catalog_dir = IOS / "PurgeQuest/Assets.xcassets"
+family_src = (IOS / "PurgeQuest/Models/MonsterFamily.swift").read_text()
+family_cases = re.findall(r"^\s*case (\w+)\s*$", family_src.split("var displayName")[0], re.M)
+if len(family_cases) != 6:
+    failures.append(f"design assets: expected 6 MonsterFamily cases, parsed {len(family_cases)}")
+for case in family_cases:
+    folder = catalog_dir / f"Family-{case}.imageset"
+    if not (folder / "Contents.json").exists() or not list(folder.glob("*.svg")):
+        failures.append(f"design assets: missing icon imageset Family-{case}")
+emblem = catalog_dir / "PurgeQuestEmblem.imageset"
+if not (emblem / "Contents.json").exists() or len(list(emblem.glob("*.png"))) < 1:
+    failures.append("design assets: missing PurgeQuestEmblem imageset")
+
 if failures:
     print("repo_guard FAILED:")
     for f in failures:
         print("  -", f)
     sys.exit(1)
-print(f"repo_guard ok ({len(used)} seasonal IDs, {len(catalog_ids)} catalog items)")
+print(f"repo_guard ok ({len(used)} seasonal IDs, {len(catalog_ids)} catalog items, {len(family_cases)} family icons)")

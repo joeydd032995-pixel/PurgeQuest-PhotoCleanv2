@@ -37,6 +37,10 @@ jobs:
           fi
           echo "SIMULATOR_UDID=$simulator_udid" >> "$GITHUB_ENV"
       - name: Build and run PurgeQuest unit tests
+        env:
+          # SnapshotRenderTests saves PNG renders of the new UI here (xcodebuild
+          # strips the TEST_RUNNER_ prefix before handing it to the tests).
+          TEST_RUNNER_SNAPSHOT_DIR: ${{ runner.temp }}/ui-snapshots
         run: |
           xcodebuild \
             -project ios/PurgeQuest.xcodeproj \
@@ -58,3 +62,29 @@ jobs:
             -only-testing:PurgeQuestUITests/ForgeUITests \
             CODE_SIGNING_ALLOWED=NO \
             test
+      - name: Capture Light/Dark appearance tour
+        # Opt-in screenshots of the real app; never fails the build.
+        continue-on-error: true
+        env:
+          TEST_RUNNER_SNAPSHOT_DIR: ${{ runner.temp }}/ui-snapshots
+        run: |
+          # Pre-grant photo access so the system prompt never covers the screenshots.
+          xcrun simctl boot "$SIMULATOR_UDID" 2>/dev/null || true
+          xcrun simctl privacy "$SIMULATOR_UDID" grant photos com.purgequest.app || true
+          xcodebuild \
+            -project ios/PurgeQuest.xcodeproj \
+            -scheme PurgeQuest \
+            -configuration Debug \
+            -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
+            -parallel-testing-enabled NO \
+            -only-testing:PurgeQuestUITests/AppearanceTourUITests \
+            CODE_SIGNING_ALLOWED=NO \
+            test
+      - name: Upload UI snapshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-snapshots
+          path: ${{ runner.temp }}/ui-snapshots
+          if-no-files-found: ignore
+          retention-days: 14

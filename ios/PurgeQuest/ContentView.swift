@@ -5,52 +5,58 @@
 
 import SwiftUI
 import SwiftData
+import Photos
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AppState.self) private var appState
 
+    /// Classic or Verdigris, chosen in Settings.
+    @AppStorage(ColorTheme.storageKey) private var colorThemeRaw = ColorTheme.classic.rawValue
+
+    /// The palette to render with. Publishing it before any child view builds is what
+    /// lets the color tokens (plain Colors, not environment values) pick it up.
+    private var colorTheme: ColorTheme {
+        let theme = ColorTheme(storedValue: colorThemeRaw)
+        ThemeStore.shared.set(theme)
+        return theme
+    }
+
     var body: some View {
-        ZStack {
-            switch appState.phase {
-            case .launching:
-                splash
-            case .onboarding:
-                OnboardingView()
-                    .transition(.opacity)
-            case .main:
-                main
-                    .transition(.opacity)
-            }
+        // Reading the palette here publishes it before any view below is built, and makes
+        // this body re-run when the setting changes (each tab then rebuilds; see `main`).
+        // The launch task stays on this stable container, so it does not re-run.
+        _ = colorTheme
+        return ZStack {
+            phaseContent
         }
-        .preferredColorScheme(.dark)
         .task { await bootstrap() }
     }
 
-    private var splash: some View {
-        ZStack {
-            DungeonBackgroundView()
-            VStack(spacing: 20) {
-                Image(systemName: "shield.lefthalf.filled")
-                    .font(.system(size: 56, weight: .bold))
-                    .foregroundStyle(.questAmber)
-                    .frame(width: 116, height: 116)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.dungeonStone)
-                            .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.questAmber.opacity(0.6), lineWidth: 1))
-                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmber.opacity(0.3), lineWidth: 1).padding(3))
-                    )
-                Text("PurgeQuest")
-                    .font(.dungeonTitle)
-                    .foregroundStyle(.textPrimary)
-                ProgressView().tint(.questAmber)
-            }
+    @ViewBuilder
+    private var phaseContent: some View {
+        switch appState.phase {
+        case .launching:
+            splash
+        case .onboarding:
+            OnboardingView()
+                .transition(.opacity)
+        case .main:
+            main
+                .transition(.opacity)
         }
+    }
+
+    private var splash: some View {
+        SplashView()
     }
 
     private var main: some View {
         @Bindable var appState = appState
+        // Each tab's stack is keyed by the palette, so changing it repaints that tab (and
+        // returns its stack to the root). The TabView itself is kept, so the selected tab,
+        // including one folded under "More" such as Settings, stays where it is.
+        let theme = colorTheme
         return TabView(selection: $appState.selectedTab) {
             NavigationStack {
                 DashboardView()
@@ -61,26 +67,32 @@ struct ContentView: View {
                         CombatView()
                     }
             }
+            .id(theme)
             .tabItem { Label("Library", systemImage: "photo.stack") }
             .tag(MainTab.dashboard)
 
             NavigationStack { HeroTabView() }
+                .id(theme)
                 .tabItem { Label("Hero", systemImage: "figure.fencing") }
                 .tag(MainTab.hero)
 
             NavigationStack { BestiaryView() }
+                .id(theme)
                 .tabItem { Label("Bestiary", systemImage: "book.closed.fill") }
                 .tag(MainTab.bestiary)
 
             NavigationStack { ShopView() }
+                .id(theme)
                 .tabItem { Label("Armory", systemImage: "shield.lefthalf.filled") }
                 .tag(MainTab.shop)
 
             NavigationStack { AchievementsView() }
+                .id(theme)
                 .tabItem { Label("Trophies", systemImage: "trophy") }
                 .tag(MainTab.achievements)
 
             NavigationStack { SettingsView() }
+                .id(theme)
                 .tabItem { Label("Settings", systemImage: "gearshape") }
                 .tag(MainTab.settings)
         }
@@ -120,6 +132,15 @@ struct ContentView: View {
 
         // Bring achievement progress in line with lifetime stats and the deletion log.
         GameDataService.syncAchievements(hero: hero, in: modelContext)
+
+        // Screenshot tours skip the permission prompt and stop on a chosen screen.
+        if UITestSupport.isTour {
+            appState.photoAuthStatus = .authorized
+            if let phase = UITestSupport.requestedPhase, phase != .launching {
+                appState.phase = phase
+            }
+            return
+        }
 
         // Determine phase
         await appState.refreshPhotoAuth()

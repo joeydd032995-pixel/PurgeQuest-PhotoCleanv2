@@ -110,7 +110,7 @@ struct RoomSummaryView: View {
                 confirming = true
             } label: {
                 HStack {
-                    if combat.phase == .purging { ProgressView().tint(.dungeonVoid) }
+                    if combat.phase == .purging { ProgressView().tint(.white) }
                     Text("Confirm Purge")
                         .font(.dungeonHeader)
                 }
