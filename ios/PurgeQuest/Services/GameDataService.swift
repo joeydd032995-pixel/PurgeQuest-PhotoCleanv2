@@ -24,6 +24,54 @@ enum GameDataService {
         return hero
     }
 
+    /// Gets the store ready for the main tabs: seeds the achievement, cosmetic and quest
+    /// catalogs, makes sure a hero exists, and applies the choices onboarding saved.
+    ///
+    /// Every step is idempotent, so this runs at launch and again when onboarding finishes.
+    /// The second call matters. "Reset all PurgeQuest data" deletes the hero and every seed
+    /// and then shows onboarding again, and the race, class, name and look picked there exist
+    /// only as UserDefaults until this applies them. Without it the main tabs open on an
+    /// empty store and the Hero tab says "No hero found.".
+    @discardableResult
+    static func provision(in context: ModelContext, defaults: UserDefaults = .standard) -> Hero {
+        seedAchievementsIfNeeded(in: context)
+        seedCosmeticsIfNeeded(in: context)
+        refreshDailyQuestsIfNeeded(in: context)
+
+        let hero = loadOrCreateHero(in: context)
+        applyOnboardingChoices(to: hero, defaults: defaults)
+        try? context.save()
+
+        // Bring achievement progress in line with lifetime stats and the deletion log.
+        syncAchievements(hero: hero, in: context)
+        return hero
+    }
+
+    /// Copies the choices onboarding saved in UserDefaults onto the hero.
+    private static func applyOnboardingChoices(to hero: Hero, defaults: UserDefaults) {
+        if let className = defaults.string(forKey: "pq.selectedClass") {
+            let cls = HeroClass(rawValue: className) ?? HeroClass.legacyClass(forRaw: className)
+            if let cls { hero.heroClass = cls }
+        }
+        if let raceRaw = defaults.string(forKey: "pq.race") {
+            // legacyRaw migrates the removed Skeleton Warrior pack.
+            hero.race = HeroRace(legacyRaw: raceRaw)
+        }
+        // Apply the look drafted during onboarding once, then clear it so
+        // later Forge edits always win.
+        if let lookData = defaults.data(forKey: "pq.appearanceDraft") {
+            hero.appearance = HeroAppearance.decode(lookData, for: hero.archetype)
+            defaults.removeObject(forKey: "pq.appearanceDraft")
+        }
+        if let archetypeRaw = defaults.string(forKey: "pq.archetype"),
+           let archetype = CharacterArchetype(rawValue: archetypeRaw) {
+            hero.archetype = archetype
+        }
+        if let name = defaults.string(forKey: "pq.heroName"), !name.isEmpty {
+            hero.name = name
+        }
+    }
+
     // MARK: - Cosmetics
 
     static func seedCosmeticsIfNeeded(in context: ModelContext) {

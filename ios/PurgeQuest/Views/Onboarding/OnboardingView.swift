@@ -6,14 +6,16 @@
 //  illustrated races), class picker (17 variants grouped by discipline),
 //  appearance customization (paint job + core recolors), and the swipe
 //  tutorial. Choices persist via UserDefaults and land on the hero record
-//  at first bootstrap.
+//  when GameDataService.provision runs as onboarding completes.
 //
 
 import SwiftUI
+import SwiftData
 import Photos
 
 struct OnboardingView: View {
     @Environment(AppState.self) private var appState
+    @Environment(\.modelContext) private var modelContext
     @State private var pageIndex: Int = 0
     @State private var requestingPermission: Bool = false
     @State private var selectedRace: HeroRace = .valkyrie
@@ -440,8 +442,9 @@ struct OnboardingView: View {
         if pageIndex < totalPages - 1 {
             withAnimation { pageIndex += 1 }
         } else {
-            // Persist hero choices via UserDefaults; the hero is created lazily
-            // and applies them (plus the drafted look) at first bootstrap.
+            // Save the hero choices, then apply them before the main tabs appear. The launch
+            // task ran before this screen was shown, so it cannot: on a first run it made a
+            // default hero, and after "Reset all PurgeQuest data" it left the store empty.
             UserDefaults.standard.set(selectedClass.rawValue, forKey: "pq.selectedClass")
             UserDefaults.standard.set(selectedRace.rawValue, forKey: "pq.race")
             draftLook.race = selectedRace
@@ -450,6 +453,7 @@ struct OnboardingView: View {
             }
             let trimmed = heroName.trimmingCharacters(in: .whitespaces)
             UserDefaults.standard.set(trimmed.isEmpty ? "Hero" : trimmed, forKey: "pq.heroName")
+            GameDataService.provision(in: modelContext)
             appState.completeOnboarding()
         }
     }
