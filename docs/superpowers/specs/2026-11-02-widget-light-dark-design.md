@@ -76,7 +76,7 @@ The Lock Screen views are not edited.
 
 1. Parse `WidgetPalette.swift` and the matching tokens from `ThemePalette.swift` (Classic neutrals and the shared accents), reading both the `hex:` and the `red:green:blue:` forms, and fail if any Light or Dark value differs when compared as 8-bit sRGB.
 2. Check contrast of each text and accent token on both widget backgrounds (`canvasTop` and `surface`) in each appearance, using the thresholds in `ThemePaletteTests`: primary text 7, secondary text 4.5, Light accents 4.5, Dark accents 3.
-3. Fail if `PurgeQuestWidget.swift` contains a raw `Color(red:` literal, `.white` or `.black`, so a fixed color cannot creep back in. (`.primary` is allowed: the Lock Screen views use it for system tinting.)
+3. Fail if `PurgeQuestWidget.swift` contains a raw `Color(red:` literal, `.white`, or a black color, so a fixed color cannot creep back in. A black color is any `.black` that is not a font weight, such as `Color.black`, `.foregroundColor(.black)` or `.shadow(color: .black)`; the check removes the font-weight forms (`weight: .black`, `.weight(.black)`, `.fontWeight(.black)`, `Font.Weight.black`) first and fails on any `.black` left over. (`.primary` is allowed: the Lock Screen views use it for system tinting.)
 
 Contrast computed from the proposed values (lowest of the two backgrounds):
 
@@ -113,7 +113,7 @@ Unchanged. The app still writes the snapshot to the App Group and the widget rea
 ## Acceptance criteria
 
 1. In system Light and Dark, every text and accent color on the Daily Quest and Streak widgets meets the thresholds above (guard-enforced).
-2. No raw `Color(red:` literal, `.white` or `.black` remains in `PurgeQuestWidget.swift`.
+2. No raw `Color(red:` literal, `.white` or black color remains in `PurgeQuestWidget.swift`.
 3. The Lock Screen widgets, the snapshot struct and the App Group key are unchanged.
 4. `repo_guard.py` fails if a widget token differs from the app's Classic palette.
 5. CI is green, including the extension compile.
