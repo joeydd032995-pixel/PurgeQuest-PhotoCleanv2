@@ -187,10 +187,14 @@ else:
                         )
 
 widget_views = strip_comments((WIDGET_DIR / "PurgeQuestWidget.swift").read_text())
-for pattern, what in (  # the .black font weight is fine; only black colors are banned
+# The .black font weight is not a color, so take it out first; any other .black (Color.black,
+# .foregroundColor(.black), .shadow(color: .black), ...) then fails. A weight written some other way
+# trips the check, which is the safe direction.
+widget_views = re.sub(r"(?:\bweight\s*:|\.weight\(|\bfontWeight\()\s*\.black\b|\bWeight\.black\b", "", widget_views)
+for pattern, what in (
     (r"\bColor\(red:", "a raw Color(red:) literal"),
     (r"\.white\b", ".white"),
-    (r"\bColor\.black\b|(?:foregroundStyle|fill|stroke|tint|background)\(\s*\.black\b", "a black color"),
+    (r"\.black\b", "a black color (.black other than a font weight)"),
 ):
     if re.search(pattern, widget_views):
         failures.append(f"widget palette: PurgeQuestWidget.swift uses {what}; use the Color.widget* tokens")
