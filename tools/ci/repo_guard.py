@@ -186,6 +186,15 @@ else:
                             f"widget palette: {token} on {background} in {appearance} is {got:.2f}:1, below {floors[index]}:1"
                         )
 
+widget_views = strip_comments((WIDGET_DIR / "PurgeQuestWidget.swift").read_text())
+for pattern, what in (  # the .black font weight is fine; only black colors are banned
+    (r"\bColor\(red:", "a raw Color(red:) literal"),
+    (r"\.white\b", ".white"),
+    (r"\bColor\.black\b|(?:foregroundStyle|fill|stroke|tint|background)\(\s*\.black\b", "a black color"),
+):
+    if re.search(pattern, widget_views):
+        failures.append(f"widget palette: PurgeQuestWidget.swift uses {what}; use the Color.widget* tokens")
+
 if failures:
     print("repo_guard FAILED:")
     for f in failures:

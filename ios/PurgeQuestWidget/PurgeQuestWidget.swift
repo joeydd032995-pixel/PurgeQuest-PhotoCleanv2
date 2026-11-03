@@ -56,9 +56,15 @@ struct DailyQuestWidgetView: View {
     }
 
     private var accent: Color {
-        entry.snapshot.questIsVideo
-            ? Color(red: 0.427, green: 0.608, blue: 0.710)
-            : Color(red: 0.890, green: 0.702, blue: 0.255)
+        entry.snapshot.questIsVideo ? Color.widgetSapphire : Color.widgetAmber
+    }
+
+    /// The canvas gradient both sizes share.
+    private var background: some View {
+        LinearGradient(
+            colors: [Color.widgetCanvasTop, Color.widgetSurface],
+            startPoint: .top, endPoint: .bottom
+        )
     }
 
     private var small: some View {
@@ -75,7 +81,7 @@ struct DailyQuestWidgetView: View {
             Text(entry.snapshot.questTitle)
                 .font(.system(.subheadline, design: .rounded).weight(.bold))
                 .lineLimit(2)
-                .foregroundStyle(.primary)
+                .foregroundStyle(Color.widgetTextPrimary)
 
             Spacer(minLength: 0)
 
@@ -87,12 +93,7 @@ struct DailyQuestWidgetView: View {
                     .frame(height: 6)
             }
         }
-        .containerBackground(for: .widget) {
-            LinearGradient(
-                colors: [Color(red: 0.031, green: 0.059, blue: 0.047), Color(red: 0.078, green: 0.129, blue: 0.110)],
-                startPoint: .top, endPoint: .bottom
-            )
-        }
+        .containerBackground(for: .widget) { background }
     }
 
     private var medium: some View {
@@ -108,12 +109,12 @@ struct DailyQuestWidgetView: View {
 
                 Text(entry.snapshot.questTitle)
                     .font(.system(.headline, design: .rounded).weight(.bold))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Color.widgetTextPrimary)
                     .lineLimit(1)
 
                 Text(entry.snapshot.questSubtitle)
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.widgetTextSecondary)
                     .lineLimit(2)
 
                 Spacer(minLength: 4)
@@ -126,7 +127,7 @@ struct DailyQuestWidgetView: View {
                         Spacer()
                         Label("\(entry.snapshot.streakDays)", systemImage: "flame.fill")
                             .font(.caption.weight(.bold))
-                            .foregroundStyle(Color(red: 0.769, green: 0.357, blue: 0.306))
+                            .foregroundStyle(Color.widgetCrimson)
                     }
                     ProgressBar(progress: progress, tint: accent)
                         .frame(height: 7)
@@ -140,21 +141,16 @@ struct DailyQuestWidgetView: View {
                         .overlay(Circle().stroke(accent.opacity(0.6), lineWidth: 1.5))
                     Text("\(entry.snapshot.heroLevel)")
                         .font(.system(.title, design: .rounded).weight(.black))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Color.widgetTextPrimary)
                 }
                 .frame(width: 56, height: 56)
                 Text("LV")
                     .font(.system(size: 9, weight: .heavy, design: .rounded))
                     .tracking(0.8)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.widgetTextSecondary)
             }
         }
-        .containerBackground(for: .widget) {
-            LinearGradient(
-                colors: [Color(red: 0.031, green: 0.059, blue: 0.047), Color(red: 0.078, green: 0.129, blue: 0.110)],
-                startPoint: .top, endPoint: .bottom
-            )
-        }
+        .containerBackground(for: .widget) { background }
     }
 }
 
@@ -189,18 +185,18 @@ struct StreakWidgetView: View {
             Text("STREAK")
                 .font(.system(size: 10, weight: .heavy, design: .rounded))
                 .tracking(0.8)
-                .foregroundStyle(Color(red: 0.769, green: 0.357, blue: 0.306))
+                .foregroundStyle(Color.widgetCrimson)
 
             HStack(alignment: .firstTextBaseline, spacing: 4) {
                 Image(systemName: "flame.fill")
                     .font(.title2.weight(.bold))
-                    .foregroundStyle(Color(red: 0.769, green: 0.357, blue: 0.306))
+                    .foregroundStyle(Color.widgetCrimson)
                 Text("\(entry.snapshot.streakDays)")
                     .font(.system(size: 38, weight: .black, design: .rounded))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Color.widgetTextPrimary)
                 Text("d")
                     .font(.title3.weight(.bold))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.widgetTextSecondary)
             }
 
             Spacer(minLength: 0)
@@ -211,20 +207,20 @@ struct StreakWidgetView: View {
                 Text(freedString + " freed")
                     .font(.caption.weight(.semibold))
             }
-            .foregroundStyle(.secondary)
+            .foregroundStyle(Color.widgetTextSecondary)
 
             HStack(spacing: 4) {
                 Image(systemName: "diamond.fill")
                     .font(.caption2)
-                    .foregroundStyle(Color(red: 0.239, green: 0.620, blue: 0.463))
+                    .foregroundStyle(Color.widgetEmerald)
                 Text("\(entry.snapshot.gems)")
                     .font(.caption.monospacedDigit().weight(.bold))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Color.widgetTextPrimary)
             }
         }
         .containerBackground(for: .widget) {
             LinearGradient(
-                colors: [Color(red: 0.078, green: 0.129, blue: 0.110), Color(red: 0.031, green: 0.059, blue: 0.047)],
+                colors: [Color.widgetSurface, Color.widgetCanvasTop],
                 startPoint: .top, endPoint: .bottom
             )
         }
@@ -331,7 +327,7 @@ private struct ProgressBar: View {
     var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .leading) {
-                RoundedRectangle(cornerRadius: 2).fill(.white.opacity(0.12))
+                RoundedRectangle(cornerRadius: 2).fill(Color.widgetHairline)
                 RoundedRectangle(cornerRadius: 2)
                     .fill(tint)
                     .frame(width: max(4, geo.size.width * progress))
