@@ -32,6 +32,9 @@ enum GameDataService {
     /// and then shows onboarding again, and the race, class, name and look picked there exist
     /// only as UserDefaults until this applies them. Without it the main tabs open on an
     /// empty store and the Hero tab says "No hero found.".
+    ///
+    /// The saved choices are applied once and then cleared, so a later change (the Forge can
+    /// change race, for one) is never undone by the next launch.
     @discardableResult
     static func provision(in context: ModelContext, defaults: UserDefaults = .standard) -> Hero {
         seedAchievementsIfNeeded(in: context)
@@ -47,7 +50,18 @@ enum GameDataService {
         return hero
     }
 
-    /// Copies the choices onboarding saved in UserDefaults onto the hero.
+    /// The UserDefaults keys onboarding writes. Each choice lives there only until `provision`
+    /// applies it; reset clears any that are still waiting.
+    static let onboardingChoiceKeys = [
+        "pq.selectedClass", "pq.race", "pq.appearanceDraft", "pq.archetype", "pq.heroName"
+    ]
+
+    static func clearOnboardingChoices(from defaults: UserDefaults = .standard) {
+        for key in onboardingChoiceKeys { defaults.removeObject(forKey: key) }
+    }
+
+    /// Copies the choices onboarding saved in UserDefaults onto the hero, then clears them so
+    /// later changes (a new race from the Forge, say) always win over what was saved here.
     private static func applyOnboardingChoices(to hero: Hero, defaults: UserDefaults) {
         if let className = defaults.string(forKey: "pq.selectedClass") {
             let cls = HeroClass(rawValue: className) ?? HeroClass.legacyClass(forRaw: className)
@@ -57,11 +71,8 @@ enum GameDataService {
             // legacyRaw migrates the removed Skeleton Warrior pack.
             hero.race = HeroRace(legacyRaw: raceRaw)
         }
-        // Apply the look drafted during onboarding once, then clear it so
-        // later Forge edits always win.
         if let lookData = defaults.data(forKey: "pq.appearanceDraft") {
             hero.appearance = HeroAppearance.decode(lookData, for: hero.archetype)
-            defaults.removeObject(forKey: "pq.appearanceDraft")
         }
         if let archetypeRaw = defaults.string(forKey: "pq.archetype"),
            let archetype = CharacterArchetype(rawValue: archetypeRaw) {
@@ -70,6 +81,22 @@ enum GameDataService {
         if let name = defaults.string(forKey: "pq.heroName"), !name.isEmpty {
             hero.name = name
         }
+        clearOnboardingChoices(from: defaults)
+    }
+
+    /// "Reset all PurgeQuest data": erases the hero, the progress and the seeded catalogs, and
+    /// forgets that onboarding ever ran, including any choices still waiting to be applied, so
+    /// the player starts again from a clean slate. The caller sends the UI back to onboarding.
+    static func resetAllData(in context: ModelContext, defaults: UserDefaults = .standard) {
+        for hero in (try? context.fetch(FetchDescriptor<Hero>())) ?? [] { context.delete(hero) }
+        for record in (try? context.fetch(FetchDescriptor<DeletedMediaRecord>())) ?? [] { context.delete(record) }
+        for record in (try? context.fetch(FetchDescriptor<SparedMediaRecord>())) ?? [] { context.delete(record) }
+        for quest in (try? context.fetch(FetchDescriptor<Quest>())) ?? [] { context.delete(quest) }
+        for achievement in (try? context.fetch(FetchDescriptor<Achievement>())) ?? [] { context.delete(achievement) }
+        for item in (try? context.fetch(FetchDescriptor<CosmeticItem>())) ?? [] { context.delete(item) }
+        try? context.save()
+        defaults.removeObject(forKey: "pq.hasOnboarded")
+        clearOnboardingChoices(from: defaults)
     }
 
     // MARK: - Cosmetics

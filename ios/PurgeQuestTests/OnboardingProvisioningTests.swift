@@ -66,17 +66,6 @@ struct OnboardingProvisioningTests {
         )
     }
 
-    /// What Settings > "Reset all PurgeQuest data" does to the store.
-    private func resetAllData(in context: ModelContext) throws {
-        for hero in try all(Hero.self, in: context) { context.delete(hero) }
-        for record in try all(DeletedMediaRecord.self, in: context) { context.delete(record) }
-        for record in try all(SparedMediaRecord.self, in: context) { context.delete(record) }
-        for quest in try all(Quest.self, in: context) { context.delete(quest) }
-        for achievement in try all(Achievement.self, in: context) { context.delete(achievement) }
-        for item in try all(CosmeticItem.self, in: context) { context.delete(item) }
-        try context.save()
-    }
-
     /// What OnboardingView saves when the player picks a race and taps "Enter the Dungeon".
     private func saveOnboardingChoices(
         race: HeroRace,
@@ -140,7 +129,7 @@ struct OnboardingProvisioningTests {
             let originalID = original.id
 
             // Settings > "Reset all PurgeQuest data": onboarding starts from an empty store.
-            try resetAllData(in: context)
+            GameDataService.resetAllData(in: context, defaults: defaults)
             let afterReset = try all(Hero.self, in: context)
             #expect(afterReset.isEmpty)
 
@@ -190,6 +179,56 @@ struct OnboardingProvisioningTests {
 
             #expect(hero.race == .skeletalUndead)
             #expect(hero.heroClass == .paladinHoly)
+        }
+    }
+
+    /// The Forge can change race. Launch used to re-apply the onboarding race every time, so the
+    /// change was undone at the next launch.
+    @Test func aRaceChangedAfterOnboardingSurvivesTheNextLaunch() throws {
+        try withStore { context, defaults in
+            try saveOnboardingChoices(race: .lostSouls, to: defaults)
+            let hero = GameDataService.provision(in: context, defaults: defaults)
+            #expect(hero.race == .lostSouls)
+
+            // The player picks another race in the Forge and saves.
+            hero.race = .golem
+            try context.save()
+
+            // The next launch provisions again.
+            let relaunched = GameDataService.provision(in: context, defaults: defaults)
+
+            #expect(relaunched.id == hero.id)
+            #expect(relaunched.race == .golem)
+        }
+    }
+
+    @Test func onboardingChoicesAreClearedOnceApplied() throws {
+        try withStore { context, defaults in
+            try saveOnboardingChoices(race: .lostSouls, name: "Morrigan", to: defaults)
+            defaults.set("magician", forKey: "pq.archetype") // written by older versions
+
+            GameDataService.provision(in: context, defaults: defaults)
+
+            for key in ["pq.selectedClass", "pq.race", "pq.appearanceDraft", "pq.archetype", "pq.heroName"] {
+                #expect(defaults.object(forKey: key) == nil, "\(key) should be cleared once it is applied")
+            }
+        }
+    }
+
+    @Test func resetForgetsOnboardingAndAnyChoicesStillSaved() throws {
+        try withStore { context, defaults in
+            GameDataService.provision(in: context, defaults: defaults)
+            defaults.set(true, forKey: "pq.hasOnboarded")
+            // Choices saved but not applied yet, for example if the app was closed in between.
+            try saveOnboardingChoices(race: .lostSouls, name: "Morrigan", to: defaults)
+
+            GameDataService.resetAllData(in: context, defaults: defaults)
+
+            let heroes = try all(Hero.self, in: context)
+            #expect(heroes.isEmpty)
+            for key in GameDataService.onboardingChoiceKeys + ["pq.hasOnboarded"] {
+                #expect(defaults.object(forKey: key) == nil, "\(key) should be cleared by a reset")
+            }
         }
     }
 }

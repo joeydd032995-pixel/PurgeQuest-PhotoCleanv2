@@ -14,7 +14,8 @@
 //     Light so it stays legible on light surfaces.
 //   - `goldInk` / `LinearGradient.goldPlate` is the brand gold *plate*
 //     (buttons, badges, emblem) and looks the same everywhere.
-//  No purple, neon, pastel, or rainbow tones anywhere.
+//  No neon, pastel, or rainbow tones anywhere, and no purple. The one blue-violet is the
+//  indigo (`behemothIndigo`) that the Bestiary mockup uses for Storage Behemoths.
 //
 
 import SwiftUI

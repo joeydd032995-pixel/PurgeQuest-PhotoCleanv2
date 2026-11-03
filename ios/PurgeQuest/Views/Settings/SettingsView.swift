@@ -229,16 +229,7 @@ struct SettingsView: View {
     }
 
     private func resetAllData() {
-        for h in heroes { modelContext.delete(h) }
-        for d in deletions { modelContext.delete(d) }
-        for s in (try? modelContext.fetch(FetchDescriptor<SparedMediaRecord>())) ?? [] { modelContext.delete(s) }
-        for q in (try? modelContext.fetch(FetchDescriptor<Quest>())) ?? [] { modelContext.delete(q) }
-        for a in (try? modelContext.fetch(FetchDescriptor<Achievement>())) ?? [] { modelContext.delete(a) }
-        for c in (try? modelContext.fetch(FetchDescriptor<CosmeticItem>())) ?? [] { modelContext.delete(c) }
-        try? modelContext.save()
-        UserDefaults.standard.removeObject(forKey: "pq.hasOnboarded")
-        UserDefaults.standard.removeObject(forKey: "pq.selectedClass")
-        UserDefaults.standard.removeObject(forKey: "pq.heroName")
+        GameDataService.resetAllData(in: modelContext)
         appState.hasOnboarded = false
         appState.phase = .onboarding
     }
