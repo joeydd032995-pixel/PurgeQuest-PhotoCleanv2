@@ -28,6 +28,18 @@ extension MiniAvatarView {
         }
     }
 
+    /// Forest Spirits and the Phantom Purge ghost and bat: animated pixel-art
+    /// sprites from the asset catalog, standing at the hero's lower left.
+    /// `body` draws the hero through `HeroSpriteView`, so this layer is added
+    /// there directly; the vector pets above belong to the older `figure` view.
+    @ViewBuilder var spritePetLayer: some View {
+        if let pet = item(.pet), let art = SpriteArt.petSheet(id: pet.id) {
+            SpriteSheetView(sheet: art.sheet, height: art.height * u, animated: isAnimated)
+                .padding(.leading, 2 * u)
+                .padding(.bottom, 4 * u)
+        }
+    }
+
     /// Pixel Familiar: chunky slime-cat scout with square eyes.
     func pixelFamiliar(_ color: Color) -> some View {
         ZStack {

@@ -40,6 +40,14 @@ struct SeasonalEventBanner: View {
                     .lineLimit(2)
             }
             Spacer(minLength: 0)
+            if !event.decor.isEmpty {
+                // Still frames: the banner stays static by design.
+                HStack(alignment: .bottom, spacing: 4) {
+                    ForEach(event.decor, id: \.asset) { sheet in
+                        SpriteSheetView(sheet: sheet, height: 30, animated: false)
+                    }
+                }
+            }
         }
         .padding(12)
         .background(

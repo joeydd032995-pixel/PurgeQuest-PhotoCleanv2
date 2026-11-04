@@ -13,6 +13,8 @@ Checks:
   7. Design assets the code relies on exist: the emblem and one icon per Bestiary family.
   8. Widget palette: the home-screen widgets' colors match the app's Classic palette, stay readable
      on the widget backgrounds, and the widget views use no fixed colors.
+  9. Sprite sheets: each SpriteArt sheet is an imageset exactly frames x cell wide, its pets are in the
+     cosmetic catalog, and the Wraith monsters have a sheet.
 """
 import re
 import sys
@@ -199,9 +201,41 @@ for pattern, what in (
     if re.search(pattern, widget_views):
         failures.append(f"widget palette: PurgeQuestWidget.swift uses {what}; use the Color.widget* tokens")
 
+# 9. sprite sheets: every SpriteArt sheet is an imageset whose PNG is exactly frames x cell wide, every
+# pet sprite names a catalog pet, and every Wraith monster has a sheet.
+import struct
+
+sprite_src = (IOS / "PurgeQuest/Views/Components/SpriteSheetView.swift").read_text()
+sheets = re.findall(
+    r'SpriteSheet\(asset:\s*"([^"]+)",\s*frames:\s*(\d+),\s*cellWidth:\s*(\d+),\s*cellHeight:\s*(\d+)', sprite_src
+)
+if not sheets:
+    failures.append("sprite sheets: found no SpriteSheet declarations (parser out of date?)")
+for asset, frames, cw, ch in sheets:
+    pngs = list(catalog_dir.rglob(f"{asset}.imageset/*.png"))
+    if len(pngs) != 1:
+        failures.append(f"sprite sheets: expected one PNG in imageset {asset}, found {len(pngs)}")
+        continue
+    header = pngs[0].read_bytes()[:24]
+    if header[:8] != b"\x89PNG\r\n\x1a\n":
+        failures.append(f"sprite sheets: {asset} is not a PNG")
+        continue
+    width, height = struct.unpack(">II", header[16:24])
+    if (width, height) != (int(frames) * int(cw), int(ch)):
+        failures.append(f"sprite sheets: {asset} is {width}x{height}, expected {int(frames) * int(cw)}x{ch} ({frames} frames of {cw}x{ch})")
+for pet_id in re.findall(r'case "(pet\.[A-Za-z]+)":\s*return \(', sprite_src):
+    if pet_id not in catalog_ids:
+        failures.append(f"sprite sheets: pet sprite '{pet_id}' is not in the seeded cosmetic catalog")
+monster_src = (IOS / "PurgeQuest/Models/MonsterType.swift").read_text()
+for wraith in ("mistWraith", "tatterWraith", "voidWraith"):
+    if f"case .{wraith}:" not in sprite_src:
+        failures.append(f"sprite sheets: monster {wraith} has no sheet in SpriteArt.monsterSheet")
+    if not re.search(rf"^\s*case {wraith}\s*$", monster_src, re.M):
+        failures.append(f"sprite sheets: MonsterType has no case {wraith}")
+
 if failures:
     print("repo_guard FAILED:")
     for f in failures:
         print("  -", f)
     sys.exit(1)
-print(f"repo_guard ok ({len(used)} seasonal IDs, {len(catalog_ids)} catalog items, {len(family_cases)} family icons, {len(widget_tokens)} widget tokens)")
+print(f"repo_guard ok ({len(used)} seasonal IDs, {len(catalog_ids)} catalog items, {len(family_cases)} family icons, {len(widget_tokens)} widget tokens, {len(sheets)} sprite sheets)")

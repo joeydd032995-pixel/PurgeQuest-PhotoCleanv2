@@ -48,6 +48,10 @@ enum MonsterClassifier {
     // the Framed Phantom.
     static let staticVideoMinimumDuration: Double = 3
 
+    // Ordinary clips (no other signal) split into three Wraiths by length.
+    static let mistWraithMaxDuration: Double = 20
+    static let tatterWraithMaxDuration: Double = 60
+
     static func classify(items: [MediaItem], fingerprints: [MediaFingerprint], now: Date = Date()) -> ClassifiedLibrary {
         let byID = Dictionary(uniqueKeysWithValues: items.map { ($0.id, $0) })
         let fpByID = Dictionary(uniqueKeysWithValues: fingerprints.map { ($0.assetID, $0) })
@@ -321,9 +325,18 @@ enum MonsterClassifier {
                 reasons: [.resourceSize], estimatedBytes: bytes
             )
         }
-        // No strong signal — default video phantom.
+        // No strong signal — an ordinary clip becomes one of the three Wraiths by
+        // length. The Shaky Ghost is still summoned by erratic sampled frames.
+        let wraith: MonsterType
+        if duration < mistWraithMaxDuration {
+            wraith = .mistWraith
+        } else if duration < tatterWraithMaxDuration {
+            wraith = .tatterWraith
+        } else {
+            wraith = .voidWraith
+        }
         return MonsterClassification(
-            monsterType: .shakyGhost, confidence: 0.4,
+            monsterType: wraith, confidence: 0.4,
             reasons: [.noStrongSignal], estimatedBytes: bytes
         )
     }

@@ -159,6 +159,7 @@ struct MiniAvatarView: View {
             .frame(width: 112 * u, height: 132 * u, alignment: .bottom)
         }
         .frame(width: 118 * u, height: 140 * u)
+        .overlay(alignment: .bottomLeading) { spritePetLayer }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilitySummary)
     }
