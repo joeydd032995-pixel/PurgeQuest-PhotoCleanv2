@@ -52,6 +52,10 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
     case screenRecordingShade
     case framedPhantom
     case flickerWraith
+    // Ordinary clips with no strong signal become one of three Wraiths by length.
+    case mistWraith
+    case tatterWraith
+    case voidWraith
 
     // MARK: Glitchborn (stage 4 expands this family)
     case corruptedCodec
@@ -92,6 +96,9 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .screenRecordingShade:return "Screen Recording Shade"
         case .framedPhantom:       return "Framed Phantom"
         case .flickerWraith:       return "Flicker Wraith"
+        case .mistWraith:          return "Mist Wraith"
+        case .tatterWraith:        return "Tatter Wraith"
+        case .voidWraith:          return "Void Wraith"
         case .corruptedCodec:      return "Corrupted Codec"
         case .nullPortrait:        return "Null Portrait"
         case .staticHusk:          return "Static Husk"
@@ -130,6 +137,9 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .screenRecordingShade:return "record.circle"
         case .framedPhantom:       return "photo.stack.fill"
         case .flickerWraith:       return "bolt.fill"
+        case .mistWraith:          return "cloud.fog.fill"
+        case .tatterWraith:        return "wind"
+        case .voidWraith:          return "moon.zzz.fill"
         case .corruptedCodec:      return "exclamationmark.triangle.fill"
         case .nullPortrait:        return "person.crop.circle.badge.exclamationmark"
         case .staticHusk:          return "tv.slash"
@@ -165,7 +175,8 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
              .fourKKraken, .gigabyteGorgon:
             return .storageBehemoths
         case .videoVampire, .shakyGhost, .boringBlooper, .timelapsePhantom,
-             .pocketPoltergeist, .screenRecordingShade, .framedPhantom, .flickerWraith:
+             .pocketPoltergeist, .screenRecordingShade, .framedPhantom, .flickerWraith,
+             .mistWraith, .tatterWraith, .voidWraith:
             return .videoPhantoms
         case .corruptedCodec, .nullPortrait, .staticHusk:
             return .glitchborn
@@ -179,14 +190,14 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
              .memoryHogMinotaur, .corruptedCodec, .staticHusk,
              .sigilSpecter:                                  return .elite
         case .burstHydra, .cloneChimera, .ancientArchive,
-             .panoramaColossus, .videoVampire:               return .rare
+             .panoramaColossus, .videoVampire, .voidWraith:  return .rare
         case .screenshotTwin, .downloadDrake, .albumEcho, .screenshotSpecter,
              .darkWraith, .livePhotoLycan, .timelapsePhantom,
              .screenRecordingShade, .flickerWraith, .nullPortrait,
-             .tomeWraith:                                    return .uncommon
+             .tomeWraith, .tatterWraith:                     return .uncommon
         case .perfectPairWyrmling, .blurBeast, .lowQualityLich,
              .thumbGoblin, .shakyGhost, .boringBlooper,
-             .pocketPoltergeist, .framedPhantom:             return .common
+             .pocketPoltergeist, .framedPhantom, .mistWraith: return .common
         }
     }
 
@@ -195,7 +206,7 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .duplicateDragon, .gigabyteGorgon, .longTakeLeviathan, .memoryHogMinotaur: return 3
         case .hoardHydra, .fourKKraken, .burstHydra, .cloneChimera,
              .ancientArchive, .videoVampire, .panoramaColossus, .corruptedCodec,
-             .nullPortrait, .staticHusk, .sigilSpecter:                      return 2
+             .nullPortrait, .staticHusk, .sigilSpecter, .voidWraith:         return 2
         default: return 1
         }
     }
@@ -223,6 +234,9 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .staticHusk:          return 45
         case .sigilSpecter:        return 45
         case .flickerWraith:       return 35
+        case .voidWraith:          return 45
+        case .tatterWraith:        return 30
+        case .mistWraith:          return 25
         case .nullPortrait:        return 35
         case .framedPhantom:       return 30
         case .tomeWraith:          return 30
@@ -249,7 +263,7 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .hoardHydra, .fourKKraken:                               return 14
         case .burstHydra, .cloneChimera, .panoramaColossus,
              .screenRecordingShade, .corruptedCodec, .nullPortrait,
-             .staticHusk, .sigilSpecter:                     return 10
+             .staticHusk, .sigilSpecter, .voidWraith:        return 10
         default:                                                       return 8
         }
     }
@@ -288,6 +302,9 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .screenRecordingShade:return "Screen recordings of forgotten sessions"
         case .framedPhantom:       return "Footage where nothing moves"
         case .flickerWraith:       return "Brightness strobing between frames"
+        case .mistWraith:          return "A short everyday clip with nothing else unusual"
+        case .tatterWraith:        return "A clip of about 20 to 60 seconds with nothing else unusual"
+        case .voidWraith:          return "A clip of one to two minutes with nothing else unusual"
         case .corruptedCodec:      return "Media that could not be fully loaded"
         case .nullPortrait:        return "An image that could not be rendered"
         case .staticHusk:          return "A file with nothing inside"
@@ -325,6 +342,9 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .lowQualityLich:      return "Saved-from-elsewhere media rarely returns."
         case .framedPhantom:       return "Still frames in a video shell — check it actually plays."
         case .flickerWraith:       return "Strobe-heavy clips are rough to rewatch — preview first."
+        case .mistWraith:          return "Short clips cost little space. Keep the ones you rewatch."
+        case .tatterWraith:        return "Skim it first. A middling clip is easy to forget and easy to keep."
+        case .voidWraith:          return "Longer clips hold more of the moment. Watch before cutting."
         case .nullPortrait:        return "Could not be fully loaded. Confirm it's replaceable first."
         case .staticHusk:          return "Appears empty, but confirm nothing valuable hides inside."
         case .tomeWraith:          return "Documents often hold details you'll need later."
@@ -370,6 +390,9 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .screenRecordingShade:return "It watched everything you did. It remembers."
         case .framedPhantom:       return "A reel that never learned to move. Stillness wears a filmstrip costume."
         case .flickerWraith:       return "Blinks in and out of the dark — a lighthouse with no harbor."
+        case .mistWraith:          return "A pale wisp that drifts off the reel after a few heartbeats."
+        case .tatterWraith:        return "Stitched from loose frames. It trails a ragged cloak of footage."
+        case .voidWraith:          return "Hollow-eyed and patient. It has watched your whole clip and kept nothing."
         case .corruptedCodec:      return "Fragmented frames. A glitch in the dungeon."
         case .nullPortrait:        return "The frame remembers a pose, but the face arrived as static."
         case .staticHusk:          return "A shell of a file. All the bytes left home."
@@ -409,6 +432,9 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .screenRecordingShade:return "Shadow Auditor"
         case .framedPhantom:       return "Frame Reader"
         case .flickerWraith:       return "Strobe Tamer"
+        case .mistWraith:          return "Mist Walker"
+        case .tatterWraith:        return "Tatter Mender"
+        case .voidWraith:          return "Void Gazer"
         case .corruptedCodec:      return "Glitch Healer"
         case .nullPortrait:        return "Portrait Restorer"
         case .staticHusk:          return "Husk Inspector"

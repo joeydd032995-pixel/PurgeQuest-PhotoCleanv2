@@ -86,7 +86,7 @@ struct BestiaryExpansionTests {
     // MARK: - Roster
 
     @Test func rosterHasSixFamiliesAndCompleteMetadata() {
-        #expect(MonsterType.allCases.count == 33)
+        #expect(MonsterType.allCases.count == 36)
         #expect(MonsterFamily.allCases.count == 6)
         for type in MonsterType.allCases {
             #expect(!type.lore.isEmpty)
@@ -380,6 +380,40 @@ struct BestiaryExpansionTests {
         let c = classify([item], fingerprints: [makeFingerprint(from: item)])["em"]
         #expect(c?.monsterType == .shakyGhost)
         #expect(c?.reasons.contains(.erraticMotion) == true)
+    }
+
+    // MARK: - Wraiths: ordinary clips split by length
+
+    @Test func wraithsLiveInVideoPhantomsAndAreVideoOnly() {
+        for type in [MonsterType.mistWraith, .tatterWraith, .voidWraith] {
+            #expect(type.family == .videoPhantoms)
+            #expect(type.kind == .video)
+        }
+        #expect(MonsterType.mistWraith.rarity < MonsterType.tatterWraith.rarity)
+        #expect(MonsterType.tatterWraith.rarity < MonsterType.voidWraith.rarity)
+    }
+
+    @Test func ordinaryClipsSummonAWraithByLength() {
+        func monster(forDuration seconds: Double) -> MonsterType? {
+            let item = makeItem(id: "w", kind: .video, width: 1920, height: 1080, bytes: 5_000_000, duration: seconds)
+            return classify([item], fingerprints: [makeFingerprint(from: item)])["w"]?.monsterType
+        }
+        #expect(monster(forDuration: 10) == .mistWraith)
+        #expect(monster(forDuration: 19.9) == .mistWraith)
+        #expect(monster(forDuration: 20) == .tatterWraith)
+        #expect(monster(forDuration: 45) == .tatterWraith)
+        #expect(monster(forDuration: 60) == .voidWraith)
+        #expect(monster(forDuration: 90) == .voidWraith)
+    }
+
+    @Test func existingVideoSignalsStillOutrankTheWraiths() {
+        func monster(duration: Double, bytes: Int64) -> MonsterType? {
+            let item = makeItem(id: "v", kind: .video, width: 1920, height: 1080, bytes: bytes, duration: duration)
+            return classify([item], fingerprints: [makeFingerprint(from: item)])["v"]?.monsterType
+        }
+        #expect(monster(duration: 3, bytes: 5_000_000) == .boringBlooper)
+        #expect(monster(duration: 30, bytes: 150_000_000) == .videoVampire)
+        #expect(monster(duration: 200, bytes: 5_000_000) == .longTakeLeviathan)
     }
 
     @Test func darkSampledFramesSummonsPocketPoltergeist() {

@@ -20,12 +20,23 @@ extension MiniAvatarView {
     }
 
     @ViewBuilder func petModel(id: String, color: Color) -> some View {
-        switch id {
-        case "pet.owl": nocturneOwl
-        case "pet.reel": reelSpirit
-        case "pet.beachSpirit": beachSpirit
-        default: pixelFamiliar(color)
+        if let art = SpriteArt.petSheet(id: id) {
+            spritePet(art.sheet, height: art.height)
+        } else {
+            switch id {
+            case "pet.owl": nocturneOwl
+            case "pet.reel": reelSpirit
+            case "pet.beachSpirit": beachSpirit
+            default: pixelFamiliar(color)
+            }
         }
+    }
+
+    /// Forest Spirits and the Phantom Purge ghost and bat: animated pixel-art
+    /// sprites from the asset catalog, standing where the vector pets sit.
+    func spritePet(_ sheet: SpriteSheet, height: CGFloat) -> some View {
+        SpriteSheetView(sheet: sheet, height: height * u, animated: isAnimated)
+            .offset(x: -41 * u, y: 46 * u)
     }
 
     /// Pixel Familiar: chunky slime-cat scout with square eyes.

@@ -148,7 +148,7 @@ struct SnapshotRenderTests {
     func bestiaryTilesRender(scheme: ColorScheme) {
         let image = render("bestiary", scheme: scheme, width: 393) {
             VStack(alignment: .leading, spacing: 18) {
-                BestiaryHeaderView(discovered: 0, total: 33)
+                BestiaryHeaderView(discovered: 0, total: MonsterType.allCases.count)
                 Grid(horizontalSpacing: 14, verticalSpacing: 14) {
                     GridRow { tile(.clutterUndead, 0, 8, spotlight: true); tile(.archiveRelics, 0, 1) }
                     GridRow { tile(.storageBehemoths, 0, 5); tile(.duplicateDragons, 0, 8) }

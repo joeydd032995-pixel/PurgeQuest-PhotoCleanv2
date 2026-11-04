@@ -1,0 +1,23 @@
+Halloween Props & FX — asset licence
+=====================================
+
+Copyright (c) 2026 LumioLab
+
+YOU MAY:
+  - Use these assets in commercial and non-commercial projects, without limit
+    and without royalties.
+  - Modify them, recolour them, and build derivative art from them.
+  - Use them in any number of your own projects.
+  - Include them inside a compiled game or application.
+
+YOU MAY NOT:
+  - Resell, sublicense or redistribute these assets AS ASSETS, whether
+    modified or not. They may ship inside your game; they may not be sold or
+    given away as an art pack, a template, or part of an asset collection.
+  - Use them to train a generative model.
+
+No attribution is required. It is welcome, never demanded.
+
+THE ASSETS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY ARISING FROM THE USE OF THESE ASSETS.

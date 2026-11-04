@@ -25,6 +25,8 @@ struct SeasonalEvent: Identifiable, Sendable {
     /// Closure-based date matcher so we don't bake any specific year in.
     let matches: @Sendable (DateComponents) -> Bool
     let exclusiveCosmeticIDs: [String]
+    /// Small sprites shown on the event banner. Empty for events without art.
+    var decor: [SpriteSheet] = []
 }
 
 @MainActor
@@ -53,13 +55,14 @@ final class SeasonalEventService {
             tone: .spooky,
             primary: Color(red: 0.72, green: 0.40, blue: 0.16),
             secondary: Color(red: 0.38, green: 0.20, blue: 0.12),
-            bonusMonsters: [.darkWraith, .corruptedCodec, .shakyGhost],
+            bonusMonsters: [.darkWraith, .corruptedCodec, .shakyGhost, .mistWraith, .tatterWraith, .voidWraith],
             bonusXPMultiplier: 1.5,
             matches: { dc in
                 guard let m = dc.month, let d = dc.day else { return false }
                 return m == 10 && d >= 20 || (m == 11 && d <= 1)
             },
-            exclusiveCosmeticIDs: ["fx.spectral", "skin.wraithcloak"]
+            exclusiveCosmeticIDs: ["fx.spectral", "skin.wraithcloak", "pet.ghost", "pet.bat"],
+            decor: [SpriteArt.jackOLantern, SpriteArt.candyCorn, SpriteArt.gravestone]
         ),
         SeasonalEvent(
             id: "newyear",

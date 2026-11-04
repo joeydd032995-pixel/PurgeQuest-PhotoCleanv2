@@ -193,6 +193,11 @@ The modular character pipeline (separated anatomy and armor, material masks, per
 
 ---
 
+## Third-party art
+
+The Wraith monsters, Forest Spirit pets and Phantom Purge event art come from outside packs, converted
+to sprite sheets. Authors, licenses and what is still unconfirmed are listed in [`docs/CREDITS.md`](docs/CREDITS.md).
+
 ## Getting Started
 
 **Requirements**

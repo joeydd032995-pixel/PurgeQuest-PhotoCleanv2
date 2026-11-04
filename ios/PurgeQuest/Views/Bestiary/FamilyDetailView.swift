@@ -154,10 +154,14 @@ private struct MonsterEntryCard: View {
                 .fill(Color.dungeonVoid)
                 .frame(width: 56, height: 56)
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(type.rarity.frameColor.opacity(0.4), lineWidth: 1))
-            Image(systemName: type.symbol)
-                .font(.system(size: 26, weight: .bold))
-                .foregroundStyle(isDiscovered ? type.accentColor : .dungeonAsh)
-                .opacity(isDiscovered ? 1 : 0.6)
+            if isDiscovered, let sheet = SpriteArt.monsterSheet(for: type) {
+                SpriteSheetView(sheet: sheet, height: 46)
+            } else {
+                Image(systemName: type.symbol)
+                    .font(.system(size: 26, weight: .bold))
+                    .foregroundStyle(isDiscovered ? type.accentColor : .dungeonAsh)
+                    .opacity(isDiscovered ? 1 : 0.6)
+            }
         }
     }
 
