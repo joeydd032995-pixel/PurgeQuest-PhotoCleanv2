@@ -115,6 +115,11 @@ final class SeasonalEventService {
     ]
 
     func refresh(now: Date = .now) {
+        // Screenshot tours can pretend an event is running (UITestSupport, DEBUG only).
+        if let forced = UITestSupport.forcedEventID {
+            activeEvent = Self.allEvents.first { $0.id == forced }
+            return
+        }
         let dc = Self.calendar.dateComponents([.month, .day], from: now)
         activeEvent = Self.allEvents.first { $0.matches(dc) }
     }
