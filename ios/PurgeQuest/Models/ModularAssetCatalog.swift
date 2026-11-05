@@ -30,6 +30,9 @@ nonisolated struct PackAnchors: Codable, Equatable, Sendable {
     let shieldHold: [Double]
     /// Arrow-tail (nock) position in arrow-image pixels; present only on bow packs.
     let arrowNock: [Double]?
+    /// The hand part (manifest stem, e.g. "left_hand") that holds the pack's own weapon. A swapped-in weapon is gripped by
+    /// the same hand. Absent in manifests generated before this field existed, which means the Left Hand.
+    var weaponHand: String? = nil
 }
 
 nonisolated enum HeldGearKind: String, Codable, Sendable {

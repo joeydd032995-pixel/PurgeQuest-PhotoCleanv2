@@ -374,9 +374,13 @@ nonisolated private final class ParserDelegate: NSObject, XMLParserDelegate {
 /// Every art pack bakes its sword into the Left Hand (the right side of the screen). Packs that bake a shield
 /// (Valkyrie, Skeleton Crusader) put it in the Right Hand. A pack with no shield part holds a swapped-in shield
 /// in the hand its manifest names, which is the Right Hand, so the shield and the blade never share a hand.
+///
+/// A swapped-in weapon is also layered the way the pack layers its own: see `isArmed(_:)`.
 nonisolated enum HeldGearAnchors {
     /// The hand a shield goes in when neither the pack nor its manifest says otherwise.
     static let defaultShieldHand = "right_hand"
+    /// The hand that holds the weapon when the manifest doesn't say: every shipped pack bakes its sword into this one.
+    static let defaultWeaponHand = "left_hand"
 
     /// An SCML file name as the manifest spells it: "Right Hand.png" becomes "right_hand".
     static func stem(of fileName: String) -> String {
@@ -395,6 +399,20 @@ nonisolated enum HeldGearAnchors {
         if let baked = frame.first(where: { $0.file.name.lowercased().hasPrefix("shield") }) { return baked }
         let wanted = manifestStem ?? defaultShieldHand
         return frame.first { stem(of: $0.file.name) == wanted }
+    }
+
+    /// True when the pack draws its own weapon in this frame, which is its attack. The pack draws that weapon at the very
+    /// back, behind the hand, the arm and the body, so only the blade shows and the grip is hidden by the fist. In every
+    /// other frame (the idle pose, walking) the pack's weapon is invisible and the fist hangs empty.
+    static func isArmed(_ frame: [SpritePlacement]) -> Bool {
+        guard let own = weapon(in: frame) else { return false }
+        return own.alpha >= 0.01
+    }
+
+    /// The visible hand part that holds the weapon: the one the manifest's `weaponHand` names (the Left Hand if it names none).
+    static func weaponHand(in frame: [SpritePlacement], manifestStem: String?) -> SpritePlacement? {
+        let wanted = manifestStem ?? defaultWeaponHand
+        return frame.first { stem(of: $0.file.name) == wanted && $0.alpha >= 0.01 }
     }
 }
 
@@ -444,6 +462,8 @@ final class SpriteRenderer {
         var gearMaterials: CharacterMaterialSet?
         /// The manifest's name for the part a shield hangs from in this pack ("shield" or a hand).
         var shieldAnchorStem: String? = nil
+        /// The manifest's name for the hand that holds the weapon in this pack.
+        var weaponHandStem: String? = nil
 
         var hidesBakedWeapon: Bool { weapon != nil || bakedTitan != nil }
         var key: String {
@@ -700,6 +720,7 @@ final class SpriteRenderer {
         var out = ResolvedLoadout(weapon: nil, shield: nil, bakedTitan: nil, gearMaterials: loadout.gearMaterials)
         let anchors = catalog.anchors(pack: pack)
         out.shieldAnchorStem = anchors?.shieldAnchor
+        out.weaponHandStem = anchors?.weaponHand
 
         func resolveItem(_ id: String?, wants: (HeldGearKind) -> Bool, titan: Bool) -> ResolvedItem? {
             guard let id else { return nil }
@@ -781,17 +802,20 @@ final class SpriteRenderer {
         let format = UIGraphicsImageRendererFormat()
         format.scale = 0.5
         format.opaque = false
+        // A swapped-in weapon is layered the way the pack layers its own (see HeldGearAnchors.isArmed). In an attack the
+        // pack draws its weapon behind the hand, the arm and the body, so the swapped weapon takes that layer and the
+        // fist closes over the grip. Everywhere else (the idle pose) the pack draws none and the fist hangs empty, so the
+        // weapon is drawn in front and the weapon hand is drawn again over its grip: the fist visibly holds it.
+        let weaponPlacement = weaponAnchor(placements)
+        let armed = HeldGearAnchors.isArmed(placements)
+        let arrowName = placements.first { $0.file.name.lowercased().hasPrefix("arrow") && $0.alpha > 0.01 }?.file.name
+
         let rendered = UIGraphicsImageRenderer(size: extent.size, format: format).image { ctx in
             let cg = ctx.cgContext
 
-            for placement in placements.sorted(by: { $0.zIndex < $1.zIndex }) {
-                let fileName = placement.file.name.lowercased()
-                if placement.alpha < 0.01 { continue }
-                // The arrow stays: a swapped bow still fires.
-                if resolved.hidesBakedWeapon && (fileName.hasPrefix("sword") || fileName.hasPrefix("bow")) { continue }
-                if resolved.shield != nil && fileName.hasPrefix("shield") { continue }
-                if fileName.hasPrefix("slashfx") { continue }
-                let stem = (fileName as NSString).deletingPathExtension.replacingOccurrences(of: " ", with: "_")
+            /// One part of the original rig: its modular layers when this pack's recipe is verified, else the recoloured image.
+            func drawPart(_ placement: SpritePlacement) {
+                let stem = HeldGearAnchors.stem(of: placement.file.name)
                 if let layers = modular?[stem] {
                     for layer in layers {
                         if let img = maskedImage(resource: layer.resourceBaseName, maskResources: layer.maskResources,
@@ -799,24 +823,55 @@ final class SpriteRenderer {
                             draw(img, for: placement, doc: drawDoc, in: cg)
                         }
                     }
-                    continue
+                    return
                 }
-                guard let part = processedPart(race: race, variant: clampedVariant, fileDef: placement.file, appearance: appearance) else { continue }
+                guard let part = processedPart(race: race, variant: clampedVariant, fileDef: placement.file, appearance: appearance) else { return }
                 draw(part, for: placement, doc: drawDoc, in: cg)
             }
 
-            if let weapon = resolved.weapon, let anchor = weaponAnchor(placements) {
-                let img = maskedImage(resource: weapon.resource, maskResources: weapon.entry?.maskResources ?? [:],
-                                      regionTone: weapon.entry?.regionTone ?? [:], colors: resolved.gearMaterials)
-                if let img {
+            /// The Recurve's string, from the bow tips through the nock while the arrow is drawn.
+            func drawString() {
+                guard let weapon = resolved.weapon, let anchor = weaponPlacement else { return }
+                drawBowString(weapon: weapon, anchor: anchor, placements: placements, pack: pack, doc: drawDoc, in: cg)
+            }
+
+            /// The swapped-in weapon at its anchor, or the pack's own weapon scaled up for a Titan with nothing equipped.
+            func drawHeldWeapon(withString: Bool) {
+                guard let anchor = weaponPlacement else { return }
+                if let weapon = resolved.weapon {
+                    guard let img = maskedImage(resource: weapon.resource, maskResources: weapon.entry?.maskResources ?? [:],
+                                                regionTone: weapon.entry?.regionTone ?? [:], colors: resolved.gearMaterials) else { return }
                     drawRelative(img, placement: anchor, rect: itemRect(weapon, anchor: anchor),
                                  extraRotation: CGFloat(weapon.placement.rotationDegrees), doc: drawDoc, in: cg)
-                    drawBowString(weapon: weapon, anchor: anchor, placements: placements, pack: pack, doc: drawDoc, in: cg)
+                    if withString { drawString() }
+                } else if let titan = resolved.bakedTitan,
+                          let img = image(base: Self.partBaseName(race: race, variant: clampedVariant, fileName: anchor.file.name)) {
+                    let item = ResolvedItem(resource: "", placement: titan, entry: nil, imageSize: CGSize(width: anchor.file.width, height: anchor.file.height))
+                    drawRelative(img, placement: anchor, rect: itemRect(item, anchor: anchor), doc: drawDoc, in: cg)
                 }
-            } else if let titan = resolved.bakedTitan, let anchor = weaponAnchor(placements),
-                      let img = image(base: Self.partBaseName(race: race, variant: clampedVariant, fileName: anchor.file.name)) {
-                let item = ResolvedItem(resource: "", placement: titan, entry: nil, imageSize: CGSize(width: anchor.file.width, height: anchor.file.height))
-                drawRelative(img, placement: anchor, rect: itemRect(item, anchor: anchor), doc: drawDoc, in: cg)
+            }
+
+            for placement in placements.sorted(by: { $0.zIndex < $1.zIndex }) {
+                let fileName = placement.file.name.lowercased()
+                if placement.alpha < 0.01 { continue }
+                // The arrow stays: a swapped bow still fires.
+                if resolved.hidesBakedWeapon && (fileName.hasPrefix("sword") || fileName.hasPrefix("bow")) {
+                    // The string waits for the arrow, which is in front of the body, when one is drawn.
+                    if armed && placement.file.name == weaponPlacement?.file.name { drawHeldWeapon(withString: arrowName == nil) }
+                    continue
+                }
+                if resolved.shield != nil && fileName.hasPrefix("shield") { continue }
+                if fileName.hasPrefix("slashfx") { continue }
+                drawPart(placement)
+                if armed && placement.file.name == arrowName { drawString() }
+            }
+
+            if resolved.hidesBakedWeapon && !armed {
+                drawHeldWeapon(withString: true)
+                if weaponPlacement != nil,
+                   let hand = HeldGearAnchors.weaponHand(in: placements, manifestStem: resolved.weaponHandStem) {
+                    drawPart(hand)
+                }
             }
 
             if let shield = resolved.shield, let anchor = shieldAnchor(placements, stem: resolved.shieldAnchorStem),

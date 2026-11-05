@@ -39,6 +39,17 @@ python3 -I tools/modular_assets/tests/test_modular_assets.py
 
 Every art pack bakes its sword (or bow) into the **Left Hand**, the one on the right of the screen. Valkyrie and Skeleton Crusader also bake a shield, and they hold it in the **Right Hand**. A pack with no shield part holds a swapped-in shield in the Right Hand too (`scml.SHIELD_HAND`, written to each pack's `shieldAnchor` in `modular_gear_manifest.json`, read back by `HeldGearAnchors` in `SpriteEngine.swift`), so a shield never sits on top of the blade. `HeldGearAnchorTests` checks this on the shipped art: in every pack and every idle and attack frame the shield and weapon anchors are more than 80 units apart (148 at the closest).
 
+### How a swapped-in weapon is held
+
+A weapon that is just pasted on top of the character floats in front of the body, so the renderer layers it the way each pack layers its own (`scml.render_frame`, mirrored by `SpriteRenderer.frame`):
+
+- **Attack frames** (Slashing, Shooting, Run Slashing, Slashing in The Air): the pack draws its sword at the very back, behind the hand, the arm and the body, so only the blade shows and the fist covers the grip. The swapped weapon takes that same layer. (A swapped bow's string is drawn right after the arrow, in front of the body, when one is nocked.)
+- **Every other frame** (the idle pose, walking, hurt): the pack draws no sword and its fist hangs empty at the hip. The weapon is drawn in front and the weapon hand is **drawn again over the grip**, so the fist visibly closes around it. The hand is the manifest's `weaponHand` (`held_gear.weapon_hand`, the hand whose pivot is nearest the weapon anchor; the Left Hand in all 27 packs).
+
+A swapped item is gripped at **2%** of its length from the pommel (`held_gear.ITEM_GRIP_FRACTION`), not at the 10% the packs' own baked swords use (`BAKED_GRIP_FRACTION`, which is what defines each pack's `hold`). The hold point sits inside the fist, and the fist is drawn over it, so a grip further along the blade would bury the crossguard in the hand instead of leaving it clear.
+
+Checked on the shipped art for all 27 packs by `WeaponInHand` in `tests/test_modular_assets.py` (the hold lies 5 to 29 units from the middle of the fist in every idle frame; the pack's own weapon is behind the hand and the body in all 992 frames where it shows; the fist's centre pixel is the fist's own, not the weapon's, where leaving the redraw out would leave the weapon on top of it in 19 of 27 packs) and by `HeldGearAnchorTests` in the app.
+
 ## Approving assets (the only way anything becomes `verified`)
 
 Open the sheets, then record who looked:

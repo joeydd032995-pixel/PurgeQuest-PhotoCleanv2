@@ -114,6 +114,44 @@ final class AppearanceTourUITests: XCTestCase {
         }
     }
 
+    /// The equipped weapon has to sit in the hero's fist on every race and every kind of art pack, not just the Golem:
+    /// one Hero-tab shot per pack, each wearing its own race's signature weapon and a shield, Light mode only.
+    /// (The Elven archer carries the bow; the other Elven paint uses a sword.)
+    @MainActor
+    func testWeaponHeldAcrossRaces() {
+        let heroes: [(race: String, variant: String, weapon: String)] = [
+            ("valkyrie", "1", "weapon.valkyrie"),
+            ("forest_ranger", "1", "weapon.forest_ranger"),
+            ("forest_ranger", "3", "weapon.shard"),
+            ("seer", "2", "weapon.seer"),
+            ("blood_alchemist", "1", "weapon.blood_alchemist"),
+            ("dark_oracle", "3", "weapon.dark_oracle"),
+            ("necromancer", "2", "weapon.necromancer"),
+            ("skeleton_crusader", "1", "weapon.skeleton_crusader"),
+            ("skeleton_crusader", "4", "weapon.skeleton_crusader"),
+            ("golem", "1", "weapon.golem")
+        ]
+        for hero in heroes {
+            let name = "\(hero.race)-v\(hero.variant)"
+            let app = launch("light", phase: "main", extra: [
+                "-pq.race", hero.race,
+                "-UITestVariant", hero.variant,
+                "-UITestEquip", "\(hero.weapon),shield.crux"
+            ])
+            guard app.tabBars.firstMatch.waitForExistence(timeout: 25) else {
+                XCTFail("tab bar did not appear (held weapon \(name))")
+                app.terminate()
+                continue
+            }
+            dismissPhotoPrompt()
+            if open(tab: "Hero", in: app) {
+                settle(1.5)
+                shot("held-\(name)")
+            }
+            app.terminate()
+        }
+    }
+
     /// Opens the Video Phantoms family and scrolls through it, where the three Wraiths live.
     @MainActor
     private func captureVideoPhantoms(_ app: XCUIApplication, _ mode: String) {

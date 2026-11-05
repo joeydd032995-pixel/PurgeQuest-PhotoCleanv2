@@ -1,5 +1,6 @@
 """Run: python3 -I -m unittest discover -s tools/modular_assets/tests -t tools/modular_assets"""
 import json
+import math
 import shutil
 import sys
 import tempfile
@@ -574,6 +575,138 @@ class GearMaterialRegression(unittest.TestCase):
                     self.tones[resource], colors))
                 self.np.testing.assert_array_equal(rendered[...,3],image[...,3])
                 self.np.testing.assert_array_equal(rendered[ink],image[ink])
+
+
+class WeaponInHand(unittest.TestCase):
+    """A swapped-in weapon is held by the hero's own fist, in every pack.
+
+    It used to be drawn on top of the whole character at the pack's hold point, so it floated in front of the body
+    with no hand on it. The renderer now layers it the way each pack layers its own weapon (see scml.render_frame):
+    in an attack the pack draws its sword at the very back, behind the hand, the arm and the body, and the swapped
+    weapon takes that layer; in the idle pose the pack draws no sword and the fist hangs empty, so the weapon is drawn
+    in front and the weapon hand is drawn again over its grip.
+    """
+    @classmethod
+    def setUpClass(cls):
+        import numpy as np
+        from PIL import Image
+        cls.np, cls.Image = np, Image
+        cls.gear = json.loads(validate.GEAR.read_text())
+        cls.packs = cls.gear["packs"]
+        cls.items = {i["id"]: i for i in cls.gear["items"]}
+        cls.sources = {i["id"]: i["path"] for i in hg.build_items()}
+        cls.docs = {pid: scml.load_doc(*cls.split(pid)) for pid in cls.packs}
+
+    @staticmethod
+    def split(pid):
+        race, variant = pid.rsplit("_v", 1)
+        return race, int(variant)
+
+    @staticmethod
+    def weapon_of(frame):
+        return next((p for p in frame if p.file.stem.startswith(("sword", "bow"))), None)
+
+    def attack_animation(self, pid):
+        doc = self.docs[pid]
+        return "Shooting" if "Shooting" in doc.animations and self.packs[pid]["weaponAnchor"] == "bow" else "Slashing"
+
+    def test_every_pack_names_the_hand_that_holds_its_weapon(self):
+        for pid, pack in self.packs.items():
+            race, variant = self.split(pid)
+            self.assertEqual(pack["weaponHand"], hg.weapon_hand(race, variant), pid)
+            self.assertEqual(pack["weaponHand"], "left_hand", pid)
+            # ...and it is not the hand a shield goes in.
+            self.assertNotEqual(pack["weaponHand"], pack["shieldAnchor"], pid)
+
+    def test_idle_is_empty_handed_and_every_attack_frame_is_armed(self):
+        for pid in self.packs:
+            doc = self.docs[pid]
+            self.assertTrue(all(self.weapon_of(f).alpha < 0.01 for f in doc.animations["Idle"]), f"{pid} Idle draws a sword")
+            attack = self.attack_animation(pid)
+            self.assertTrue(all(self.weapon_of(f).alpha >= 0.01 for f in doc.animations[attack]), f"{pid} {attack}")
+
+    def test_the_packs_own_weapon_is_behind_the_hand_and_body_whenever_it_shows(self):
+        armed = empty = 0
+        for pid, pack in self.packs.items():
+            for anim, frames in self.docs[pid].animations.items():
+                for i, frame in enumerate(frames):
+                    weapon = self.weapon_of(frame)
+                    hand = next((p for p in frame if p.file.stem == pack["weaponHand"]), None)
+                    body = next((p for p in frame if p.file.stem == "body"), None)
+                    self.assertIsNotNone(weapon, (pid, anim, i))
+                    if weapon.alpha >= 0.01:
+                        armed += 1
+                        self.assertLess(weapon.z, hand.z, (pid, anim, i))
+                        self.assertLess(weapon.z, body.z, (pid, anim, i))
+                    else:
+                        empty += 1
+                        self.assertIsNotNone(hand, (pid, anim, i))
+                        self.assertGreaterEqual(hand.alpha, 0.01, (pid, anim, i))
+        self.assertGreater(armed, 500)
+        self.assertGreater(empty, 1000)
+
+    def fist_center(self, pid, frame):
+        """World position (y-up) of the middle of the weapon hand's opaque pixels."""
+        np, Image = self.np, self.Image
+        race, variant = self.split(pid)
+        stem = self.packs[pid]["weaponHand"]
+        with Image.open(scml.pack_dir(race, variant) / f"{pid}_{stem}.png") as img:
+            solid = np.asarray(img.convert("RGBA"))[..., 3] > 250
+            size = img.size
+        ys, xs = np.nonzero(solid)
+        u, v = float(xs.mean()), float(ys.mean())
+        p = next(q for q in frame if q.file.stem == stem)
+        lx = u * p.file.width / size[0] - p.pivot_x * p.file.width
+        ly = (1 - p.pivot_y) * p.file.height - v * p.file.height / size[1]
+        r = math.radians(p.angle)
+        return (p.x + lx * math.cos(r) - ly * math.sin(r), p.y + lx * math.sin(r) + ly * math.cos(r))
+
+    def hold_point(self, pid, frame):
+        """World position (y-up) of the point the pack's weapon is gripped at (the hold), from the shipped manifest."""
+        p = self.weapon_of(frame)
+        hx, hy = self.packs[pid]["weaponHold"]
+        r = math.radians(p.angle)
+        lx, ly = hx, -hy
+        return (p.x + lx * math.cos(r) - ly * math.sin(r), p.y + lx * math.sin(r) + ly * math.cos(r))
+
+    def test_the_hold_point_is_inside_the_fist_in_every_idle_frame(self):
+        for pid in self.packs:
+            for i, frame in enumerate(self.docs[pid].animations["Idle"]):
+                (fx, fy), (hx, hy) = self.fist_center(pid, frame), self.hold_point(pid, frame)
+                self.assertLess(math.hypot(fx - hx, fy - hy), 40, f"{pid} Idle {i}: the grip is not in the fist")
+
+    def render_idle(self, pid, item_id, weapon_hand=None):
+        """Idle frame 0 with `item_id` swapped in, at the shipped hold and grip, on the canvas that fits it.
+        Returns (image, canvas, frame). `weapon_hand` overrides the hand drawn over the grip."""
+        race, variant = self.split(pid)
+        doc, pack, item = self.docs[pid], self.packs[pid], self.items[item_id]
+        img = self.Image.open(self.sources[item_id]).convert("RGBA")
+        hold = {"weapon": {"hold": tuple(pack["weaponHold"]), "pivotPx": tuple(pack["weaponPivotPx"])}}
+        canvas = hg.canvas_with_item(doc, hold, item["kind"], img.size, tuple(item["gripPx"]), 1.0)
+        fit = {"scale": 1.0, "offset": hg.local_offset(hold["weapon"]["hold"], tuple(item["gripPx"]), hold["weapon"]["pivotPx"], 1.0)}
+        out = scml.render_frame(doc, race, variant, "Idle", 0, canvas=canvas, scale=0.5, weapon_image=img, weapon_fit=fit,
+                                weapon_hand=weapon_hand or pack["weaponHand"])
+        return out, canvas, doc.animations["Idle"][0]
+
+    def test_the_fist_is_drawn_over_the_weapons_grip_in_every_pack(self):
+        np = self.np
+        covered_without_the_fix = 0
+        for pid, pack in self.packs.items():
+            race, variant = self.split(pid)
+            item_id = "weapon.shard"
+            held, (origin, size), frame = self.render_idle(pid, item_id)
+            # The same canvas with only the weapon hand drawn: what the fist looks like when nothing is on top of it.
+            others = {p.file.stem for p in frame} - {pack["weaponHand"]}
+            hand_only = scml.render_frame(self.docs[pid], race, variant, "Idle", 0, canvas=(origin, size), scale=0.5, hide=others)
+            fx, fy = self.fist_center(pid, frame)
+            px, py = round((fx - origin[0]) * 0.5), round((size[1] - (fy - origin[1])) * 0.5)
+            got, want = np.asarray(held)[py, px].astype(int), np.asarray(hand_only)[py, px].astype(int)
+            self.assertLessEqual(int(abs(got - want).max()), 3, f"{pid}: the fist is not on top of the weapon at its centre")
+            # Control: leave the hand out of the redraw (the old behaviour) and the weapon covers the same pixel.
+            old, _, _ = self.render_idle(pid, item_id, weapon_hand="no_such_hand")
+            if int(abs(np.asarray(old)[py, px].astype(int) - want).max()) > 3:
+                covered_without_the_fix += 1
+        self.assertGreaterEqual(covered_without_the_fix, 10, "the check never catches a weapon pasted over the fist")
 
 
 if __name__ == "__main__":

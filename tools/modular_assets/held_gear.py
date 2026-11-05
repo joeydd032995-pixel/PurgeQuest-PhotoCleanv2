@@ -34,6 +34,12 @@ MASK_DIR = OUT / "Gear"
 SHEETS = REPO / "docs" / "modular" / "verification"
 TITAN_SCALE = 2.0
 GEAR_ROOT = scml.ART_ROOT / "Gear"
+# Where along its length a blade, staff or hammer is gripped, as a fraction measured from the pommel end.
+# The pack's own baked sword is gripped 10% in; that point sits inside the character's fist and is the pack's
+# `hold`. A swapped-in item is gripped right at its pommel (2%), so when the fist is drawn over the hold the
+# crossguard and blade come out clear of it instead of being buried in it.
+BAKED_GRIP_FRACTION = 0.10
+ITEM_GRIP_FRACTION = 0.02
 
 SIGNATURE = [  # (HeroRace raw, display name, kind)
     ("valkyrie", "Valkyrie Blade", "sword"), ("forest_ranger", "Elven Recurve", "bow"),
@@ -54,8 +60,9 @@ def opaque_bbox(img: Image.Image, thresh: int = 20) -> Tuple[int, int, int, int]
     return int(xs.min()), int(ys.min()), int(xs.max()), int(ys.max())
 
 
-def detect_grip(img: Image.Image, kind: str) -> Tuple[float, float]:
-    """Grip point in image px (y-down). Consistent across items so alignment is comparable."""
+def detect_grip(img: Image.Image, kind: str, fraction: float = BAKED_GRIP_FRACTION) -> Tuple[float, float]:
+    """Grip point in image px (y-down). Consistent across items so alignment is comparable.
+    `fraction` only matters for blades, staves and hammers (how far along from the pommel end)."""
     x0, y0, x1, y1 = opaque_bbox(img)
     a = np.asarray(img.convert("RGBA"))[..., 3] > 20
     if kind == "shield":
@@ -67,7 +74,7 @@ def detect_grip(img: Image.Image, kind: str) -> Tuple[float, float]:
     length = x1 - x0
     cols = slice(x0, x0 + max(2, int(0.2 * length)))
     ys = np.nonzero(a[:, cols].any(axis=1))[0]
-    return x0 + 0.10 * length, float(ys.mean())
+    return x0 + fraction * length, float(ys.mean())
 
 
 def anchor_info(race: str, variant: int, kind: str) -> dict:
@@ -93,6 +100,16 @@ def anchor_info(race: str, variant: int, kind: str) -> dict:
     return {"stem": stem, "pivotPx": (px * w, (1 - py) * h), "width": w, "height": h, "constant": len(pivots) == 1}
 
 
+def weapon_hand(race: str, variant: int) -> str:
+    """The hand that grips the pack's weapon: the one whose pivot is nearest the weapon anchor in the idle pose.
+    The Left Hand in every shipped pack. The renderer draws it again over a swapped weapon's grip."""
+    doc = scml.load_doc(race, variant)
+    frame = doc.animations["Idle"][0]
+    anchor = next(p for p in frame if scml.is_weapon(p.file.stem) and p.file.stem != "arrow")
+    hands = [p for p in frame if p.file.stem in ("left_hand", "right_hand")]
+    return min(hands, key=lambda h: math.hypot(h.x - anchor.x, h.y - anchor.y)).file.stem
+
+
 def pack_holds(race: str, variant: int) -> dict:
     pid = scml.pack_id(race, variant)
     base = scml.pack_dir(race, variant)
@@ -103,7 +120,7 @@ def pack_holds(race: str, variant: int) -> dict:
     kind = "bow" if wstem == "bow" else "sword"
     g = detect_grip(wimg, kind)
     out["weapon"] = {"anchor": wstem, "pivotPx": w["pivotPx"], "hold": (g[0] - w["pivotPx"][0], g[1] - w["pivotPx"][1]),
-                     "gripPx": g, "imageSize": wimg.size, "constantPivot": w["constant"]}
+                     "gripPx": g, "imageSize": wimg.size, "constantPivot": w["constant"], "hand": weapon_hand(race, variant)}
     s = anchor_info(race, variant, "shield")
     simg = Image.open(base / f"{pid}_{s['stem']}.png").convert("RGBA")
     if s["stem"] == "shield":
@@ -246,7 +263,7 @@ def analyze(algorithm: str = gear_algorithms.DEFAULT_ALGORITHM) -> dict:
         img = Image.open(it["path"]).convert("RGBA")
         bbox = opaque_bbox(img)
         kind = it["kind"]
-        grip = detect_grip(img, kind if kind in ("bow", "shield") else "sword")
+        grip = detect_grip(img, kind if kind in ("bow", "shield") else "sword", ITEM_GRIP_FRACTION)
         # recolor masks
         layer = Layer(it["resource"], "armor", it["slot"], img)
         masks, protected = algo.masks_for(it["resource"], img)
@@ -285,7 +302,8 @@ def analyze(algorithm: str = gear_algorithms.DEFAULT_ALGORITHM) -> dict:
             "regionTone": tones,
             "verification": {"status": "candidate" if ok else "mapped", "automated": checks, "approvedBy": None},
         })
-    pack_out = {pid: {"weaponAnchor": h["weapon"]["anchor"], "weaponPivotPx": [round(x, 2) for x in h["weapon"]["pivotPx"]],
+    pack_out = {pid: {"weaponAnchor": h["weapon"]["anchor"], "weaponHand": h["weapon"]["hand"],
+                      "weaponPivotPx": [round(x, 2) for x in h["weapon"]["pivotPx"]],
                       "weaponHold": [round(x, 2) for x in h["weapon"]["hold"]],
                       "shieldAnchor": h["shield"]["anchor"], "shieldPivotPx": [round(x, 2) for x in h["shield"]["pivotPx"]],
                       "shieldHold": [round(x, 2) for x in h["shield"]["hold"]],
@@ -310,18 +328,20 @@ def render_item(race: str, variant: int, anim: str, frame: int, it: dict, holds:
     kind = "shield" if it["kind"] == "shield" else "weapon"
     h = holds[pid][kind]
     s = TITAN_SCALE if (titan and kind == "weapon") else 1.0
+    hand = holds[pid]["weapon"].get("hand", "left_hand")
     off = local_offset(h["hold"], tuple(it["gripPx"]), h["pivotPx"], s)
     fit = {"scale": s, "offset": off}
     origin, size = canvas_with_item(doc, holds[pid], it["kind"], img.size, tuple(it["gripPx"]), s)
     return scml.render_frame(doc, race, variant, anim, frame, canvas=(origin, size), scale=scale,
                                     weapon_image=img if kind == "weapon" else None, weapon_fit=fit if kind == "weapon" else None,
+                                    weapon_hand=hand,
                                     shield_image=img if kind == "shield" else None, shield_fit=fit if kind == "shield" else None,
                                     background=qa.BG)
 
 
 def sheets(manifest: dict) -> None:
     SHEETS.mkdir(parents=True, exist_ok=True)
-    holds = {pid: {"weapon": {"hold": tuple(p["weaponHold"]), "pivotPx": tuple(p["weaponPivotPx"])},
+    holds = {pid: {"weapon": {"hold": tuple(p["weaponHold"]), "pivotPx": tuple(p["weaponPivotPx"]), "hand": p.get("weaponHand", "left_hand")},
                    "shield": {"hold": tuple(p["shieldHold"]), "pivotPx": tuple(p["shieldPivotPx"])}} for pid, p in manifest["packs"].items()}
     globals()["_HOLDS"] = holds
     by_group: Dict[str, List[dict]] = {}

@@ -2,9 +2,17 @@
 //  HeldGearAnchorTests.swift
 //  PurgeQuestTests
 //
-//  Where a shield hangs. Every art pack bakes its sword into the Left Hand, so a shield held in that
-//  hand sat on top of the blade. It now goes in the Right Hand, which is where the two packs that bake
-//  a shield (Valkyrie, Skeleton Crusader) already put theirs. Needs the app bundle for the real art.
+//  Where held gear hangs and how it is layered.
+//
+//  Shield: every art pack bakes its sword into the Left Hand, so a shield held in that hand sat on top of
+//  the blade. It now goes in the Right Hand, which is where the two packs that bake a shield (Valkyrie,
+//  Skeleton Crusader) already put theirs.
+//
+//  Weapon: a swapped-in sword was pasted on top of the whole character, so it floated in front of the
+//  body instead of being held. It now takes the layer the pack gives its own weapon in an attack (behind
+//  the hand, the arm and the body), and in the idle pose the weapon hand is drawn again over its grip.
+//
+//  Needs the app bundle for the real art.
 //
 
 import Testing
@@ -15,10 +23,10 @@ import CoreGraphics
 @MainActor
 struct HeldGearAnchorTests {
 
-    private func part(_ name: String, x: CGFloat = 0, y: CGFloat = 0) -> SpritePlacement {
+    private func part(_ name: String, x: CGFloat = 0, y: CGFloat = 0, z: Int = 0, alpha: CGFloat = 1) -> SpritePlacement {
         SpritePlacement(
             file: SpriteFileDef(name: name, width: 40, height: 40, pivotX: 0.5, pivotY: 0.5),
-            x: x, y: y, angle: 0, pivotX: 0.5, pivotY: 0.5, zIndex: 0, alpha: 1
+            x: x, y: y, angle: 0, pivotX: 0.5, pivotY: 0.5, zIndex: z, alpha: alpha
         )
     }
 
@@ -93,6 +101,126 @@ struct HeldGearAnchorTests {
                 let pack = race.artBase(variant: variant)
                 let stem = ModularAssetCatalog.shared.anchors(pack: pack)?.shieldAnchor
                 #expect(stem == "shield" || stem == HeldGearAnchors.defaultShieldHand, "\(pack): \(stem ?? "nil")")
+            }
+        }
+    }
+
+    // MARK: The weapon is held, not pasted on
+
+    @Test func aFrameIsArmedOnlyWhenThePacksOwnWeaponIsVisible() {
+        #expect(HeldGearAnchors.isArmed([part("Body.png"), part("Sword.png"), part("Left Hand.png")]))
+        #expect(HeldGearAnchors.isArmed([part("Bow.png", alpha: 0.5), part("Arrow.png")]))
+        // The idle pose keeps the sword in the rig with alpha 0.
+        #expect(!HeldGearAnchors.isArmed([part("Body.png"), part("Sword.png", alpha: 0), part("Left Hand.png")]))
+        #expect(!HeldGearAnchors.isArmed([part("Body.png"), part("Left Hand.png")]))
+        #expect(!HeldGearAnchors.isArmed([]))
+    }
+
+    @Test func theWeaponHandIsTheOneTheManifestNamesAndItMustBeVisible() {
+        let frame = [part("Left Hand.png", x: 1), part("Right Hand.png", x: 2)]
+        #expect(HeldGearAnchors.weaponHand(in: frame, manifestStem: "left_hand")?.x == 1)
+        #expect(HeldGearAnchors.weaponHand(in: frame, manifestStem: "right_hand")?.x == 2)
+        // No manifest entry: the Left Hand, where every pack bakes its sword.
+        #expect(HeldGearAnchors.weaponHand(in: frame, manifestStem: nil)?.x == 1)
+        // A hidden hand cannot close over a grip.
+        #expect(HeldGearAnchors.weaponHand(in: [part("Left Hand.png", alpha: 0)], manifestStem: "left_hand") == nil)
+        #expect(HeldGearAnchors.weaponHand(in: [], manifestStem: nil) == nil)
+    }
+
+    @Test func manifestsWithoutAWeaponHandStillDecode() throws {
+        // A manifest written before the field existed decodes, and means the Left Hand.
+        let json = """
+        {"weaponAnchor":"sword","weaponPivotPx":[0,0],"weaponHold":[1,2],"shieldAnchor":"right_hand","shieldPivotPx":[0,0],"shieldHold":[3,4]}
+        """
+        let old = try JSONDecoder().decode(PackAnchors.self, from: Data(json.utf8))
+        #expect(old.weaponHand == nil)
+        #expect(HeldGearAnchors.weaponHand(in: [part("Left Hand.png", x: 7)], manifestStem: old.weaponHand)?.x == 7)
+    }
+
+    @Test func everyPackNamesTheHandThatHoldsItsWeapon() {
+        for race in HeroRace.allCases {
+            for variant in 1...race.variantCount {
+                let pack = race.artBase(variant: variant)
+                #expect(ModularAssetCatalog.shared.anchors(pack: pack)?.weaponHand == "left_hand", "\(pack)")
+            }
+        }
+    }
+
+    /// The layering rule the renderer relies on, checked on every frame of every animation of every shipped pack.
+    /// Where the pack draws its own weapon, that weapon is behind the hand and the body, so only the blade shows and
+    /// the fist covers the grip; the swapped weapon takes exactly that layer. Everywhere else the pack draws no weapon,
+    /// and the weapon hand is there to be drawn again over a swapped-in grip.
+    @Test func everyShippedFrameHidesTheBakedGripOrHasAHandToCloseOverOne() throws {
+        let renderer = SpriteRenderer.shared
+        var armedFrames = 0
+        var emptyHandedFrames = 0
+        for race in HeroRace.allCases {
+            for variant in 1...race.variantCount {
+                let pack = race.artBase(variant: variant)
+                let doc = try #require(renderer.document(race: race, variant: variant), "\(pack) did not load")
+                let handStem = ModularAssetCatalog.shared.anchors(pack: pack)?.weaponHand
+                for (name, animation) in doc.animations {
+                    for (index, frame) in animation.frames.enumerated() {
+                        let label = "\(pack) \(name) \(index)"
+                        let weapon = try #require(HeldGearAnchors.weapon(in: frame), "\(label): no weapon part")
+                        let hand = HeldGearAnchors.weaponHand(in: frame, manifestStem: handStem)
+                        if HeldGearAnchors.isArmed(frame) {
+                            let body = try #require(frame.first { HeldGearAnchors.stem(of: $0.file.name) == "body" }, "\(label): no body")
+                            let fist = try #require(hand, "\(label): no visible weapon hand")
+                            #expect(weapon.zIndex < fist.zIndex && weapon.zIndex < body.zIndex,
+                                    "\(label): the weapon (z \(weapon.zIndex)) is not behind the hand (z \(fist.zIndex)) and body (z \(body.zIndex))")
+                            armedFrames += 1
+                        } else {
+                            #expect(hand != nil, "\(label): no visible \(handStem ?? "weapon hand") to hold a weapon")
+                            emptyHandedFrames += 1
+                        }
+                    }
+                }
+            }
+        }
+        #expect(armedFrames > 500 && emptyHandedFrames > 1000, "armed \(armedFrames), empty-handed \(emptyHandedFrames)")
+    }
+
+    /// The idle pose is empty-handed and the attack is armed in every pack, so the two draw paths are both used.
+    @Test func theIdlePoseIsEmptyHandedAndTheAttackIsArmedInEveryPack() throws {
+        let renderer = SpriteRenderer.shared
+        for race in HeroRace.allCases {
+            for variant in 1...race.variantCount {
+                let pack = race.artBase(variant: variant)
+                let doc = try #require(renderer.document(race: race, variant: variant), "\(pack) did not load")
+                let idle = try #require(doc.animations["Idle"]?.frames, "\(pack) has no Idle")
+                #expect(idle.allSatisfy { !HeldGearAnchors.isArmed($0) }, "\(pack) Idle draws a weapon of its own")
+                let attack = renderer.attackAnimation(race: race, variant: variant)
+                let frames = try #require(doc.animations[attack]?.frames, "\(pack) has no \(attack)")
+                #expect(frames.allSatisfy { HeldGearAnchors.isArmed($0) }, "\(pack) \(attack) has a frame with no weapon")
+            }
+        }
+    }
+
+    /// Both draw paths with real art: a swapped sword (and shield) in the idle pose, where the weapon is drawn in front and
+    /// the fist over it, and through the attack, where the weapon takes the pack's own layer. The bow packs also get the
+    /// Elven Recurve, whose string is drawn after the arrow while one is nocked.
+    @Test func aSwappedWeaponRendersInTheIdlePoseAndThroughTheAttack() throws {
+        let renderer = SpriteRenderer.shared
+        let catalog = ModularAssetCatalog.shared
+        for race in HeroRace.allCases {
+            for variant in 1...race.variantCount {
+                let look = HeroAppearance.default(for: race)
+                let pack = race.artBase(variant: variant)
+                let weaponIDs = catalog.anchors(pack: pack)?.weaponAnchor == "bow" ? ["weapon.forest_ranger", "weapon.shard"] : ["weapon.shard"]
+                for weaponID in weaponIDs {
+                    // The item has to be one this pack can hold, or the swapped path is silently skipped.
+                    #expect(catalog.gearItem(id: weaponID)?.supportedPacks.contains(pack) == true, "\(weaponID) on \(pack)")
+                    let loadout = SpriteLoadout(weaponID: weaponID, shieldID: "shield.crux")
+                    for animation in ["Idle", renderer.attackAnimation(race: race, variant: variant)] {
+                        let count = renderer.frameCount(race: race, variant: variant, animation: animation)
+                        for index in [0, count / 2, count - 1] {
+                            let frame = renderer.frame(race: race, variant: variant, animation: animation, frameIndex: index,
+                                                       appearance: look, loadout: loadout)
+                            #expect(frame != nil, "\(pack) \(animation) \(index) with \(weaponID)")
+                        }
+                    }
+                }
             }
         }
     }
