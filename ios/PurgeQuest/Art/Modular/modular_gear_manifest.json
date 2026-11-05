@@ -9022,9 +9022,9 @@
  ],
  "packs": {
   "blood_alchemist_v1": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9042,9 +9042,9 @@
    ]
   },
   "blood_alchemist_v2": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9062,9 +9062,9 @@
    ]
   },
   "blood_alchemist_v3": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9082,9 +9082,9 @@
    ]
   },
   "dark_oracle_v1": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9102,9 +9102,9 @@
    ]
   },
   "dark_oracle_v2": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9122,9 +9122,9 @@
    ]
   },
   "dark_oracle_v3": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9146,7 +9146,7 @@
     8.0,
     63.5
    ],
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
     63.5,
     63.5
@@ -9170,7 +9170,7 @@
     8.0,
     63.5
    ],
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
     63.5,
     63.5
@@ -9190,9 +9190,9 @@
    ]
   },
   "forest_ranger_v3": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9210,10 +9210,10 @@
    ]
   },
   "golem_v1": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    65.5,
-    61.5
+    64.0,
+    64.5
    ],
    "shieldPivotPx": [
     0.0,
@@ -9230,10 +9230,10 @@
    ]
   },
   "golem_v2": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.5,
-    64.0
+    55.5,
+    56.5
    ],
    "shieldPivotPx": [
     0.0,
@@ -9250,10 +9250,10 @@
    ]
   },
   "golem_v3": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    63.0,
-    64.5
+    65.0,
+    63.5
    ],
    "shieldPivotPx": [
     0.0,
@@ -9270,7 +9270,7 @@
    ]
   },
   "necromancer_v1": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
     63.5,
     63.5
@@ -9290,7 +9290,7 @@
    ]
   },
   "necromancer_v2": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
     63.5,
     63.5
@@ -9310,7 +9310,7 @@
    ]
   },
   "necromancer_v3": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
     63.5,
     63.5
@@ -9330,9 +9330,9 @@
    ]
   },
   "seer_v1": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9350,9 +9350,9 @@
    ]
   },
   "seer_v2": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9370,9 +9370,9 @@
    ]
   },
   "seer_v3": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9450,9 +9450,9 @@
    ]
   },
   "skeleton_warrior_v1": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9470,9 +9470,9 @@
    ]
   },
   "skeleton_warrior_v2": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9490,9 +9490,9 @@
    ]
   },
   "skeleton_warrior_v3": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [

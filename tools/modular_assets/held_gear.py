@@ -86,8 +86,8 @@ def anchor_info(race: str, variant: int, kind: str) -> dict:
     if not pivots and kind == "shield":
         for frame in doc.animations["Idle"]:
             for p in frame:
-                if p.file.stem == "left_hand":
-                    stem = "left_hand"
+                if p.file.stem == scml.SHIELD_HAND:
+                    stem = scml.SHIELD_HAND
                     pivots.add((round(p.pivot_x, 4), round(p.pivot_y, 4), p.file.width, p.file.height))
     px, py, w, h = sorted(pivots)[0]
     return {"stem": stem, "pivotPx": (px * w, (1 - py) * h), "width": w, "height": h, "constant": len(pivots) == 1}
@@ -108,7 +108,7 @@ def pack_holds(race: str, variant: int) -> dict:
     simg = Image.open(base / f"{pid}_{s['stem']}.png").convert("RGBA")
     if s["stem"] == "shield":
         sg = detect_grip(simg, "shield")
-    else:  # no baked shield: hold on the left hand's visible centre
+    else:  # no baked shield: hold on the visible centre of the hand that is not holding the sword
         x0, y0, x1, y1 = opaque_bbox(simg)
         sg = ((x0 + x1) / 2, (y0 + y1) / 2)
     out["shield"] = {"anchor": s["stem"], "pivotPx": s["pivotPx"], "hold": (sg[0] - s["pivotPx"][0], sg[1] - s["pivotPx"][1]),
@@ -152,7 +152,7 @@ def canvas_with_item(doc: scml.Doc, pack: dict, kind: str, img_size, grip, scale
     for frames in doc.animations.values():
         for fr in frames:
             if kind == "shield":
-                anchors = [p for p in fr if p.file.stem.startswith("shield")] or [p for p in fr if p.file.stem == "left_hand"]
+                anchors = [p for p in fr if p.file.stem.startswith("shield")] or [p for p in fr if p.file.stem == scml.SHIELD_HAND]
             else:
                 anchors = [p for p in fr if p.file.stem.startswith(("sword", "bow"))]
             for p in anchors[:1]:

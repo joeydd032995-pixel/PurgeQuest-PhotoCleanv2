@@ -367,6 +367,37 @@ nonisolated private final class ParserDelegate: NSObject, XMLParserDelegate {
     }
 }
 
+// MARK: - Held-gear anchors
+
+/// Which part of a frame a held item hangs from. Pure, so the choice can be tested against the real art.
+///
+/// Every art pack bakes its sword into the Left Hand (the right side of the screen). Packs that bake a shield
+/// (Valkyrie, Skeleton Crusader) put it in the Right Hand. A pack with no shield part holds a swapped-in shield
+/// in the hand its manifest names, which is the Right Hand, so the shield and the blade never share a hand.
+nonisolated enum HeldGearAnchors {
+    /// The hand a shield goes in when neither the pack nor its manifest says otherwise.
+    static let defaultShieldHand = "right_hand"
+
+    /// An SCML file name as the manifest spells it: "Right Hand.png" becomes "right_hand".
+    static func stem(of fileName: String) -> String {
+        (fileName.lowercased() as NSString).deletingPathExtension.replacingOccurrences(of: " ", with: "_")
+    }
+
+    static func weapon(in frame: [SpritePlacement]) -> SpritePlacement? {
+        frame.first {
+            let name = $0.file.name.lowercased()
+            return name.hasPrefix("sword") || name.hasPrefix("bow")
+        }
+    }
+
+    /// The pack's own shield part if it bakes one, otherwise the part the manifest's `shieldAnchor` names.
+    static func shield(in frame: [SpritePlacement], manifestStem: String?) -> SpritePlacement? {
+        if let baked = frame.first(where: { $0.file.name.lowercased().hasPrefix("shield") }) { return baked }
+        let wanted = manifestStem ?? defaultShieldHand
+        return frame.first { stem(of: $0.file.name) == wanted }
+    }
+}
+
 // MARK: - Loadout
 
 /// What the hero holds and wears over the race art, by catalog id. Resolved against the bundled
@@ -411,6 +442,8 @@ final class SpriteRenderer {
         /// Titan with nothing equipped: the pack's own weapon scaled about its grip.
         var bakedTitan: HeldGearPlacement?
         var gearMaterials: CharacterMaterialSet?
+        /// The manifest's name for the part a shield hangs from in this pack ("shield" or a hand).
+        var shieldAnchorStem: String? = nil
 
         var hidesBakedWeapon: Bool { weapon != nil || bakedTitan != nil }
         var key: String {
@@ -618,12 +651,11 @@ final class SpriteRenderer {
     }
 
     private func weaponAnchor(_ frame: [SpritePlacement]) -> SpritePlacement? {
-        frame.first { $0.file.name.lowercased().hasPrefix("sword") || $0.file.name.lowercased().hasPrefix("bow") }
+        HeldGearAnchors.weapon(in: frame)
     }
 
-    private func shieldAnchor(_ frame: [SpritePlacement]) -> SpritePlacement? {
-        frame.first { $0.file.name.lowercased().hasPrefix("shield") }
-            ?? frame.first { $0.file.name.lowercased().contains("left hand") }
+    private func shieldAnchor(_ frame: [SpritePlacement], stem: String?) -> SpritePlacement? {
+        HeldGearAnchors.shield(in: frame, manifestStem: stem)
     }
 
     /// The pack's base canvas united with every held item's rect across all frames (a swapped item is drawn at
@@ -645,7 +677,7 @@ final class SpriteRenderer {
                 if let item = resolved.weapon ?? bakedItem(resolved, frame: frame), let a = weaponAnchor(frame) {
                     include(worldBounds(of: itemRect(item, anchor: a), placement: a, extraRotation: CGFloat(item.placement.rotationDegrees)))
                 }
-                if let item = resolved.shield, let a = shieldAnchor(frame) {
+                if let item = resolved.shield, let a = shieldAnchor(frame, stem: resolved.shieldAnchorStem) {
                     include(worldBounds(of: itemRect(item, anchor: a), placement: a, extraRotation: CGFloat(item.placement.rotationDegrees)))
                 }
             }
@@ -667,6 +699,7 @@ final class SpriteRenderer {
     private func resolve(_ loadout: SpriteLoadout, race: HeroRace, pack: String) -> ResolvedLoadout {
         var out = ResolvedLoadout(weapon: nil, shield: nil, bakedTitan: nil, gearMaterials: loadout.gearMaterials)
         let anchors = catalog.anchors(pack: pack)
+        out.shieldAnchorStem = anchors?.shieldAnchor
 
         func resolveItem(_ id: String?, wants: (HeldGearKind) -> Bool, titan: Bool) -> ResolvedItem? {
             guard let id else { return nil }
@@ -786,7 +819,7 @@ final class SpriteRenderer {
                 drawRelative(img, placement: anchor, rect: itemRect(item, anchor: anchor), doc: drawDoc, in: cg)
             }
 
-            if let shield = resolved.shield, let anchor = shieldAnchor(placements),
+            if let shield = resolved.shield, let anchor = shieldAnchor(placements, stem: resolved.shieldAnchorStem),
                let img = maskedImage(resource: shield.resource, maskResources: shield.entry?.maskResources ?? [:],
                                      regionTone: shield.entry?.regionTone ?? [:], colors: resolved.gearMaterials) {
                 drawRelative(img, placement: anchor, rect: itemRect(shield, anchor: anchor),

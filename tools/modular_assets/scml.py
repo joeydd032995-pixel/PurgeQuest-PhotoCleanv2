@@ -32,6 +32,12 @@ PACKS: List[Tuple[str, int]] = (
 )
 
 
+# A pack with no baked shield part holds a swapped-in shield in this hand. Every pack bakes its sword
+# into the Left Hand and the two packs that bake a shield (Valkyrie, Skeleton Crusader) put it in the
+# Right Hand, so a shield goes where the pack's own art puts one: the hand that is not holding the sword.
+SHIELD_HAND = "right_hand"
+
+
 def pack_id(race_dir: str, variant: int) -> str:
     return f"{race_dir}_v{variant}"
 
@@ -263,7 +269,7 @@ def render_frame(doc: Doc, race_dir: str, variant: int, animation: str, frame_in
     swapped_shield = shield_image is not None
     weapon_anchor = next((p for p in placements if p.file.stem.startswith(("sword", "bow"))), None)
     shield_anchor = next((p for p in placements if p.file.stem.startswith("shield")), None) or \
-        next((p for p in placements if "left_hand" in p.file.stem), None)
+        next((p for p in placements if p.file.stem == SHIELD_HAND), None)
     for p in sorted(placements, key=lambda q: q.z):
         stem = p.file.stem
         if p.alpha < 0.01 or stem.startswith("slashfx") or stem in hide:

@@ -35,6 +35,10 @@ python3 -I tools/modular_assets/inventory.py         # versioned inventory (add 
 python3 -I tools/modular_assets/tests/test_modular_assets.py
 ```
 
+## Which hand holds what
+
+Every art pack bakes its sword (or bow) into the **Left Hand**, the one on the right of the screen. Valkyrie and Skeleton Crusader also bake a shield, and they hold it in the **Right Hand**. A pack with no shield part holds a swapped-in shield in the Right Hand too (`scml.SHIELD_HAND`, written to each pack's `shieldAnchor` in `modular_gear_manifest.json`, read back by `HeldGearAnchors` in `SpriteEngine.swift`), so a shield never sits on top of the blade. `HeldGearAnchorTests` checks this on the shipped art: in every pack and every idle and attack frame the shield and weapon anchors are more than 80 units apart (148 at the closest).
+
 ## Approving assets (the only way anything becomes `verified`)
 
 Open the sheets, then record who looked:

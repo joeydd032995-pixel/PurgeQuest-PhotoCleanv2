@@ -86,6 +86,34 @@ final class AppearanceTourUITests: XCTestCase {
         }
     }
 
+    /// A Golem (the dark lava variant) wearing something in every slot. The sword is held in the hand on the right
+    /// of the screen, the shield in the one on the left, and every worn slot has a tag around the plaque.
+    @MainActor
+    func testGearOnGolem() {
+        for mode in ["light", "dark"] {
+            let app = launch(mode, phase: "main", extra: [
+                "-pq.race", "golem",
+                "-UITestVariant", "3",
+                "-UITestEquip", "skin.iron,head.iron,armor.iron,armor.golem.legs,armor.golem.hands,weapon.shard,shield.crux,fx.sparks,pet.spiritBlue"
+            ])
+            guard app.tabBars.firstMatch.waitForExistence(timeout: 25) else {
+                XCTFail("tab bar did not appear (golem gear \(mode))")
+                app.terminate()
+                continue
+            }
+            dismissPhotoPrompt()
+            if open(tab: "Hero", in: app) {
+                settle(2.0)
+                shot("gear-\(mode)-20-golem-hero")
+            }
+            if open(tab: "Armory", in: app) {
+                settle(1.5)
+                shot("gear-\(mode)-22-armory-with-gear")
+            }
+            app.terminate()
+        }
+    }
+
     /// Opens the Video Phantoms family and scrolls through it, where the three Wraiths live.
     @MainActor
     private func captureVideoPhantoms(_ app: XCUIApplication, _ mode: String) {
