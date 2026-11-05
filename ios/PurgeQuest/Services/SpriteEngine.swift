@@ -452,6 +452,16 @@ final class SpriteRenderer {
         let entry: HeldGearEntry?
         /// Image-pixel size used to build the local draw rect.
         let imageSize: CGSize
+        /// Fits the item again for a frame whose weapon anchor points along the given angle (degrees): a blade, staff or
+        /// hammer is turned about its grip so it never points flat out from the hero's side (see HeldGearFit.carryAngle).
+        /// Nil for gear that is never turned: shields, bows and items without a carry angle.
+        var refit: ((Double) -> HeldGearPlacement)? = nil
+
+        /// The item as it hangs in a frame whose weapon anchor points along `anchorAngle`.
+        func posed(anchorAngle: CGFloat) -> ResolvedItem {
+            guard let refit else { return self }
+            return ResolvedItem(resource: resource, placement: refit(Double(anchorAngle)), entry: entry, imageSize: imageSize)
+        }
     }
 
     private struct ResolvedLoadout {
@@ -459,6 +469,8 @@ final class SpriteRenderer {
         var shield: ResolvedItem?
         /// Titan with nothing equipped: the pack's own weapon scaled about its grip.
         var bakedTitan: HeldGearPlacement?
+        /// The same, fitted again for the angle a frame's weapon anchor points along (turned up when it points flat).
+        var bakedTitanRefit: ((Double) -> HeldGearPlacement)? = nil
         var gearMaterials: CharacterMaterialSet?
         /// The manifest's name for the part a shield hangs from in this pack ("shield" or a hand).
         var shieldAnchorStem: String? = nil
@@ -694,8 +706,10 @@ final class SpriteRenderer {
         }
         for animation in doc.animations.values {
             for frame in animation.frames {
-                if let item = resolved.weapon ?? bakedItem(resolved, frame: frame), let a = weaponAnchor(frame) {
-                    include(worldBounds(of: itemRect(item, anchor: a), placement: a, extraRotation: CGFloat(item.placement.rotationDegrees)))
+                // The weapon is turned about its grip when the frame points it flat, so each frame has its own rect.
+                if let item = (resolved.weapon ?? bakedItem(resolved, frame: frame)), let a = weaponAnchor(frame) {
+                    let posed = item.posed(anchorAngle: a.angle)
+                    include(worldBounds(of: itemRect(posed, anchor: a), placement: a, extraRotation: CGFloat(posed.placement.rotationDegrees)))
                 }
                 if let item = resolved.shield, let a = shieldAnchor(frame, stem: resolved.shieldAnchorStem) {
                     include(worldBounds(of: itemRect(item, anchor: a), placement: a, extraRotation: CGFloat(item.placement.rotationDegrees)))
@@ -711,7 +725,8 @@ final class SpriteRenderer {
     /// The baked weapon as a held item (Titan with nothing equipped).
     private func bakedItem(_ resolved: ResolvedLoadout, frame: [SpritePlacement]) -> ResolvedItem? {
         guard let titan = resolved.bakedTitan, let a = weaponAnchor(frame) else { return nil }
-        return ResolvedItem(resource: "", placement: titan, entry: nil, imageSize: CGSize(width: a.file.width, height: a.file.height))
+        return ResolvedItem(resource: "", placement: titan, entry: nil, imageSize: CGSize(width: a.file.width, height: a.file.height),
+                            refit: resolved.bakedTitanRefit)
     }
 
     // MARK: Loadout resolution
@@ -727,8 +742,14 @@ final class SpriteRenderer {
             if let entry = catalog.gearItem(id: id) {
                 guard wants(entry.kind), let anchors,
                       let placement = HeldGearFit.placement(item: entry, anchors: anchors, pack: pack, titan: titan) else { return nil }
-                return ResolvedItem(resource: entry.resourceName, placement: placement, entry: entry,
-                                    imageSize: CGSize(width: entry.imageWidth, height: entry.imageHeight))
+                var item = ResolvedItem(resource: entry.resourceName, placement: placement, entry: entry,
+                                        imageSize: CGSize(width: entry.imageWidth, height: entry.imageHeight))
+                if entry.carryAngle != nil, entry.slot == "mainHand" {
+                    item.refit = { angle in
+                        HeldGearFit.placement(item: entry, anchors: anchors, pack: pack, titan: titan, anchorAngle: angle) ?? placement
+                    }
+                }
+                return item
             }
             // Not in the manifest (older catalog entry): legacy generic anchor, no fit data.
             guard let legacy = GearCatalog.design(id: id)?.resourceName, let img = image(base: legacy) else { return nil }
@@ -741,6 +762,7 @@ final class SpriteRenderer {
         out.shield = resolveItem(loadout.shieldID, wants: { $0 == .shield }, titan: false)
         if out.weapon == nil, loadout.titanWeapon, let anchors {
             out.bakedTitan = HeldGearFit.bakedWeaponPlacement(anchors: anchors, titan: true)
+            out.bakedTitanRefit = { angle in HeldGearFit.bakedWeaponPlacement(anchors: anchors, titan: true, anchorAngle: angle) }
         }
         return out
     }
@@ -838,16 +860,17 @@ final class SpriteRenderer {
             /// The swapped-in weapon at its anchor, or the pack's own weapon scaled up for a Titan with nothing equipped.
             func drawHeldWeapon(withString: Bool) {
                 guard let anchor = weaponPlacement else { return }
-                if let weapon = resolved.weapon {
+                // Turned about its grip when this frame points it flat out from the hero's side (see HeldGearFit.carryAngle).
+                if let weapon = resolved.weapon?.posed(anchorAngle: anchor.angle) {
                     guard let img = maskedImage(resource: weapon.resource, maskResources: weapon.entry?.maskResources ?? [:],
                                                 regionTone: weapon.entry?.regionTone ?? [:], colors: resolved.gearMaterials) else { return }
                     drawRelative(img, placement: anchor, rect: itemRect(weapon, anchor: anchor),
                                  extraRotation: CGFloat(weapon.placement.rotationDegrees), doc: drawDoc, in: cg)
                     if withString { drawString() }
-                } else if let titan = resolved.bakedTitan,
+                } else if let baked = bakedItem(resolved, frame: placements)?.posed(anchorAngle: anchor.angle),
                           let img = image(base: Self.partBaseName(race: race, variant: clampedVariant, fileName: anchor.file.name)) {
-                    let item = ResolvedItem(resource: "", placement: titan, entry: nil, imageSize: CGSize(width: anchor.file.width, height: anchor.file.height))
-                    drawRelative(img, placement: anchor, rect: itemRect(item, anchor: anchor), doc: drawDoc, in: cg)
+                    drawRelative(img, placement: anchor, rect: itemRect(baked, anchor: anchor),
+                                 extraRotation: CGFloat(baked.placement.rotationDegrees), doc: drawDoc, in: cg)
                 }
             }
 

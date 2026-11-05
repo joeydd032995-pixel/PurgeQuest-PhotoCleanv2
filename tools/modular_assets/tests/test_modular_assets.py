@@ -682,8 +682,9 @@ class WeaponInHand(unittest.TestCase):
         doc, pack, item = self.docs[pid], self.packs[pid], self.items[item_id]
         img = self.Image.open(self.sources[item_id]).convert("RGBA")
         hold = {"weapon": {"hold": tuple(pack["weaponHold"]), "pivotPx": tuple(pack["weaponPivotPx"])}}
-        canvas = hg.canvas_with_item(doc, hold, item["kind"], img.size, tuple(item["gripPx"]), 1.0)
-        fit = {"scale": 1.0, "offset": hg.local_offset(hold["weapon"]["hold"], tuple(item["gripPx"]), hold["weapon"]["pivotPx"], 1.0)}
+        carry = item.get("carryAngle")
+        canvas = hg.canvas_with_item(doc, hold, item["kind"], img.size, tuple(item["gripPx"]), 1.0, carry_angle=carry)
+        fit = hg.fit_for_anchor(hold["weapon"]["hold"], tuple(item["gripPx"]), hold["weapon"]["pivotPx"], 1.0, carry)
         out = scml.render_frame(doc, race, variant, "Idle", 0, canvas=canvas, scale=0.5, weapon_image=img, weapon_fit=fit,
                                 weapon_hand=weapon_hand or pack["weaponHand"])
         return out, canvas, doc.animations["Idle"][0]
@@ -707,6 +708,111 @@ class WeaponInHand(unittest.TestCase):
             if int(abs(np.asarray(old)[py, px].astype(int) - want).max()) > 3:
                 covered_without_the_fix += 1
         self.assertGreaterEqual(covered_without_the_fix, 10, "the check never catches a weapon pasted over the fist")
+
+
+class CarryAngle(unittest.TestCase):
+    """A weapon is never left pointing flat out from the hero's side (held_gear.CARRY_ANGLE).
+
+    The packs draw the idle hand at hip height and hold the sword sideways through most of the swing, so a weapon left the
+    way the art draws it sticks straight out from the pelvis, which reads as something it is not. A blade, staff or hammer
+    that points between CARRY_FLOOR and CARRY_ANGLE is turned about its grip up to CARRY_ANGLE: up and away from the body.
+    """
+    @classmethod
+    def setUpClass(cls):
+        cls.gear = json.loads(validate.GEAR.read_text())
+        cls.packs = cls.gear["packs"]
+        cls.items = {i["id"]: i for i in cls.gear["items"]}
+        cls.docs = {pid: scml.load_doc(pid.rsplit("_v", 1)[0], int(pid.rsplit("_v", 1)[1])) for pid in cls.packs}
+
+    def sword_packs(self):
+        return [pid for pid, p in self.packs.items() if p["weaponAnchor"] != "bow"]
+
+    def test_constants_match_swift(self):
+        swift = (Path(__file__).resolve().parents[3] / "ios/PurgeQuest/Models/HeldGearFit.swift").read_text()
+        self.assertIn(f"static let carryAngle: Double = {hg.CARRY_ANGLE:g}", swift)
+        self.assertIn(f"static let carryFloor: Double = {hg.CARRY_FLOOR:g}", swift)
+
+    def test_carry_turn_table_matches_the_swift_tests(self):
+        # The same table as ModularGearTests.aFlatBladeIsTurnedUpToTheCarryAngleAndNothingElseIs.
+        for angle, turn in [(11.8, 33.2), (731.8, 33.2), (3, 42), (0, 45), (-44, 89)]:
+            self.assertAlmostEqual(hg.carry_turn(angle, 45.0), turn, places=9, msg=angle)
+        for angle in [45, 54, 63, 92, 116, 160, 180, -177, -46, -90]:
+            self.assertEqual(hg.carry_turn(angle, 45.0), 0.0, angle)
+        self.assertEqual(hg.carry_turn(10, None), 0.0)
+        self.assertAlmostEqual(hg.norm_angle(731.8), 11.8, places=9)
+        self.assertAlmostEqual(hg.norm_angle(648.1), -71.9, places=9)
+        self.assertEqual(hg.norm_angle(-180), 180)
+        self.assertEqual(hg.norm_angle(190), -170)
+
+    def test_blades_staves_and_hammers_carry_and_bows_and_shields_do_not(self):
+        for item in self.gear["items"]:
+            if item["kind"] in hg.CARRIED_KINDS:
+                self.assertEqual(item["carryAngle"], hg.CARRY_ANGLE, item["id"])
+            else:
+                self.assertNotIn("carryAngle", item, item["id"])
+        self.assertEqual(sum("carryAngle" in i for i in self.gear["items"]), 14 + 41 + 1)
+
+    def test_turning_about_the_grip_keeps_the_grip_on_the_hold(self):
+        # Where the grip ends up in the world, with and without the turn, in every pack's idle and swing.
+        def grip_world(anchor, hold, grip, pivot, s, turn):
+            off = hg.local_offset(hold, grip, pivot, s, turn)
+            gx, gy = s * (grip[0] - pivot[0]) + off[0], s * (grip[1] - pivot[1]) + off[1]   # local, y-down
+            r = math.radians(anchor.angle + turn)
+            sx, sy = gx * math.cos(r) + gy * math.sin(r), -gx * math.sin(r) + gy * math.cos(r)   # screen offset, y-down
+            return anchor.x + sx, anchor.y - sy
+        item = self.items["weapon.staff.1.1"]
+        grip = tuple(item["gripPx"])
+        for pid in self.sword_packs():
+            pack = self.packs[pid]
+            hold, pivot = tuple(pack["weaponHold"]), tuple(pack["weaponPivotPx"])
+            for anim in ("Idle", "Slashing"):
+                for frame in self.docs[pid].animations[anim]:
+                    anchor = next(p for p in frame if p.file.stem.startswith("sword"))
+                    for s in (1.0, 2.0):
+                        turn = hg.carry_turn(anchor.angle, hg.CARRY_ANGLE)
+                        x1, y1 = grip_world(anchor, hold, grip, pivot, s, 0.0)
+                        x2, y2 = grip_world(anchor, hold, grip, pivot, s, turn)
+                        self.assertAlmostEqual(x1, x2, places=6, msg=(pid, anim))
+                        self.assertAlmostEqual(y1, y2, places=6, msg=(pid, anim))
+
+    def test_no_frame_leaves_a_carried_weapon_pointing_flat_out_from_the_hero(self):
+        turned = idle = 0
+        for pid in self.sword_packs():
+            for anim, frames in self.docs[pid].animations.items():
+                for i, frame in enumerate(frames):
+                    anchor = next(p for p in frame if p.file.stem.startswith("sword"))
+                    pointing = hg.norm_angle(anchor.angle + hg.carry_turn(anchor.angle, hg.CARRY_ANGLE))
+                    self.assertTrue(pointing < hg.CARRY_FLOOR or pointing >= hg.CARRY_ANGLE - 1e-9, (pid, anim, i, pointing))
+                    turned += hg.carry_turn(anchor.angle, hg.CARRY_ANGLE) != 0
+                    if anim == "Idle":
+                        idle += 1
+                        self.assertAlmostEqual(pointing, hg.CARRY_ANGLE, places=6, msg=(pid, i))
+        self.assertGreater(idle, 90)
+        self.assertGreater(turned, 1000)
+
+    def test_the_wind_up_of_the_swing_is_left_alone(self):
+        # The first three frames raise the sword behind and above the head; only the part that points flat is turned.
+        for pid in self.sword_packs():
+            for frame in self.docs[pid].animations["Slashing"][:3]:
+                anchor = next(p for p in frame if p.file.stem.startswith("sword"))
+                self.assertEqual(hg.carry_turn(anchor.angle, hg.CARRY_ANGLE), 0.0, pid)
+
+    def test_the_canvas_holds_the_carried_weapon_in_every_frame(self):
+        # canvas_with_item must contain every frame's rect, turned or not, or the carried blade would be clipped.
+        item = self.items["weapon.staff"]
+        grip, img_size = tuple(item["gripPx"]), (item["imageWidth"], item["imageHeight"])
+        for pid in ("golem_v3", "valkyrie_v1", "seer_v2"):
+            pack = self.packs[pid]
+            hold = {"weapon": {"hold": tuple(pack["weaponHold"]), "pivotPx": tuple(pack["weaponPivotPx"])}}
+            for s in (1.0, 2.0):
+                (ox, oy), (w, h) = hg.canvas_with_item(self.docs[pid], hold, item["kind"], img_size, grip, s, carry_angle=hg.CARRY_ANGLE)
+                fit = hg.fit_for_anchor(hold["weapon"]["hold"], grip, hold["weapon"]["pivotPx"], s, hg.CARRY_ANGLE)
+                for frames in self.docs[pid].animations.values():
+                    for frame in frames:
+                        anchor = next(p for p in frame if p.file.stem.startswith("sword"))
+                        f = fit(anchor)
+                        for x, y in hg.item_rect_corners(anchor, img_size, f["offset"], s, f["rotation"]):
+                            self.assertTrue(ox <= x <= ox + w and oy <= y <= oy + h, (pid, s, x, y))
 
 
 if __name__ == "__main__":

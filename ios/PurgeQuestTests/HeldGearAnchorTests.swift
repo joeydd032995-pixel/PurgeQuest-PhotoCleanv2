@@ -197,6 +197,61 @@ struct HeldGearAnchorTests {
         }
     }
 
+    /// The art packs hold the weapon sideways at hip height (the idle pose) and through most of the swing, which reads as
+    /// something it is not. Checked on every frame of every animation of every pack with a sword anchor: after the carry turn
+    /// the blade never points between the floor and the carry angle, and in the idle pose it points exactly at the carry angle.
+    @Test func aCarriedWeaponNeverPointsFlatOutFromTheHeroInAnyShippedFrame() throws {
+        let renderer = SpriteRenderer.shared
+        let catalog = ModularAssetCatalog.shared
+        let item = try #require(catalog.gearItem(id: "weapon.shard"))
+        let carry = try #require(item.carryAngle)
+        var turned = 0
+        var idleFrames = 0
+        for race in HeroRace.allCases {
+            for variant in 1...race.variantCount {
+                let pack = race.artBase(variant: variant)
+                let anchors = try #require(catalog.anchors(pack: pack), "\(pack)")
+                guard anchors.weaponAnchor != "bow" else { continue }
+                let doc = try #require(renderer.document(race: race, variant: variant), "\(pack) did not load")
+                for (name, animation) in doc.animations {
+                    for (index, frame) in animation.frames.enumerated() {
+                        let label = "\(pack) \(name) \(index)"
+                        let anchor = try #require(HeldGearAnchors.weapon(in: frame), "\(label)")
+                        let placement = try #require(HeldGearFit.placement(item: item, anchors: anchors, pack: pack, titan: false,
+                                                                           anchorAngle: Double(anchor.angle)), "\(label)")
+                        let pointing = HeldGearFit.normalized(degrees: Double(anchor.angle) + placement.rotationDegrees)
+                        #expect(pointing < HeldGearFit.carryFloor || pointing >= carry - 1e-9,
+                                "\(label): the blade points \(Int(pointing)) degrees, flat out from the hero")
+                        if placement.rotationDegrees != 0 { turned += 1 }
+                        if name == "Idle" {
+                            idleFrames += 1
+                            #expect(abs(pointing - carry) < 1e-6, "\(label): carried at \(pointing) degrees")
+                        }
+                    }
+                }
+            }
+        }
+        #expect(idleFrames > 90 && turned > 1000, "idle frames \(idleFrames), turned frames \(turned)")
+    }
+
+    /// A Titan hero with nothing equipped carries the pack's own weapon scaled up, and it is turned the same way.
+    @Test func theBakedTitanWeaponRendersInTheIdlePoseAndThroughTheAttack() throws {
+        let renderer = SpriteRenderer.shared
+        for race in HeroRace.allCases {
+            for variant in 1...race.variantCount {
+                let look = HeroAppearance.default(for: race)
+                for animation in ["Idle", renderer.attackAnimation(race: race, variant: variant)] {
+                    let count = renderer.frameCount(race: race, variant: variant, animation: animation)
+                    for index in [0, count / 2, count - 1] {
+                        let frame = renderer.frame(race: race, variant: variant, animation: animation, frameIndex: index,
+                                                   appearance: look, loadout: SpriteLoadout(titanWeapon: true))
+                        #expect(frame != nil, "\(race.artBase(variant: variant)) \(animation) \(index) with the Titan blade")
+                    }
+                }
+            }
+        }
+    }
+
     /// Both draw paths with real art: a swapped sword (and shield) in the idle pose, where the weapon is drawn in front and
     /// the fist over it, and through the attack, where the weapon takes the pack's own layer. The bow packs also get the
     /// Elven Recurve, whose string is drawn after the arrow while one is nocked.

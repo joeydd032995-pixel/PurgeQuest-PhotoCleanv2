@@ -64,6 +64,106 @@ struct ModularGearTests {
         #expect(HeldGearFit.bakedWeaponPlacement(anchors: anchors(), titan: false).offsetX == 0)
     }
 
+    // MARK: Carrying a weapon up and away from the hip
+
+    private func carriedStaff() throws -> HeldGearEntry {
+        let json = """
+        {"id":"weapon.staff.1.1","name":"Ashen Bough I","kind":"staff","slot":"mainHand","resourceName":"staff_1_1",
+         "group":"staff1","imageWidth":400,"imageHeight":128,"gripPx":[8.0,64.0],"supportedPacks":["valkyrie_v1"],"carryAngle":45}
+        """
+        return try JSONDecoder().decode(HeldGearEntry.self, from: Data(json.utf8))
+    }
+
+    @Test func anglesFoldIntoMinus180ToPlus180() {
+        #expect(abs(HeldGearFit.normalized(degrees: 731.8) - 11.8) < 1e-9)
+        #expect(abs(HeldGearFit.normalized(degrees: 648.1) - (-71.9)) < 1e-9)
+        #expect(HeldGearFit.normalized(degrees: 0) == 0)
+        #expect(HeldGearFit.normalized(degrees: 180) == 180)
+        #expect(HeldGearFit.normalized(degrees: -180) == 180)
+        #expect(HeldGearFit.normalized(degrees: 190) == -170)
+        #expect(HeldGearFit.normalized(degrees: -190) == 170)
+    }
+
+    /// The art packs hold the weapon sideways at hip height, which reads as something it is not. A flat blade is turned up
+    /// to the carry angle; one that is already raised, or pointing back, is left alone.
+    @Test func aFlatBladeIsTurnedUpToTheCarryAngleAndNothingElseIs() {
+        func turn(_ degrees: Double) -> Double { HeldGearFit.carryTurn(bladeAngle: degrees, carryAngle: 45) }
+        #expect(abs(turn(11.8) - 33.2) < 1e-9)    // the idle pose
+        #expect(abs(turn(731.8) - 33.2) < 1e-9)   // SCML angles are not normalized
+        #expect(abs(turn(3) - 42) < 1e-9)         // the follow-through of the swing
+        #expect(abs(turn(0) - 45) < 1e-9)
+        #expect(abs(turn(-44) - 89) < 1e-9)
+        for raisedOrBack in [45.0, 54, 63, 92, 116, 160, 180, -177, -46, -90] {
+            #expect(turn(raisedOrBack) == 0, "\(raisedOrBack)")
+        }
+        #expect(HeldGearFit.carryTurn(bladeAngle: 10, carryAngle: nil) == 0)
+        #expect(HeldGearFit.carryTurn(bladeAngle: .nan, carryAngle: 45) == 0)
+    }
+
+    @Test func turningAnItemAboutItsGripKeepsTheGripOnTheHold() throws {
+        let hold = [52.1, 63.5], grip = [8.0, 64.0], pivot = [3.0, 5.0]
+        for scale in [1.0, 2.0] {
+            for turn in [0.0, 33.2, 89, -20] {
+                let off = try #require(HeldGearFit.offset(hold: hold, grip: grip, pivotPx: pivot, scale: scale, rotationDegrees: turn))
+                // Where the grip sits in the anchor's frame before the turn, and where turning by `turn` (counter-clockwise on
+                // screen) carries it: back onto the hold.
+                let gx = scale * (grip[0] - pivot[0]) + off.x, gy = scale * (grip[1] - pivot[1]) + off.y
+                let r = turn * .pi / 180
+                #expect(abs(gx * cos(r) + gy * sin(r) - hold[0]) < 1e-9, "scale \(scale) turn \(turn)")
+                #expect(abs(-gx * sin(r) + gy * cos(r) - hold[1]) < 1e-9, "scale \(scale) turn \(turn)")
+            }
+        }
+        #expect(HeldGearFit.offset(hold: hold, grip: grip, pivotPx: pivot, scale: 1, rotationDegrees: .infinity) == nil)
+    }
+
+    @Test func aCarriedWeaponIsTurnedAboutItsGripAndAnythingElseKeepsThePacksAngle() throws {
+        let item = try carriedStaff()
+        let pack = "valkyrie_v1"
+        // The idle pose points the anchor 11.8 degrees up, so the weapon is turned 33.2 more to be carried at 45.
+        let idle = try #require(HeldGearFit.placement(item: item, anchors: anchors(), pack: pack, titan: false, anchorAngle: 11.8))
+        #expect(abs(idle.rotationDegrees - 33.2) < 1e-9)
+        for titan in [false, true] {
+            let p = try #require(HeldGearFit.placement(item: item, anchors: anchors(), pack: pack, titan: titan, anchorAngle: 11.8))
+            let gx = p.scale * 8.0 + p.offsetX, gy = p.scale * 64.0 + p.offsetY
+            let r = p.rotationDegrees * .pi / 180
+            #expect(abs(gx * cos(r) + gy * sin(r) - 52.1) < 1e-9, "titan \(titan)")
+            #expect(abs(-gx * sin(r) + gy * cos(r) - 63.5) < 1e-9, "titan \(titan)")
+        }
+        // Already raised, or no frame angle given: exactly the placement the pack's own angle gives.
+        let plain = try #require(HeldGearFit.placement(item: item, anchors: anchors(), pack: pack, titan: false))
+        #expect(plain.rotationDegrees == 0)
+        #expect(try #require(HeldGearFit.placement(item: item, anchors: anchors(), pack: pack, titan: false, anchorAngle: 63)) == plain)
+        // A shield, or an item with no carry angle (a bow), is never turned.
+        let shield = try staff(slot: "offHand")
+        #expect(try #require(HeldGearFit.placement(item: shield, anchors: anchors(), pack: pack, titan: false, anchorAngle: 11.8)).rotationDegrees == 0)
+        let noCarry = try staff()
+        #expect(try #require(HeldGearFit.placement(item: noCarry, anchors: anchors(), pack: pack, titan: false, anchorAngle: 11.8)).rotationDegrees == 0)
+    }
+
+    @Test func theBakedTitanWeaponIsCarriedUpAboutItsGripToo() {
+        let flat = HeldGearFit.bakedWeaponPlacement(anchors: anchors(), titan: true, anchorAngle: 3)
+        #expect(abs(flat.rotationDegrees - 42) < 1e-9)
+        // The baked grip is the hold (the pivot is zero here): the turn carries it back onto the hold at 2x as well.
+        let gx = 2 * 52.1 + flat.offsetX, gy = 2 * 63.5 + flat.offsetY
+        let r = flat.rotationDegrees * .pi / 180
+        #expect(abs(gx * cos(r) + gy * sin(r) - 52.1) < 1e-9)
+        #expect(abs(-gx * sin(r) + gy * cos(r) - 63.5) < 1e-9)
+        // Without an angle, or already raised: the placement it always had.
+        let plain = HeldGearFit.bakedWeaponPlacement(anchors: anchors(), titan: true)
+        #expect(plain.rotationDegrees == 0)
+        #expect(HeldGearFit.bakedWeaponPlacement(anchors: anchors(), titan: true, anchorAngle: 80) == plain)
+        // A bow is upright already and is never turned.
+        let bow = PackAnchors(weaponAnchor: "bow", weaponPivotPx: [0, 0], weaponHold: [52.1, 63.5],
+                              shieldAnchor: "right_hand", shieldPivotPx: [0, 0], shieldHold: [63.5, 63.5], arrowNock: [8, 63.5])
+        #expect(HeldGearFit.bakedWeaponPlacement(anchors: bow, titan: true, anchorAngle: 3).rotationDegrees == 0)
+    }
+
+    @Test func manifestsWithoutACarryAngleStillDecodeAndNeverTurnTheItem() throws {
+        let item = try staff()
+        #expect(item.carryAngle == nil)
+        #expect(try carriedStaff().carryAngle == 45)
+    }
+
     @Test func unsupportedPackYieldsNoPlacement() throws {
         let item = try staff(packs: ["valkyrie_v1"])
         #expect(HeldGearFit.placement(item: item, anchors: anchors(), pack: "golem_v1", titan: false) == nil)

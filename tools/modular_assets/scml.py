@@ -263,7 +263,10 @@ def render_frame(doc: Doc, race_dir: str, variant: int, animation: str, frame_in
     A swapped-in weapon follows how the pack itself draws its weapon. In an attack frame the pack draws its sword
     (always at the very back, behind the hand, arm and body, so the grip is hidden); the swapped weapon takes that
     layer. In the idle pose the pack draws no sword and the fist hangs empty at the hip; the swapped weapon is
-    drawn in front and the `weapon_hand` part is drawn again over its grip, so the fist visibly holds it."""
+    drawn in front and the `weapon_hand` part is drawn again over its grip, so the fist visibly holds it.
+
+    `weapon_fit` is a dict ({"scale", "offset", "rotation"}) or a function of the weapon anchor's placement in the frame
+    that returns one, so a weapon can be turned about its grip depending on how the frame points it (held_gear.CARRY_ANGLE)."""
     frames = doc.animations[animation]
     placements = frames[frame_index % len(frames)]
     origin, size = canvas if canvas is not None else doc.canvas(1.0)
@@ -292,7 +295,7 @@ def render_frame(doc: Doc, race_dir: str, variant: int, animation: str, frame_in
             _draw(canvas, img, p, origin, size[1], scale, sx=sx, sy=sy)
 
     def draw_weapon() -> None:
-        fit = weapon_fit or {}
+        fit = (weapon_fit(weapon_anchor) if callable(weapon_fit) else weapon_fit) or {}
         s = fit.get("scale", 1.0) * weapon_scale
         off = fit.get("offset", (0.0, 0.0))
         pp = (weapon_anchor.pivot_x * weapon_anchor.file.width, (1 - weapon_anchor.pivot_y) * weapon_anchor.file.height)
