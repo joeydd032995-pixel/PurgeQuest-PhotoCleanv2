@@ -52,6 +52,84 @@ final class AppearanceTourUITests: XCTestCase {
         }
     }
 
+    /// The Wraith, Forest Spirit and Phantom Purge art, which a fresh simulator never reaches. Launch
+    /// hooks (UITestSupport) wear a pet, mark the Wraiths as met and pretend the event is running.
+    @MainActor
+    func testNewArt() {
+        for mode in ["light", "dark"] {
+            let app = launch(mode, phase: "main", extra: [
+                "-UITestEquip", "pet.spiritBlue",
+                "-UITestMet", "mistWraith,tatterWraith,voidWraith",
+                "-UITestEvent", "halloween"
+            ])
+            guard app.tabBars.firstMatch.waitForExistence(timeout: 25) else {
+                XCTFail("tab bar did not appear (new art \(mode))")
+                app.terminate()
+                continue
+            }
+            dismissPhotoPrompt()
+            settle(1.5)
+            shot("newart-\(mode)-10-library-event")
+            if open(tab: "Hero", in: app) {
+                settle(1.5)
+                shot("newart-\(mode)-20-hero-pet")
+            }
+            if open(tab: "Bestiary", in: app) {
+                settle(1.5)
+                captureVideoPhantoms(app, mode)
+            }
+            if open(tab: "Armory", in: app) {
+                settle(1.5)
+                capturePets(app, mode)
+            }
+            app.terminate()
+        }
+    }
+
+    /// Opens the Video Phantoms family and scrolls through it, where the three Wraiths live.
+    @MainActor
+    private func captureVideoPhantoms(_ app: XCUIApplication, _ mode: String) {
+        let tile = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "label CONTAINS %@", "Video Phantoms"))
+            .firstMatch
+        guard tile.waitForExistence(timeout: 5) else {
+            XCTFail("Video Phantoms tile not found (\(mode))")
+            return
+        }
+        tile.tap()
+        settle(1.5)
+        for step in 0..<3 {
+            shot("newart-\(mode)-21-video-phantoms-\(step)")
+            app.swipeUp()
+            settle(1.0)
+        }
+        let back = app.navigationBars.buttons.element(boundBy: 0)
+        if back.exists { back.tap() }
+        settle(1.0)
+    }
+
+    /// Filters the Armory to Pets (the chip bar scrolls sideways) and shows the new sprites.
+    @MainActor
+    private func capturePets(_ app: XCUIApplication, _ mode: String) {
+        let chip = app.buttons["Pets"]
+        let from = app.coordinate(withNormalizedOffset: CGVector(dx: 0.85, dy: 0.21))
+        let to = app.coordinate(withNormalizedOffset: CGVector(dx: 0.10, dy: 0.21))
+        for _ in 0..<6 where !(chip.exists && chip.isHittable) {
+            from.press(forDuration: 0.1, thenDragTo: to)
+            settle(0.5)
+        }
+        guard chip.exists && chip.isHittable else {
+            XCTFail("Pets filter not reachable in the Armory (\(mode))")
+            return
+        }
+        chip.tap()
+        settle(1.5)
+        shot("newart-\(mode)-22-armory-pets-0")
+        app.swipeUp()
+        settle(1.0)
+        shot("newart-\(mode)-22-armory-pets-1")
+    }
+
     /// Flips the palette from inside Settings, as a player would, and captures the
     /// repaint (the earlier tests launch with a saved palette instead).
     @MainActor
@@ -237,9 +315,9 @@ final class AppearanceTourUITests: XCTestCase {
     /// `palette: nil` leaves the palette setting alone. Launch arguments sit in a defaults
     /// layer that shadows anything the Settings picker writes, so a test that taps the
     /// picker must not pass one.
-    private func launch(_ mode: String, phase: String, palette: String? = "classic") -> XCUIApplication {
+    private func launch(_ mode: String, phase: String, palette: String? = "classic", extra: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments += ["-UITestTour", "-UITestPhase", phase, "-pq.appearance", mode]
+        app.launchArguments += ["-UITestTour", "-UITestPhase", phase, "-pq.appearance", mode] + extra
         if let palette { app.launchArguments += ["-pq.colorTheme", palette] }
         app.launch()
         return app

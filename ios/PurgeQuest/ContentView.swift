@@ -107,6 +107,7 @@ struct ContentView: View {
 
         // Screenshot tours skip the permission prompt and stop on a chosen screen.
         if UITestSupport.isTour {
+            UITestSupport.applyTourLoadout(in: modelContext)
             appState.photoAuthStatus = .authorized
             if let phase = UITestSupport.requestedPhase, phase != .launching {
                 appState.phase = phase
