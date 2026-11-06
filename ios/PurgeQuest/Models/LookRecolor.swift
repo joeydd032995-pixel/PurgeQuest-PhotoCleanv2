@@ -98,19 +98,34 @@ nonisolated extension HeroAppearance {
     /// Cloth and plating only: never the head (hood, helm, hair) or the hands (skin, or gloves that read as skin).
     static let armorDyeParts: Set<String> = ["body", "left_arm", "right_arm", "left_leg", "right_leg"]
 
+    /// Id prefix of the colours derived from `armorDye`, so the planner can tell a dye from a Forge `custom` color.
+    static let dyeTagPrefix = "dye."
+
     /// Picks a skin swatch, or restores the art as painted with nil. Other stored colours are untouched.
+    /// Restoring also puts the saved `skinTone` back to the race default, so a cleared swatch leaves no phantom
+    /// customization behind (the Forge's `isDefaultLook`, `AncestryChange.hasCustomization`). Without a known race
+    /// there is no default to restore and the enum is left as it is.
     func choosingSkin(_ tone: SkinTone?) -> HeroAppearance {
         var look = self
-        if let tone { look.skinTone = tone }
+        if let tone {
+            look.skinTone = tone
+        } else if let race {
+            look.skinTone = HeroAppearance.default(for: race).skinTone
+        }
         look.materials = MaterialPalette.normalized(MaterialPalette.setting(
             materials, .skin, to: tone.map { MaterialSelection(id: "skin.\($0.rawValue)", color: $0.materialRGBA) }))
         return look
     }
 
-    /// Picks a hair swatch, or restores the art as painted with nil. Other stored colours are untouched.
+    /// Picks a hair swatch, or restores the art as painted with nil (and the saved `hairColor` to the race default,
+    /// as `choosingSkin` does). Other stored colours are untouched.
     func choosingHair(_ color: HairColor?) -> HeroAppearance {
         var look = self
-        if let color { look.hairColor = color }
+        if let color {
+            look.hairColor = color
+        } else if let race {
+            look.hairColor = HeroAppearance.default(for: race).hairColor
+        }
         look.materials = MaterialPalette.normalized(MaterialPalette.setting(
             materials, .hair, to: color.map { MaterialSelection(id: "hair.\($0.rawValue)", color: $0.materialRGBA) }))
         return look
@@ -134,7 +149,7 @@ nonisolated extension HeroAppearance {
         var set = materials ?? CharacterMaterialSet()
         if let dye = armorDye.materialRGBA, Self.armorDyeParts.contains(stem),
            set.armorPrimary == nil, set.armorSecondary == nil {
-            let id = "dye.\(armorDye.rawValue)"
+            let id = "\(Self.dyeTagPrefix)\(armorDye.rawValue)"
             set.armorPrimary = MaterialSelection(id: id, color: dye)
             set.armorSecondary = MaterialSelection(id: id, color: ArmorDyeShading.secondary(of: dye, regionTones: regionTones))
         }
@@ -238,17 +253,23 @@ nonisolated enum LegacyRecolorPlanner {
         guard allowCandidateMasks, let materials else { return [] }
         let pack = race.artBase(variant: variant)
         let layers = parts.filter { $0.pack == pack && $0.part == stem }
-        let flesh = race.palette == .flesh
+        let capabilities = LookCapabilities.forPaint(race: race, variant: variant, parts: parts)
         let bakedName = "\(pack)_\(stem)"
         func tone(_ layer: PartManifest, _ region: MaterialRegion) -> RegionTone? { RegionTone(layer.regionTone[region.rawValue]) }
         var plan: [PlannedRecolorRegion] = []
 
-        for region in MaterialPalette.displayOrder where MaterialPalette.selection(materials, region) != nil {
+        for region in MaterialPalette.displayOrder {
+            guard let selection = MaterialPalette.selection(materials, region) else { continue }
+            // A choice made on another paint stays stored, but never recolors a paint whose control is disabled
+            // (a void face, a bone or stone body, a body with no armor). Forge `custom` colors are not gated.
+            let dyeUnavailable = selection.id.hasPrefix(HeroAppearance.dyeTagPrefix) && !capabilities.armorDye.isAvailable
             switch region {
             case .eyes:
                 continue   // face overlays are not part of this recolor
-            case .skin where !flesh, .hair where !flesh:
-                continue   // bone and stone bodies take no skin tone or hair color
+            case .skin where !capabilities.skin.isAvailable, .hair where !capabilities.hair.isAvailable:
+                continue
+            case .primary where dyeUnavailable, .secondary where dyeUnavailable:
+                continue
             case .skin:
                 let anatomy = layers.first { $0.kind == "anatomy" && $0.maskResources["skin"] != nil }
                 if let anatomy, let skinMask = anatomy.maskResources["skin"] {

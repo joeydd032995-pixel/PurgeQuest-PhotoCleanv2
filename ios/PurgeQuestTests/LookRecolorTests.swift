@@ -95,10 +95,22 @@ struct LookRecolorTests {
         #expect(cleared.materials == CharacterMaterialSet(armorPrimary: custom))
     }
 
-    @Test func asPaintedOnAnUntouchedLookRestoresNilMaterials() {
+    @Test func asPaintedOnAnUntouchedLookRestoresTheWholeLook() {
         let look = HeroAppearance.default(for: .seer)
         #expect(look.choosingSkin(.umber).choosingSkin(nil).materials == nil)
         #expect(look.choosingHair(.ember).choosingHair(nil).materials == nil)
+        // The saved enum goes back to the race default too, so the Forge does not see a phantom customization
+        // (isDefaultLook, AncestryChange.hasCustomization) and previews do not keep the last swatch.
+        #expect(look.choosingSkin(.umber).choosingSkin(nil) == look)
+        #expect(look.choosingHair(.ember).choosingHair(nil) == look)
+    }
+
+    @Test func asPaintedWithoutAKnownRaceLeavesTheEnumAlone() {
+        var legacy = HeroAppearance.default(for: .seer)
+        legacy.race = nil
+        let cleared = legacy.choosingSkin(.umber).choosingSkin(nil)
+        #expect(cleared.materials == nil)
+        #expect(cleared.skinTone == .umber, "with no race there is no default to restore")
     }
 
     @Test func theChosenSwatchIsReadBackFromItsTag() {
@@ -333,6 +345,18 @@ struct LookRecolorTests {
         #expect(LegacyRecolorPlanner.plan(race: .seer, variant: 2, stem: "head", materials: set, parts: parts).isEmpty)
     }
 
+    @Test func hairNeverReachesTheOutfitEvenOnAHairCapablePaint() throws {
+        // Seer 3 has a hair region on its head; its armor layers have primary regions but no hair, and the hair
+        // swatch must not fall back to them (the tunic turning blond).
+        let parts = try loadCatalog().parts(forPack: "seer_v3")
+        let set = HeroAppearance.default(for: .seer).choosingHair(.wheat)
+        for stem in ["body", "left_arm", "right_arm", "left_leg", "right_leg", "left_hand", "right_hand"] {
+            let resolved = set.resolvedMaterials(forPart: stem, regionTones: [:])
+            #expect(LegacyRecolorPlanner.plan(race: .seer, variant: 3, stem: stem, materials: resolved, parts: parts).isEmpty,
+                    "\(stem) must not take the hair color")
+        }
+    }
+
     @Test func handsPlanSkinOnlyWhenTheAnatomyLayerIsTheBakedImage() throws {
         let catalog = try loadCatalog()
         let look = HeroAppearance.default(for: .seer).choosingSkin(.honey)
@@ -376,6 +400,56 @@ struct LookRecolorTests {
         #expect(LegacyRecolorPlanner.plan(race: .skeletalUndead, variant: 1, stem: "head", materials: set, parts: bone).isEmpty)
         #expect(LegacyRecolorPlanner.plan(race: .seer, variant: 3, stem: "head", materials: set, parts: flesh)
             == [PlannedRecolorRegion(region: .hair, source: .mask(resource: "m_hair"), tone: nil)])
+    }
+
+    @Test func aVoidFacedPaintNeverPlansASkinRecolorEvenWithAStoredSkin() throws {
+        let catalog = try loadCatalog()
+        let set = HeroAppearance.default(for: .scarredOnes).choosingSkin(.honey)
+            .resolvedMaterials(forPart: "head", regionTones: [:])
+        for variant in [2, 3] {
+            let parts = catalog.parts(forPack: HeroRace.scarredOnes.artBase(variant: variant))
+            for stem in ["head", "left_hand", "right_hand"] {
+                #expect(LegacyRecolorPlanner.plan(race: .scarredOnes, variant: variant, stem: stem, materials: set, parts: parts).isEmpty,
+                        "Dark Oracle \(variant) \(stem): the skin control is disabled, so a stored swatch must not recolor it")
+            }
+        }
+        // The same choice does plan on Dark Oracle 1, whose face is skin-colored.
+        let plan = LegacyRecolorPlanner.plan(
+            race: .scarredOnes, variant: 1, stem: "head", materials: set, parts: catalog.parts(forPack: "dark_oracle_v1"))
+        #expect(plan.map(\.region) == [.skin])
+        #expect(plan.first?.source == .faceWindow(
+            anatomySkinMask: "dark_oracle_v1_head_anatomy_mask_skin", headgearLayer: "dark_oracle_v1_head_headgear", headgearSkinMask: nil))
+    }
+
+    @Test func dyeIsNotPlannedWhereTheDyeControlIsUnavailable() throws {
+        let catalog = try loadCatalog()
+        var look = HeroAppearance.default(for: .golem)
+        look.armorDye = .crimson
+        func plan(_ race: HeroRace, _ variant: Int, _ stem: String) -> [PlannedRecolorRegion] {
+            LegacyRecolorPlanner.plan(
+                race: race, variant: variant, stem: stem,
+                materials: look.resolvedMaterials(forPart: stem, regionTones: [:]),
+                parts: catalog.parts(forPack: race.artBase(variant: variant)))
+        }
+        let dyeStems = ["body", "left_arm", "right_arm", "left_leg", "right_leg"]
+        // Golem 1 has primary/secondary armor on both arms and a leg, but none on the body: the control is disabled.
+        for stem in dyeStems { #expect(plan(.golem, 1, stem).isEmpty, "Golem 1 \(stem)") }
+        // Skeleton Warrior 3 (Skeletal Undead variant 6): its right arm has a primary region, its body has none.
+        for stem in dyeStems { #expect(plan(.skeletalUndead, 6, stem).isEmpty, "Skeleton Warrior 3 \(stem)") }
+        // Golem 3's body has primary and secondary armor, so the same dye plans there.
+        #expect(plan(.golem, 3, "body").map(\.region) == [.primary, .secondary])
+    }
+
+    @Test func aStoredCustomArmorColorStillAppliesWhereTheDyeControlIsUnavailable() throws {
+        let parts = try loadCatalog().parts(forPack: "golem_v1")
+        var look = HeroAppearance.default(for: .golem)
+        look.materials = CharacterMaterialSet(
+            armorPrimary: MaterialSelection(id: "custom", color: MaterialRGBA(red: 0.1, green: 0.2, blue: 0.3)))
+        let plan = LegacyRecolorPlanner.plan(
+            race: .golem, variant: 1, stem: "right_arm",
+            materials: look.resolvedMaterials(forPart: "right_arm", regionTones: [:]), parts: parts)
+        #expect(plan.map(\.region) == [.primary], "only the dye is gated; the Forge's own colors are not")
+        #expect(plan.first?.source == .mask(resource: "golem_v1_right_arm_armor_mask_primary"))
     }
 
     @Test func nothingIsPlannedWhenCandidateMasksAreNotAllowed() throws {

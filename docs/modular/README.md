@@ -79,6 +79,8 @@ A stored Forge `custom` color always wins over the derived dye. The armor layers
 
 `LookCapabilities` (same file) reads the manifest and disables a control, with a stated reason, where it would change nothing: dye needs a `body` armor layer with `primary` or `secondary` (not Golem 1, Skeleton Warrior 3); hair needs a head `hair` region; skin needs a flesh paint whose face window is skin-colored (chroma >= 0.02, which excludes Dark Oracle 2 and 3's void faces, and all bone and stone bodies).
 
+The planner applies the same availability rules as the UI, so a choice stored on another paint never recolors a paint whose control is disabled (Forge `custom` colors are not gated). Choosing "As painted" also restores the saved `skinTone` or `hairColor` to the race default, so a cleared swatch leaves no phantom customization.
+
 Masks added for this: Seer 1's body, arms and legs are now armor layers (`overrides.json`), and Seer 3's head is authored into `hair` and `skin` (`semantic_regions.json`).
 
 Before and after on Seer 1 to 3 (offline render with the same math): [`verification/look_recolor_seer.png`](verification/look_recolor_seer.png).
