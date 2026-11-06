@@ -36,6 +36,7 @@ struct CharacterAvatarView: View {
             backdrop
             HeroSpriteView(hero: hero, appearance: appearance, equipped: equipped, size: size * 0.8)
                 .frame(width: size * 0.62, height: size * 0.72)
+                .overlay(alignment: .bottom) { petCompanion }
 
             ForEach(AvatarBadgeLayout.slots, id: \.type) { slot in
                 if let item = equipped.first(where: { $0.type == slot.type }) {
@@ -47,6 +48,25 @@ struct CharacterAvatarView: View {
         .frame(width: size + 120, height: size + 100)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilitySummary)
+    }
+
+    /// The equipped companion hovering at the hero's lower left. MiniAvatarView
+    /// owns the pet art (pixel sheets and vector drawings), so a figure-less
+    /// instance supplies it, scaled to the hero sprite: its 132-unit hero
+    /// matches this sprite's `size * 0.8`, and the 0.04 offset plants the pet
+    /// on the sprite's ground line, which sits just below the layout frame.
+    @ViewBuilder private var petCompanion: some View {
+        if equipped.contains(where: { $0.type == .pet }) {
+            MiniAvatarView(
+                hero: hero,
+                equipped: equipped,
+                size: size * 0.8 * 200 / 132,
+                appearance: appearance,
+                showsFigure: false
+            )
+            .offset(y: size * 0.04)
+            .accessibilityHidden(true)
+        }
     }
 
     // MARK: - Backdrops

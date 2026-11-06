@@ -28,15 +28,22 @@ extension MiniAvatarView {
         }
     }
 
-    /// Forest Spirits and the Phantom Purge ghost and bat: animated pixel-art
-    /// sprites from the asset catalog, standing at the hero's lower left.
-    /// `body` draws the hero through `HeroSpriteView`, so this layer is added
-    /// there directly; the vector pets above belong to the older `figure` view.
+    /// Companion pets beside the sprite hero: animated pixel-art sheets from
+    /// the asset catalog for the Forest Spirits and the Phantom Purge ghost
+    /// and bat, and the cel-drawn vector companions (Nocturne Owl, Reel
+    /// Spirit, Beach Spirit, Pixel Familiar) for everything without a sheet.
+    /// Vector pets are centered in the body frame, matching the coordinate
+    /// space of the legacy `figure` view they were drawn for.
     @ViewBuilder var spritePetLayer: some View {
-        if let pet = item(.pet), let art = SpriteArt.petSheet(id: pet.id) {
-            SpriteSheetView(sheet: art.sheet, height: art.height * u, animated: isAnimated)
-                .padding(.leading, 2 * u)
-                .padding(.bottom, 4 * u)
+        if let pet = item(.pet) {
+            if let art = SpriteArt.petSheet(id: pet.id) {
+                SpriteSheetView(sheet: art.sheet, height: art.height * u, animated: isAnimated)
+                    .padding(.leading, 2 * u)
+                    .padding(.bottom, 4 * u)
+            } else {
+                petModel(id: pet.id, color: petColor)
+                    .frame(width: 118 * u, height: 140 * u)
+            }
         }
     }
 

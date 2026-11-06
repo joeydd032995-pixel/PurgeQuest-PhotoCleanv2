@@ -26,19 +26,25 @@ struct MiniAvatarView: View {
     /// appearance can be passed for live editor previews; otherwise it decodes
     /// from the hero record once per view.
     let identity: HeroAppearance
+    /// When false the hero figure and its shadow are hidden and only the
+    /// equipped pet is drawn — lets other renderers (CharacterAvatarView)
+    /// layer the companion art over their own hero at matching scale.
+    var showsFigure: Bool = true
 
     init(
         hero: Hero,
         equipped: [CosmeticItem],
         size: CGFloat = 210,
         isAnimated: Bool = true,
-        appearance: HeroAppearance? = nil
+        appearance: HeroAppearance? = nil,
+        showsFigure: Bool = true
     ) {
         self.hero = hero
         self.equipped = equipped
         self.size = size
         self.isAnimated = isAnimated
         self.identity = appearance ?? hero.appearance
+        self.showsFigure = showsFigure
     }
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -148,15 +154,17 @@ struct MiniAvatarView: View {
 
     var body: some View {
         ZStack {
-            groundShadow
-            HeroSpriteView(
-                hero: hero,
-                appearance: identity,
-                equipped: equipped,
-                size: 132 * u,
-                isAnimated: isAnimated
-            )
-            .frame(width: 112 * u, height: 132 * u, alignment: .bottom)
+            if showsFigure {
+                groundShadow
+                HeroSpriteView(
+                    hero: hero,
+                    appearance: identity,
+                    equipped: equipped,
+                    size: 132 * u,
+                    isAnimated: isAnimated
+                )
+                .frame(width: 112 * u, height: 132 * u, alignment: .bottom)
+            }
         }
         .frame(width: 118 * u, height: 140 * u)
         .overlay(alignment: .bottomLeading) { spritePetLayer }
