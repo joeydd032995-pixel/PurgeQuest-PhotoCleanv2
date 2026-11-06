@@ -199,9 +199,19 @@ def main() -> int:
                 errors.append(f"{iid}: region {region} needs a regionTone")
         if item["kind"] == "bow" and any(p == "forest_ranger_v3" for p in item["supportedPacks"]):
             errors.append(f"{iid}: bow must not be supported on forest_ranger_v3 (sword pack, no Shooting animation)")
+        # Blades, staves and hammers are carried up and away from the body (held_gear.CARRY_ANGLE); bows and shields are not turned.
+        carry = item.get("carryAngle")
+        if (item["kind"] in ("sword", "staff", "hammer")) != (carry is not None):
+            errors.append(f"{iid}: carryAngle belongs on blades, staves and hammers only (kind {item['kind']}, carryAngle {carry})")
+        elif carry is not None and not (0 < carry < 90):
+            errors.append(f"{iid}: carryAngle {carry} outside (0, 90)")
         ids.add(iid)
     if len(gear["items"]) != 8 + 80 + 11:
         errors.append(f"expected 99 gear items, found {len(gear['items'])}")
+    # Every pack names the hand that holds its weapon: a swapped-in weapon is drawn under that hand's fist.
+    for pid, pack in gear["packs"].items():
+        if pack.get("weaponHand") not in ("left_hand", "right_hand"):
+            errors.append(f"{pid}: weaponHand must be left_hand or right_hand, found {pack.get('weaponHand')!r}")
 
     # 4. approvals ledger
     for rec in ledger["approvals"]:

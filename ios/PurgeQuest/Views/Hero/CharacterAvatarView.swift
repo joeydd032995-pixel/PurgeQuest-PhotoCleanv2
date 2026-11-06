@@ -37,25 +37,11 @@ struct CharacterAvatarView: View {
             HeroSpriteView(hero: hero, appearance: appearance, equipped: equipped, size: size * 0.8)
                 .frame(width: size * 0.62, height: size * 0.72)
 
-            if let head = equipped.first(where: { $0.type == .head }) {
-                badge(head, tint: .questAmber)
-                    .offset(y: -size * 0.52)
-            }
-            if let skin = equipped.first(where: { $0.type == .skin }) {
-                badge(skin, tint: .xpViolet)
-                    .offset(x: -size * 0.52, y: -size * 0.22)
-            }
-            if let effect = equipped.first(where: { $0.type == .effect }) {
-                badge(effect, tint: .questAmberDeep)
-                    .offset(x: size * 0.52, y: -size * 0.22)
-            }
-            if let pet = equipped.first(where: { $0.type == .pet }) {
-                badge(pet, tint: .gemEmerald)
-                    .offset(x: -size * 0.48, y: size * 0.42)
-            }
-            if let weapon = equipped.first(where: { $0.type == .weapon }) {
-                badge(weapon, tint: .combatCrimson)
-                    .offset(x: size * 0.48, y: size * 0.42)
+            ForEach(AvatarBadgeLayout.slots, id: \.type) { slot in
+                if let item = equipped.first(where: { $0.type == slot.type }) {
+                    badge(item, tint: badgeTint(for: slot.type))
+                        .offset(x: size * slot.x, y: size * slot.y)
+                }
             }
         }
         .frame(width: size + 120, height: size + 100)
@@ -125,6 +111,19 @@ struct CharacterAvatarView: View {
 
     // MARK: - Badges
 
+    /// What you wear on your body is steel blue, the weapon is brick red, the rest keep their old hues.
+    private func badgeTint(for type: CosmeticType) -> Color {
+        switch type {
+        case .head:                          return .questAmber
+        case .skin:                          return .xpViolet
+        case .effect:                        return .questAmberDeep
+        case .pet:                           return .gemEmerald
+        case .weapon:                        return .combatCrimson
+        case .armor, .legs, .hands, .shield: return .videoSapphire
+        case .upgrade:                       return .questAmber
+        }
+    }
+
     private func badge(_ item: CosmeticItem, tint: Color) -> some View {
         Image(systemName: item.iconName)
             .font(.system(size: 14, weight: .bold))
@@ -145,4 +144,35 @@ struct CharacterAvatarView: View {
         let gear = worn.isEmpty ? "default gear" : worn.joined(separator: ", ")
         return "Hero \(hero.name), \(gear), \(tier.displayName) plaque backdrop"
     }
+}
+
+/// Where the tag for each wearable slot sits around the backdrop, as a fraction of the avatar's `size` measured
+/// from its centre. It is data so a test can prove every slot has a tag and no two tags overlap.
+///
+/// The shield tag is on the left and the weapon tag on the right because that is where the sprite holds them:
+/// the sword is in the hand on the right of the screen, the shield in the one on the left.
+nonisolated struct AvatarBadgeSlot: Equatable {
+    let type: CosmeticType
+    let x: Double
+    let y: Double
+}
+
+nonisolated enum AvatarBadgeLayout {
+    /// Side of one square tag, in points.
+    static let tagSide: Double = 32
+
+    static let slots: [AvatarBadgeSlot] = [
+        AvatarBadgeSlot(type: .head,   x:  0.00, y: -0.52),
+        AvatarBadgeSlot(type: .skin,   x: -0.52, y: -0.22),
+        AvatarBadgeSlot(type: .effect, x:  0.52, y: -0.22),
+        AvatarBadgeSlot(type: .shield, x: -0.52, y:  0.10),
+        AvatarBadgeSlot(type: .armor,  x:  0.52, y:  0.10),
+        AvatarBadgeSlot(type: .pet,    x: -0.48, y:  0.42),
+        AvatarBadgeSlot(type: .weapon, x:  0.48, y:  0.42),
+        AvatarBadgeSlot(type: .legs,   x: -0.17, y:  0.56),
+        AvatarBadgeSlot(type: .hands,  x:  0.17, y:  0.56)
+    ]
+
+    /// Slots that have a tag; `.upgrade` (the Titan Blade) is a property of the weapon, not something worn.
+    static var taggedTypes: [CosmeticType] { slots.map(\.type) }
 }
