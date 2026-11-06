@@ -81,6 +81,8 @@ A stored Forge `custom` color always wins over the derived dye. The armor layers
 
 Masks added for this: Seer 1's body, arms and legs are now armor layers (`overrides.json`), and Seer 3's head is authored into `hair` and `skin` (`semantic_regions.json`).
 
+Before and after on Seer 1 to 3 (offline render with the same math): [`verification/look_recolor_seer.png`](verification/look_recolor_seer.png).
+
 Known limits (all data, all candidate masks): Seer 2's chest pendant glow keeps a pale ring under dye; Seer 1's medallion and boots follow the dye; the Ebony tone makes Seer 3's ear and brow bands very dark; Blood Alchemist 1's goggle lenses take the skin tone; Valkyrie 3's and Forest Ranger 3's ears do not follow the skin tone. The eye-color swatch and the hue sliders are not part of this.
 
 ## Held gear model
