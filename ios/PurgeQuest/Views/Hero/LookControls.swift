@@ -19,6 +19,9 @@ struct AsPaintedChip: View {
             Text("As painted")
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(.textPrimary)
+                // One line at any width. Put in a swatch-sized grid cell it wrapped to "As / paint- / ed".
+                .lineLimit(1)
+                .fixedSize(horizontal: true, vertical: false)
                 .padding(.horizontal, 12)
                 .frame(minHeight: 40)
                 .background(Capsule().fill(isSelected ? Color.questAmber.opacity(0.16) : Color.dungeonStone))

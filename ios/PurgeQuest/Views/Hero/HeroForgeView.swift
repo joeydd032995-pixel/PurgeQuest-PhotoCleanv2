@@ -633,6 +633,7 @@ struct HeroForgeView: View {
 
     /// Skin, hair and dye rows: `swatchSection` plus an "As painted" chip (skin and hair; `selected` is nil for the
     /// art as painted) and a dimmed state with its reason when this paint has nothing for the control to change.
+    /// The chip sits on its own row above the grid: a grid cell is one swatch wide, too narrow for its label.
     private func lookSwatchSection<T: ForgeSwatch>(
         _ title: String,
         options: [T],
@@ -644,19 +645,21 @@ struct HeroForgeView: View {
     ) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             sectionTitle(title)
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 64), spacing: 10)], spacing: 12) {
+            VStack(alignment: .leading, spacing: 12) {
                 if offersAsPainted {
                     AsPaintedChip(isSelected: selected == nil) {
                         commit { onSelect(nil) }
                     }
                 }
-                ForEach(options, id: \.self) { option in
-                    swatchButton(
-                        option,
-                        isSelected: selected == option,
-                        lockedRequirement: lockInfo?(option)
-                    ) {
-                        commit { onSelect(option) }
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 64), spacing: 10)], spacing: 12) {
+                    ForEach(options, id: \.self) { option in
+                        swatchButton(
+                            option,
+                            isSelected: selected == option,
+                            lockedRequirement: lockInfo?(option)
+                        ) {
+                            commit { onSelect(option) }
+                        }
                     }
                 }
             }
