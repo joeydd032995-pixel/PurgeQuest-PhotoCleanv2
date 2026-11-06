@@ -295,9 +295,13 @@ struct OnboardingView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     paintChips
-                    swatchRow("Skin tone", Array(SkinTone.allCases), selection: draftLook.skinTone) { draftLook.skinTone = $0 }
-                    swatchRow("Hair color", Array(HairColor.allCases), selection: draftLook.hairColor) { draftLook.hairColor = $0 }
-                    swatchRow("Armor dye", Array(ArmorDye.allCases), selection: draftLook.armorDye) { draftLook.armorDye = $0 }
+                    let capabilities = lookCapabilities
+                    swatchRow("Skin tone", Array(SkinTone.allCases), selection: draftLook.chosenSkinTone,
+                              availability: capabilities.skin, offersAsPainted: true) { draftLook = draftLook.choosingSkin($0) }
+                    swatchRow("Hair color", Array(HairColor.allCases), selection: draftLook.chosenHairColor,
+                              availability: capabilities.hair, offersAsPainted: true) { draftLook = draftLook.choosingHair($0) }
+                    swatchRow("Armor dye", Array(ArmorDye.allCases), selection: draftLook.armorDye,
+                              availability: capabilities.armorDye, offersAsPainted: false) { if let dye = $0 { draftLook.armorDye = dye } }
                     Text("Deep customization lives in the Hero Forge after onboarding.")
                         .font(.caption2)
                         .foregroundStyle(.textTertiary)
@@ -340,11 +344,22 @@ struct OnboardingView: View {
         }
     }
 
+    /// Which look controls change the sprite on the paint being previewed (see LookCapabilities).
+    private var lookCapabilities: LookCapabilities {
+        LookCapabilities.forPaint(
+            race: selectedRace, variant: draftLook.paintVariant,
+            parts: ModularAssetCatalog.shared.parts(forPack: selectedRace.artBase(variant: draftLook.paintVariant)))
+    }
+
+    /// One row of swatches. `selection` is the applied swatch, nil for the art as painted; skin and hair offer an
+    /// "As painted" chip first. A row with nothing to change on this paint is dimmed and says why.
     private func swatchRow<T: ForgeSwatch>(
         _ title: String,
         _ options: [T],
-        selection: T,
-        onSelect: @escaping (T) -> Void
+        selection: T?,
+        availability: LookAvailability,
+        offersAsPainted: Bool,
+        onSelect: @escaping (T?) -> Void
     ) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title.uppercased())
@@ -354,6 +369,12 @@ struct OnboardingView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 10) {
+                    if offersAsPainted {
+                        AsPaintedChip(isSelected: selection == nil) {
+                            HapticsService.shared.light()
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { onSelect(nil) }
+                        }
+                    }
                     ForEach(options, id: \.self) { option in
                         Button {
                             HapticsService.shared.light()
@@ -377,6 +398,9 @@ struct OnboardingView: View {
                 }
                 .padding(.horizontal, 2)
             }
+            .disabled(!availability.isAvailable)
+            .opacity(availability.isAvailable ? 1 : 0.4)
+            LookUnavailableNote(availability: availability)
         }
     }
 

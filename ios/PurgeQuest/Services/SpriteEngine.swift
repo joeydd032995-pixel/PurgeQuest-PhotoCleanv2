@@ -488,7 +488,7 @@ final class SpriteRenderer {
         return image
     }
 
-    // MARK: Recoloring (legacy whole-part tint, used until a layer ships masks)
+    // MARK: Recoloring (legacy baked parts: hue sliders, then masked skin, hair and armor-dye recolors)
 
     private func hueRotated(_ image: UIImage, shift: Double) -> UIImage {
         guard shift != 0, let source = image.ciImage ?? CIImage(image: image) else { return image }
@@ -501,36 +501,23 @@ final class SpriteRenderer {
         return UIImage(cgImage: cg, scale: image.scale, orientation: image.imageOrientation)
     }
 
-    private func dyed(_ image: UIImage, dye: ArmorDye, strength: CGFloat = 0.45) -> UIImage {
-        guard dye != .none else { return image }
-        let format = UIGraphicsImageRendererFormat()
-        format.scale = image.scale
-        format.opaque = false
-        return UIGraphicsImageRenderer(size: image.size, format: format).image { ctx in
-            image.draw(at: .zero)
-            let cg = ctx.cgContext
-            cg.setBlendMode(.sourceAtop)
-            cg.setFillColor(UIColor(dye.color).withAlphaComponent(strength).cgColor)
-            cg.fill(CGRect(origin: .zero, size: image.size))
-        }
-    }
-
-    private func isArmorPart(_ stem: String) -> Bool {
-        switch stem {
-        case "body", "left_arm", "right_arm", "left_hand", "right_hand", "left_leg", "right_leg":
-            return true
-        default:
-            return false
-        }
-    }
-
     /// Applies the appearance's recolor choices to one part, cached.
+    ///
+    /// The Forge hue sliders run first; then the chosen skin, hair and armor-dye colours recolor the regions the
+    /// part's shipped masks cover (shading and linework kept), so a swatch wins over a slider where both reach the
+    /// same pixels. `LegacyRecolorPlanner` (LookRecolor.swift) decides which colours apply through which masks.
     private func processedPart(race: HeroRace, variant: Int, fileDef: SpriteFileDef, appearance: HeroAppearance) -> UIImage? {
         let stem = (fileDef.name as NSString).deletingPathExtension
             .lowercased()
             .replacingOccurrences(of: " ", with: "_")
         let base = Self.partBaseName(race: race, variant: variant, fileName: fileDef.name)
-        let tintKey = "\(base)|\(appearance.skinHueShift)|\(appearance.eyeHueShift)|\(appearance.hairHueShift)|\(appearance.armorDye.rawValue)"
+        let parts = catalog.parts(forPack: race.artBase(variant: variant))
+        let materials = appearance.resolvedMaterials(
+            forPart: stem,
+            regionTones: LegacyRecolorPlanner.armorTones(race: race, variant: variant, stem: stem, parts: parts))
+        let plan = LegacyRecolorPlanner.plan(race: race, variant: variant, stem: stem, materials: materials, parts: parts)
+        let recolorKey = LegacyRecolorPlanner.fingerprint(plan: plan, materials: materials)
+        let tintKey = "\(base)|\(appearance.skinHueShift)|\(appearance.eyeHueShift)|\(appearance.hairHueShift)|\(recolorKey)"
         if let cached = tintedImages[tintKey] { return cached }
         guard var image = image(base: base) else { return nil }
 
@@ -541,18 +528,42 @@ final class SpriteRenderer {
             } else if stem.hasPrefix("face") {
                 image = hueRotated(image, shift: appearance.eyeHueShift)
                 image = hueRotated(image, shift: appearance.skinHueShift)
-            } else if isArmorPart(stem) {
-                image = dyed(image, dye: appearance.armorDye)
             }
         case .bone, .stone:
             // Bone/stone creatures recolor as a whole via the skin slider.
             image = hueRotated(image, shift: appearance.skinHueShift)
-            if isArmorPart(stem) {
-                image = dyed(image, dye: appearance.armorDye)
-            }
         }
+        image = recolored(image, plan: plan, materials: materials)
         tintedImages[tintKey] = image
         return image
+    }
+
+    /// Runs a part's recolor plan over its baked image. A mask that is missing or the wrong size is skipped and an
+    /// empty plan returns the image untouched, so a recolor can never blank a part.
+    private func recolored(_ source: UIImage, plan: [PlannedRecolorRegion], materials: CharacterMaterialSet?) -> UIImage {
+        guard !plan.isEmpty, let materials, let cg = source.cgImage else { return source }
+        let width = cg.width, height = cg.height
+        var regions: [MaterialRecolorer.Region] = []
+        for entry in plan {
+            switch entry.source {
+            case .mask(let resource):
+                guard let mask = self.image(base: resource) else { continue }
+                regions.append(MaterialRecolorer.Region(region: entry.region, mask: mask, tone: entry.tone))
+            case .faceWindow(let anatomySkinMask, let headgearLayer, let headgearSkinMask):
+                guard let anatomy = self.image(base: anatomySkinMask)
+                        .flatMap({ MaterialRecolorer.grayscale($0, width: width, height: height) }),
+                      let alpha = self.image(base: headgearLayer)
+                        .flatMap({ MaterialRecolorer.alphaChannel($0, width: width, height: height) })
+                else { continue }
+                let headgearSkin = headgearSkinMask
+                    .flatMap { self.image(base: $0) }
+                    .flatMap { MaterialRecolorer.grayscale($0, width: width, height: height) }
+                guard let weights = FaceWindow.weights(anatomySkin: anatomy, headgearAlpha: alpha, headgearSkin: headgearSkin)
+                else { continue }
+                regions.append(MaterialRecolorer.Region(region: entry.region, weights: weights, tone: entry.tone))
+            }
+        }
+        return recolorer.recolor(source, regions: regions, colors: materials)
     }
 
     // MARK: Masked recolor (held gear and modular layers)
@@ -762,7 +773,8 @@ final class SpriteRenderer {
                 if let layers = modular?[stem] {
                     for layer in layers {
                         if let img = maskedImage(resource: layer.resourceBaseName, maskResources: layer.maskResources,
-                                                 regionTone: layer.regionTone, colors: appearance.materials) {
+                                                 regionTone: layer.regionTone,
+                                                 colors: appearance.resolvedMaterials(forPart: stem, regionTones: layer.regionTone)) {
                             draw(img, for: placement, doc: drawDoc, in: cg)
                         }
                     }
