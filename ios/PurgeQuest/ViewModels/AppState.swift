@@ -29,6 +29,10 @@ final class AppState {
     /// Triggered when the user taps "Enter Dungeon" from the dashboard.
     var combatRequested: Bool = false
 
+    /// PHAsset localIdentifiers hand-picked from the Photos picker for a
+    /// targeted hunt; consumed (and cleared) by the next CombatView bootstrap.
+    var pickedAssetIDs: [String] = []
+
     func completeOnboarding() {
         hasOnboarded = true
         UserDefaults.standard.set(true, forKey: "pq.hasOnboarded")

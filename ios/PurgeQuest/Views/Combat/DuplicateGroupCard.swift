@@ -140,8 +140,19 @@ struct DuplicateGroupCard: View {
                             .foregroundStyle(member.monsterType.accentColor.opacity(0.4))
                     }
                 }
+                .overlay {
+                    if member.kind == .video {
+                        // Real video frame thumbnails stream from PHImageManager;
+                        // the play cue marks it as motion, not a still.
+                        Image(systemName: "play.circle.fill")
+                            .font(.system(size: 44, weight: .bold))
+                            .foregroundStyle(.white.opacity(0.85))
+                            .allowsHitTesting(false)
+                            .accessibilityHidden(true)
+                    }
+                }
                 .overlay(
-                    LinearGradient(colors: [.clear, .black.opacity(0.55)], startPoint: .center, endPoint: .bottom)
+                    LinearGradient(colors: [.clear, .black.opacity(0.4)], startPoint: .center, endPoint: .bottom)
                         .allowsHitTesting(false)
                 )
                 .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -164,6 +175,13 @@ struct DuplicateGroupCard: View {
             VStack {
                 Spacer()
                 HStack {
+                    if member.kind == .video, !member.formattedDuration.isEmpty {
+                        Text(member.formattedDuration)
+                            .font(.caption2.monospacedDigit().weight(.bold))
+                            .padding(.horizontal, 7).padding(.vertical, 3)
+                            .background(RoundedRectangle(cornerRadius: 5).fill(.black.opacity(0.6)))
+                            .foregroundStyle(.white)
+                    }
                     Label(member.formattedSize, systemImage: "internaldrive.fill")
                         .font(.caption2.weight(.bold))
                         .foregroundStyle(.gemEmerald)
@@ -175,6 +193,11 @@ struct DuplicateGroupCard: View {
                     decisionBadge(willDelete: willDelete)
                 }
                 .padding(10)
+                .background {
+                    BlurEffectView(style: .systemUltraThinMaterialDark)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+                .padding(6)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

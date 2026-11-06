@@ -37,7 +37,13 @@ struct CombatView: View {
         .navigationBarBackButtonHidden(true)
         .task {
             guard let hero = heroes.first else { return }
-            await combat.bootstrap(includeVideos: appState.includeVideos, videoOnly: appState.videoOnlyMode, hero: hero, context: modelContext)
+            // A hand-picked hunt (Photos picker on the dashboard) takes priority
+            // over the automatic library sweep.
+            if !appState.pickedAssetIDs.isEmpty {
+                await combat.bootstrapPicked(assetIDs: appState.pickedAssetIDs, hero: hero, context: modelContext)
+            } else {
+                await combat.bootstrap(includeVideos: appState.includeVideos, videoOnly: appState.videoOnlyMode, hero: hero, context: modelContext)
+            }
         }
         .onChange(of: combat.screenShakeTrigger) { _, _ in
             shake()
@@ -353,6 +359,7 @@ struct CombatView: View {
         try? modelContext.save()
         combat.endSessionActivity()
         appState.combatRequested = false
+        appState.pickedAssetIDs = []
         dismiss()
     }
 }

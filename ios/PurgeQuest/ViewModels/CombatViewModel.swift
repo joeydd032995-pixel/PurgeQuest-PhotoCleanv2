@@ -100,18 +100,7 @@ final class CombatViewModel {
     static let rallyCostGems: Int = 100
 
     func bootstrap(includeVideos: Bool, videoOnly: Bool, hero: Hero, context: ModelContext) async {
-        phase = .loading
-        heroCurrentHP = hero.maxHP
-        heroMaxHP = hero.maxHP
-        hero.currentHP = hero.maxHP
-        CombatLiveActivityService.shared.start(heroName: hero.name)
-
-        // Open a session record for this dive.
-        sessionContext = context
-        let session = CombatSession()
-        context.insert(session)
-        activeSession = session
-        roomsCompleted = 0
+        openSession(hero: hero, context: context)
 
         // Resume progress: skip everything already swiped (spared) or purged, so
         // re-entering the dungeon continues where the last session left off.
@@ -138,6 +127,43 @@ final class CombatViewModel {
         }
         let thumbSize = CGSize(width: 600, height: 600)
         let items = await svc.buildMediaItems(from: fresh, thumbSize: thumbSize)
+        await loadBatch(items, context: context)
+    }
+
+    /// A hand-picked hunt: the player chose specific media in the Photos
+    /// picker and wants exactly those monsters, seen or not.
+    func bootstrapPicked(assetIDs: [String], hero: Hero, context: ModelContext) async {
+        openSession(hero: hero, context: context)
+
+        var picked: [PHAsset] = []
+        PHAsset.fetchAssets(withLocalIdentifiers: assetIDs, options: nil)
+            .enumerateObjects { asset, _, _ in picked.append(asset) }
+        guard !picked.isEmpty else {
+            phase = .empty
+            return
+        }
+        let thumbSize = CGSize(width: 600, height: 600)
+        let items = await PhotoLibraryService.shared.buildMediaItems(from: picked, thumbSize: thumbSize)
+        await loadBatch(items, context: context)
+    }
+
+    /// Shared setup for both entry paths: HP, session record, Live Activity.
+    private func openSession(hero: Hero, context: ModelContext) {
+        phase = .loading
+        heroCurrentHP = hero.maxHP
+        heroMaxHP = hero.maxHP
+        hero.currentHP = hero.maxHP
+        CombatLiveActivityService.shared.start(heroName: hero.name)
+
+        sessionContext = context
+        let session = CombatSession()
+        context.insert(session)
+        activeSession = session
+        roomsCompleted = 0
+    }
+
+    /// Runs classification + duplicate folding on fetched items and opens room one.
+    private func loadBatch(_ items: [MediaItem], context: ModelContext) async {
         let batch = await classifyAndGroup(items, context: context)
         self.groupsByID = batch.groups
         self.theme = batch.theme

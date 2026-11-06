@@ -18,6 +18,8 @@ struct SwipeMediaCard: View {
     @State private var snapAway: CGSize? = nil
     @State private var dynamicFlavor: String? = nil
     @State private var showLivePreview: Bool = false
+    /// Live Photo playback raised by tapping the card.
+    @State private var showLivePlayback: Bool = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
 
@@ -31,6 +33,16 @@ struct SwipeMediaCard: View {
             cardBody
                 .overlay(alignment: .topLeading) { deleteOverlay }
                 .overlay(alignment: .topTrailing) { spareOverlay }
+                .overlay {
+                    if item.isLivePhoto, isFront, showLivePlayback {
+                        LivePhotoPreviewView(phAssetID: item.id)
+                            .onTapGesture {
+                                withAnimation(.easeInOut(duration: 0.2)) { showLivePlayback = false }
+                            }
+                            .transition(.opacity)
+                            .accessibilityLabel("Live Photo playing. Tap to stop.")
+                    }
+                }
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
@@ -45,6 +57,12 @@ struct SwipeMediaCard: View {
         .offset(x: snapAway?.width ?? dragOffset.width, y: snapAway?.height ?? dragOffset.height)
         .rotationEffect(snapAway == nil ? rotation : .degrees(Double((snapAway?.width ?? 0) / 14)))
         .gesture(isFront ? dragGesture : nil)
+        .onTapGesture {
+            // Live Photos: tap the front card to play the paired motion.
+            guard isFront, item.isLivePhoto else { return }
+            HapticsService.shared.light()
+            withAnimation(.easeInOut(duration: 0.2)) { showLivePlayback.toggle() }
+        }
         .task(id: item.id) {
             guard isFront else { return }
             if let cached = FoundationFlavorService.shared.cached(for: item) {
@@ -66,6 +84,7 @@ struct SwipeMediaCard: View {
             if item.kind == .video {
                 VideoPreviewService.shared.stop(forAssetID: item.id)
             }
+            showLivePlayback = false
         }
         .onChange(of: scenePhase) { _, phase in
             if phase != .active, item.kind == .video {
@@ -105,8 +124,10 @@ struct SwipeMediaCard: View {
                 }
             }
             .overlay(
+                // Lighter scrim — the frost blur under the meta bar now does
+                // the heavy lifting for readability.
                 LinearGradient(
-                    colors: [.clear, .black.opacity(0.4), .black.opacity(0.85)],
+                    colors: [.clear, .black.opacity(0.25), .black.opacity(0.55)],
                     startPoint: .top, endPoint: .bottom
                 )
                 .allowsHitTesting(false)
@@ -138,6 +159,9 @@ struct SwipeMediaCard: View {
             if item.monsterType.isElite {
                 eliteBadge
             }
+            if item.isLivePhoto {
+                liveBadge
+            }
             Spacer()
             if item.kind == .video, !item.formattedDuration.isEmpty {
                 Text(item.formattedDuration)
@@ -167,6 +191,24 @@ struct SwipeMediaCard: View {
         .accessibilityHidden(true)
     }
 
+    /// Small gold tag marking a Live Photo — tap the card to play it.
+    private var liveBadge: some View {
+        HStack(spacing: 3) {
+            Image(systemName: "livephoto")
+                .font(.system(size: 9, weight: .black))
+            Text("LIVE")
+                .font(.system(size: 10, weight: .black))
+                .tracking(0.6)
+        }
+        .padding(.horizontal, 8).padding(.vertical, 5)
+        .foregroundStyle(.goldInk)
+        .background(RoundedRectangle(cornerRadius: 6).fill(Color.goldFill))
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(.white.opacity(0.55), lineWidth: 0.6))
+        .accessibilityHidden(true)
+    }
+
+    /// Frosted-glass footer: a real UIVisualEffectView blur keeps flavor text
+    /// readable over any photo or video frame.
     private var bottomMetaBar: some View {
         VStack(alignment: .leading, spacing: 5) {
             Text("“\(dynamicFlavor ?? item.monsterType.flavor)”")
@@ -204,7 +246,12 @@ struct SwipeMediaCard: View {
                     .foregroundStyle(.white.opacity(0.85))
             }
         }
-        .padding(14)
+        .padding(12)
+        .background {
+            BlurEffectView(style: .systemUltraThinMaterialDark)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+        }
+        .padding(10)
     }
 
     private var deleteOverlay: some View {

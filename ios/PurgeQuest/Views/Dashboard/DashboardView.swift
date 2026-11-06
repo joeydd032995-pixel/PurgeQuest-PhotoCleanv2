@@ -8,6 +8,7 @@
 
 import SwiftUI
 import SwiftData
+import PhotosUI
 
 struct DashboardView: View {
     @Environment(AppState.self) private var appState
@@ -18,6 +19,8 @@ struct DashboardView: View {
 
     @State private var libraryStats: LibraryStats = .init()
     @State private var scoutedTheme: DungeonTheme? = nil
+    /// Hand-picked media for a targeted hunt.
+    @State private var pickedItems: [PhotosPickerItem] = []
 
     private var hero: Hero? { heroes.first }
     private var equippedItems: [CosmeticItem] { cosmetics.filter { $0.isEquipped } }
@@ -33,6 +36,7 @@ struct DashboardView: View {
                 themeStrip
                 questsPanel
                 enterDungeonButton
+                pickedHuntPicker
                 Color.clear.frame(height: 16)
             }
             .padding(.horizontal, 16)
@@ -222,6 +226,37 @@ struct DashboardView: View {
         }
         .buttonStyle(.gold(fullWidth: true))
         .accessibilityLabel("Enter the dungeon and start a cleanup session")
+    }
+
+    /// Photos picker: hand-pick specific media and dive against exactly those
+    /// monsters — for when the player knows which corner of the library needs
+    /// purging. Picking immediately launches the dungeon.
+    private var pickedHuntPicker: some View {
+        PhotosPicker(
+            selection: $pickedItems,
+            maxSelectionCount: 40,
+            matching: .any(of: [.images, .videos])
+        ) {
+            Label("Hunt Chosen Monsters", systemImage: "hand.raised.fill")
+                .font(.headline)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.dungeonStone)
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
+                )
+                .foregroundStyle(.textPrimary)
+        }
+        .accessibilityLabel("Pick specific photos and videos to review")
+        .onChange(of: pickedItems) { _, items in
+            let ids = items.compactMap(\.itemIdentifier)
+            pickedItems = []
+            guard !ids.isEmpty else { return }
+            HapticsService.shared.medium()
+            appState.pickedAssetIDs = ids
+            appState.combatRequested = true
+        }
     }
 
     private func updateStreak() {
