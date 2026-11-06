@@ -1,5 +1,5 @@
 {
-  "_doc": "Authored material regions for the three reported recolor defects. Coordinates use original part pixels. Polygons vote over outline-bounded cells, so shadows/highlights of one garment stay together. Detail colors preserve intentional unoutlined glyphs. These are masks, not visual approval records.",
+  "_doc": "Authored material regions for reported recolor defects (Necromancer 1, Forest Ranger 1, Seer 2 and the Seer 3 head). Coordinates use original part pixels. Polygons vote over outline-bounded cells, so shadows/highlights of one garment stay together. Detail colors preserve intentional unoutlined glyphs. These are masks, not visual approval records.",
   "necromancer_v1": {
     "head": {
       "default": "hair",
@@ -788,6 +788,116 @@
     "right_leg": {
       "default": "leather",
       "outline": "ink_palette"
+    }
+  },
+  "seer_v3": {
+    "head": {
+      "default": "hair",
+      "polygons": [
+        {
+          "region": "skin",
+          "points": [
+            [
+              67,
+              292
+            ],
+            [
+              74,
+              270
+            ],
+            [
+              86,
+              268
+            ],
+            [
+              95,
+              272
+            ],
+            [
+              258,
+              400
+            ],
+            [
+              281,
+              425
+            ],
+            [
+              244,
+              423
+            ],
+            [
+              207,
+              415
+            ],
+            [
+              105,
+              372
+            ],
+            [
+              91,
+              356
+            ],
+            [
+              73,
+              324
+            ]
+          ]
+        },
+        {
+          "region": "skin",
+          "points": [
+            [
+              186,
+              220
+            ],
+            [
+              203,
+              205
+            ],
+            [
+              221,
+              203
+            ],
+            [
+              310,
+              254
+            ],
+            [
+              293,
+              268
+            ]
+          ]
+        },
+        {
+          "region": "skin",
+          "points": [
+            [
+              317,
+              254
+            ],
+            [
+              373,
+              211
+            ],
+            [
+              381,
+              214
+            ],
+            [
+              402,
+              236
+            ],
+            [
+              401,
+              242
+            ],
+            [
+              333,
+              269
+            ]
+          ]
+        }
+      ]
     }
   }
 }

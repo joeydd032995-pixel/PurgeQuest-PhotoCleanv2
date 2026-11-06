@@ -124,6 +124,13 @@ struct HeroForgeView: View {
     private var draftRace: HeroRace { draft.race ?? hero.race }
     private var draftVariant: Int { min(max(draft.paintVariant, 1), draftRace.variantCount) }
 
+    /// Which look controls change the sprite on the paint being edited (see LookCapabilities).
+    private var lookCapabilities: LookCapabilities {
+        LookCapabilities.forPaint(
+            race: draftRace, variant: draftVariant,
+            parts: ModularAssetCatalog.shared.parts(forPack: draftRace.artBase(variant: draftVariant)))
+    }
+
     private var isDirty: Bool {
         ForgeDraft(appearance: draft, equipped: equippedMap.wrappedValue)
             .isDirty(comparedTo: ForgeDraft(appearance: hero.appearance, equipped: currentEquipped))
@@ -311,7 +318,8 @@ struct HeroForgeView: View {
         case .paint:
             paintSection
         case .skin:
-            swatchSection("Skin tone", options: SkinTone.allCases, selected: draft.skinTone) { draft.skinTone = $0 }
+            lookSwatchSection("Skin tone", options: SkinTone.allCases, selected: draft.chosenSkinTone,
+                              availability: lookCapabilities.skin, offersAsPainted: true) { draft = draft.choosingSkin($0) }
             hueSlider("Custom skin hue", value: draft.skinHueShift) { draft.skinHueShift = HeroAppearance.clampedHue($0) }
         case .face:
             optionSection("Face shape", options: FaceShape.allCases, selected: draft.faceShape) { draft.faceShape = $0 }
@@ -330,23 +338,27 @@ struct HeroForgeView: View {
             optionSection("Mouth", options: MouthStyle.allCases, selected: draft.mouthStyle) { draft.mouthStyle = $0 }
         case .hair:
             optionSection("Hair style", options: HairStyle.allCases, selected: draft.hairStyle) { draft.hairStyle = $0 }
-            swatchSection(
+            lookSwatchSection(
                 "Hair color",
                 options: HairColor.allCases,
-                selected: draft.hairColor,
+                selected: draft.chosenHairColor,
+                availability: lookCapabilities.hair,
+                offersAsPainted: true,
                 lockInfo: { lockRequirement($0.requiredAchievementID) }
-            ) { draft.hairColor = $0 }
+            ) { draft = draft.choosingHair($0) }
             hueSlider("Custom hair hue", value: draft.hairHueShift) { draft.hairHueShift = HeroAppearance.clampedHue($0) }
         case .expression:
             presetSection("Expression presets")
             optionSection("Mood", options: Expression.allCases, selected: draft.expression) { draft.expression = $0 }
         case .armorDye:
-            swatchSection(
+            lookSwatchSection(
                 "Armor dye",
                 options: ArmorDye.allCases,
                 selected: draft.armorDye,
+                availability: lookCapabilities.armorDye,
+                offersAsPainted: false,
                 lockInfo: { lockRequirement($0.requiredAchievementID) }
-            ) { draft.armorDye = $0 }
+            ) { if let dye = $0 { draft.armorDye = dye } }
         case .gear:
             ForgeGearPicker(cosmetics: cosmetics, race: draftRace, variant: draftVariant, equipped: equippedMap)
         case .colors:
@@ -619,6 +631,44 @@ struct HeroForgeView: View {
         }
     }
 
+    /// Skin, hair and dye rows: `swatchSection` plus an "As painted" chip (skin and hair; `selected` is nil for the
+    /// art as painted) and a dimmed state with its reason when this paint has nothing for the control to change.
+    /// The chip sits on its own row above the grid: a grid cell is one swatch wide, too narrow for its label.
+    private func lookSwatchSection<T: ForgeSwatch>(
+        _ title: String,
+        options: [T],
+        selected: T?,
+        availability: LookAvailability,
+        offersAsPainted: Bool,
+        lockInfo: ((T) -> String?)? = nil,
+        onSelect: @escaping (T?) -> Void
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            sectionTitle(title)
+            VStack(alignment: .leading, spacing: 12) {
+                if offersAsPainted {
+                    AsPaintedChip(isSelected: selected == nil) {
+                        commit { onSelect(nil) }
+                    }
+                }
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 64), spacing: 10)], spacing: 12) {
+                    ForEach(options, id: \.self) { option in
+                        swatchButton(
+                            option,
+                            isSelected: selected == option,
+                            lockedRequirement: lockInfo?(option)
+                        ) {
+                            commit { onSelect(option) }
+                        }
+                    }
+                }
+            }
+            .disabled(!availability.isAvailable)
+            .opacity(availability.isAvailable ? 1 : 0.4)
+            LookUnavailableNote(availability: availability)
+        }
+    }
+
     private func optionButton<T: ForgeOption>(
         _ option: T,
         isSelected: Bool,
@@ -764,9 +814,14 @@ struct HeroForgeView: View {
     }
 
     private func select<T: Hashable>(_ value: T, apply: @escaping (T) -> Void) {
+        commit { apply(value) }
+    }
+
+    /// Applies a draft change with the Forge's usual feedback: haptic, spring, cleared lock message, preview sweep.
+    private func commit(_ change: @escaping () -> Void) {
         HapticsService.shared.light()
         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-            apply(value)
+            change()
             lockMessage = nil
         }
         // Paint, dye, and colour picks get the light-sweep tick on the preview;

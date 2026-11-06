@@ -18,8 +18,25 @@ import UIKit
 final class MaterialRecolorer {
     struct Region {
         let region: MaterialRegion
-        let mask: UIImage
+        /// A soft mask the same pixel size as the image being recolored...
+        let mask: UIImage?
+        /// ...or precomputed 8-bit weights of that size (the head's face window, see FaceWindow).
+        let weights: [UInt8]?
         let tone: RegionTone?
+
+        init(region: MaterialRegion, mask: UIImage, tone: RegionTone?) {
+            self.region = region
+            self.mask = mask
+            self.weights = nil
+            self.tone = tone
+        }
+
+        init(region: MaterialRegion, weights: [UInt8], tone: RegionTone?) {
+            self.region = region
+            self.mask = nil
+            self.weights = weights
+            self.tone = tone
+        }
     }
 
     private struct Active {
@@ -36,8 +53,16 @@ final class MaterialRecolorer {
 
         var active: [Active] = []
         for entry in regions {
-            guard let selection = MaterialPalette.selection(colors, entry.region),
-                  let weights = Self.grayscale(entry.mask, width: width, height: height) else { continue }
+            guard let selection = MaterialPalette.selection(colors, entry.region) else { continue }
+            let candidate: [UInt8]?
+            if let given = entry.weights {
+                candidate = given.count == width * height ? given : nil
+            } else if let mask = entry.mask {
+                candidate = Self.grayscale(mask, width: width, height: height)
+            } else {
+                candidate = nil
+            }
+            guard let weights = candidate else { continue }
             active.append(Active(weights: weights, color: selection.color, tone: entry.tone))
         }
         guard !active.isEmpty else { return base }
@@ -78,8 +103,24 @@ final class MaterialRecolorer {
         return UIImage(cgImage: rendered, scale: base.scale, orientation: .up)
     }
 
+    /// 8-bit alpha of an image at the given pixel size; nil when the sizes disagree.
+    static func alphaChannel(_ image: UIImage, width: Int, height: Int) -> [UInt8]? {
+        guard let cg = image.cgImage, cg.width == width, cg.height == height else { return nil }
+        var pixels = [UInt8](repeating: 0, count: width * height * 4)
+        let ok: Bool = pixels.withUnsafeMutableBytes { buffer in
+            guard let context = CGContext(
+                data: buffer.baseAddress, width: width, height: height, bitsPerComponent: 8, bytesPerRow: width * 4,
+                space: CGColorSpace(name: CGColorSpace.sRGB) ?? CGColorSpaceCreateDeviceRGB(),
+                bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return false }
+            context.draw(cg, in: CGRect(x: 0, y: 0, width: width, height: height))
+            return true
+        }
+        guard ok else { return nil }
+        return (0..<(width * height)).map { pixels[$0 * 4 + 3] }
+    }
+
     /// 8-bit grayscale weights for a mask image at the layer's pixel size; nil when the sizes disagree.
-    private static func grayscale(_ image: UIImage, width: Int, height: Int) -> [UInt8]? {
+    static func grayscale(_ image: UIImage, width: Int, height: Int) -> [UInt8]? {
         guard let cg = image.cgImage, cg.width == width, cg.height == height else { return nil }
         var weights = [UInt8](repeating: 0, count: width * height)
         let ok: Bool = weights.withUnsafeMutableBytes { buffer in

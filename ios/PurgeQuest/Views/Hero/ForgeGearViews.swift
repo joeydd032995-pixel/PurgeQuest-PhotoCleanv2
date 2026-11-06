@@ -130,7 +130,7 @@ struct ForgeColorSection: View {
             if bodyColorsActive {
                 group(title: "Body colors", regions: bodyRegions, set: $bodyMaterials, emptyNote: "This look has no colourable body regions.")
             } else {
-                Text("Body colors unlock when this look's art has been approved. Until then, use Armor Dye and the hue sliders.")
+                Text("Body colors unlock when this look's art has been approved. Until then, the Skin, Hair and Armor Dye swatches recolor your hero.")
                     .font(.caption2)
                     .foregroundStyle(.textTertiary)
             }

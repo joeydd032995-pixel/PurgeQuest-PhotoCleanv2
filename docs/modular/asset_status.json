@@ -1039,6 +1039,10 @@
   "kind": "anatomy",
   "status": "candidate"
  },
+ "seer_v1.body.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
  "seer_v1.face_01.face": {
   "kind": "face",
   "status": "candidate"
@@ -1063,6 +1067,10 @@
   "kind": "anatomy",
   "status": "candidate"
  },
+ "seer_v1.left_arm.armor": {
+  "kind": "armor",
+  "status": "candidate"
+ },
  "seer_v1.left_hand.anatomy": {
   "kind": "anatomy",
   "status": "candidate"
@@ -1077,6 +1085,10 @@
  },
  "seer_v1.right_arm.anatomy": {
   "kind": "anatomy",
+  "status": "candidate"
+ },
+ "seer_v1.right_arm.armor": {
+  "kind": "armor",
   "status": "candidate"
  },
  "seer_v1.right_hand.anatomy": {

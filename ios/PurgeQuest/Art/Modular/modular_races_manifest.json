@@ -8736,8 +8736,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.73562,
-     0.09709
+     0.75967,
+     0.09896
     ]
    },
    "representation": "modular",
@@ -8830,12 +8830,12 @@
    "referenceProfile": "slender",
    "regionTone": {
     "primary": [
-     0.70126,
-     0.09467
+     0.69261,
+     0.09391
     ],
     "secondary": [
-     0.4364,
-     0.06634
+     0.32773,
+     0.02956
     ]
    },
    "representation": "modular",
@@ -8926,12 +8926,12 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.73562,
-     0.09709
+     0.75967,
+     0.09896
     ]
    },
    "representation": "modular",
-   "resourceBaseName": "seer_v1_body",
+   "resourceBaseName": "seer_v1_body_anatomy",
    "rigID": "humanoid_v1",
    "scaleXRange": {
     "max": 1.1,
@@ -8942,6 +8942,104 @@
     "min": 0.9
    },
    "slot": "torso",
+   "sourceRace": "seer",
+   "verification": {
+    "approvedBy": null,
+    "approvedProfiles": [],
+    "automated": {
+     "masks": {
+      "coverage": 0.9922,
+      "outlineLeak": 0.0,
+      "overlap": 0.0
+     },
+     "reassembly": {
+      "Idle": {
+       "bad": 5.6e-05,
+       "frames": 4,
+       "max": 0.1843,
+       "mean": 5.2e-05
+      },
+      "Slashing": {
+       "bad": 0.000117,
+       "frames": 11,
+       "max": 0.6,
+       "mean": 5.4e-05
+      }
+     }
+    },
+    "automatedPass": true,
+    "status": "candidate"
+   }
+  },
+  {
+   "adaptedProfiles": [
+    "standard",
+    "athletic",
+    "skeletal"
+   ],
+   "coverageTags": [
+    "body",
+    "armor"
+   ],
+   "id": "seer_v1.body.armor",
+   "kind": "armor",
+   "maskResources": {
+    "primary": "seer_v1_body_armor_mask_primary",
+    "trim": "seer_v1_body_armor_mask_trim"
+   },
+   "materialRegions": [
+    "primary",
+    "trim"
+   ],
+   "nativeProfiles": [
+    "slender"
+   ],
+   "pack": "seer_v1",
+   "paintVariant": 1,
+   "part": "body",
+   "profileOverrides": {
+    "athletic": {
+     "offsetX": 0,
+     "offsetY": 0,
+     "scaleX": 1.0947,
+     "scaleY": 1.0
+    },
+    "skeletal": {
+     "offsetX": 0,
+     "offsetY": 0,
+     "scaleX": 0.9474,
+     "scaleY": 1.0
+    },
+    "standard": {
+     "offsetX": 0,
+     "offsetY": 0,
+     "scaleX": 1.0526,
+     "scaleY": 1.0
+    }
+   },
+   "referenceProfile": "slender",
+   "regionTone": {
+    "primary": [
+     0.69261,
+     0.09391
+    ],
+    "trim": [
+     0.41389,
+     0.07661
+    ]
+   },
+   "representation": "modular",
+   "resourceBaseName": "seer_v1_body_armor",
+   "rigID": "humanoid_v1",
+   "scaleXRange": {
+    "max": 1.1,
+    "min": 0.9
+   },
+   "scaleYRange": {
+    "max": 1.1,
+    "min": 0.9
+   },
+   "slot": "chestArmor",
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
@@ -8995,12 +9093,12 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.73562,
-     0.09709
+     0.75967,
+     0.09896
     ]
    },
    "representation": "modular",
-   "resourceBaseName": "seer_v1_left_arm",
+   "resourceBaseName": "seer_v1_left_arm_anatomy",
    "rigID": "humanoid_v1",
    "scaleXRange": {
     "max": 1.1,
@@ -9011,6 +9109,90 @@
     "min": 0.9
    },
    "slot": "leftArm",
+   "sourceRace": "seer",
+   "verification": {
+    "approvedBy": null,
+    "approvedProfiles": [],
+    "automated": {
+     "masks": {
+      "coverage": 0.9719,
+      "outlineLeak": 0.0,
+      "overlap": 0.0
+     },
+     "reassembly": {
+      "Idle": {
+       "bad": 5.6e-05,
+       "frames": 4,
+       "max": 0.1843,
+       "mean": 5.2e-05
+      },
+      "Slashing": {
+       "bad": 0.000117,
+       "frames": 11,
+       "max": 0.6,
+       "mean": 5.4e-05
+      }
+     }
+    },
+    "automatedPass": true,
+    "status": "candidate"
+   }
+  },
+  {
+   "adaptedProfiles": [
+    "skeletal"
+   ],
+   "coverageTags": [
+    "left_arm",
+    "armor"
+   ],
+   "id": "seer_v1.left_arm.armor",
+   "kind": "armor",
+   "maskResources": {
+    "primary": "seer_v1_left_arm_armor_mask_primary",
+    "trim": "seer_v1_left_arm_armor_mask_trim"
+   },
+   "materialRegions": [
+    "primary",
+    "trim"
+   ],
+   "nativeProfiles": [
+    "slender"
+   ],
+   "pack": "seer_v1",
+   "paintVariant": 1,
+   "part": "left_arm",
+   "profileOverrides": {
+    "skeletal": {
+     "offsetX": 0,
+     "offsetY": 0,
+     "scaleX": 1.0444,
+     "scaleY": 1.0444
+    }
+   },
+   "referenceProfile": "slender",
+   "regionTone": {
+    "primary": [
+     0.69261,
+     0.09391
+    ],
+    "trim": [
+     0.41389,
+     0.07661
+    ]
+   },
+   "representation": "modular",
+   "resourceBaseName": "seer_v1_left_arm_armor",
+   "rigID": "humanoid_v1",
+   "scaleXRange": {
+    "max": 1.1,
+    "min": 0.9
+   },
+   "scaleYRange": {
+    "max": 1.1,
+    "min": 0.9
+   },
+   "slot": "leftShoulder",
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
@@ -9064,12 +9246,12 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.73562,
-     0.09709
+     0.75967,
+     0.09896
     ]
    },
    "representation": "modular",
-   "resourceBaseName": "seer_v1_right_arm",
+   "resourceBaseName": "seer_v1_right_arm_anatomy",
    "rigID": "humanoid_v1",
    "scaleXRange": {
     "max": 1.1,
@@ -9080,6 +9262,90 @@
     "min": 0.9
    },
    "slot": "rightArm",
+   "sourceRace": "seer",
+   "verification": {
+    "approvedBy": null,
+    "approvedProfiles": [],
+    "automated": {
+     "masks": {
+      "coverage": 0.9724,
+      "outlineLeak": 0.0,
+      "overlap": 0.0
+     },
+     "reassembly": {
+      "Idle": {
+       "bad": 5.6e-05,
+       "frames": 4,
+       "max": 0.1843,
+       "mean": 5.2e-05
+      },
+      "Slashing": {
+       "bad": 0.000117,
+       "frames": 11,
+       "max": 0.6,
+       "mean": 5.4e-05
+      }
+     }
+    },
+    "automatedPass": true,
+    "status": "candidate"
+   }
+  },
+  {
+   "adaptedProfiles": [
+    "skeletal"
+   ],
+   "coverageTags": [
+    "right_arm",
+    "armor"
+   ],
+   "id": "seer_v1.right_arm.armor",
+   "kind": "armor",
+   "maskResources": {
+    "primary": "seer_v1_right_arm_armor_mask_primary",
+    "trim": "seer_v1_right_arm_armor_mask_trim"
+   },
+   "materialRegions": [
+    "primary",
+    "trim"
+   ],
+   "nativeProfiles": [
+    "slender"
+   ],
+   "pack": "seer_v1",
+   "paintVariant": 1,
+   "part": "right_arm",
+   "profileOverrides": {
+    "skeletal": {
+     "offsetX": 0,
+     "offsetY": 0,
+     "scaleX": 1.0444,
+     "scaleY": 1.0444
+    }
+   },
+   "referenceProfile": "slender",
+   "regionTone": {
+    "primary": [
+     0.69261,
+     0.09391
+    ],
+    "trim": [
+     0.41389,
+     0.07661
+    ]
+   },
+   "representation": "modular",
+   "resourceBaseName": "seer_v1_right_arm_armor",
+   "rigID": "humanoid_v1",
+   "scaleXRange": {
+    "max": 1.1,
+    "min": 0.9
+   },
+   "scaleYRange": {
+    "max": 1.1,
+    "min": 0.9
+   },
+   "slot": "rightShoulder",
    "sourceRace": "seer",
    "verification": {
     "approvedBy": null,
@@ -9133,8 +9399,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.73562,
-     0.09709
+     0.75967,
+     0.09896
     ]
    },
    "representation": "modular",
@@ -9202,8 +9468,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.73562,
-     0.09709
+     0.75967,
+     0.09896
     ]
    },
    "representation": "modular",
@@ -9280,8 +9546,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.73562,
-     0.09709
+     0.75967,
+     0.09896
     ]
    },
    "representation": "modular",
@@ -9360,12 +9626,12 @@
    "referenceProfile": "slender",
    "regionTone": {
     "secondary": [
-     0.4364,
-     0.06634
+     0.32773,
+     0.02956
     ],
     "trim": [
-     0.22247,
-     0.00616
+     0.41389,
+     0.07661
     ]
    },
    "representation": "modular",
@@ -9442,8 +9708,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.73562,
-     0.09709
+     0.75967,
+     0.09896
     ]
    },
    "representation": "modular",
@@ -9522,12 +9788,12 @@
    "referenceProfile": "slender",
    "regionTone": {
     "secondary": [
-     0.4364,
-     0.06634
+     0.32773,
+     0.02956
     ],
     "trim": [
-     0.22247,
-     0.00616
+     0.41389,
+     0.07661
     ]
    },
    "representation": "modular",
@@ -11099,8 +11365,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.74197,
-     0.09369
+     0.72344,
+     0.09154
     ]
    },
    "representation": "modular",
@@ -11157,12 +11423,12 @@
    "id": "seer_v3.head.headgear",
    "kind": "headgear",
    "maskResources": {
-    "primary": "seer_v3_head_headgear_mask_primary",
-    "trim": "seer_v3_head_headgear_mask_trim"
+    "hair": "seer_v3_head_headgear_mask_hair",
+    "skin": "seer_v3_head_headgear_mask_skin"
    },
    "materialRegions": [
-    "primary",
-    "trim"
+    "hair",
+    "skin"
    ],
    "nativeProfiles": [
     "slender"
@@ -11192,13 +11458,13 @@
    },
    "referenceProfile": "slender",
    "regionTone": {
-    "primary": [
-     0.42277,
-     0.06773
+    "hair": [
+     0.40237,
+     0.0684
     ],
-    "trim": [
-     0.2229,
-     0.00677
+    "skin": [
+     0.72344,
+     0.09154
     ]
    },
    "representation": "modular",
@@ -11219,7 +11485,7 @@
     "approvedProfiles": [],
     "automated": {
      "masks": {
-      "coverage": 0.9823,
+      "coverage": 0.9827,
       "outlineLeak": 0.0,
       "overlap": 0.0
      },
@@ -11289,8 +11555,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.74197,
-     0.09369
+     0.72344,
+     0.09154
     ]
    },
    "representation": "modular",
@@ -11389,8 +11655,8 @@
      0.08995
     ],
     "primary": [
-     0.42277,
-     0.06773
+     0.4169,
+     0.06318
     ],
     "secondary": [
      0.44016,
@@ -11462,8 +11728,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.74197,
-     0.09369
+     0.72344,
+     0.09154
     ]
    },
    "representation": "modular",
@@ -11542,8 +11808,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "primary": [
-     0.42277,
-     0.06773
+     0.4169,
+     0.06318
     ],
     "secondary": [
      0.44016,
@@ -11615,8 +11881,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.74197,
-     0.09369
+     0.72344,
+     0.09154
     ]
    },
    "representation": "modular",
@@ -11695,8 +11961,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "primary": [
-     0.42277,
-     0.06773
+     0.4169,
+     0.06318
     ],
     "secondary": [
      0.44016,
@@ -11768,8 +12034,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.74197,
-     0.09369
+     0.72344,
+     0.09154
     ]
    },
    "representation": "modular",
@@ -11837,8 +12103,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "primary": [
-     0.42277,
-     0.06773
+     0.4169,
+     0.06318
     ]
    },
    "representation": "modular",
@@ -11906,8 +12172,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.74197,
-     0.09369
+     0.72344,
+     0.09154
     ]
    },
    "representation": "modular",
@@ -11975,8 +12241,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "primary": [
-     0.42277,
-     0.06773
+     0.4169,
+     0.06318
     ]
    },
    "representation": "modular",
@@ -12053,8 +12319,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.74197,
-     0.09369
+     0.72344,
+     0.09154
     ]
    },
    "representation": "modular",
@@ -12133,12 +12399,12 @@
    "referenceProfile": "slender",
    "regionTone": {
     "primary": [
-     0.42277,
-     0.06773
+     0.4169,
+     0.06318
     ],
     "trim": [
-     0.2229,
-     0.00677
+     0.2224,
+     0.0075
     ]
    },
    "representation": "modular",
@@ -12215,8 +12481,8 @@
    "referenceProfile": "slender",
    "regionTone": {
     "skin": [
-     0.74197,
-     0.09369
+     0.72344,
+     0.09154
     ]
    },
    "representation": "modular",
@@ -12295,12 +12561,12 @@
    "referenceProfile": "slender",
    "regionTone": {
     "primary": [
-     0.42277,
-     0.06773
+     0.4169,
+     0.06318
     ],
     "trim": [
-     0.2229,
-     0.00677
+     0.2224,
+     0.0075
     ]
    },
    "representation": "modular",
