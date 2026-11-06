@@ -63,6 +63,26 @@ For the three reported model fixes and their idle/attack comparisons, see [Recol
 Their authored semantic masks override clustering for the affected paints. Soft region boundaries in both Python and
 Swift blend independently from the original pixel, so applying multiple colors cannot recolor shading twice or depend on region order.
 
+## Legacy recolor of baked parts (skin, hair, armor dye)
+
+Until a pack is human-approved, the app draws the baked part PNGs (the legacy renderer). The skin, hair and armor-dye swatches recolor those pixels through the shipped masks, with the same shading-preserving OKLab math as above. Design and the discussion behind it: [`docs/superpowers/specs/2026-11-06-hero-look-recolor-design.md`](../superpowers/specs/2026-11-06-hero-look-recolor-design.md).
+
+**Recorded policy exception.** Masks that are still `candidate` may recolor baked pixels, exactly as held-gear masks already do. Nothing else about approval changes: composition (the anatomy substitution), `CharacterRenderPlanner`, the `verified` gate and `approvals.json` are untouched, and no approval is recorded or implied. The whole behavior sits behind one constant, `LookRecolorPolicy.candidateMasksMayRecolorBakedParts` (`ios/PurgeQuest/Models/LookRecolor.swift`); set it to `false` and the legacy renderer shows the art as painted.
+
+| Control | What it recolors | Stored as |
+|---|---|---|
+| Armor dye | `primary` and `secondary` of the **armor** layers of body, arms and legs (never the head or hands). The secondary keeps its original lightness offset from the primary, so two-tone outfits stay two-tone. | Derived at render time from `armorDye`; never stored, so saved heroes keep working. |
+| Skin tone | The head's face window, the headgear layer's own `skin` mask, and hands whose anatomy layer *is* the baked image. | `materials.skin`, tagged `skin.<tone>`. "As painted" removes it. |
+| Hair color | The head's `hair` region (Forest Ranger 1, Necromancer 1, Seer 3). | `materials.hair`, tagged `hair.<color>`. |
+
+A stored Forge `custom` color always wins over the derived dye. The armor layers are pixel-identical to the baked parts, so their masks apply to the baked art directly. The face window is `anatomy skin mask x (1 - headgear alpha)`, plus the headgear skin mask; alpha alone would also pick up dark linework.
+
+`LookCapabilities` (same file) reads the manifest and disables a control, with a stated reason, where it would change nothing: dye needs a `body` armor layer with `primary` or `secondary` (not Golem 1, Skeleton Warrior 3); hair needs a head `hair` region; skin needs a flesh paint whose face window is skin-colored (chroma >= 0.02, which excludes Dark Oracle 2 and 3's void faces, and all bone and stone bodies).
+
+Masks added for this: Seer 1's body, arms and legs are now armor layers (`overrides.json`), and Seer 3's head is authored into `hair` and `skin` (`semantic_regions.json`).
+
+Known limits (all data, all candidate masks): Seer 2's chest pendant glow keeps a pale ring under dye; Seer 1's medallion and boots follow the dye; the Ebony tone makes Seer 3's ear and brow bands very dark; Blood Alchemist 1's goggle lenses take the skin tone; Valkyrie 3's and Forest Ranger 3's ears do not follow the skin tone. The eye-color swatch and the hue sliders are not part of this.
+
 ## Held gear model
 
 Each item stores its grip (image px). Each pack stores the *hold* where its own baked weapon sits. `offset(s) = hold - s * (grip - pivotPx)` keeps the grip in the hand at any scale, so the Titan Blade (`HeldGearFit.titanScale = 2`) grows about the grip. The renderer unions the pack canvas with the item rect over every frame (hidden anchors included) so nothing clips; the view keeps the character's size and lets the blade overflow.
