@@ -21,6 +21,9 @@ struct DashboardView: View {
     @State private var scoutedTheme: DungeonTheme? = nil
     /// Hand-picked media for a targeted hunt.
     @State private var pickedItems: [PhotosPickerItem] = []
+    /// Shown when the picker returned choices that carry no asset identifiers —
+    /// the signature of missing photo-library access.
+    @State private var showAccessHint = false
 
     private var hero: Hero? { heroes.first }
     private var equippedItems: [CosmeticItem] { cosmetics.filter { $0.isEquipped } }
@@ -59,6 +62,16 @@ struct DashboardView: View {
         }
         .onChange(of: quests.map(\.currentCount)) { _, _ in
             WidgetSnapshotService.write(hero: hero, quests: quests)
+        }
+        .alert("Photo access needed", isPresented: $showAccessHint) {
+            Button("Open Settings") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
+            Button("Not now", role: .cancel) {}
+        } message: {
+            Text("PurgeQuest needs full photo access to hunt the monsters you choose. Allow all photos in Settings, then pick them again.")
         }
     }
 
@@ -252,7 +265,12 @@ struct DashboardView: View {
         .onChange(of: pickedItems) { _, items in
             let ids = items.compactMap(\.itemIdentifier)
             pickedItems = []
-            guard !ids.isEmpty else { return }
+            guard !ids.isEmpty else {
+                // Choices without identifiers mean PhotoKit can't see them —
+                // usually limited photo access. Say so instead of doing nothing.
+                if !items.isEmpty { showAccessHint = true }
+                return
+            }
             HapticsService.shared.medium()
             appState.pickedAssetIDs = ids
             appState.combatRequested = true

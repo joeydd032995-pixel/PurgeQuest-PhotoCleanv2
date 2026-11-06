@@ -7,6 +7,7 @@ import Foundation
 import SwiftUI
 import SwiftData
 import Photos
+import os
 
 enum CombatPhase: Equatable {
     case loading
@@ -45,9 +46,11 @@ struct PendingDecision: Identifiable {
 final class CombatViewModel {
 
     // MARK: - Configurable
-    static let roomSize: Int = 18
+    static let roomSize: Int = 20
     static let totalRoomsPerSession: Int = 5
     static let initialFetchLimit: Int = 150
+
+    private static let log = Logger(subsystem: "PurgeQuest", category: "Combat")
 
     // MARK: - State
     var phase: CombatPhase = .loading
@@ -121,6 +124,7 @@ final class CombatViewModel {
             videoOnly: videoOnly
         )
         let fresh = assets.filter { !seenIDs.contains($0.localIdentifier) }
+        Self.log.info("dive: fetched \(assets.count, privacy: .public), \(fresh.count, privacy: .public) fresh after seen-filter")
         if fresh.isEmpty {
             phase = .empty
             return
@@ -134,14 +138,36 @@ final class CombatViewModel {
     /// picker and wants exactly those monsters, seen or not.
     func bootstrapPicked(assetIDs: [String], hero: Hero, context: ModelContext) async {
         openSession(hero: hero, context: context)
+        Self.log.info("picked hunt: resolving \(assetIDs.count, privacy: .public) chosen assets")
 
-        var picked: [PHAsset] = []
-        PHAsset.fetchAssets(withLocalIdentifiers: assetIDs, options: nil)
-            .enumerateObjects { asset, _, _ in picked.append(asset) }
+        func fetchPicked() -> [PHAsset] {
+            var fetched: [PHAsset] = []
+            PHAsset.fetchAssets(withLocalIdentifiers: assetIDs, options: nil)
+                .enumerateObjects { asset, _, _ in fetched.append(asset) }
+            return fetched
+        }
+
+        var picked = fetchPicked()
+
+        // Limited (or still-undetermined) photo access hides the chosen assets
+        // from PhotoKit even though the picker offered them. Ask once for full
+        // access so the identifiers resolve.
+        if picked.count < assetIDs.count,
+           PHPhotoLibrary.authorizationStatus(for: .readWrite) != .authorized {
+            Self.log.info("picked hunt: photo access not full; requesting authorization")
+            let status = await PHPhotoLibrary.requestAuthorization(for: .readWrite)
+            if status == .authorized { picked = fetchPicked() }
+        }
+
         guard !picked.isEmpty else {
-            phase = .empty
+            let status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
+            Self.log.error("picked hunt: resolved 0 of \(assetIDs.count, privacy: .public) assets, access \(status.rawValue, privacy: .public)")
+            phase = status == .authorized
+                ? .error("The chosen monsters slipped away before the dive. Pick them again from the dashboard.")
+                : .error("PurgeQuest can't see the photos you chose because photo access is limited. Allow all photos in Settings, then pick them again.")
             return
         }
+        Self.log.info("picked hunt: resolved \(picked.count, privacy: .public) assets; building monsters")
         let thumbSize = CGSize(width: 600, height: 600)
         let items = await PhotoLibraryService.shared.buildMediaItems(from: picked, thumbSize: thumbSize)
         await loadBatch(items, context: context)
