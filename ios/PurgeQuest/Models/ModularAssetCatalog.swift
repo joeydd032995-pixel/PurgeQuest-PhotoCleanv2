@@ -30,6 +30,9 @@ nonisolated struct PackAnchors: Codable, Equatable, Sendable {
     let shieldHold: [Double]
     /// Arrow-tail (nock) position in arrow-image pixels; present only on bow packs.
     let arrowNock: [Double]?
+    /// The hand part (manifest stem, e.g. "left_hand") that holds the pack's own weapon. A swapped-in weapon is gripped by
+    /// the same hand. Absent in manifests generated before this field existed, which means the Left Hand.
+    var weaponHand: String? = nil
 }
 
 nonisolated enum HeldGearKind: String, Codable, Sendable {
@@ -56,11 +59,15 @@ nonisolated struct HeldGearEntry: Codable, Equatable, Sendable, Identifiable {
     let maskResources: [String: String]
     let regionTone: [String: [Double]]
     let stringAnchors: StringAnchors?
+    /// How far up a blade, staff or hammer is turned about its grip while it would otherwise point flat out from the
+    /// hero's side, in degrees counter-clockwise from the way it points in its art (see HeldGearFit.carryAngle). Absent for
+    /// bows and shields, and in manifests generated before the field existed, which never turn the item.
+    let carryAngle: Double?
     let verification: AssetVerificationRecord
 
     private enum CodingKeys: String, CodingKey {
         case id, name, kind, slot, resourceName, group, imageWidth, imageHeight, gripPx, scale
-        case rotationDegrees, layer, supportedPacks, maskResources, regionTone, stringAnchors, verification
+        case rotationDegrees, layer, supportedPacks, maskResources, regionTone, stringAnchors, carryAngle, verification
     }
 
     init(from decoder: Decoder) throws {
@@ -81,6 +88,7 @@ nonisolated struct HeldGearEntry: Codable, Equatable, Sendable, Identifiable {
         maskResources = (try? c.decodeIfPresent([String: String].self, forKey: .maskResources)) ?? [:]
         regionTone = (try? c.decodeIfPresent([String: [Double]].self, forKey: .regionTone)) ?? [:]
         stringAnchors = try? c.decodeIfPresent(StringAnchors.self, forKey: .stringAnchors)
+        carryAngle = try? c.decodeIfPresent(Double.self, forKey: .carryAngle)
         verification = (try? c.decodeIfPresent(AssetVerificationRecord.self, forKey: .verification)) ?? .init(status: .mapped)
     }
 }

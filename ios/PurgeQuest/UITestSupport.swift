@@ -10,6 +10,7 @@
 //    -UITestEquip <ids>     comma-separated cosmetic ids to unlock and equip
 //    -UITestMet <types>     comma-separated MonsterType raw values to mark as encountered
 //    -UITestEvent <id>      seasonal event to show as running (e.g. halloween)
+//    -UITestVariant <n>     paint variant (1...3) of the hero's race; pick the race with -pq.race
 //
 
 import Foundation
@@ -71,6 +72,12 @@ enum UITestSupport {
                 item.isUnlocked = true
                 item.isEquipped = true
             }
+        }
+        if let raw = defaults.string(forKey: "UITestVariant"), let variant = Int(raw),
+           let hero = (try? context.fetch(FetchDescriptor<Hero>()))?.first {
+            var look = hero.appearance
+            look.paintVariant = min(max(variant, 1), hero.race.variantCount)
+            hero.appearance = look
         }
         for raw in ids(from: defaults.string(forKey: "UITestMet")) {
             guard let type = MonsterType(rawValue: raw) else { continue }

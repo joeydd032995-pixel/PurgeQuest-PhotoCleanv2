@@ -35,6 +35,29 @@ python3 -I tools/modular_assets/inventory.py         # versioned inventory (add 
 python3 -I tools/modular_assets/tests/test_modular_assets.py
 ```
 
+## Which hand holds what
+
+Every art pack bakes its sword (or bow) into the **Left Hand**, the one on the right of the screen. Valkyrie and Skeleton Crusader also bake a shield, and they hold it in the **Right Hand**. A pack with no shield part holds a swapped-in shield in the Right Hand too (`scml.SHIELD_HAND`, written to each pack's `shieldAnchor` in `modular_gear_manifest.json`, read back by `HeldGearAnchors` in `SpriteEngine.swift`), so a shield never sits on top of the blade. `HeldGearAnchorTests` checks this on the shipped art: in every pack and every idle and attack frame the shield and weapon anchors are more than 80 units apart (148 at the closest).
+
+### How a swapped-in weapon is held
+
+A weapon that is just pasted on top of the character floats in front of the body, so the renderer layers it the way each pack layers its own (`scml.render_frame`, mirrored by `SpriteRenderer.frame`):
+
+- **Attack frames** (Slashing, Shooting, Run Slashing, Slashing in The Air): the pack draws its sword at the very back, behind the hand, the arm and the body, so only the blade shows and the fist covers the grip. The swapped weapon takes that same layer. (A swapped bow's string is drawn right after the arrow, in front of the body, when one is nocked.)
+- **Every other frame** (the idle pose, walking, hurt): the pack draws no sword and its fist hangs empty at the hip. The weapon is drawn in front and the weapon hand is **drawn again over the grip**, so the fist visibly closes around it. The hand is the manifest's `weaponHand` (`held_gear.weapon_hand`, the hand whose pivot is nearest the weapon anchor; the Left Hand in all 27 packs).
+
+A swapped item is gripped at **2%** from its pommel (`held_gear.ITEM_GRIP_FRACTION`), not at the 10% the packs' own baked swords use (`BAKED_GRIP_FRACTION`, which is what defines each pack's `hold`). The hold point sits inside the fist, and the fist is drawn over it, so a grip further along the blade would bury the crossguard in the hand instead of leaving it clear.
+
+#### Carried up and away from the hip
+
+The packs draw the idle hand at hip height, and hold the sword sideways through most of the swing (8 of 11 Slashing frames in most packs), so a weapon left the way the art draws it sticks straight out from the pelvis, which reads as something it is not. So a blade, staff or hammer is **never left pointing flat**: whenever it points between `CARRY_FLOOR` (-45 degrees) and `CARRY_ANGLE` (45 degrees), measured counter-clockwise from the way it points in its art (0 is straight out sideways, 90 is straight up), it is turned **about its grip** up to 45 degrees, so it rises up and away from the body and clears the head in every pack.
+
+- It is decided frame by frame from the weapon anchor's own angle (`held_gear.carry_turn`, `HeldGearFit.carryTurn`), so the idle pose (the anchor points 5 to 17 degrees up) always carries at exactly 45, and the follow-through of the swing (0 to 6 degrees) is lifted to 45 too. The wind-up (the sword raised behind and above the head, 54 to 160 degrees) and a sword pointing back are left alone, so the swing still reads as a swing.
+- Turning about the pivot moves the grip, so the fit starts the grip where the hold would be after turning the other way and the turn carries it back onto the hold (`local_offset(..., rotation)`, `HeldGearFit.offset(..., rotationDegrees:)`). The hand never lets go, at any scale (Titan Blade included, and the pack's own baked weapon on a Titan hero).
+- `carryAngle` is in the manifest on every blade, staff and hammer (56 items) and absent on the bow and the shields, which are not turned; `validate.py` checks that. Bows are upright already. The canvas takes the union of every frame's own rect, turned or not.
+
+Checked on the shipped art for all 27 packs by `WeaponInHand` and `CarryAngle` in `tests/test_modular_assets.py` (the hold lies 5 to 29 units from the middle of the fist in every idle frame; the pack's own weapon is behind the hand and the body in all 992 frames where it shows; the fist's centre pixel is the fist's own, where leaving the redraw out would leave the weapon on top of it in 21 of 27 packs; none of the 3,180 frames of the 25 sword packs leaves a carried blade flat, and all 100 idle frames carry at 45) and by `HeldGearAnchorTests` and `ModularGearTests` in the app.
+
 ## Approving assets (the only way anything becomes `verified`)
 
 Open the sheets, then record who looked:

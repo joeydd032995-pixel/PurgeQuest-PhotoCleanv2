@@ -56,14 +56,14 @@ Grip, hold, scale, rotation, layering and profile overrides are recorded per ite
 
 | ID | Name | Grip px | Masks | Titan canvas growth | Packs | Status |
 |---|---|---|---|---|---|---|
-| `weapon.valkyrie` | Valkyrie Blade | [52.1, 63.5] | primary | 1.64x | 27 | candidate |
+| `weapon.valkyrie` | Valkyrie Blade | [22.42, 63.5] | primary | 1.76x | 27 | candidate |
 | `weapon.forest_ranger` | Elven Recurve | [111.5, 159.5] | primary, secondary | 1.03x | 2 | candidate |
-| `weapon.seer` | Seer's Edge | [65.9, 63.5] | primary | 1.58x | 27 | candidate |
-| `weapon.blood_alchemist` | Vampyri Cleaver | [88.7, 63.5] | primary, secondary | 1.49x | 27 | candidate |
-| `weapon.dark_oracle` | Scarred Fang | [49.1, 69.5] | primary, secondary | 1.64x | 27 | candidate |
-| `weapon.necromancer` | Shadowbrand | [73.5, 63.5] | primary | 1.55x | 27 | candidate |
-| `weapon.skeleton_crusader` | Undead Claymore | [55.9, 63.5] | primary | 1.62x | 27 | candidate |
-| `weapon.golem` | Vaultcracker | [85.4, 63.0] | primary | 1.51x | 27 | candidate |
+| `weapon.seer` | Seer's Edge | [37.98, 63.5] | primary | 1.70x | 27 | candidate |
+| `weapon.blood_alchemist` | Vampyri Cleaver | [68.94, 63.5] | primary, secondary | 1.57x | 27 | candidate |
+| `weapon.dark_oracle` | Scarred Fang | [18.62, 69.5] | primary, secondary | 1.77x | 27 | candidate |
+| `weapon.necromancer` | Shadowbrand | [48.3, 63.5] | primary | 1.66x | 27 | candidate |
+| `weapon.skeleton_crusader` | Undead Claymore | [27.18, 63.5] | primary | 1.74x | 27 | candidate |
+| `weapon.golem` | Vaultcracker | [59.48, 63.0] | primary | 1.61x | 27 | candidate |
 
 **Elven Recurve (checked separately from swords):** supported only on `forest_ranger_v1`/`v2` (v3 is a sword pack with no Shooting animation). The bow art has no string; the renderer draws one from the recorded tip anchors {'bottom': [30.5, 299], 'top': [30.5, 20]} through the arrow nock while the arrow is drawn (nock to chord 97.85px mean over 3 frames).
 
@@ -71,14 +71,14 @@ Grip, hold, scale, rotation, layering and profile overrides are recorded per ite
 
 | Set | I | II | III | IV | V | Masks (set I) | Max Titan growth |
 |---|---|---|---|---|---|---|---|
-| Ashen Bough | candidate | candidate | candidate | candidate | candidate | primary | 1.69x |
-| Verdant Coil | candidate | candidate | candidate | candidate | candidate | primary | 1.70x |
-| Tidecaller | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.67x |
-| Ember Scepter | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.68x |
-| Storm Spire | candidate | candidate | candidate | candidate | candidate | primary | 1.70x |
-| Gilded Crook | candidate | candidate | candidate | candidate | candidate | primary | 1.70x |
-| Bone Reliquary | candidate | candidate | candidate | candidate | candidate | primary, secondary, trim | 1.66x |
-| Voidspike | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.69x |
+| Ashen Bough | candidate | candidate | candidate | candidate | candidate | primary | 1.81x |
+| Verdant Coil | candidate | candidate | candidate | candidate | candidate | primary | 1.82x |
+| Tidecaller | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.79x |
+| Ember Scepter | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.78x |
+| Storm Spire | candidate | candidate | candidate | candidate | candidate | primary | 1.82x |
+| Gilded Crook | candidate | candidate | candidate | candidate | candidate | primary | 1.80x |
+| Bone Reliquary | candidate | candidate | candidate | candidate | candidate | primary, secondary, trim | 1.78x |
+| Voidspike | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.81x |
 
 ### Shields (40)
 

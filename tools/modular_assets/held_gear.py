@@ -34,6 +34,22 @@ MASK_DIR = OUT / "Gear"
 SHEETS = REPO / "docs" / "modular" / "verification"
 TITAN_SCALE = 2.0
 GEAR_ROOT = scml.ART_ROOT / "Gear"
+# Where along its length a blade, staff or hammer is gripped, as a fraction measured from the pommel end.
+# The pack's own baked sword is gripped 10% in; that point sits inside the character's fist and is the pack's
+# `hold`. A swapped-in item is gripped right at its pommel (2%), so when the fist is drawn over the hold the
+# crossguard and blade come out clear of it instead of being buried in it.
+BAKED_GRIP_FRACTION = 0.10
+ITEM_GRIP_FRACTION = 0.02
+# A blade, staff or hammer is never left pointing flat out from the hero's side. The packs draw the idle hand at hip
+# height and hold the sword sideways in most of the attack, so a weapon left the way the art draws it sticks straight out
+# from the pelvis, which reads as something it is not. Whenever the weapon points between CARRY_FLOOR and CARRY_ANGLE
+# (degrees counter-clockwise from the direction the weapon points in the art: 0 is straight out sideways, 90 is straight
+# up) it is turned about its grip to CARRY_ANGLE: up and away from the body, which reads as a weapon held at the side and
+# clears the head in every pack. A weapon already raised (the wind-up of the swing) or pointing back is left alone, and so
+# is a bow, which is upright already.
+CARRY_ANGLE = 45.0
+CARRY_FLOOR = -45.0
+CARRIED_KINDS = ("sword", "staff", "hammer")
 
 SIGNATURE = [  # (HeroRace raw, display name, kind)
     ("valkyrie", "Valkyrie Blade", "sword"), ("forest_ranger", "Elven Recurve", "bow"),
@@ -54,8 +70,9 @@ def opaque_bbox(img: Image.Image, thresh: int = 20) -> Tuple[int, int, int, int]
     return int(xs.min()), int(ys.min()), int(xs.max()), int(ys.max())
 
 
-def detect_grip(img: Image.Image, kind: str) -> Tuple[float, float]:
-    """Grip point in image px (y-down). Consistent across items so alignment is comparable."""
+def detect_grip(img: Image.Image, kind: str, fraction: float = BAKED_GRIP_FRACTION) -> Tuple[float, float]:
+    """Grip point in image px (y-down). Consistent across items so alignment is comparable.
+    `fraction` only matters for blades, staves and hammers (how far along from the pommel end)."""
     x0, y0, x1, y1 = opaque_bbox(img)
     a = np.asarray(img.convert("RGBA"))[..., 3] > 20
     if kind == "shield":
@@ -67,7 +84,7 @@ def detect_grip(img: Image.Image, kind: str) -> Tuple[float, float]:
     length = x1 - x0
     cols = slice(x0, x0 + max(2, int(0.2 * length)))
     ys = np.nonzero(a[:, cols].any(axis=1))[0]
-    return x0 + 0.10 * length, float(ys.mean())
+    return x0 + fraction * length, float(ys.mean())
 
 
 def anchor_info(race: str, variant: int, kind: str) -> dict:
@@ -86,11 +103,46 @@ def anchor_info(race: str, variant: int, kind: str) -> dict:
     if not pivots and kind == "shield":
         for frame in doc.animations["Idle"]:
             for p in frame:
-                if p.file.stem == "left_hand":
-                    stem = "left_hand"
+                if p.file.stem == scml.SHIELD_HAND:
+                    stem = scml.SHIELD_HAND
                     pivots.add((round(p.pivot_x, 4), round(p.pivot_y, 4), p.file.width, p.file.height))
     px, py, w, h = sorted(pivots)[0]
     return {"stem": stem, "pivotPx": (px * w, (1 - py) * h), "width": w, "height": h, "constant": len(pivots) == 1}
+
+
+def norm_angle(a: float) -> float:
+    """Degrees folded into (-180, 180]. SCML bone angles accumulate down the chain and are not normalized."""
+    a = (a + 180.0) % 360.0 - 180.0
+    return 180.0 if a == -180.0 else a
+
+
+def carry_turn(blade_angle: float, carry_angle: Optional[float]) -> float:
+    """Degrees to turn a weapon whose blade points along `blade_angle` so it is carried at `carry_angle`: the whole way
+    up to it when the blade points between CARRY_FLOOR and `carry_angle`, otherwise not at all. Mirrors HeldGearFit.carryTurn."""
+    if carry_angle is None:
+        return 0.0
+    a = norm_angle(blade_angle)
+    return carry_angle - a if CARRY_FLOOR <= a < carry_angle else 0.0
+
+
+def fit_for_anchor(hold: Tuple[float, float], grip: Tuple[float, float], pivot_px: Tuple[float, float], s: float,
+                   carry_angle: Optional[float]):
+    """Fit of an item as a function of the weapon anchor's placement in a frame: the grip stays on the hold and the item is
+    turned about it to its carry angle when the anchor points flat. `scml.render_frame` takes this as its `weapon_fit`."""
+    def fit(anchor: scml.Placement) -> dict:
+        turn = carry_turn(anchor.angle, carry_angle)
+        return {"scale": s, "offset": local_offset(hold, grip, pivot_px, s, turn), "rotation": turn}
+    return fit
+
+
+def weapon_hand(race: str, variant: int) -> str:
+    """The hand that grips the pack's weapon: the one whose pivot is nearest the weapon anchor in the idle pose.
+    The Left Hand in every shipped pack. The renderer draws it again over a swapped weapon's grip."""
+    doc = scml.load_doc(race, variant)
+    frame = doc.animations["Idle"][0]
+    anchor = next(p for p in frame if scml.is_weapon(p.file.stem) and p.file.stem != "arrow")
+    hands = [p for p in frame if p.file.stem in ("left_hand", "right_hand")]
+    return min(hands, key=lambda h: math.hypot(h.x - anchor.x, h.y - anchor.y)).file.stem
 
 
 def pack_holds(race: str, variant: int) -> dict:
@@ -103,12 +155,12 @@ def pack_holds(race: str, variant: int) -> dict:
     kind = "bow" if wstem == "bow" else "sword"
     g = detect_grip(wimg, kind)
     out["weapon"] = {"anchor": wstem, "pivotPx": w["pivotPx"], "hold": (g[0] - w["pivotPx"][0], g[1] - w["pivotPx"][1]),
-                     "gripPx": g, "imageSize": wimg.size, "constantPivot": w["constant"]}
+                     "gripPx": g, "imageSize": wimg.size, "constantPivot": w["constant"], "hand": weapon_hand(race, variant)}
     s = anchor_info(race, variant, "shield")
     simg = Image.open(base / f"{pid}_{s['stem']}.png").convert("RGBA")
     if s["stem"] == "shield":
         sg = detect_grip(simg, "shield")
-    else:  # no baked shield: hold on the left hand's visible centre
+    else:  # no baked shield: hold on the visible centre of the hand that is not holding the sword
         x0, y0, x1, y1 = opaque_bbox(simg)
         sg = ((x0 + x1) / 2, (y0 + y1) / 2)
     out["shield"] = {"anchor": s["stem"], "pivotPx": s["pivotPx"], "hold": (sg[0] - s["pivotPx"][0], sg[1] - s["pivotPx"][1]),
@@ -116,16 +168,23 @@ def pack_holds(race: str, variant: int) -> dict:
     return out
 
 
-def local_offset(hold: Tuple[float, float], grip: Tuple[float, float], pivot_px: Tuple[float, float], s: float) -> Tuple[float, float]:
-    return (hold[0] - s * (grip[0] - pivot_px[0]), hold[1] - s * (grip[1] - pivot_px[1]))
+def local_offset(hold: Tuple[float, float], grip: Tuple[float, float], pivot_px: Tuple[float, float], s: float,
+                 rotation: float = 0.0) -> Tuple[float, float]:
+    """Offset that keeps the grip on the hold. When the whole item is also turned by `rotation` degrees (counter-clockwise,
+    like SCML angles) about the anchor pivot, the grip has to start where the hold would be after turning the other way,
+    so the turn carries it back onto the hold: the item pivots about its grip and the hand never lets go."""
+    r = math.radians(rotation)
+    hx = hold[0] * math.cos(r) - hold[1] * math.sin(r)
+    hy = hold[0] * math.sin(r) + hold[1] * math.cos(r)
+    return (hx - s * (grip[0] - pivot_px[0]), hy - s * (grip[1] - pivot_px[1]))
 
 
-def item_corners_world(p: scml.Placement, bbox, img_size, off, s: float):
+def item_corners_world(p: scml.Placement, bbox, img_size, off, s: float, rot: float = 0.0):
     """World (y-up) corners of an item's opaque bbox. Items draw in native pixels relative to the anchor pivot:
     local(u, v) = s * ((u, v) - pivotPx) + off (y-down), matching SpriteRenderer.itemRect."""
     pivot_px = (p.pivot_x * p.file.width, (1 - p.pivot_y) * p.file.height)
     x0, y0, x1, y1 = bbox
-    r = math.radians(p.angle)
+    r = math.radians(p.angle + rot)
     c, sn = math.cos(r), math.sin(r)
     pts = []
     for u, v in ((x0, y0), (x1 + 1, y0), (x1 + 1, y1 + 1), (x0, y1 + 1)):
@@ -135,28 +194,32 @@ def item_corners_world(p: scml.Placement, bbox, img_size, off, s: float):
     return pts
 
 
-def item_rect_corners(p: scml.Placement, img_size, off, s: float):
-    """World (y-up) corners of an item's full image rect drawn at placement p."""
-    return item_corners_world(p, (0, 0, img_size[0] - 1, img_size[1] - 1), img_size, off, s)
+def item_rect_corners(p: scml.Placement, img_size, off, s: float, rot: float = 0.0):
+    """World (y-up) corners of an item's full image rect drawn at placement p, turned `rot` degrees about the pivot."""
+    return item_corners_world(p, (0, 0, img_size[0] - 1, img_size[1] - 1), img_size, off, s, rot)
 
 
-def canvas_with_item(doc: scml.Doc, pack: dict, kind: str, img_size, grip, scale: float, pad: float = 20.0):
+def canvas_with_item(doc: scml.Doc, pack: dict, kind: str, img_size, grip, scale: float, pad: float = 20.0,
+                     carry_angle: Optional[float] = None):
     """Base canvas united with the item's rect at its fitted placement over every frame, hidden anchors included
-    (a swapped item is drawn at its anchor even when the baked one is hidden). Mirrors SpriterDocument.canvas(for:)."""
+    (a swapped item is drawn at its anchor even when the baked one is hidden). Mirrors SpriterDocument.canvas(for:).
+    A weapon with a `carry_angle` contributes the rect it is drawn with in each frame, turned about its grip when the
+    frame's weapon anchor points flat (see CARRY_ANGLE)."""
     base_o, base_s = doc.canvas(1.0)
     min_x, min_y = base_o[0] + pad, base_o[1] + pad
     max_x, max_y = base_o[0] + base_s[0] - pad, base_o[1] + base_s[1] - pad
     key = "shield" if kind == "shield" else "weapon"
     hold, pivot = pack[key]["hold"], pack[key]["pivotPx"]
-    off = local_offset(hold, grip, pivot, scale)
+    fit = fit_for_anchor(hold, grip, pivot, scale, carry_angle if kind != "shield" else None)
     for frames in doc.animations.values():
         for fr in frames:
             if kind == "shield":
-                anchors = [p for p in fr if p.file.stem.startswith("shield")] or [p for p in fr if p.file.stem == "left_hand"]
+                anchors = [p for p in fr if p.file.stem.startswith("shield")] or [p for p in fr if p.file.stem == scml.SHIELD_HAND]
             else:
                 anchors = [p for p in fr if p.file.stem.startswith(("sword", "bow"))]
             for p in anchors[:1]:
-                for x, y in item_rect_corners(p, img_size, off, scale):
+                f = fit(p)
+                for x, y in item_rect_corners(p, img_size, f["offset"], scale, f["rotation"]):
                     min_x, max_x, min_y, max_y = min(min_x, x), max(max_x, x), min(min_y, y), max(max_y, y)
     origin = (min_x - pad, min_y - pad)
     return origin, (max_x + pad - origin[0], max_y + pad - origin[1])
@@ -246,7 +309,7 @@ def analyze(algorithm: str = gear_algorithms.DEFAULT_ALGORITHM) -> dict:
         img = Image.open(it["path"]).convert("RGBA")
         bbox = opaque_bbox(img)
         kind = it["kind"]
-        grip = detect_grip(img, kind if kind in ("bow", "shield") else "sword")
+        grip = detect_grip(img, kind if kind in ("bow", "shield") else "sword", ITEM_GRIP_FRACTION)
         # recolor masks
         layer = Layer(it["resource"], "armor", it["slot"], img)
         masks, protected = algo.masks_for(it["resource"], img)
@@ -264,7 +327,8 @@ def analyze(algorithm: str = gear_algorithms.DEFAULT_ALGORITHM) -> dict:
             doc = scml.load_doc(race, v)
             _, base_size = doc.canvas(1.0)
             for label, s in ([("1x", 1.0)] if kind == "shield" else [("1x", 1.0), ("titan", TITAN_SCALE)]):
-                _, size = canvas_with_item(doc, holds[pid], kind, img.size, grip, s)
+                _, size = canvas_with_item(doc, holds[pid], kind, img.size, grip, s,
+                                           carry_angle=CARRY_ANGLE if kind in CARRIED_KINDS else None)
                 g = [size[0] / base_size[0], size[1] / base_size[1]]
                 growth[label] = [max(growth[label][0], round(g[0], 3)), max(growth[label][1], round(g[1], 3))]
         checks["canvasGrowth"] = growth
@@ -281,11 +345,13 @@ def analyze(algorithm: str = gear_algorithms.DEFAULT_ALGORITHM) -> dict:
             "group": it["group"], "imageWidth": img.size[0], "imageHeight": img.size[1],
             "gripPx": [round(grip[0], 2), round(grip[1], 2)], "scale": 1.0, "rotationDegrees": 0.0, "layer": "front",
             "profileOverrides": {}, "supportedPacks": packs, **extra,
+            **({"carryAngle": CARRY_ANGLE} if kind in CARRIED_KINDS else {}),
             "maskResources": {r: f"{it['resource']}_mask_{r}" for r in sorted(masks)},
             "regionTone": tones,
             "verification": {"status": "candidate" if ok else "mapped", "automated": checks, "approvedBy": None},
         })
-    pack_out = {pid: {"weaponAnchor": h["weapon"]["anchor"], "weaponPivotPx": [round(x, 2) for x in h["weapon"]["pivotPx"]],
+    pack_out = {pid: {"weaponAnchor": h["weapon"]["anchor"], "weaponHand": h["weapon"]["hand"],
+                      "weaponPivotPx": [round(x, 2) for x in h["weapon"]["pivotPx"]],
                       "weaponHold": [round(x, 2) for x in h["weapon"]["hold"]],
                       "shieldAnchor": h["shield"]["anchor"], "shieldPivotPx": [round(x, 2) for x in h["shield"]["pivotPx"]],
                       "shieldHold": [round(x, 2) for x in h["shield"]["hold"]],
@@ -310,18 +376,23 @@ def render_item(race: str, variant: int, anim: str, frame: int, it: dict, holds:
     kind = "shield" if it["kind"] == "shield" else "weapon"
     h = holds[pid][kind]
     s = TITAN_SCALE if (titan and kind == "weapon") else 1.0
-    off = local_offset(h["hold"], tuple(it["gripPx"]), h["pivotPx"], s)
-    fit = {"scale": s, "offset": off}
-    origin, size = canvas_with_item(doc, holds[pid], it["kind"], img.size, tuple(it["gripPx"]), s)
+    hand = holds[pid]["weapon"].get("hand", "left_hand")
+    carry = it.get("carryAngle") if kind == "weapon" else None
+    grip = tuple(it["gripPx"])
+    # A weapon is turned about its grip while it points flat (see CARRY_ANGLE), so its fit depends on the frame.
+    fit = fit_for_anchor(h["hold"], grip, h["pivotPx"], s, carry)
+    origin, size = canvas_with_item(doc, holds[pid], it["kind"], img.size, grip, s, carry_angle=carry)
+    shield_fit = {"scale": s, "offset": local_offset(h["hold"], grip, h["pivotPx"], s)}
     return scml.render_frame(doc, race, variant, anim, frame, canvas=(origin, size), scale=scale,
                                     weapon_image=img if kind == "weapon" else None, weapon_fit=fit if kind == "weapon" else None,
-                                    shield_image=img if kind == "shield" else None, shield_fit=fit if kind == "shield" else None,
+                                    weapon_hand=hand,
+                                    shield_image=img if kind == "shield" else None, shield_fit=shield_fit if kind == "shield" else None,
                                     background=qa.BG)
 
 
 def sheets(manifest: dict) -> None:
     SHEETS.mkdir(parents=True, exist_ok=True)
-    holds = {pid: {"weapon": {"hold": tuple(p["weaponHold"]), "pivotPx": tuple(p["weaponPivotPx"])},
+    holds = {pid: {"weapon": {"hold": tuple(p["weaponHold"]), "pivotPx": tuple(p["weaponPivotPx"]), "hand": p.get("weaponHand", "left_hand")},
                    "shield": {"hold": tuple(p["shieldHold"]), "pivotPx": tuple(p["shieldPivotPx"])}} for pid, p in manifest["packs"].items()}
     globals()["_HOLDS"] = holds
     by_group: Dict[str, List[dict]] = {}

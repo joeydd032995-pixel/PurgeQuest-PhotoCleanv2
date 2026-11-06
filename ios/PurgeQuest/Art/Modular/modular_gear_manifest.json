@@ -1,8 +1,9 @@
 {
  "items": [
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    52.1,
+    22.42,
     63.5
    ],
    "group": "signature",
@@ -67,12 +68,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.048,
-       1.05
+       1.017,
+       1.077
       ],
       "titan": [
-       1.527,
-       1.64
+       1.511,
+       1.759
       ]
      },
      "gripOnItem": true,
@@ -179,8 +180,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    65.9,
+    37.98,
     63.5
    ],
    "group": "signature",
@@ -245,12 +247,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.034,
-       1.038
+       1.007,
+       1.063
       ],
       "titan": [
-       1.473,
-       1.584
+       1.459,
+       1.697
       ]
      },
      "gripOnItem": true,
@@ -267,8 +269,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    88.7,
+    68.94,
     63.5
    ],
    "group": "signature",
@@ -338,12 +341,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.014,
-       1.017
+       1.0,
+       1.035
       ],
       "titan": [
-       1.384,
-       1.493
+       1.356,
+       1.572
       ]
      },
      "gripOnItem": true,
@@ -360,8 +363,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    49.1,
+    18.62,
     69.5
    ],
    "group": "signature",
@@ -431,12 +435,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.051,
-       1.052
+       1.016,
+       1.08
       ],
       "titan": [
-       1.537,
-       1.643
+       1.515,
+       1.766
       ]
      },
      "gripOnItem": true,
@@ -453,8 +457,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    73.5,
+    48.3,
     63.5
    ],
    "group": "signature",
@@ -519,12 +524,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.027,
-       1.031
+       1.0,
+       1.054
       ],
       "titan": [
-       1.443,
-       1.554
+       1.425,
+       1.655
       ]
      },
      "gripOnItem": true,
@@ -541,8 +546,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    55.9,
+    27.18,
     63.5
    ],
    "group": "signature",
@@ -607,12 +613,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.044,
-       1.047
+       1.014,
+       1.073
       ],
       "titan": [
-       1.512,
-       1.625
+       1.495,
+       1.74
       ]
      },
      "gripOnItem": true,
@@ -629,8 +635,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    85.4,
+    59.48,
     63.0
    ],
    "group": "signature",
@@ -695,12 +702,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.017,
-       1.02
+       1.0,
+       1.044
       ],
       "titan": [
-       1.397,
-       1.507
+       1.388,
+       1.611
       ]
      },
      "gripOnItem": true,
@@ -717,8 +724,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    44.6,
+    19.32,
     64.0
    ],
    "group": "staff1",
@@ -783,12 +791,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.055,
-       1.057
+       1.019,
+       1.08
       ],
       "titan": [
-       1.556,
-       1.669
+       1.521,
+       1.771
       ]
      },
      "gripOnItem": true,
@@ -805,8 +813,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    44.6,
+    19.32,
     64.0
    ],
    "group": "staff1",
@@ -871,12 +880,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.055,
-       1.057
+       1.019,
+       1.08
       ],
       "titan": [
-       1.556,
-       1.669
+       1.521,
+       1.771
       ]
      },
      "gripOnItem": true,
@@ -893,8 +902,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    45.4,
+    19.48,
     64.0
    ],
    "group": "staff1",
@@ -959,12 +969,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.055,
-       1.056
+       1.018,
+       1.08
       ],
       "titan": [
-       1.553,
-       1.666
+       1.52,
+       1.771
       ]
      },
      "gripOnItem": true,
@@ -981,8 +991,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    42.8,
+    14.96,
     63.5
    ],
    "group": "staff1",
@@ -1052,12 +1063,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.057,
-       1.059
+       1.022,
+       1.084
       ],
       "titan": [
-       1.564,
-       1.677
+       1.536,
+       1.79
       ]
      },
      "gripOnItem": true,
@@ -1074,8 +1085,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    39.2,
+    9.44,
     63.5
    ],
    "group": "staff1",
@@ -1140,12 +1152,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.061,
-       1.062
+       1.025,
+       1.089
       ],
       "titan": [
-       1.578,
-       1.692
+       1.555,
+       1.812
       ]
      },
      "gripOnItem": true,
@@ -1162,8 +1174,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    37.9,
+    13.18,
     64.0
    ],
    "group": "staff2",
@@ -1228,12 +1241,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.062,
-       1.063
+       1.022,
+       1.086
       ],
       "titan": [
-       1.583,
-       1.696
+       1.541,
+       1.796
       ]
      },
      "gripOnItem": true,
@@ -1250,8 +1263,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    39.5,
+    13.5,
     64.0
    ],
    "group": "staff2",
@@ -1316,12 +1330,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.06,
-       1.062
+       1.022,
+       1.085
       ],
       "titan": [
-       1.576,
-       1.69
+       1.54,
+       1.795
       ]
      },
      "gripOnItem": true,
@@ -1338,8 +1352,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    40.1,
+    13.62,
     63.5
    ],
    "group": "staff2",
@@ -1409,12 +1424,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.06,
-       1.061
+       1.023,
+       1.085
       ],
       "titan": [
-       1.574,
-       1.688
+       1.541,
+       1.795
       ]
      },
      "gripOnItem": true,
@@ -1431,8 +1446,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    41.3,
+    13.86,
     63.5
    ],
    "group": "staff2",
@@ -1507,12 +1523,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.059,
-       1.06
+       1.022,
+       1.085
       ],
       "titan": [
-       1.569,
-       1.683
+       1.54,
+       1.794
       ]
      },
      "gripOnItem": true,
@@ -1529,8 +1545,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    39.7,
+    7.94,
     63.5
    ],
    "group": "staff2",
@@ -1600,12 +1617,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.06,
-       1.062
+       1.026,
+       1.09
       ],
       "titan": [
-       1.576,
-       1.69
+       1.56,
+       1.818
       ]
      },
      "gripOnItem": true,
@@ -1622,8 +1639,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    47.0,
+    20.6,
     63.5
    ],
    "group": "staff3",
@@ -1693,12 +1711,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.053,
-       1.055
+       1.018,
+       1.079
       ],
       "titan": [
-       1.547,
-       1.66
+       1.517,
+       1.767
       ]
      },
      "gripOnItem": true,
@@ -1715,8 +1733,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    48.0,
+    20.8,
     63.5
    ],
    "group": "staff3",
@@ -1786,12 +1805,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.052,
-       1.054
+       1.018,
+       1.079
       ],
       "titan": [
-       1.543,
-       1.656
+       1.517,
+       1.766
       ]
      },
      "gripOnItem": true,
@@ -1808,8 +1827,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    49.0,
+    21.0,
     63.5
    ],
    "group": "staff3",
@@ -1879,12 +1899,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.051,
-       1.053
+       1.018,
+       1.079
       ],
       "titan": [
-       1.539,
-       1.652
+       1.516,
+       1.765
       ]
      },
      "gripOnItem": true,
@@ -1901,8 +1921,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    46.4,
+    17.28,
     63.5
    ],
    "group": "staff3",
@@ -1977,12 +1998,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.054,
-       1.056
+       1.02,
+       1.082
       ],
       "titan": [
-       1.549,
-       1.663
+       1.528,
+       1.78
       ]
      },
      "gripOnItem": true,
@@ -1999,8 +2020,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    43.8,
+    13.56,
     63.5
    ],
    "group": "staff3",
@@ -2070,12 +2092,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.056,
-       1.058
+       1.023,
+       1.085
       ],
       "titan": [
-       1.56,
-       1.673
+       1.541,
+       1.795
       ]
      },
      "gripOnItem": true,
@@ -2092,8 +2114,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    41.9,
+    17.98,
     62.0
    ],
    "group": "staff4",
@@ -2163,12 +2186,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.058,
-       1.06
+       1.021,
+       1.081
       ],
       "titan": [
-       1.568,
-       1.683
+       1.528,
+       1.78
       ]
      },
      "gripOnItem": true,
@@ -2185,8 +2208,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    42.4,
+    18.08,
     62.0
    ],
    "group": "staff4",
@@ -2256,12 +2280,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.058,
-       1.059
+       1.021,
+       1.081
       ],
       "titan": [
-       1.566,
-       1.681
+       1.528,
+       1.779
       ]
      },
      "gripOnItem": true,
@@ -2278,8 +2302,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    44.1,
+    18.42,
     63.5
    ],
    "group": "staff4",
@@ -2349,12 +2374,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.056,
-       1.058
+       1.019,
+       1.081
       ],
       "titan": [
-       1.558,
-       1.672
+       1.525,
+       1.776
       ]
      },
      "gripOnItem": true,
@@ -2371,8 +2396,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    45.4,
+    18.68,
     63.5
    ],
    "group": "staff4",
@@ -2442,12 +2468,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.055,
-       1.056
+       1.019,
+       1.081
       ],
       "titan": [
-       1.553,
-       1.667
+       1.524,
+       1.775
       ]
      },
      "gripOnItem": true,
@@ -2464,8 +2490,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    49.6,
+    19.52,
     61.5
    ],
    "group": "staff4",
@@ -2535,12 +2562,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.051,
-       1.053
+       1.02,
+       1.08
       ],
       "titan": [
-       1.537,
-       1.653
+       1.524,
+       1.774
       ]
      },
      "gripOnItem": true,
@@ -2557,8 +2584,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    48.5,
+    24.1,
     63.5
    ],
    "group": "staff5",
@@ -2623,12 +2651,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.052,
-       1.054
+       1.016,
+       1.076
       ],
       "titan": [
-       1.541,
-       1.654
+       1.506,
+       1.753
       ]
      },
      "gripOnItem": true,
@@ -2645,8 +2673,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    49.5,
+    24.3,
     63.5
    ],
    "group": "staff5",
@@ -2716,12 +2745,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.051,
-       1.053
+       1.016,
+       1.076
       ],
       "titan": [
-       1.537,
-       1.65
+       1.505,
+       1.752
       ]
      },
      "gripOnItem": true,
@@ -2738,8 +2767,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    50.3,
+    24.46,
     63.5
    ],
    "group": "staff5",
@@ -2814,12 +2844,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.05,
-       1.052
+       1.016,
+       1.075
       ],
       "titan": [
-       1.534,
-       1.647
+       1.504,
+       1.751
       ]
      },
      "gripOnItem": true,
@@ -2836,8 +2866,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    49.8,
+    23.56,
     63.5
    ],
    "group": "staff5",
@@ -2912,12 +2943,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.05,
-       1.053
+       1.016,
+       1.076
       ],
       "titan": [
-       1.536,
-       1.649
+       1.507,
+       1.755
       ]
      },
      "gripOnItem": true,
@@ -2934,8 +2965,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    38.4,
+    7.68,
     63.5
    ],
    "group": "staff5",
@@ -3010,12 +3042,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.061,
-       1.063
+       1.026,
+       1.091
       ],
       "titan": [
-       1.581,
-       1.695
+       1.56,
+       1.819
       ]
      },
      "gripOnItem": true,
@@ -3032,8 +3064,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    41.7,
+    18.74,
     65.5
    ],
    "group": "staff6",
@@ -3098,12 +3131,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.058,
-       1.06
+       1.018,
+       1.08
       ],
       "titan": [
-       1.567,
-       1.679
+       1.52,
+       1.771
       ]
      },
      "gripOnItem": true,
@@ -3120,8 +3153,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    42.6,
+    18.92,
     65.5
    ],
    "group": "staff6",
@@ -3186,12 +3220,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.057,
-       1.059
+       1.018,
+       1.08
       ],
       "titan": [
-       1.564,
-       1.675
+       1.52,
+       1.771
       ]
      },
      "gripOnItem": true,
@@ -3208,8 +3242,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    36.9,
+    12.18,
     66.5
    ],
    "group": "staff6",
@@ -3274,12 +3309,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.063,
-       1.064
+       1.022,
+       1.086
       ],
       "titan": [
-       1.586,
-       1.697
+       1.541,
+       1.796
       ]
      },
      "gripOnItem": true,
@@ -3296,8 +3331,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    42.0,
+    15.6,
     65.5
    ],
    "group": "staff6",
@@ -3362,12 +3398,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.058,
-       1.059
+       1.02,
+       1.083
       ],
       "titan": [
-       1.566,
-       1.678
+       1.531,
+       1.784
       ]
      },
      "gripOnItem": true,
@@ -3384,8 +3420,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    44.6,
+    16.12,
     64.5
    ],
    "group": "staff6",
@@ -3455,12 +3492,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.055,
-       1.057
+       1.02,
+       1.083
       ],
       "titan": [
-       1.556,
-       1.669
+       1.531,
+       1.783
       ]
      },
      "gripOnItem": true,
@@ -3477,8 +3514,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    47.5,
+    22.3,
     64.5
    ],
    "group": "staff7",
@@ -3553,12 +3591,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.052,
-       1.054
+       1.016,
+       1.077
       ],
       "titan": [
-       1.545,
-       1.657
+       1.51,
+       1.758
       ]
      },
      "gripOnItem": true,
@@ -3575,8 +3613,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    49.7,
+    22.74,
     63.5
    ],
    "group": "staff7",
@@ -3651,12 +3690,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.05,
-       1.053
+       1.017,
+       1.077
       ],
       "titan": [
-       1.537,
-       1.65
+       1.51,
+       1.758
       ]
      },
      "gripOnItem": true,
@@ -3673,8 +3712,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    51.5,
+    23.1,
     63.5
    ],
    "group": "staff7",
@@ -3749,12 +3789,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.049,
-       1.051
+       1.016,
+       1.077
       ],
       "titan": [
-       1.529,
-       1.642
+       1.509,
+       1.757
       ]
      },
      "gripOnItem": true,
@@ -3771,8 +3811,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    49.0,
+    20.2,
     63.5
    ],
    "group": "staff7",
@@ -3847,12 +3888,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.051,
-       1.053
+       1.018,
+       1.079
       ],
       "titan": [
-       1.539,
-       1.652
+       1.519,
+       1.768
       ]
      },
      "gripOnItem": true,
@@ -3869,8 +3910,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    47.9,
+    18.38,
     63.5
    ],
    "group": "staff7",
@@ -3945,12 +3987,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.052,
-       1.054
+       1.019,
+       1.081
       ],
       "titan": [
-       1.544,
-       1.657
+       1.525,
+       1.776
       ]
      },
      "gripOnItem": true,
@@ -3967,8 +4009,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    46.9,
+    21.38,
     65.5
    ],
    "group": "staff8",
@@ -4038,12 +4081,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.053,
-       1.055
+       1.016,
+       1.078
       ],
       "titan": [
-       1.547,
-       1.658
+       1.512,
+       1.761
       ]
      },
      "gripOnItem": true,
@@ -4060,8 +4103,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    48.0,
+    21.6,
     60.0
    ],
    "group": "staff8",
@@ -4131,12 +4175,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.052,
-       1.055
+       1.02,
+       1.078
       ],
       "titan": [
-       1.544,
-       1.662
+       1.519,
+       1.768
       ]
      },
      "gripOnItem": true,
@@ -4153,8 +4197,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    48.3,
+    21.66,
     63.0
    ],
    "group": "staff8",
@@ -4224,12 +4269,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.052,
-       1.054
+       1.018,
+       1.078
       ],
       "titan": [
-       1.542,
-       1.656
+       1.515,
+       1.763
       ]
      },
      "gripOnItem": true,
@@ -4246,8 +4291,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    49.4,
+    21.88,
     63.5
    ],
    "group": "staff8",
@@ -4317,12 +4363,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.051,
-       1.053
+       1.017,
+       1.078
       ],
       "titan": [
-       1.538,
-       1.651
+       1.513,
+       1.762
       ]
      },
      "gripOnItem": true,
@@ -4339,8 +4385,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    40.8,
+    9.76,
     63.5
    ],
    "group": "staff8",
@@ -4410,12 +4457,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.059,
-       1.061
+       1.025,
+       1.089
       ],
       "titan": [
-       1.571,
-       1.685
+       1.554,
+       1.81
       ]
      },
      "gripOnItem": true,
@@ -8007,8 +8054,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    37.3,
+    9.06,
     64.0
    ],
    "group": "store",
@@ -8073,12 +8121,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.062,
-       1.064
+       1.025,
+       1.089
       ],
       "titan": [
-       1.585,
-       1.699
+       1.555,
+       1.813
       ]
      },
      "gripOnItem": true,
@@ -8095,8 +8143,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    39.9,
+    8.78,
     63.5
    ],
    "group": "store",
@@ -8161,12 +8210,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.06,
-       1.061
+       1.026,
+       1.09
       ],
       "titan": [
-       1.575,
-       1.689
+       1.557,
+       1.814
       ]
      },
      "gripOnItem": true,
@@ -8183,8 +8232,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    40.2,
+    8.84,
     64.0
    ],
    "group": "store",
@@ -8259,12 +8309,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.06,
-       1.061
+       1.025,
+       1.089
       ],
       "titan": [
-       1.574,
-       1.687
+       1.556,
+       1.813
       ]
      },
      "gripOnItem": true,
@@ -8281,8 +8331,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    38.4,
+    7.68,
     64.0
    ],
    "group": "store",
@@ -8352,12 +8403,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.061,
-       1.063
+       1.026,
+       1.091
       ],
       "titan": [
-       1.581,
-       1.694
+       1.56,
+       1.818
       ]
      },
      "gripOnItem": true,
@@ -8374,8 +8425,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    40.3,
+    9.66,
     64.0
    ],
    "group": "store",
@@ -8445,12 +8497,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.06,
-       1.061
+       1.025,
+       1.089
       ],
       "titan": [
-       1.573,
-       1.687
+       1.553,
+       1.81
       ]
      },
      "gripOnItem": true,
@@ -8467,8 +8519,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    41.5,
+    9.9,
     64.0
    ],
    "group": "store",
@@ -8533,12 +8586,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.058,
-       1.06
+       1.025,
+       1.089
       ],
       "titan": [
-       1.569,
-       1.682
+       1.552,
+       1.809
       ]
      },
      "gripOnItem": true,
@@ -8555,8 +8608,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    38.6,
+    8.52,
     64.0
    ],
    "group": "store",
@@ -8626,12 +8680,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.061,
-       1.063
+       1.025,
+       1.09
       ],
       "titan": [
-       1.58,
-       1.694
+       1.557,
+       1.815
       ]
      },
      "gripOnItem": true,
@@ -8648,8 +8702,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    41.3,
+    9.86,
     64.0
    ],
    "group": "store",
@@ -8719,12 +8774,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.059,
-       1.06
+       1.025,
+       1.089
       ],
       "titan": [
-       1.569,
-       1.683
+       1.552,
+       1.809
       ]
      },
      "gripOnItem": true,
@@ -8741,8 +8796,9 @@
    }
   },
   {
+   "carryAngle": 45.0,
    "gripPx": [
-    40.9,
+    9.78,
     64.0
    ],
    "group": "store",
@@ -8812,12 +8868,12 @@
      ],
      "canvasGrowth": {
       "1x": [
-       1.059,
-       1.06
+       1.025,
+       1.089
       ],
       "titan": [
-       1.571,
-       1.684
+       1.553,
+       1.81
       ]
      },
      "gripOnItem": true,
@@ -9022,9 +9078,9 @@
  ],
  "packs": {
   "blood_alchemist_v1": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9032,6 +9088,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     86.5,
     61.3
@@ -9042,9 +9099,9 @@
    ]
   },
   "blood_alchemist_v2": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9052,6 +9109,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     87.7,
     61.3
@@ -9062,9 +9120,9 @@
    ]
   },
   "blood_alchemist_v3": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9072,6 +9130,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     84.1,
     61.3
@@ -9082,9 +9141,9 @@
    ]
   },
   "dark_oracle_v1": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9092,6 +9151,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     46.9,
     67.3
@@ -9102,9 +9162,9 @@
    ]
   },
   "dark_oracle_v2": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9112,6 +9172,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     61.6,
     66.8
@@ -9122,9 +9183,9 @@
    ]
   },
   "dark_oracle_v3": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9132,6 +9193,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     73.4,
     65.3
@@ -9146,7 +9208,7 @@
     8.0,
     63.5
    ],
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
     63.5,
     63.5
@@ -9156,6 +9218,7 @@
     0.0
    ],
    "weaponAnchor": "bow",
+   "weaponHand": "left_hand",
    "weaponHold": [
     111.5,
     159.5
@@ -9170,7 +9233,7 @@
     8.0,
     63.5
    ],
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
     63.5,
     63.5
@@ -9180,6 +9243,7 @@
     0.0
    ],
    "weaponAnchor": "bow",
+   "weaponHand": "left_hand",
    "weaponHold": [
     108.5,
     159.5
@@ -9190,9 +9254,9 @@
    ]
   },
   "forest_ranger_v3": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9200,6 +9264,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     60.1,
     61.3
@@ -9210,16 +9275,17 @@
    ]
   },
   "golem_v1": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    65.5,
-    61.5
+    64.0,
+    64.5
    ],
    "shieldPivotPx": [
     0.0,
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     83.2,
     60.8
@@ -9230,16 +9296,17 @@
    ]
   },
   "golem_v2": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.5,
-    64.0
+    55.5,
+    56.5
    ],
    "shieldPivotPx": [
     0.0,
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     98.8,
     62.3
@@ -9250,16 +9317,17 @@
    ]
   },
   "golem_v3": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    63.0,
-    64.5
+    65.0,
+    63.5
    ],
    "shieldPivotPx": [
     0.0,
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     54.7,
     61.3
@@ -9270,7 +9338,7 @@
    ]
   },
   "necromancer_v1": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
     63.5,
     63.5
@@ -9280,6 +9348,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     71.3,
     61.3
@@ -9290,7 +9359,7 @@
    ]
   },
   "necromancer_v2": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
     63.5,
     63.5
@@ -9300,6 +9369,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     77.6,
     59.8
@@ -9310,7 +9380,7 @@
    ]
   },
   "necromancer_v3": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
     63.5,
     63.5
@@ -9320,6 +9390,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     57.2,
     63.8
@@ -9330,9 +9401,9 @@
    ]
   },
   "seer_v1": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9340,6 +9411,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     63.7,
     61.3
@@ -9350,9 +9422,9 @@
    ]
   },
   "seer_v2": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9360,6 +9432,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     56.9,
     61.8
@@ -9370,9 +9443,9 @@
    ]
   },
   "seer_v3": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9380,6 +9453,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     67.3,
     61.8
@@ -9400,6 +9474,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     55.9,
     63.5
@@ -9420,6 +9495,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     54.1,
     63.5
@@ -9440,6 +9516,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     56.7,
     63.5
@@ -9450,9 +9527,9 @@
    ]
   },
   "skeleton_warrior_v1": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9460,6 +9537,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     50.5,
     61.3
@@ -9470,9 +9548,9 @@
    ]
   },
   "skeleton_warrior_v2": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9480,6 +9558,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     47.8,
     61.3
@@ -9490,9 +9569,9 @@
    ]
   },
   "skeleton_warrior_v3": {
-   "shieldAnchor": "left_hand",
+   "shieldAnchor": "right_hand",
    "shieldHold": [
-    64.0,
+    63.5,
     63.5
    ],
    "shieldPivotPx": [
@@ -9500,6 +9579,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     57.3,
     61.3
@@ -9520,6 +9600,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     52.1,
     63.5
@@ -9540,6 +9621,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     48.5,
     63.5
@@ -9560,6 +9642,7 @@
     0.0
    ],
    "weaponAnchor": "sword",
+   "weaponHand": "left_hand",
    "weaponHold": [
     55.9,
     64.0

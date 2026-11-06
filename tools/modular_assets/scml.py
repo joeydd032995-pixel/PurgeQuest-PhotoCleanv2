@@ -32,6 +32,12 @@ PACKS: List[Tuple[str, int]] = (
 )
 
 
+# A pack with no baked shield part holds a swapped-in shield in this hand. Every pack bakes its sword
+# into the Left Hand and the two packs that bake a shield (Valkyrie, Skeleton Crusader) put it in the
+# Right Hand, so a shield goes where the pack's own art puts one: the hand that is not holding the sword.
+SHIELD_HAND = "right_hand"
+
+
 def pack_id(race_dir: str, variant: int) -> str:
     return f"{race_dir}_v{variant}"
 
@@ -249,9 +255,18 @@ def render_frame(doc: Doc, race_dir: str, variant: int, animation: str, frame_in
                  weapon_scale: float = 1.0, hide: Iterable[str] = (),
                  weapon_image: Optional[Image.Image] = None, weapon_fit: Optional[dict] = None,
                  shield_image: Optional[Image.Image] = None, shield_fit: Optional[dict] = None,
-                 canvas: Optional[tuple] = None, background=(0, 0, 0, 0)) -> Image.Image:
+                 canvas: Optional[tuple] = None, background=(0, 0, 0, 0),
+                 weapon_hand: str = "left_hand") -> Image.Image:
     """Render one frame. `provider(placement)` may return replacement layer images
-    (same pixel size as the original part) drawn at the part's placement in order."""
+    (same pixel size as the original part) drawn at the part's placement in order.
+
+    A swapped-in weapon follows how the pack itself draws its weapon. In an attack frame the pack draws its sword
+    (always at the very back, behind the hand, arm and body, so the grip is hidden); the swapped weapon takes that
+    layer. In the idle pose the pack draws no sword and the fist hangs empty at the hip; the swapped weapon is
+    drawn in front and the `weapon_hand` part is drawn again over its grip, so the fist visibly holds it.
+
+    `weapon_fit` is a dict ({"scale", "offset", "rotation"}) or a function of the weapon anchor's placement in the frame
+    that returns one, so a weapon can be turned about its grip depending on how the frame points it (held_gear.CARRY_ANGLE)."""
     frames = doc.animations[animation]
     placements = frames[frame_index % len(frames)]
     origin, size = canvas if canvas is not None else doc.canvas(1.0)
@@ -263,33 +278,47 @@ def render_frame(doc: Doc, race_dir: str, variant: int, animation: str, frame_in
     swapped_shield = shield_image is not None
     weapon_anchor = next((p for p in placements if p.file.stem.startswith(("sword", "bow"))), None)
     shield_anchor = next((p for p in placements if p.file.stem.startswith("shield")), None) or \
-        next((p for p in placements if "left_hand" in p.file.stem), None)
-    for p in sorted(placements, key=lambda q: q.z):
-        stem = p.file.stem
-        if p.alpha < 0.01 or stem.startswith("slashfx") or stem in hide:
-            continue
-        if swapped_weapon and stem.startswith(("sword", "bow")):
-            continue   # the arrow stays: a swapped bow still fires
-        if swapped_shield and stem.startswith("shield"):
-            continue
+        next((p for p in placements if p.file.stem == SHIELD_HAND), None)
+    # The pack draws its own weapon in this frame (its attack) only when its weapon part is visible.
+    armed = weapon_anchor is not None and weapon_anchor.alpha >= 0.01
+
+    def draw_part(p: Placement) -> None:
         provided = provider(p) if provider else None
         layers = list(provided) if provided is not None else None
         if layers is None:
-            path = base / f"{pid}_{stem}.png"
+            path = base / f"{pid}_{p.file.stem}.png"
             if not path.exists():
-                continue
+                return
             layers = [load_png(path)]
         for item in layers:
             img, sx, sy = item if isinstance(item, tuple) else (item, 1.0, 1.0)
             _draw(canvas, img, p, origin, size[1], scale, sx=sx, sy=sy)
-    if swapped_weapon and weapon_anchor is not None:
-        fit = weapon_fit or {}
+
+    def draw_weapon() -> None:
+        fit = (weapon_fit(weapon_anchor) if callable(weapon_fit) else weapon_fit) or {}
         s = fit.get("scale", 1.0) * weapon_scale
         off = fit.get("offset", (0.0, 0.0))
         pp = (weapon_anchor.pivot_x * weapon_anchor.file.width, (1 - weapon_anchor.pivot_y) * weapon_anchor.file.height)
         _draw(canvas, weapon_image, weapon_anchor, origin, size[1], scale,
               rect=(off[0] - s * pp[0], off[1] - s * pp[1], s * weapon_image.size[0], s * weapon_image.size[1]),
               extra_rot=fit.get("rotation", 0.0))
+
+    for p in sorted(placements, key=lambda q: q.z):
+        stem = p.file.stem
+        if p.alpha < 0.01 or stem.startswith("slashfx") or stem in hide:
+            continue
+        if swapped_weapon and stem.startswith(("sword", "bow")):   # the arrow stays: a swapped bow still fires
+            if armed and p is weapon_anchor:
+                draw_weapon()   # take the baked weapon's layer: behind the hand, the arm and the body
+            continue
+        if swapped_shield and stem.startswith("shield"):
+            continue
+        draw_part(p)
+    if swapped_weapon and weapon_anchor is not None and not armed:
+        draw_weapon()
+        hand = next((p for p in placements if p.file.stem == weapon_hand and p.alpha >= 0.01 and p.file.stem not in hide), None)
+        if hand is not None:
+            draw_part(hand)   # the fist, over the grip
     if swapped_shield and shield_anchor is not None:
         fit = shield_fit or {}
         s = fit.get("scale", 1.0)
