@@ -18,6 +18,19 @@
       "right_hand"
     ]
   },
+  "seer_v1": {
+    "anatomy_parts": [
+      "left_hand",
+      "right_hand"
+    ],
+    "armor_parts": [
+      "body",
+      "left_arm",
+      "right_arm",
+      "left_leg",
+      "right_leg"
+    ]
+  },
   "seer_v2": {
     "anatomy_parts": [
       "left_hand",
