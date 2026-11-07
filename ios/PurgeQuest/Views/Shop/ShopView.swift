@@ -11,6 +11,7 @@ private enum ShopFilter: String, CaseIterable {
     case all = "All"
     case free = "Free"
     case video = "Video"
+    case seasonal = "Seasonal"
     case skins = "Skins"
     case head = "Head"
     case armor = "Armor"
@@ -58,9 +59,25 @@ struct ShopView: View {
     /// given a subtle amber outline so it reads at a glance.
     private var nextGoalItemID: String? {
         filtered
-            .filter { !$0.isUnlocked && $0.type != .upgrade && $0.priceGems > (hero?.gems ?? 0) }
+            .filter { !$0.isUnlocked && $0.type != .upgrade && $0.priceGems > (hero?.gems ?? 0) && seasonalLockName(for: $0) == nil }
             .min(by: { $0.priceGems < $1.priceGems })?
             .id
+    }
+
+    /// The seasonal event running today, if any.
+    private var activeEvent: SeasonalEvent? { SeasonalEventService.shared.activeEvent }
+
+    /// The Seasonal chip only exists while an event is live.
+    private var visibleFilters: [ShopFilter] {
+        ShopFilter.allCases.filter { $0 != .seasonal || activeEvent != nil }
+    }
+
+    /// The event an unowned seasonal exclusive waits for, or nil when the item can be bought now.
+    private func seasonalLockName(for item: CosmeticItem) -> String? {
+        guard !item.isUnlocked,
+              !SeasonalCatalog.isPurchasable(item.id, activeEventID: activeEvent?.id),
+              let owner = SeasonalCatalog.event(owning: item.id) else { return nil }
+        return owner.name
     }
 
     private var filtered: [CosmeticItem] {
@@ -69,6 +86,7 @@ struct ShopView: View {
             case .all: return true
             case .free: return c.priceGems == 0 || c.isUnlocked
             case .video: return c.isVideoThemed
+            case .seasonal: return activeEvent?.exclusiveCosmeticIDs.contains(c.id) ?? false
             case .skins: return c.type == .skin
             case .head: return c.type == .head
             case .armor: return c.type == .armor
@@ -190,7 +208,7 @@ struct ShopView: View {
     private var filterBar: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
-                ForEach(ShopFilter.allCases, id: \.self) { f in
+                ForEach(visibleFilters, id: \.self) { f in
                     Button {
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { filter = f }
                     } label: {
@@ -280,6 +298,11 @@ struct ShopView: View {
             if item.type == .skin { hero.equippedSkinID = item.id }
             HapticsService.shared.success()
         } else {
+            if let eventName = seasonalLockName(for: item) {
+                purchaseError = "\(item.name) returns with \(eventName)."
+                HapticsService.shared.warning()
+                return
+            }
             if hero.gems >= item.priceGems {
                 hero.gems -= item.priceGems
                 item.isUnlocked = true
@@ -312,6 +335,7 @@ struct ShopView: View {
             hero: hero,
             equipped: equippedItems,
             isGateLocked: gateLocked,
+            seasonalLockEventName: seasonalLockName(for: item),
             onPreviewChange: { previewChange(item, holding: $0) },
             isNextGoal: isGoal
         ) {
@@ -456,6 +480,8 @@ private struct CosmeticTile: View {
     let hero: Hero?
     let equipped: [CosmeticItem]
     var isGateLocked: Bool = false
+    /// Set for an unowned seasonal exclusive whose event is not running: the event it waits for.
+    var seasonalLockEventName: String? = nil
     /// Reports hold/release so the Armory can raise and revert a full-size preview.
     var onPreviewChange: (Bool) -> Void = { _ in }
     /// The cheapest locked item just out of reach — drawn with a goal outline.
@@ -482,7 +508,7 @@ private struct CosmeticTile: View {
     /// Locked and priced beyond the hero's current gems — the tile dims,
     /// while its price tag stays fully visible.
     private var isUnaffordable: Bool {
-        !item.isUnlocked && item.type != .upgrade && gems < item.priceGems
+        !item.isUnlocked && item.type != .upgrade && gems < item.priceGems && seasonalLockEventName == nil
     }
 
     // The tile is deliberately assembled from small, explicitly typed pieces:
@@ -670,6 +696,13 @@ private struct CosmeticTile: View {
                 .padding(.vertical, 6).padding(.horizontal, 10)
                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.questAmber.opacity(0.18)).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.questAmber.opacity(0.5), lineWidth: 1)))
                 .foregroundStyle(.questAmber)
+        } else if let eventName = seasonalLockEventName {
+            Label("Returns with \(eventName)", systemImage: "calendar.badge.clock")
+                .font(.caption.weight(.bold))
+                .lineLimit(1)
+                .padding(.vertical, 6).padding(.horizontal, 10)
+                .background(RoundedRectangle(cornerRadius: 8).fill(Color.dungeonStoneLight).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.dungeonAsh, lineWidth: 1)))
+                .foregroundStyle(.textSecondary)
         } else {
             priceChip
         }
