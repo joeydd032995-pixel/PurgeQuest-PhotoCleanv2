@@ -238,7 +238,7 @@ enum GameDataService {
         perfectRoom: Bool = false
     ) {
         let records = (try? context.fetch(FetchDescriptor<DeletedMediaRecord>())) ?? []
-        let dragons = records.filter { $0.monsterType == .duplicateDragon }.count
+        let dragons = records.filter { $0.monsterType.counts(as: .duplicateDragon) }.count
         let longTakes = records.filter { $0.mediaKind == .video && $0.durationSeconds >= 600 }.count
         let fiveYearsAgo = Calendar.current.date(byAdding: .year, value: -5, to: Date()) ?? Date()
         let ancient = records.filter { record in
@@ -312,15 +312,20 @@ enum GameDataService {
         try? context.save()
     }
 
+    /// Whether slaying `slain` counts toward the quest's target monster (see `MonsterType.counts(as:)`).
+    private static func counts(_ slain: MonsterType, for quest: Quest) -> Bool {
+        quest.monsterType.map(slain.counts(as:)) ?? false
+    }
+
     static func updateQuests(_ quests: [Quest], for slainMonster: MonsterType, mbFreedThisAction: Double) {
         for q in quests where !q.completed {
             switch q.kind {
             case .photoSlay:
-                if slainMonster.kind == .photo, q.monsterType == slainMonster {
+                if slainMonster.kind == .photo, counts(slainMonster, for: q) {
                     q.currentCount += 1
                 }
             case .videoSlay:
-                if slainMonster.kind == .video, q.monsterType == slainMonster {
+                if slainMonster.kind == .video, counts(slainMonster, for: q) {
                     q.currentCount += 1
                 }
             case .anySlay:
