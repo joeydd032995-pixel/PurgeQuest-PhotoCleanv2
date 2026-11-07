@@ -25,7 +25,7 @@ So this is not "add detection". It is "make the detection correct". Running the 
 | # | Defect | Demonstrated by |
 |---|---|---|
 | 1 | Hashes with no structure match each other. A black frame and a blank wall both hash to `0`, distance 0, so the original engine returns `["black", "wall"] near` for two unrelated pictures. | A probe built from `git show HEAD:…/DuplicateDetection.swift`; `flatThumbnailsNeverClusterByShape` |
-| 2 | Photos and videos can share a cluster. `[photo, video, video2]` came back as one group. | `photosAndVideosNeverShareACluster` |
+| 2 | Photos and videos can share a cluster: `[photo, video, video2]` came back as one group. The kind is also guessed from the duration, so a broken video that reports zero duration counts as a photo, and exact (stage A) keys ignore the kind altogether. | `photosAndVideosNeverShareACluster`, `aVideoThatReportsNoDurationIsStillAVideo`, `aStillAndAVideoAreNeverExactCopies` |
 | 3 | Union-find chains look-alikes: A is near B, B is near C, A and C are 16 bits apart, and all three merge. | `chainsOfLookAlikesSplitInsteadOfMerging` |
 | 4 | A cluster with no capture dates is labelled a Burst Hydra (`span` defaults to 0). | `undatedCopiesAreNeverABurst` |
 
@@ -34,13 +34,14 @@ So this is not "add detection". It is "make the detection correct". Running the 
 - **Linux harness:** needs Swift 6.2 or newer (`https://download.swift.org/swift-6.2.1-release/ubuntu2404/swift-6.2.1-RELEASE/swift-6.2.1-RELEASE-ubuntu24.04.tar.gz` for Ubuntu 24.04). Run `SWIFT_BIN=/path/to/swift tools/swift_harness/run.sh --filter DuplicateEngineTests`.
 - **Xcode:** `xcodebuild -project ios/PurgeQuest.xcodeproj -scheme PurgeQuest -configuration Debug -destination 'platform=iOS Simulator,name=<an iOS 18+ iPhone>' -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO -only-testing:PurgeQuestTests/<Suite> test`, or `tools/ci/xcode-test.sh` for the whole target.
 - **No Mac available:** push and read the "iOS Unit Tests" workflow on the pull request. Do not report an Xcode-only step as passed unless it ran.
-- **Verified while writing this plan:** Tasks 1 to 3 were replayed from a clean copy of the repo on Swift 6.2.1 in two modes, the repository's own harness settings and the app's settings (Swift 5 language mode, default main-actor isolation, approachable-concurrency features). Each red phase failed for the reason stated and each green phase passed with no warnings. Tasks 4 and 5 (UIKit, `MonsterClassifier`) only had their edits applied to the real files and syntax-checked; they have **not** been compiled or run, and `MediaFingerprinterTests` renders real pixels, so run it first and read any failure before changing a threshold.
+- **Verified while writing this plan:** Tasks 1 to 4 were replayed from a clean copy of the repo on Swift 6.2.1 in two modes, the repository's own harness settings and the app's settings (Swift 5 language mode, default main-actor isolation, approachable-concurrency features). Each red phase failed for the reason stated and each green phase passed with no warnings. Task 4's one-line change to `CombatViewModel` and Tasks 5 and 6 (UIKit, `MonsterClassifier`) only had their edits applied to the real files and syntax-checked; they have **not** been compiled or run, and `MediaFingerprinterTests` (Task 5) renders real pixels, so run it first and read any failure before changing a threshold.
 
 ## Global Constraints
 
 - iOS 18.0+ deployment target; Swift 5 language mode; the app target sets `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor` and `SWIFT_APPROACHABLE_CONCURRENCY = YES`.
 - Fully offline, no third-party dependencies, recoverable deletion only (`tools/ci/repo_guard.py`).
-- **Persisted hashes must not change.** `MediaFingerprintRecord.dHashBits` holds hashes computed by the current bit order. `DHash` reproduces that order exactly; the Task 4 test pins it.
+- **Persisted hashes must not change.** `MediaFingerprintRecord.dHashBits` holds hashes computed by the current bit order. `DHash` reproduces that order exactly; the Task 5 test pins it.
+- `MediaFingerprint(...)` keeps compiling at every existing call site: its new `isVideo` parameter (Task 4) is optional.
 - Files listed in `tools/swift_harness/run.sh` must be pure Foundation and must exist (`repo_guard.py` check 5 verifies the second part).
 - New Swift files under `ios/PurgeQuest/` and `ios/PurgeQuestTests/` are picked up automatically. Do not edit `project.pbxproj`.
 - Tests use Swift Testing; suites are `@MainActor`, as in `BestiaryTests.swift`.
@@ -51,6 +52,7 @@ So this is not "add detection". It is "make the detection correct". Running the 
 | File | Change | Responsibility |
 |---|---|---|
 | `ios/PurgeQuest/Services/DuplicateDetection.swift` | modify | `DHash`; conditional UIKit; informative-hash guard; media-kind separation; complete-linkage grouping; honest bursts |
+| `ios/PurgeQuest/ViewModels/CombatViewModel.swift` | modify | Pass each asset's real media kind into its fingerprint (one line) |
 | `ios/PurgeQuestTests/DuplicateEngineTests.swift` | create | Pure tests (run on Linux and in Xcode) |
 | `tools/swift_harness/run.sh` | modify | Compile the engine and run its tests on Linux |
 | `ios/PurgeQuestTests/MediaFingerprinterTests.swift` | create | Real-pixel tests for the UIKit half |
@@ -481,7 +483,7 @@ git commit -m "Stop matching flat thumbnails to each other by shape"
 - Modify: `ios/PurgeQuestTests/DuplicateEngineTests.swift`
 
 **Interfaces:**
-- Produces: `MediaFingerprint.isVideo` (`durationSeconds > 0`); near clusters are formed by greedy complete linkage (every pair in a group is within `nearSimilarityThreshold`), visited oldest first with the asset ID as the tie-break, separately for stills and for videos. `findClusters` keeps its signature and its sorted output.
+- Produces: `MediaFingerprint.isVideo` (`durationSeconds > 0`, a stopgap that Task 4 replaces with the asset's real kind); near clusters are formed by greedy complete linkage (every pair in a group is within `nearSimilarityThreshold`), visited oldest first with the asset ID as the tie-break, separately for stills and for videos. `findClusters` keeps its signature and its sorted output.
 
 - [ ] **Step 1: Pin today's behaviour first**
 
@@ -779,7 +781,236 @@ git commit -m "Keep duplicate groups to look-alikes of one kind and call a burst
 
 ---
 
-### Task 4: Pin the pixel rendering that stored hashes depend on
+### Task 4: Carry the media kind the asset really has
+
+**Files:**
+- Modify: `ios/PurgeQuest/Services/DuplicateDetection.swift`
+- Modify: `ios/PurgeQuest/ViewModels/CombatViewModel.swift`
+- Modify: `ios/PurgeQuestTests/DuplicateEngineTests.swift`
+
+Task 3 keeps stills and videos apart, but it guesses which is which from the duration. The classifier itself treats a video that reports no duration as corrupted (`classifyVideo`: `duration <= 0` is a Corrupted Codec), so a broken video would be filed as a photo and could be grouped with a look-alike still, losing its careful-review treatment on the way. Stage A has the same blind spot: its exact keys never mention the kind. A review of this plan's first draft found both.
+
+**Interfaces:**
+- Produces: `MediaFingerprint.isVideo` as a stored property. `MediaFingerprint.init` gains a trailing `isVideo: Bool? = nil`; when it is omitted the kind falls back to `durationSeconds > 0`, so every existing call site keeps compiling, and the app passes the asset's real kind. Stage A's `metadataKey` and `exactKey` now include the kind.
+
+- [ ] **Step 1: Let the test helper pass a kind, and add the tests**
+
+In `ios/PurgeQuestTests/DuplicateEngineTests.swift` change the helper's signature. Replace:
+
+```swift
+        hasEdits: Bool = false,
+        contentHash: String? = nil
+    ) -> MediaFingerprint {
+```
+
+with:
+
+```swift
+        hasEdits: Bool = false,
+        contentHash: String? = nil,
+        isVideo: Bool? = nil
+    ) -> MediaFingerprint {
+```
+
+and the call it makes. Replace:
+
+```swift
+            dHash: dHash, sharpness: nil, contentHash: contentHash
+        )
+```
+
+with:
+
+```swift
+            dHash: dHash, sharpness: nil, contentHash: contentHash,
+            isVideo: isVideo
+        )
+```
+
+Then insert immediately above the line `    // New tests go above this line.`:
+
+```swift
+    // MARK: - The media kind an asset really has
+
+    @Test func aVideoThatReportsNoDurationIsStillAVideo() {
+        // A broken video can report a duration of zero; judged by duration alone it would be a still.
+        let h: UInt64 = 0xFF00_FF00_FF00_FF00
+        let photo = fingerprint("photo", dHash: h, offset: 0)
+        let broken = fingerprint("broken", dHash: h, offset: 60, bytes: 9_000_000, duration: 0, isVideo: true)
+        #expect(broken.isVideo)
+        #expect(DuplicateDetectionEngine.findClusters(in: [photo, broken]).isEmpty)
+    }
+
+    @Test func aStillAndAVideoAreNeverExactCopies() {
+        // Same size, shape and capture second, and neither has a duration: only the kind differs.
+        let still = fingerprint("still", dHash: nil, offset: 0, isVideo: false)
+        let video = fingerprint("video", dHash: nil, offset: 0, isVideo: true)
+        #expect(DuplicateDetectionEngine.findClusters(in: [still, video]).isEmpty)
+
+        // Nor does a shared content hash make them copies of one another.
+        let hashedStill = fingerprint("hashedStill", dHash: nil, offset: 0, contentHash: "same", isVideo: false)
+        let hashedVideo = fingerprint("hashedVideo", dHash: nil, offset: 5, bytes: 3, contentHash: "same", isVideo: true)
+        #expect(DuplicateDetectionEngine.findClusters(in: [hashedStill, hashedVideo]).isEmpty)
+    }
+
+    @Test func twoBrokenCopiesOfOneVideoStillGroupAsVideos() {
+        let a = fingerprint("a", dHash: nil, offset: 0, duration: 0, contentHash: "same", isVideo: true)
+        let b = fingerprint("b", dHash: nil, offset: 5, bytes: 2_000_001, duration: 0, contentHash: "same", isVideo: true)
+        let clusters = DuplicateDetectionEngine.findClusters(in: [a, b])
+        #expect(clusters.map(\.memberIDs) == [["a", "b"]])
+        #expect(clusters.first?.kind == .exact)
+    }
+
+    @Test func withoutAnExplicitKindTheDurationDecides() {
+        #expect(fingerprint("clip", dHash: nil, duration: 12).isVideo)
+        #expect(!fingerprint("still", dHash: nil, duration: 0).isVideo)
+    }
+
+    @Test func copyingAFingerprintKeepsItsKind() {
+        let broken = fingerprint("broken", dHash: nil, duration: 0, isVideo: true)
+        #expect(broken.withContentHash("abc").isVideo)
+    }
+```
+
+- [ ] **Step 2: Run them and confirm they fail**
+
+Run: `SWIFT_BIN=… tools/swift_harness/run.sh --filter DuplicateEngineTests`
+Expected: FAIL to compile with `error: extra argument 'isVideo' in call`.
+
+- [ ] **Step 3: Store the kind**
+
+In `DuplicateDetection.swift` replace the computed property in `MediaFingerprint`:
+
+```swift
+    let contentHash: String?
+
+    var longEdge: Int { max(pixelWidth, pixelHeight) }
+    /// Videos carry a duration; stills do not.
+    var isVideo: Bool { durationSeconds > 0 }
+```
+
+with a stored property and an initializer that keeps the old call shape:
+
+```swift
+    let contentHash: String?
+    /// True for videos. The app passes the asset's real media type: a broken video can report a
+    /// duration of zero, so when the kind is known it must not be guessed from the duration.
+    let isVideo: Bool
+
+    init(
+        assetID: String, byteSize: Int64, pixelWidth: Int, pixelHeight: Int, durationSeconds: Double,
+        creationDate: Date?, isFavorite: Bool, isScreenshot: Bool, hasEdits: Bool, isScreenRecording: Bool,
+        dHash: UInt64?, sharpness: Double?, contentHash: String?, isVideo: Bool? = nil
+    ) {
+        self.assetID = assetID
+        self.byteSize = byteSize
+        self.pixelWidth = pixelWidth
+        self.pixelHeight = pixelHeight
+        self.durationSeconds = durationSeconds
+        self.creationDate = creationDate
+        self.isFavorite = isFavorite
+        self.isScreenshot = isScreenshot
+        self.hasEdits = hasEdits
+        self.isScreenRecording = isScreenRecording
+        self.dHash = dHash
+        self.sharpness = sharpness
+        self.contentHash = contentHash
+        // Without an explicit kind, a duration means a video.
+        self.isVideo = isVideo ?? (durationSeconds > 0)
+    }
+
+    var longEdge: Int { max(pixelWidth, pixelHeight) }
+```
+
+and make `withContentHash` keep the kind. Replace:
+
+```swift
+            dHash: dHash, sharpness: sharpness, contentHash: hash
+        )
+```
+
+with:
+
+```swift
+            dHash: dHash, sharpness: sharpness, contentHash: hash, isVideo: isVideo
+        )
+```
+
+- [ ] **Step 4: Run them and see the exact-copy test still fail**
+
+Run: `SWIFT_BIN=… tools/swift_harness/run.sh --filter DuplicateEngineTests`
+Expected: FAIL with 2 issues, all in `aStillAndAVideoAreNeverExactCopies`; the other 18 tests pass. The stored kind already fixes stage B (a broken video no longer joins a photo), but stage A's keys still ignore it, so a still and a video with the same metadata, or the same content hash, still form an exact pair.
+
+- [ ] **Step 5: Make the exact keys kind-aware**
+
+Replace the two key functions:
+
+```swift
+    private static func metadataKey(for f: MediaFingerprint) -> String {
+        let second = f.creationDate.map { Int($0.timeIntervalSince1970) } ?? -1
+        return "meta:\(f.byteSize):\(f.pixelWidth)x\(f.pixelHeight):\(Int(f.durationSeconds.rounded())):\(second)"
+    }
+
+    private static func exactKey(for f: MediaFingerprint) -> String {
+        if let hash = f.contentHash { return "hash:\(hash)" }
+        return metadataKey(for: f)
+    }
+```
+
+with:
+
+```swift
+    /// Exact copies are of one kind: a still and a video never share a key.
+    private static func kindTag(for f: MediaFingerprint) -> String {
+        f.isVideo ? "video" : "still"
+    }
+
+    private static func metadataKey(for f: MediaFingerprint) -> String {
+        let second = f.creationDate.map { Int($0.timeIntervalSince1970) } ?? -1
+        return "meta:\(kindTag(for: f)):\(f.byteSize):\(f.pixelWidth)x\(f.pixelHeight):\(Int(f.durationSeconds.rounded())):\(second)"
+    }
+
+    private static func exactKey(for f: MediaFingerprint) -> String {
+        if let hash = f.contentHash { return "hash:\(kindTag(for: f)):\(hash)" }
+        return metadataKey(for: f)
+    }
+```
+
+- [ ] **Step 6: Run them and confirm they pass**
+
+Run: `SWIFT_BIN=… tools/swift_harness/run.sh --filter DuplicateEngineTests`
+Expected: PASS, 19 tests. Then run the whole Linux suite, `SWIFT_BIN=… tools/swift_harness/run.sh`; every suite that passed before must still pass.
+
+- [ ] **Step 7: Pass the real kind from the app**
+
+In `ios/PurgeQuest/ViewModels/CombatViewModel.swift`, in `classifyAndGroup`, where the fingerprint is built, replace:
+
+```swift
+                contentHash: cached[item.id]?.contentHash
+            ))
+```
+
+with:
+
+```swift
+                contentHash: cached[item.id]?.contentHash,
+                isVideo: item.kind == .video
+            ))
+```
+
+Run: `tools/ci/xcode-test.sh`
+Expected: PASS. Nothing else needs touching: `BestiaryTests` and the other tests build fingerprints without a kind, so they get the duration-based fallback they always had.
+
+- [ ] **Step 8: Commit**
+
+```bash
+git add ios/PurgeQuest/Services/DuplicateDetection.swift ios/PurgeQuest/ViewModels/CombatViewModel.swift ios/PurgeQuestTests/DuplicateEngineTests.swift
+git commit -m "Carry each asset's real media kind into duplicate matching"
+```
+
+---
+
+### Task 5: Pin the pixel rendering that stored hashes depend on
 
 **Files:**
 - Create: `ios/PurgeQuestTests/MediaFingerprinterTests.swift`
@@ -901,7 +1132,7 @@ git commit -m "Test that the thumbnail hash survives resizing and brightening an
 
 ---
 
-### Task 5: An Album Echo says why it appeared
+### Task 6: An Album Echo says why it appeared
 
 **Files:**
 - Modify: `ios/PurgeQuest/Services/MonsterClassifier.swift`
@@ -1031,7 +1262,7 @@ git commit -m "Explain an Album Echo as a capture saved again on another day"
 
 ---
 
-### Task 6: Document it and open the pull request
+### Task 7: Document it and open the pull request
 
 **Files:**
 - Modify: `README.md`
@@ -1089,7 +1320,7 @@ In the pull request description, include the four defects table and the before/a
 
 ## Self-review
 
-- Spec coverage: "real duplicate detection (perceptual hash / dHash)" is answered by the verified-state section (it exists) plus Tasks 1 to 5 (the four demonstrated defects, the pixel guard, the explanation). The one genuine gap, library scope, is named in "Not in this plan" with the reason it is separate.
+- Spec coverage: "real duplicate detection (perceptual hash / dHash)" is answered by the verified-state section (it exists) plus Tasks 1 to 6 (the four demonstrated defects, the media-kind fix a review added, the pixel guard, the explanation). The one genuine gap, library scope, is named in "Not in this plan" with the reason it is separate.
 - Placeholder scan: none; every code step carries its code.
-- Type consistency: `DHash` (Task 1) is used by `MediaFingerprinter` and `MediaFingerprinterTests`; `isInformative` (Task 2) is used by Task 3's stage B and Task 4's flat-picture test; `isVideo` (Task 3) is used only inside the engine.
+- Type consistency: `DHash` (Task 1) is used by `MediaFingerprinter` and `MediaFingerprinterTests`; `isInformative` (Task 2) is used by Task 3's stage B and Task 5's flat-picture test; `isVideo` (a stopgap in Task 3, stored in Task 4) is read by the engine's stage B and exact keys and written by `CombatViewModel`.
 - Cross-plan: `ContentReachabilityTests` (content-reachability plan) builds duplicate witnesses from `0xAAAA_5555_AAAA_5555`, which is informative (32 set bits), so it keeps passing after Task 2.

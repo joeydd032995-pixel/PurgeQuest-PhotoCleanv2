@@ -4,7 +4,7 @@
 
 **Goal:** Let a trained on-device Core ML model decide whether a photo is out of focus, keep the Laplacian heuristic as the fallback, and set a measured bar a model must clear before it ships.
 
-**Architecture:** A pure decision function (`BlurDecision`) chooses the model's answer when there is one and the heuristic otherwise. A small service (`BlurModelService`) loads `BlurClassifier` from the app bundle by name at run time, so the app builds and behaves identically with or without the model file. Tooling in `tools/coreml/` builds a labelled training set from the owner's own photos, trains with Create ML, and an opt-in test measures the model against the heuristic on held-out photos; `ModelAcceptance` says whether it may ship.
+**Architecture:** A pure decision function (`BlurDecision`) chooses the model's answer when there is one and the heuristic otherwise. A small service (`BlurModelService`) loads `BlurClassifier` from the app bundle by name at run time, so the app builds and behaves identically with or without the model file. Tooling in `tools/coreml/` builds a labelled training set from the owner's own photos, trains with Create ML, and an opt-in test measures the model against the heuristic on real photos a person labelled by hand; `ModelAcceptance` says whether it may ship.
 
 **Tech Stack:** Swift 5 language mode, Core ML, Vision, Swift Testing; Python 3 with NumPy and Pillow for the dataset tool (development machine only); Create ML (macOS) for training. No new app dependencies.
 
@@ -12,7 +12,7 @@
 
 ## What this plan delivers, and what it does not
 
-**It delivers everything except the trained model file.** A model has to be trained on photos and judged on photos, and there are none in this repository (it holds no user images, and a model trained on synthetic data alone would be a guess). So the plan builds the part that can be built and verified: the runtime, the fallback, the decision logic, the training-set builder, the training script, and a gate. Shipping a model is then a short procedure (Task 5) with a pass/fail answer.
+**It delivers everything except the trained model file.** A model has to be trained on photos and judged on real photos that a person has labelled, and there are none in this repository (it holds no user images, and a model trained and judged on synthetic blur alone would be a guess: it can learn the generator rather than focus). So the plan builds the part that can be built and verified: the runtime, the fallback, the decision logic, the training-set builder, the training script, and a gate. Shipping a model is then a short procedure (Task 5) with a pass/fail answer.
 
 **Until a model passes the gate, nothing changes for players.** With no `BlurClassifier` in the bundle, `BlurModelService` returns nil, `BlurDecision` falls through to the existing Laplacian threshold (9.0, unchanged), and the classifier behaves exactly as today. The one visible improvement that arrives with this plan regardless: a Blur Beast now explains itself as **"Looks out of focus"**. Today its reason is `.lowQuality`, whose text reads "Unusual proportions, likely saved from elsewhere", which is wrong for a blurry photo.
 
@@ -30,7 +30,7 @@
 - **Xcode:** `xcodebuild -project ios/PurgeQuest.xcodeproj -scheme PurgeQuest -configuration Debug -destination 'platform=iOS Simulator,name=<an iOS 18+ iPhone>' -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO -only-testing:PurgeQuestTests/<Suite> test`, or `tools/ci/xcode-test.sh`.
 - **Python tooling:** `python3 -m pip install numpy pillow pytest`, then `python3 -m pytest tools/coreml -q`.
 - **No Mac available:** push and read the "iOS Unit Tests" workflow on the pull request. Do not report an Xcode-only step as passed unless it ran.
-- **Verified while writing this plan:** Task 1 was replayed from a clean copy on Swift 6.2.1 in the harness's settings and in the app's settings (Swift 5 mode, default main-actor isolation, approachable concurrency): 16 tests pass in both. The Python tool passes 11 tests here, and its command line was run end to end. The pattern used to hold the non-`Sendable` Vision model in a `nonisolated` static was compiled under the app's settings with a stand-in type. Tasks 2 and 3 edit files that import Photos, UIKit, Core ML and Vision: their edits were applied to the real files (each `old` text matched once), every file was syntax-checked, and `tools/ci/repo_guard.py` (offline, deletion, dependency checks) stays green, but they were **not compiled** against the Apple SDKs. Treat the first Xcode build of Tasks 2 and 3 as the real check. `train_blur_classifier.swift` uses Create ML, which exists only on macOS, and was only syntax-checked; its first run on a Mac either works or fails to compile with an obvious API message.
+- **Verified while writing this plan:** Task 1 was replayed from a clean copy on Swift 6.2.1 in the harness's settings and in the app's settings (Swift 5 mode, default main-actor isolation, approachable concurrency): 17 tests pass in both. The Python tool passes 16 tests here, and its command line was run end to end. The pattern used to hold the non-`Sendable` Vision model in a `nonisolated` static was compiled under the app's settings with a stand-in type. Tasks 2 and 3 edit files that import Photos, UIKit, Core ML and Vision: their edits were applied to the real files (each `old` text matched once), every file was syntax-checked, and `tools/ci/repo_guard.py` (offline, deletion, dependency checks) stays green, but they were **not compiled** against the Apple SDKs. Treat the first Xcode build of Tasks 2 and 3 as the real check. `train_blur_classifier.swift` uses Create ML, which exists only on macOS, and was only syntax-checked; its first run on a Mac either works or fails to compile with an obvious API message.
 
 ## Global Constraints
 
@@ -46,7 +46,7 @@
 ## Decisions this plan makes (change them before executing if you disagree)
 
 1. **Create ML trains the model.** It needs no Python machine-learning stack and produces exactly the contract the app reads. The cost is that training needs a Mac.
-2. **Model threshold 0.6, gate: F1 at least 0.05 better than the heuristic, false alarms at most 1 point worse, at least 200 held-out photos.** False alarms are weighted because a wrongly flagged sharp photo is something the player sees and may delete. Edit `ModelAcceptance` if you want a different bar.
+2. **Model threshold 0.6. The gate is measured on real photos a person labelled by hand: F1 at least 0.05 better than the heuristic, false alarms at most 1 point worse, at least 200 photos with at least 50 of each kind.** Synthetic photos never count toward it: the model is trained on those blurs, so scoring it on more of them rewards recognizing the generator rather than focus (a review of this plan's first draft pointed this out). False alarms are weighted because a wrongly flagged sharp photo is something the player sees and may delete. Edit `ModelAcceptance` if you want a different bar.
 3. **The model replaces the heuristic when present.** It is not blended with it. A simple rule is easier to evaluate and to roll back (delete the file).
 
 ## File Structure
@@ -55,7 +55,7 @@
 |---|---|---|
 | `ios/PurgeQuest/Services/BlurDecision.swift` | create | `BlurDecision`, `BlurVerdict`, `BlurSource`, `BlurModelContract` (pure) |
 | `ios/PurgeQuest/Services/ModelAcceptance.swift` | create | `BinaryMetrics`, `ModelAcceptance` (pure) |
-| `ios/PurgeQuestTests/BlurModelTests.swift` | create | 16 pure tests |
+| `ios/PurgeQuestTests/BlurModelTests.swift` | create | 17 pure tests |
 | `tools/swift_harness/run.sh` | modify | Run the above on Linux |
 | `ios/PurgeQuest/Models/MonsterClassification.swift` | modify | `ClassificationReason.softFocus` |
 | `ios/PurgeQuest/Services/MonsterClassifier.swift` | modify | Use `BlurDecision` |
@@ -83,7 +83,7 @@
 - Modify: `tools/swift_harness/run.sh`
 
 **Interfaces:**
-- Produces: `BlurDecision.evaluate(modelBlurProbability: Double?, sharpness: Double?) -> BlurVerdict?`, with `BlurVerdict(isBlurry:source:confidence:)`, `BlurSource` (`.model`, `.heuristic`), and the constants `heuristicSharpnessThreshold` (9.0), `heuristicConfidence` (0.7), `modelBlurThreshold` (0.6); `BlurModelContract.modelName` (`"BlurClassifier"`) and `BlurModelContract.blurProbability(fromLabels:) -> Double?`; `BinaryMetrics` (`record(predictedBlurry:actuallyBlurry:)`, `precision`, `recall`, `f1`, `falsePositiveRate`, `total`); `ModelAcceptance.verdict(model:heuristic:) -> ModelAcceptance.Verdict` (`accepted`, `reasons`).
+- Produces: `BlurDecision.evaluate(modelBlurProbability: Double?, sharpness: Double?) -> BlurVerdict?`, with `BlurVerdict(isBlurry:source:confidence:)`, `BlurSource` (`.model`, `.heuristic`), and the constants `heuristicSharpnessThreshold` (9.0), `heuristicConfidence` (0.7), `modelBlurThreshold` (0.6); `BlurModelContract.modelName` (`"BlurClassifier"`) and `BlurModelContract.blurProbability(fromLabels:) -> Double?`; `BinaryMetrics` (`record(predictedBlurry:actuallyBlurry:)`, `precision`, `recall`, `f1`, `falsePositiveRate`, `total`, `blurryCount`, `sharpCount`); `ModelAcceptance.verdict(model:heuristic:) -> ModelAcceptance.Verdict` (`accepted`, `reasons`) with `minimumSamples` (200), `minimumPerClass` (50), `minimumF1Gain` (0.05) and `maximumExtraFalsePositiveRate` (0.01).
 
 - [ ] **Step 1: Write the failing tests and register them**
 
@@ -198,6 +198,8 @@ struct BlurModelTests {
     @Test func metricsFollowTheirDefinitions() {
         let m = metrics(tp: 80, fp: 10, tn: 90, fn: 20)
         #expect(m.total == 200)
+        #expect(m.blurryCount == 100)
+        #expect(m.sharpCount == 100)
         #expect(abs(m.precision - 80.0 / 90.0) < 1e-12)
         #expect(abs(m.recall - 0.8) < 1e-12)
         #expect(abs(m.falsePositiveRate - 0.1) < 1e-12)
@@ -240,6 +242,15 @@ struct BlurModelTests {
         let heuristic = metrics(tp: 60, fp: 20, tn: 80, fn: 40)
         let model = metrics(tp: 90, fp: 15, tn: 85, fn: 5)
         #expect(ModelAcceptance.verdict(model: model, heuristic: heuristic).reasons.contains { $0.contains("different sets") })
+    }
+
+    @Test func aLopsidedSetIsRefusedHoweverGoodTheNumbersLook() {
+        // 200 photos, but only 10 of them blurry: nothing to judge recall on.
+        let heuristic = metrics(tp: 5, fp: 20, tn: 170, fn: 5)
+        let model = metrics(tp: 10, fp: 1, tn: 189, fn: 0)
+        let verdict = ModelAcceptance.verdict(model: model, heuristic: heuristic)
+        #expect(!verdict.accepted)
+        #expect(verdict.reasons.contains { $0.contains("of each") })
     }
 
     // New tests go above this line.
@@ -401,6 +412,9 @@ nonisolated struct BinaryMetrics: Sendable, Equatable {
     }
 
     var total: Int { truePositives + falsePositives + trueNegatives + falseNegatives }
+    /// Photos that really were blurry, and photos that really were sharp.
+    var blurryCount: Int { truePositives + falseNegatives }
+    var sharpCount: Int { falsePositives + trueNegatives }
     /// Share of "blurry" calls that were right.
     var precision: Double { ratio(truePositives, truePositives + falsePositives) }
     /// Share of truly blurry photos that were caught.
@@ -420,6 +434,8 @@ nonisolated struct BinaryMetrics: Sendable, Equatable {
 nonisolated enum ModelAcceptance {
     /// Fewest labelled photos the comparison may rest on.
     static let minimumSamples = 200
+    /// Fewest of each kind, blurry and sharp, so a lopsided set cannot flatter a model.
+    static let minimumPerClass = 50
     /// How much better than the heuristic (F1) the model must be.
     static let minimumF1Gain = 0.05
     /// How many more sharp photos, as a share, the model may wrongly flag than the heuristic does.
@@ -435,6 +451,9 @@ nonisolated enum ModelAcceptance {
         var reasons: [String] = []
         if model.total < minimumSamples {
             reasons.append("only \(model.total) labelled photos; at least \(minimumSamples) are needed")
+        }
+        if model.blurryCount < minimumPerClass || model.sharpCount < minimumPerClass {
+            reasons.append("only \(model.blurryCount) blurry and \(model.sharpCount) sharp photos; at least \(minimumPerClass) of each are needed")
         }
         if model.total != heuristic.total {
             reasons.append("the model and the heuristic were scored on different sets (\(model.total) vs \(heuristic.total))")
@@ -455,7 +474,7 @@ nonisolated enum ModelAcceptance {
 - [ ] **Step 5: Run the tests and confirm they pass**
 
 Run: `SWIFT_BIN=… tools/swift_harness/run.sh --filter BlurModelTests`
-Expected: PASS, 16 tests. Also run `python3 -I tools/ci/repo_guard.py`; it must report no `harness:` problems.
+Expected: PASS, 17 tests. Also run `python3 -I tools/ci/repo_guard.py`; it must report no `harness:` problems.
 
 - [ ] **Step 6: Commit**
 
@@ -1016,6 +1035,57 @@ def test_random_crop_is_reproducible():
     a = bd.random_square_crop(image, 64, random.Random(5))
     b = bd.random_square_crop(image, 64, random.Random(5))
     assert np.array_equal(np.asarray(a), np.asarray(b))
+
+
+def snapshot(folder: Path) -> dict:
+    return {p.relative_to(folder): p.read_bytes() for p in folder.rglob("*") if p.is_file()}
+
+
+def test_rebuilding_into_a_used_folder_is_refused_and_changes_nothing(tmp_path):
+    make_source(tmp_path / "src")
+    bd.build(tmp_path / "src", tmp_path / "out", per_image=2, seed=1)
+    before = snapshot(tmp_path / "out")
+    with pytest.raises(FileExistsError):
+        bd.build(tmp_path / "src", tmp_path / "out", per_image=1, seed=9)
+    assert snapshot(tmp_path / "out") == before
+
+
+def test_replacing_leaves_no_example_from_the_earlier_run(tmp_path):
+    make_source(tmp_path / "src", count=3)
+    assert bd.build(tmp_path / "src", tmp_path / "out", per_image=2, seed=1) == {"sharp": 6, "blurry": 6}
+    (tmp_path / "src" / "photo2.jpg").unlink()
+    assert bd.build(tmp_path / "src", tmp_path / "out", per_image=1, seed=1, replace=True) == {"sharp": 2, "blurry": 2}
+    for kind in ("sharp", "blurry"):
+        assert sorted(p.name for p in (tmp_path / "out" / kind).iterdir()) == ["00000_0.jpg", "00001_0.jpg"]
+
+
+def test_replacing_never_touches_files_it_did_not_write(tmp_path):
+    make_source(tmp_path / "src", count=1)
+    out = tmp_path / "out"
+    bd.build(tmp_path / "src", out, per_image=1)
+    (out / "sharp" / "notes.txt").write_text("mine")
+    (out / "blurry" / "favourite.jpg").write_bytes(b"not one of ours")
+    bd.build(tmp_path / "src", out, per_image=1, replace=True)
+    assert (out / "sharp" / "notes.txt").read_text() == "mine"
+    assert (out / "blurry" / "favourite.jpg").read_bytes() == b"not one of ours"
+
+
+def test_a_source_with_no_photos_never_clears_an_existing_set(tmp_path):
+    make_source(tmp_path / "src", count=1)
+    bd.build(tmp_path / "src", tmp_path / "out", per_image=1)
+    before = snapshot(tmp_path / "out")
+    (tmp_path / "empty").mkdir()
+    assert bd.main(["--source", str(tmp_path / "empty"), "--out", str(tmp_path / "out"), "--replace"]) == 1
+    assert snapshot(tmp_path / "out") == before
+
+
+def test_command_line_needs_replace_to_reuse_a_folder(tmp_path, capsys):
+    make_source(tmp_path / "src", count=1)
+    args = ["--source", str(tmp_path / "src"), "--out", str(tmp_path / "out"), "--per-image", "1"]
+    assert bd.main(args) == 0
+    assert bd.main(args) == 2
+    assert "--replace" in capsys.readouterr().err
+    assert bd.main(args + ["--replace"]) == 0
 ```
 
 - [ ] **Step 2: Run them and confirm they fail**
@@ -1042,9 +1112,15 @@ are the same pictures and differ only in focus. The output has the layout Create
 
 Nothing is uploaded or downloaded: the script reads local files and writes local files.
 Only JPEG and PNG sources are read; export HEIC photos as JPEG first.
+
+Use a new --out folder for each set. A folder that already holds examples from an earlier run is
+refused, because a smaller second run would otherwise leave the first run's extra examples behind
+and quietly mix the two sets. Pass --replace to remove the earlier examples first; only files named
+like this tool's own (00000_0.jpg and so on) are removed.
 """
 import argparse
 import random
+import re
 import sys
 from pathlib import Path
 
@@ -1056,6 +1132,7 @@ SIZE = 224                      # pixels on a side; blur strengths below are in 
 GAUSSIAN_SIGMA = (1.6, 5.0)
 MOTION_LENGTH = (9, 25)
 DEFOCUS_RADIUS = (2.5, 6.0)
+EXAMPLE_NAME = re.compile(r"^\d{5}_\d+\.jpg$")   # the names build() gives its examples
 
 
 def laplacian_variance(image: Image.Image, size: int = 80) -> float:
@@ -1129,14 +1206,42 @@ def random_square_crop(image: Image.Image, size: int, rng: random.Random) -> Ima
     return image.crop((left, top, left + side, top + side)).resize((size, size), Image.LANCZOS)
 
 
-def build(source: Path, out: Path, per_image: int = 2, seed: int = 1, size: int = SIZE) -> dict:
-    """Writes OUT/sharp and OUT/blurry; returns how many examples each class received."""
+def earlier_examples(out: Path) -> list:
+    """Examples an earlier run of this tool left in OUT, and nothing else."""
+    found = []
+    for name in ("sharp", "blurry"):
+        folder = out / name
+        if folder.is_dir():
+            found += [p for p in folder.iterdir() if EXAMPLE_NAME.match(p.name)]
+    return sorted(found)
+
+
+def build(source: Path, out: Path, per_image: int = 2, seed: int = 1, size: int = SIZE,
+          replace: bool = False) -> dict:
+    """Writes OUT/sharp and OUT/blurry; returns how many examples each class received.
+
+    A folder that already holds examples from an earlier run is refused (FileExistsError) unless
+    replace is true, in which case those examples, and only those, are removed first. A source with
+    no photos changes nothing at all.
+    """
+    photos = sorted(p for p in source.rglob("*") if p.suffix.lower() in SUFFIXES)
+    counts = {"sharp": 0, "blurry": 0}
+    if not photos:
+        return counts
+    earlier = earlier_examples(out)
+    if earlier and not replace:
+        raise FileExistsError(
+            f"{out} already holds {len(earlier)} examples from an earlier run; "
+            "use a new folder, or pass --replace to remove them first"
+        )
+    for path in earlier:
+        path.unlink()
+
     rng = random.Random(seed)
     sharp_dir, blurry_dir = out / "sharp", out / "blurry"
     sharp_dir.mkdir(parents=True, exist_ok=True)
     blurry_dir.mkdir(parents=True, exist_ok=True)
-    counts = {"sharp": 0, "blurry": 0}
-    for index, path in enumerate(sorted(p for p in source.rglob("*") if p.suffix.lower() in SUFFIXES)):
+    for index, path in enumerate(photos):
         with Image.open(path) as opened:
             image = opened.convert("RGB")
         for k in range(per_image):
@@ -1154,11 +1259,17 @@ def main(argv=None) -> int:
     parser.add_argument("--out", type=Path, required=True, help="folder to create sharp/ and blurry/ in")
     parser.add_argument("--per-image", type=int, default=2, help="crops taken from each photo (default 2)")
     parser.add_argument("--seed", type=int, default=1)
+    parser.add_argument("--replace", action="store_true",
+                        help="first remove the examples an earlier run left in --out (only files this tool named)")
     args = parser.parse_args(argv)
     if not args.source.is_dir():
         print(f"not a folder: {args.source}", file=sys.stderr)
         return 2
-    counts = build(args.source, args.out, args.per_image, args.seed)
+    try:
+        counts = build(args.source, args.out, args.per_image, args.seed, replace=args.replace)
+    except FileExistsError as error:
+        print(error, file=sys.stderr)
+        return 2
     if counts["sharp"] == 0:
         print("no JPEG or PNG photos found in the source folder", file=sys.stderr)
         return 1
@@ -1173,7 +1284,7 @@ if __name__ == "__main__":
 - [ ] **Step 4: Run the tests and confirm they pass**
 
 Run: `python3 -m pytest tools/coreml -q`
-Expected: `11 passed`. They check that the FFT convolution matches a direct computation, that every blur kind lowers the app's own sharpness measure, that motion blur smears only along its angle, that the output is deterministic for a seed, and that each blurry example is blurrier than its sharp twin.
+Expected: `16 passed`. They check that the FFT convolution matches a direct computation, that every blur kind lowers the app's own sharpness measure, that motion blur smears only along its angle, that the output is deterministic for a seed, and that each blurry example is blurrier than its sharp twin. Five of them cover re-running into a used folder: it is refused and nothing changes; `--replace` removes the earlier run's examples, and only files named like the tool's own; other files in the folder are left alone; an empty source never clears an existing set; and the command line needs `--replace` to reuse a folder. (A review of this plan's first draft found that a smaller second run silently left the first run's extra examples behind.)
 
 Then run the command line once on a handful of your own photos to see it work:
 
@@ -1235,8 +1346,11 @@ Create `ios/PurgeQuestTests/BlurModelEvaluationTests.swift`:
 //  PurgeQuestTests
 //
 //  The gate a trained BlurClassifier must pass before it ships. Skipped unless
-//  PQ_BLUR_EVAL_DIR points at a folder with `sharp/` and `blurry/` subfolders of held-out photos
-//  (tools/coreml/README.md). On the command line: TEST_RUNNER_PQ_BLUR_EVAL_DIR=/path xcodebuild test ...
+//  PQ_BLUR_EVAL_DIR points at a folder with `sharp/` and `blurry/` subfolders of REAL photos that a
+//  person labelled by hand (tools/coreml/README.md, step 2). Photos made with blur_dataset.py do not
+//  count here: the model was trained on those very blurs, so passing them says little about the
+//  soft focus of real photos. On the command line:
+//  TEST_RUNNER_PQ_BLUR_EVAL_DIR=/path xcodebuild test ...
 //
 
 import Testing
@@ -1273,7 +1387,7 @@ struct BlurModelEvaluationTests {
 
         let verdict = ModelAcceptance.verdict(model: model, heuristic: heuristic)
         print("""
-        blur evaluation on \(model.total) photos
+        blur evaluation on \(model.total) photos (\(model.blurryCount) blurry, \(model.sharpCount) sharp) from \(path)
           heuristic: precision \(heuristic.precision), recall \(heuristic.recall), F1 \(heuristic.f1), false alarms \(heuristic.falsePositiveRate)
           model:     precision \(model.precision), recall \(model.recall), F1 \(model.f1), false alarms \(model.falsePositiveRate)
           verdict:   \(verdict.accepted ? "ACCEPTED" : "REFUSED: " + verdict.reasons.joined(separator: "; "))
@@ -1312,7 +1426,7 @@ The app loads the model by name at run time (`BlurModelService`). No code refers
 class, so adding or removing the file needs no code change, and the app builds and runs the same
 either way.
 
-## 1. Build a training set
+## 1. Build a training set (synthetic)
 
 ```bash
 python3 -m pip install numpy pillow
@@ -1323,13 +1437,28 @@ Every source photo yields random square crops. Each crop is saved sharp and agai
 motion or defocus, random strength), so the two classes are the same pictures and differ only in
 focus. Use JPEG or PNG; export HEIC photos as JPEG first. A few hundred photos is a sensible start.
 
-Make a second set from **different** photos for the final check, and never train on it:
+Use a new `--out` folder for each set. A folder that already holds examples from an earlier run is
+refused, because a smaller second run would otherwise leave the first run's extra examples behind
+and quietly mix the two sets. Pass `--replace` to remove the earlier examples first; only files named
+like the tool's own (`00000_0.jpg` and so on) are removed.
 
-```bash
-python3 tools/coreml/blur_dataset.py --source ~/Pictures/Heldout --out ~/BlurHeldout --per-image 2 --seed 2
-```
+## 2. Label a real test set by hand
 
-## 2. Train (macOS only)
+The decision to ship rests on photos a person has judged, never on synthetic ones. A model trained on
+`blur_dataset.py` output has seen those exact blurs, so it can score well on more of them and still
+miss the soft focus of real photos. (A second synthetic set from different source photos is a handy
+quick check while you iterate, but it never counts toward the gate.)
+
+1. Choose photos from your own library that were **not** used to build the training set, not even as
+   sources. Export them as JPEG.
+2. Put at least 100 that are clearly sharp in `~/BlurReal/sharp` and at least 100 that are clearly
+   soft in `~/BlurReal/blurry`. Soft means the photo as a whole would not be worth keeping for its
+   focus: a shaky hand, missed focus, a subject smeared by motion. Look at each at full size, and
+   leave out the in-between ones: the gate is about telling the two apart.
+3. Include the cases that fool simple measures: low light, plain walls and skies, a portrait with a
+   deliberately soft background (sharp subject: label it sharp), screenshots.
+
+## 3. Train (macOS only)
 
 ```bash
 swift tools/coreml/train_blur_classifier.swift ~/BlurSet ~/BlurModel
@@ -1338,34 +1467,33 @@ swift tools/coreml/train_blur_classifier.swift ~/BlurSet ~/BlurModel
 This uses Create ML's image classifier and writes `~/BlurModel/BlurClassifier.mlmodel`. Add that file
 to the PurgeQuest target in Xcode.
 
-## 3. Judge it against the heuristic
+## 4. Judge it against the heuristic
 
 ```bash
-TEST_RUNNER_PQ_BLUR_EVAL_DIR="$HOME/BlurHeldout" xcodebuild test \
+TEST_RUNNER_PQ_BLUR_EVAL_DIR="$HOME/BlurReal" xcodebuild test \
   -project ios/PurgeQuest.xcodeproj -scheme PurgeQuest -configuration Debug \
   -destination 'platform=iOS Simulator,name=iPhone 16' CODE_SIGNING_ALLOWED=NO \
   -only-testing:PurgeQuestTests/BlurModelEvaluationTests
 ```
 
-The test runs the Laplacian heuristic and the model over the same held-out photos and prints
+The test runs the Laplacian heuristic and the model over the same hand-labelled photos and prints
 precision, recall, F1 and the false-alarm rate for each. `ModelAcceptance` decides:
 
-- at least 200 labelled photos;
+- at least 200 labelled photos, and at least 50 of each kind (blurry and sharp);
 - the model's F1 is at least 0.05 higher than the heuristic's;
 - the model flags no more than 1 point more sharp photos as blurry (false alarms are what players notice).
 
 A model that fails is not shipped. Remove it from the target; the app falls back to the heuristic.
+Before shipping a model that passes, also open the app on a device with a library that has real
+soft shots and look at what it summons, as a sanity check on top of the numbers.
 
-Synthetic blur is not the same as the blur in real photos. Before shipping, also open the app on a
-device with a library that has real soft shots and confirm the Blur Beasts it summons look blurry.
+## 5. Shipping, rolling back, retraining
 
-## 4. Shipping, rolling back, retraining
-
-- **Ship:** commit the `.mlmodel`, record the held-out numbers in the pull request, and note the
+- **Ship:** commit the `.mlmodel`, record the real-photo numbers in the pull request, and note the
   version in the model's metadata.
 - **Roll back:** delete the file from the target. Nothing else changes.
-- **Retrain:** repeat steps 1 to 3 with more or different photos. Keep the held-out set fixed so
-  the numbers stay comparable between versions.
+- **Retrain:** repeat steps 1 to 4 with more or different photos. Keep the hand-labelled set fixed
+  so the numbers stay comparable between versions.
 ````
 
 Create `.github/workflows/coreml-tools.yml`:
@@ -1413,33 +1541,39 @@ git commit -m "Add the tooling to train a blur model and judge it against the he
 
 ---
 
-### Task 5: Train, judge, and either ship or stop
+### Task 5: Train, judge on real photos, and either ship or stop
 
 This task needs a Mac, some of your photos, and a decision. It produces a yes or a no, and both are fine outcomes.
 
-- [ ] **Step 1: Build the two sets and train**
+- [ ] **Step 1: Build the training set, and label a real test set by hand**
 
-Follow `tools/coreml/README.md` steps 1 and 2: a training set from one folder of photos, a held-out set from a different folder, then `swift tools/coreml/train_blur_classifier.swift ~/BlurSet ~/BlurModel`.
+Follow `tools/coreml/README.md` steps 1 and 2. The training set is synthetic (`blur_dataset.py` run over one folder of photos). The test set is **not**: it is at least 100 clearly sharp and at least 100 clearly soft photos from your own library that you chose and labelled yourself, none of them used to build the training set. The gate only counts photos a person has judged. A model scored on the same synthetic blurs it was trained on can look excellent and still miss real soft focus.
 
-- [ ] **Step 2: Add the model and run the gate**
+- [ ] **Step 2: Train**
+
+```bash
+swift tools/coreml/train_blur_classifier.swift ~/BlurSet ~/BlurModel
+```
+
+- [ ] **Step 3: Add the model and run the gate on the real set**
 
 Drag `~/BlurModel/BlurClassifier.mlmodel` into `ios/PurgeQuest/` in Xcode with the PurgeQuest target ticked, then run:
 
 ```bash
-TEST_RUNNER_PQ_BLUR_EVAL_DIR="$HOME/BlurHeldout" xcodebuild test \
+TEST_RUNNER_PQ_BLUR_EVAL_DIR="$HOME/BlurReal" xcodebuild test \
   -project ios/PurgeQuest.xcodeproj -scheme PurgeQuest -configuration Debug \
   -destination 'platform=iOS Simulator,name=<an iOS 18+ iPhone>' CODE_SIGNING_ALLOWED=NO \
   -only-testing:PurgeQuestTests/BlurModelEvaluationTests
 ```
 
-Expected: a printed comparison and either `ACCEPTED` or `REFUSED: …` with reasons.
+Expected: a printed comparison (with how many blurry and sharp photos it used) and either `ACCEPTED` or `REFUSED: …` with reasons.
 
-- [ ] **Step 3: Decide**
+- [ ] **Step 4: Decide**
 
-- **ACCEPTED:** also open the app on a device with real soft shots in the library and check that the Blur Beasts look blurry (the training blur is synthetic). Commit the model, put the held-out numbers in the pull request, and run `tools/ci/xcode-test.sh`.
-- **REFUSED:** remove the model from the target and do not commit it. The app keeps using the heuristic. Read the reasons: too few photos, or a model no better than the heuristic, usually means more or more varied training photos; false alarms usually mean the training blur was stronger than real softness (lower `GAUSSIAN_SIGMA`, `MOTION_LENGTH` and `DEFOCUS_RADIUS` in `blur_dataset.py`).
+- **ACCEPTED:** also open the app on a device and look at the Blur Beasts it summons, as a sanity check on top of the numbers (it can confirm that what is flagged looks blurry; the real-photo numbers are what show what is missed). Commit the model, put the real-photo numbers in the pull request, and run `tools/ci/xcode-test.sh`.
+- **REFUSED:** remove the model from the target and do not commit it. The app keeps using the heuristic. Read the reasons: too few photos, a lopsided set, or a model no better than the heuristic usually means more or more varied training photos; false alarms usually mean the training blur was stronger than real softness (lower `GAUSSIAN_SIGMA`, `MOTION_LENGTH` and `DEFOCUS_RADIUS` in `blur_dataset.py`).
 
-- [ ] **Step 4: Update the README and open the pull request**
+- [ ] **Step 5: Update the README and open the pull request**
 
 In `README.md` replace each of these (the first three describe classification text this plan made stale):
 
