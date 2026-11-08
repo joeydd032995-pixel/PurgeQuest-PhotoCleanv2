@@ -75,7 +75,7 @@ enum MonsterClassifier {
 
             let related = Array(cluster.memberIDs.dropFirst())
             let type = monsterType(for: cluster, members: memberFPs)
-            let reasons = reasons(for: cluster)
+            let reasons = reasons(for: cluster, type: type)
             let bytes = oldest.estimatedBytes
 
             classifications[oldest.id] = MonsterClassification(
@@ -368,12 +368,16 @@ enum MonsterClassifier {
         return .duplicateDragon
     }
 
-    private static func reasons(for cluster: DuplicateCluster) -> [ClassificationReason] {
+    private static func reasons(for cluster: DuplicateCluster, type: MonsterType) -> [ClassificationReason] {
+        var reasons: [ClassificationReason]
         switch cluster.kind {
-        case .exact:  return [.exactBinaryMatch]
-        case .burst:  return [.burstGroup]
-        case .edited: return [.editedVariant]
-        case .near:   return [.nearDuplicateCluster]
+        case .exact:  reasons = [.exactBinaryMatch]
+        case .burst:  reasons = [.burstGroup]
+        case .edited: reasons = [.editedVariant]
+        case .near:   reasons = [.nearDuplicateCluster]
         }
+        // The same capture turning up again weeks later.
+        if type == .albumEcho { reasons.append(.repeatedCapture) }
+        return reasons
     }
 }
