@@ -231,6 +231,7 @@ struct DashboardView: View {
     private var enterDungeonButton: some View {
         Button {
             HapticsService.shared.medium()
+            appState.diveFocus = nil   // the default dive is always mixed, whatever an earlier dive left behind
             appState.combatRequested = true
         } label: {
             HStack(spacing: 10) {

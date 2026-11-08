@@ -65,7 +65,11 @@ struct RoomTargetingBridgeTests {
         let blurry = item(sharpness: 2)
         let shot = item(screenshot: true)
         let old = item(taken: fourYearsAgo, sharpness: 60)
+        // Blur Beast is also the classifier's catch-all, so the monster alone proves nothing: check the reason.
+        // The blurry photo is a Blur Beast because it saw blur; a sharp control is one because it saw nothing.
         #expect(MonsterClassifier.classifySolo(blurry, now: now).monsterType == .blurBeast)
+        #expect(MonsterClassifier.classifySolo(blurry, now: now).reasons == [.lowQuality])
+        #expect(MonsterClassifier.classifySolo(item(sharpness: 60), now: now).reasons == [.noStrongSignal])
         #expect(MonsterClassifier.classifySolo(shot, now: now).monsterType == .screenshotSpecter)
         #expect(MonsterClassifier.classifySolo(old, now: now).monsterType == .ancientArchive)
     }

@@ -230,6 +230,11 @@ final class CombatViewModel {
     private func arrangeNextRoom() {
         let now = Date()
         let memberships = allItems.map { RoomTargeting.buckets(for: RoomTargetFacts(item: $0), now: now) }
+        // Say what the deal had to work with, so a focus with nothing left to lean on is visible in the log.
+        let left = RoomTargeting.counts(Array(memberships[queueIndex...]))
+        let tally = RoomBucket.allCases.map { "\($0.rawValue)=\(left[$0] ?? 0)" }.joined(separator: " ")
+        let focusName = roomFocus?.rawValue ?? "none"
+        Self.log.info("deal: focus \(focusName, privacy: .public), left \(tally, privacy: .public)")
         var rng = SystemRandomNumberGenerator()
         let order = RoomTargeting.arrangedOrder(
             memberships: memberships, roomStart: queueIndex, roomSize: Self.roomSize,
@@ -428,7 +433,9 @@ final class CombatViewModel {
     /// Runs the two-stage duplicate pipeline and the metadata classifier,
     /// folds clusters into single group encounters, picks the dungeon theme,
     /// and orders the queue so the theme's family leads (presentation only —
-    /// ordering never changes what the player may decide).
+    /// ordering never changes what the player may decide). Targeted dives
+    /// (everything but a hand-picked hunt) redeal the unseen queue before every
+    /// room (`arrangeNextRoom`), so this lead only holds for hand-picked hunts.
     private func classifyAndGroup(_ items: [MediaItem], context: ModelContext) async -> ClassifiedBatch {
         let cached = MediaFingerprintStore.loadCached(in: context)
 

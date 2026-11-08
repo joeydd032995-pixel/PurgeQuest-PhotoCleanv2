@@ -3,8 +3,8 @@
 //  PurgeQuest
 //
 //  Smarter room filling, still simple. Before a room is dealt, the dive counts what is left in four
-//  kinds of clutter and fills 30-50% of the room from the biggest one; the rest is pure random, so
-//  default dives stay varied. A Focused Dive names the bucket instead and fills the room from it
+//  kinds of clutter and fills 30-50% of the room from the biggest one; the rest is drawn at random
+//  from outside that bucket, so default dives stay varied. A Focused Dive names the bucket instead and fills the room from it
 //  first, drawing on the rest only when the bucket runs dry. A bucket with nothing left means a
 //  pure random room.
 //
