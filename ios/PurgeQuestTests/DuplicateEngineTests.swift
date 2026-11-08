@@ -93,5 +93,44 @@ struct DuplicateEngineTests {
         #expect(DHash.hash(grayscale: last) == UInt64(1) << 63)
     }
 
+    // MARK: - Hashes without structure
+
+    @Test func informativeHashesNeedStructureOnBothSides() {
+        #expect(!DuplicateDetectionEngine.isInformative(0))
+        #expect(!DuplicateDetectionEngine.isInformative(UInt64.max))
+        #expect(!DuplicateDetectionEngine.isInformative(0b1_1111))        // 5 bits set
+        #expect(DuplicateDetectionEngine.isInformative(0b11_1111))        // 6 bits set
+        #expect(DuplicateDetectionEngine.isInformative(UInt64.max >> 6))  // 58 set, 6 clear
+        #expect(!DuplicateDetectionEngine.isInformative(UInt64.max >> 5)) // 59 set, 5 clear
+        #expect(DuplicateDetectionEngine.isInformative(0xAAAA_5555_AAAA_5555))
+    }
+
+    @Test func flatThumbnailsNeverClusterByShape() {
+        // Three different pictures that all hash to "nothing": a black frame, a white wall, a blank screen.
+        let flats = [
+            fingerprint("black", dHash: 0, offset: 0),
+            fingerprint("wall", dHash: 0, offset: 86_400 * 3, bytes: 900_000),
+            fingerprint("blank", dHash: UInt64.max, offset: 86_400 * 9, bytes: 700_000)
+        ]
+        #expect(DuplicateDetectionEngine.findClusters(in: flats).isEmpty)
+    }
+
+    @Test func nearlyFlatHashesCannotBridgeUnrelatedPictures() {
+        // Two stray bits each: within 10 of one another, yet nothing like the same picture.
+        let a = fingerprint("a", dHash: 0b0000_0011, offset: 0)
+        let b = fingerprint("b", dHash: 0b1100_0000, offset: 100, bytes: 2_000_100)
+        #expect(DuplicateDetectionEngine.hammingDistance(0b0000_0011, 0b1100_0000) == 4)
+        #expect(DuplicateDetectionEngine.findClusters(in: [a, b]).isEmpty)
+    }
+
+    @Test func structuredLookAlikesStillCluster() {
+        let base: UInt64 = 0xAAAA_5555_AAAA_5555
+        let a = fingerprint("a", dHash: base, offset: 0)
+        let b = fingerprint("b", dHash: base ^ 0b111, offset: 86_400 * 5, bytes: 2_000_333) // 3 bits apart
+        let clusters = DuplicateDetectionEngine.findClusters(in: [a, b])
+        #expect(clusters.map(\.memberIDs) == [["a", "b"]])
+        #expect(clusters.first?.kind == .near)
+    }
+
     // New tests go above this line.
 }

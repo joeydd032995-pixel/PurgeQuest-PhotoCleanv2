@@ -75,6 +75,17 @@ enum DuplicateDetectionEngine {
     /// images still read as the same capture.
     static let nearSimilarityThreshold = 10
 
+    /// Fewest set (and fewest cleared) bits a hash needs before it may be matched by shape. Two
+    /// hashes with at most `nearSimilarityThreshold` bits set between them are "near" whatever
+    /// the pictures are, and that is every pair of flat, near-black or near-white thumbnails.
+    static let minimumInformativeBits = nearSimilarityThreshold / 2 + 1
+
+    /// True when the hash has enough structure to compare perceptually.
+    static func isInformative(_ hash: UInt64) -> Bool {
+        let set = hash.nonzeroBitCount
+        return set >= minimumInformativeBits && 64 - set >= minimumInformativeBits
+    }
+
     /// Maximum capture-date span (seconds) for a cluster to count as a burst.
     static let burstWindow: TimeInterval = 3
 
@@ -110,8 +121,12 @@ enum DuplicateDetectionEngine {
             group.forEach { consumed.insert($0.assetID) }
         }
 
-        // Stage B — near: perceptual similarity via union-find over dHashes.
-        let remaining = fingerprints.filter { !consumed.contains($0.assetID) && $0.dHash != nil }
+        // Stage B — near: perceptual similarity via union-find over dHashes. Hashes without
+        // structure (flat frames) are left out: they would match every other flat frame.
+        let remaining = fingerprints.filter { f in
+            guard !consumed.contains(f.assetID), let hash = f.dHash else { return false }
+            return isInformative(hash)
+        }
         guard remaining.count >= 2 else { return clusters.sorted() }
 
         var parent = Dictionary(uniqueKeysWithValues: remaining.map { ($0.assetID, $0.assetID) })
