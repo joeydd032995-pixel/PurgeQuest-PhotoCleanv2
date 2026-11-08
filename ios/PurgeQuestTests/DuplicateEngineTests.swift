@@ -40,7 +40,8 @@ struct DuplicateEngineTests {
         bytes: Int64 = 2_000_000,
         duration: Double = 0,
         hasEdits: Bool = false,
-        contentHash: String? = nil
+        contentHash: String? = nil,
+        isVideo: Bool? = nil
     ) -> MediaFingerprint {
         MediaFingerprint(
             assetID: id, byteSize: bytes,
@@ -49,7 +50,8 @@ struct DuplicateEngineTests {
             creationDate: offset.map { Self.epoch.addingTimeInterval($0) },
             isFavorite: false, isScreenshot: false,
             hasEdits: hasEdits, isScreenRecording: false,
-            dHash: dHash, sharpness: nil, contentHash: contentHash
+            dHash: dHash, sharpness: nil, contentHash: contentHash,
+            isVideo: isVideo
         )
     }
 
@@ -236,6 +238,47 @@ struct DuplicateEngineTests {
         #expect(forward.count == 2)
         #expect(DuplicateDetectionEngine.findClusters(in: Array(prints.reversed())) == forward)
         #expect(DuplicateDetectionEngine.findClusters(in: prints.shuffled(using: &rng)) == forward)
+    }
+
+    // MARK: - The media kind an asset really has
+
+    @Test func aVideoThatReportsNoDurationIsStillAVideo() {
+        // A broken video can report a duration of zero; judged by duration alone it would be a still.
+        let h: UInt64 = 0xFF00_FF00_FF00_FF00
+        let photo = fingerprint("photo", dHash: h, offset: 0)
+        let broken = fingerprint("broken", dHash: h, offset: 60, bytes: 9_000_000, duration: 0, isVideo: true)
+        #expect(broken.isVideo)
+        #expect(DuplicateDetectionEngine.findClusters(in: [photo, broken]).isEmpty)
+    }
+
+    @Test func aStillAndAVideoAreNeverExactCopies() {
+        // Same size, shape and capture second, and neither has a duration: only the kind differs.
+        let still = fingerprint("still", dHash: nil, offset: 0, isVideo: false)
+        let video = fingerprint("video", dHash: nil, offset: 0, isVideo: true)
+        #expect(DuplicateDetectionEngine.findClusters(in: [still, video]).isEmpty)
+
+        // Nor does a shared content hash make them copies of one another.
+        let hashedStill = fingerprint("hashedStill", dHash: nil, offset: 0, contentHash: "same", isVideo: false)
+        let hashedVideo = fingerprint("hashedVideo", dHash: nil, offset: 5, bytes: 3, contentHash: "same", isVideo: true)
+        #expect(DuplicateDetectionEngine.findClusters(in: [hashedStill, hashedVideo]).isEmpty)
+    }
+
+    @Test func twoBrokenCopiesOfOneVideoStillGroupAsVideos() {
+        let a = fingerprint("a", dHash: nil, offset: 0, duration: 0, contentHash: "same", isVideo: true)
+        let b = fingerprint("b", dHash: nil, offset: 5, bytes: 2_000_001, duration: 0, contentHash: "same", isVideo: true)
+        let clusters = DuplicateDetectionEngine.findClusters(in: [a, b])
+        #expect(clusters.map(\.memberIDs) == [["a", "b"]])
+        #expect(clusters.first?.kind == .exact)
+    }
+
+    @Test func withoutAnExplicitKindTheDurationDecides() {
+        #expect(fingerprint("clip", dHash: nil, duration: 12).isVideo)
+        #expect(!fingerprint("still", dHash: nil, duration: 0).isVideo)
+    }
+
+    @Test func copyingAFingerprintKeepsItsKind() {
+        let broken = fingerprint("broken", dHash: nil, duration: 0, isVideo: true)
+        #expect(broken.withContentHash("abc").isVideo)
     }
 
     // New tests go above this line.

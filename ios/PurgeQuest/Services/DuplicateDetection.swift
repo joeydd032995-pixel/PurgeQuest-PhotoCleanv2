@@ -36,10 +36,33 @@ struct MediaFingerprint: Sendable, Equatable {
     let sharpness: Double?
     /// Partial SHA-256 of the primary resource (nil unless computed).
     let contentHash: String?
+    /// True for videos. The app passes the asset's real media type: a broken video can report a
+    /// duration of zero, so when the kind is known it must not be guessed from the duration.
+    let isVideo: Bool
+
+    init(
+        assetID: String, byteSize: Int64, pixelWidth: Int, pixelHeight: Int, durationSeconds: Double,
+        creationDate: Date?, isFavorite: Bool, isScreenshot: Bool, hasEdits: Bool, isScreenRecording: Bool,
+        dHash: UInt64?, sharpness: Double?, contentHash: String?, isVideo: Bool? = nil
+    ) {
+        self.assetID = assetID
+        self.byteSize = byteSize
+        self.pixelWidth = pixelWidth
+        self.pixelHeight = pixelHeight
+        self.durationSeconds = durationSeconds
+        self.creationDate = creationDate
+        self.isFavorite = isFavorite
+        self.isScreenshot = isScreenshot
+        self.hasEdits = hasEdits
+        self.isScreenRecording = isScreenRecording
+        self.dHash = dHash
+        self.sharpness = sharpness
+        self.contentHash = contentHash
+        // Without an explicit kind, a duration means a video.
+        self.isVideo = isVideo ?? (durationSeconds > 0)
+    }
 
     var longEdge: Int { max(pixelWidth, pixelHeight) }
-    /// Videos carry a duration; stills do not.
-    var isVideo: Bool { durationSeconds > 0 }
 
     func withContentHash(_ hash: String) -> MediaFingerprint {
         MediaFingerprint(
@@ -48,7 +71,7 @@ struct MediaFingerprint: Sendable, Equatable {
             durationSeconds: durationSeconds, creationDate: creationDate,
             isFavorite: isFavorite, isScreenshot: isScreenshot,
             hasEdits: hasEdits, isScreenRecording: isScreenRecording,
-            dHash: dHash, sharpness: sharpness, contentHash: hash
+            dHash: dHash, sharpness: sharpness, contentHash: hash, isVideo: isVideo
         )
     }
 }
@@ -188,13 +211,18 @@ enum DuplicateDetectionEngine {
         return buckets.values.filter { $0.count >= 2 }
     }
 
+    /// Exact copies are of one kind: a still and a video never share a key.
+    private static func kindTag(for f: MediaFingerprint) -> String {
+        f.isVideo ? "video" : "still"
+    }
+
     private static func metadataKey(for f: MediaFingerprint) -> String {
         let second = f.creationDate.map { Int($0.timeIntervalSince1970) } ?? -1
-        return "meta:\(f.byteSize):\(f.pixelWidth)x\(f.pixelHeight):\(Int(f.durationSeconds.rounded())):\(second)"
+        return "meta:\(kindTag(for: f)):\(f.byteSize):\(f.pixelWidth)x\(f.pixelHeight):\(Int(f.durationSeconds.rounded())):\(second)"
     }
 
     private static func exactKey(for f: MediaFingerprint) -> String {
-        if let hash = f.contentHash { return "hash:\(hash)" }
+        if let hash = f.contentHash { return "hash:\(kindTag(for: f)):\(hash)" }
         return metadataKey(for: f)
     }
 

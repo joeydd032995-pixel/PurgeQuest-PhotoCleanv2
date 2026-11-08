@@ -426,7 +426,8 @@ final class CombatViewModel {
                 isScreenRecording: item.isScreenRecording,
                 dHash: dHash,
                 sharpness: item.sharpness,
-                contentHash: cached[item.id]?.contentHash
+                contentHash: cached[item.id]?.contentHash,
+                isVideo: item.kind == .video
             ))
         }
 
