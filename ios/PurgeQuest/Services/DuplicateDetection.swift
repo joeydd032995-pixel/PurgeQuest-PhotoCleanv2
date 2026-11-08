@@ -38,6 +38,8 @@ struct MediaFingerprint: Sendable, Equatable {
     let contentHash: String?
 
     var longEdge: Int { max(pixelWidth, pixelHeight) }
+    /// Videos carry a duration; stills do not.
+    var isVideo: Bool { durationSeconds > 0 }
 
     func withContentHash(_ hash: String) -> MediaFingerprint {
         MediaFingerprint(
@@ -121,51 +123,56 @@ enum DuplicateDetectionEngine {
             group.forEach { consumed.insert($0.assetID) }
         }
 
-        // Stage B — near: perceptual similarity via union-find over dHashes. Hashes without
-        // structure (flat frames) are left out: they would match every other flat frame.
-        let remaining = fingerprints.filter { f in
+        // Stage B — near: perceptual similarity. Hashes without structure (flat frames) are left
+        // out, photos and videos are never mixed, and every pair in a cluster must be within the
+        // threshold (complete linkage), so a chain of look-alikes splits instead of merging.
+        let candidates = fingerprints.filter { f in
             guard !consumed.contains(f.assetID), let hash = f.dHash else { return false }
             return isInformative(hash)
         }
-        guard remaining.count >= 2 else { return clusters.sorted() }
-
-        var parent = Dictionary(uniqueKeysWithValues: remaining.map { ($0.assetID, $0.assetID) })
-        func find(_ id: String) -> String {
-            var root = id
-            while parent[root] != root { root = parent[root]! }
-            return root
-        }
-        func union(_ a: String, _ b: String) {
-            let ra = find(a), rb = find(b)
-            if ra != rb { parent[rb] = ra }
-        }
-
-        for i in 0..<remaining.count {
-            for j in (i + 1)..<remaining.count {
-                let a = remaining[i], b = remaining[j]
-                guard let ha = a.dHash, let hb = b.dHash else { continue }
-                if hammingDistance(ha, hb) <= nearSimilarityThreshold {
-                    union(a.assetID, b.assetID)
-                }
+        for videos in [false, true] {
+            let pool = candidates.filter { $0.isVideo == videos }
+            for group in nearGroups(in: pool) {
+                clusters.append(DuplicateCluster(
+                    memberIDs: ordered(group.map(\.assetID), in: fingerprints),
+                    kind: kind(for: group)
+                ))
             }
         }
-
-        var grouped: [String: [MediaFingerprint]] = [:]
-        for f in remaining { grouped[find(f.assetID), default: []].append(f) }
-
-        for group in grouped.values where group.count >= 2 {
-            clusters.append(DuplicateCluster(memberIDs: ordered(group.map(\.assetID), in: fingerprints), kind: kind(for: group)))
-        }
-
         return clusters.sorted()
     }
 
-    /// Burst when every member lands in one short window; edited when
-    /// dimensions differ or a member carries edits; otherwise near.
+    /// Greedy complete-linkage grouping over dHashes. Members are visited oldest first (the asset
+    /// ID breaks ties), so the result does not depend on the order of the input.
+    private static func nearGroups(in pool: [MediaFingerprint]) -> [[MediaFingerprint]] {
+        var groups: [[MediaFingerprint]] = []
+        for f in pool.sorted(by: { capturedEarlier($0, $1) }) {
+            guard let hash = f.dHash else { continue }
+            let home = groups.firstIndex { group in
+                group.allSatisfy { member in
+                    member.dHash.map { hammingDistance($0, hash) <= nearSimilarityThreshold } ?? false
+                }
+            }
+            if let home { groups[home].append(f) } else { groups.append([f]) }
+        }
+        return groups.filter { $0.count >= 2 }
+    }
+
+    private static func capturedEarlier(_ a: MediaFingerprint, _ b: MediaFingerprint) -> Bool {
+        let da = a.creationDate ?? .distantFuture
+        let db = b.creationDate ?? .distantFuture
+        return da != db ? da < db : a.assetID < b.assetID
+    }
+
+    /// Burst when every member has a capture time and they all land in one short window; edited
+    /// when dimensions differ or a member carries edits; otherwise near. Undated assets say
+    /// nothing about proximity, so they can never make a burst.
     private static func kind(for group: [MediaFingerprint]) -> DuplicateClusterKind {
         let dates = group.compactMap(\.creationDate).sorted()
-        let span = (dates.count >= 2) ? dates.last!.timeIntervalSince(dates.first!) : 0
-        if span <= burstWindow { return .burst }
+        if dates.count == group.count, let first = dates.first, let last = dates.last,
+           last.timeIntervalSince(first) <= burstWindow {
+            return .burst
+        }
         let dims = Set(group.map { "\($0.pixelWidth)x\($0.pixelHeight)" })
         if dims.count > 1 || group.contains(where: \.hasEdits) { return .edited }
         return .near
@@ -193,7 +200,11 @@ enum DuplicateDetectionEngine {
 
     private static func ordered(_ ids: [String], in fingerprints: [MediaFingerprint]) -> [String] {
         let byID = Dictionary(uniqueKeysWithValues: fingerprints.map { ($0.assetID, $0) })
-        return ids.sorted { (byID[$0]?.creationDate ?? .distantFuture) < (byID[$1]?.creationDate ?? .distantFuture) }
+        return ids.sorted { a, b in
+            let da = byID[a]?.creationDate ?? .distantFuture
+            let db = byID[b]?.creationDate ?? .distantFuture
+            return da != db ? da < db : a < b
+        }
     }
 
     // MARK: - Survivor ranking
