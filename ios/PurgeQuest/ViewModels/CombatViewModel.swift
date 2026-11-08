@@ -97,12 +97,19 @@ final class CombatViewModel {
     private var sessionContext: ModelContext?
     private var roomsCompleted: Int = 0
 
+    // Room targeting (see RoomTargeting): the kind of clutter this dive leans toward (nil is the default
+    // mixed dive), and whether rooms are targeted at all. A hand-picked hunt is dealt exactly as chosen.
+    private var roomFocus: RoomBucket?
+    private var targetsRooms = true
+
     // MARK: - Setup
 
     /// Gem cost to rally after defeat: restores full HP and resumes the room.
     static let rallyCostGems: Int = 100
 
-    func bootstrap(includeVideos: Bool, videoOnly: Bool, hero: Hero, context: ModelContext) async {
+    func bootstrap(includeVideos: Bool, videoOnly: Bool, focus: RoomBucket? = nil, hero: Hero, context: ModelContext) async {
+        roomFocus = focus
+        targetsRooms = true
         openSession(hero: hero, context: context)
 
         // Resume progress: skip everything already swiped (spared) or purged, so
@@ -137,6 +144,8 @@ final class CombatViewModel {
     /// A hand-picked hunt: the player chose specific media in the Photos
     /// picker and wants exactly those monsters, seen or not.
     func bootstrapPicked(assetIDs: [String], hero: Hero, context: ModelContext) async {
+        roomFocus = nil
+        targetsRooms = false
         openSession(hero: hero, context: context)
         Self.log.info("picked hunt: resolving \(assetIDs.count, privacy: .public) chosen assets")
 
@@ -207,12 +216,26 @@ final class CombatViewModel {
             return
         }
         let take = min(Self.roomSize, remaining)
+        if targetsRooms { arrangeNextRoom() }
         currentRoomItems = Array(allItems[queueIndex..<(queueIndex + take)])
         queueIndex += take
         currentRoomIndex = 0
         pendingDecisions = []
         perfectRoom = true
         phase = .fighting
+    }
+
+    /// Moves this room's picks to the front of what is left (see RoomTargeting). Nothing is added or
+    /// dropped: only the order of the unseen part of the queue changes.
+    private func arrangeNextRoom() {
+        let now = Date()
+        let memberships = allItems.map { RoomTargeting.buckets(for: RoomTargetFacts(item: $0), now: now) }
+        var rng = SystemRandomNumberGenerator()
+        let order = RoomTargeting.arrangedOrder(
+            memberships: memberships, roomStart: queueIndex, roomSize: Self.roomSize,
+            focus: roomFocus, using: &rng
+        )
+        allItems = order.map { allItems[$0] }
     }
 
     /// Stamps the session record with its end time. Idempotent — safe to call

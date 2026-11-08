@@ -33,7 +33,8 @@ Photos and videos in your library appear as monsters. Swipe left to slay (delete
 ## Features
 
 ### Core combat loop
-- Your Camera Roll is split into **dungeon dives**: 5 rooms per session, 18 items per room (`ViewModels/CombatViewModel.swift`).
+- Your Camera Roll is split into **dungeon dives**: 5 rooms per session, 20 items per room (`ViewModels/CombatViewModel.swift`).
+- **Rooms lean toward clutter, without going predictable.** A dive loads the 150 oldest unseen items. Before each room is dealt it counts what is left in four buckets: blurry photos, screenshots, videos over 100 MB or 2 minutes, and photos three or more years old. It then fills 30–50% of the room from the largest bucket and the rest at random. A bucket with nothing left means a pure random room (`Services/RoomTargeting.swift`). The dashboard's **Focused Dive** menu (Blur / Screenshots / Large Video / Old) names a bucket instead and fills rooms from it first; it applies to that one dive, and "Enter the Dungeon" stays the mixed default. A focus can only lean on what the dive's 150 items hold, and hand-picked hunts are dealt exactly as chosen.
 - Each item is classified into one of **13 monster types** (below) and rendered as a swipeable combat card (`Views/Combat/SwipeMediaCard.swift`) — swipe left to slay (queue for deletion), right to spare.
 - A **combo multiplier** ramps your XP/gem rewards every 5 consecutive slays without sparing; sparing resets the combo.
 - Before anything is deleted, a **Room Summary** screen lists every queued item and requires explicit user confirmation (`Views/Combat/RoomSummaryView.swift`) — individual items can be flipped from delete → spare right up until that point.

@@ -42,7 +42,7 @@ struct CombatView: View {
             if !appState.pickedAssetIDs.isEmpty {
                 await combat.bootstrapPicked(assetIDs: appState.pickedAssetIDs, hero: hero, context: modelContext)
             } else {
-                await combat.bootstrap(includeVideos: appState.includeVideos, videoOnly: appState.videoOnlyMode, hero: hero, context: modelContext)
+                await combat.bootstrap(includeVideos: appState.includeVideos, videoOnly: appState.videoOnlyMode, focus: appState.diveFocus, hero: hero, context: modelContext)
             }
         }
         .onChange(of: combat.screenShakeTrigger) { _, _ in
@@ -360,6 +360,7 @@ struct CombatView: View {
         combat.endSessionActivity()
         appState.combatRequested = false
         appState.pickedAssetIDs = []
+        appState.diveFocus = nil
         dismiss()
     }
 }
