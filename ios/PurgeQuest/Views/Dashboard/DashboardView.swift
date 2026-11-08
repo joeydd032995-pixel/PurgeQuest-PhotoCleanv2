@@ -39,6 +39,7 @@ struct DashboardView: View {
                 themeStrip
                 questsPanel
                 enterDungeonButton
+                focusedDiveMenu
                 pickedHuntPicker
                 Color.clear.frame(height: 16)
             }
@@ -230,6 +231,7 @@ struct DashboardView: View {
     private var enterDungeonButton: some View {
         Button {
             HapticsService.shared.medium()
+            appState.diveFocus = nil   // the default dive is always mixed, whatever an earlier dive left behind
             appState.combatRequested = true
         } label: {
             HStack(spacing: 10) {
@@ -239,6 +241,62 @@ struct DashboardView: View {
         }
         .buttonStyle(.gold(fullWidth: true))
         .accessibilityLabel("Enter the dungeon and start a cleanup session")
+    }
+
+    /// Optional: lean this dive toward one kind of clutter. "Enter the Dungeon" above stays the mixed
+    /// default. Choosing a bucket starts the dive at once; the choice applies to that dive only.
+    private var focusedDiveMenu: some View {
+        Menu {
+            ForEach(RoomBucket.allCases, id: \.self) { bucket in
+                Button {
+                    HapticsService.shared.medium()
+                    appState.diveFocus = bucket
+                    appState.combatRequested = true
+                } label: {
+                    Label(focusTitle(bucket), systemImage: focusIcon(bucket))
+                }
+                .disabled(!canFocus(on: bucket))
+            }
+        } label: {
+            Label("Focused Dive", systemImage: "scope")
+                .font(.headline)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.dungeonStone)
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
+                )
+                .foregroundStyle(.textPrimary)
+        }
+        .accessibilityLabel("Focused dive: choose one kind of clutter to hunt first")
+    }
+
+    /// A bucket the dive's settings would never fetch is not offered: video-only dives hold no photos,
+    /// and photo-only dives hold no videos.
+    private func canFocus(on bucket: RoomBucket) -> Bool {
+        switch bucket {
+        case .largeVideo: return appState.includeVideos || appState.videoOnlyMode
+        case .blur, .screenshots, .old: return !appState.videoOnlyMode
+        }
+    }
+
+    private func focusTitle(_ bucket: RoomBucket) -> String {
+        switch bucket {
+        case .blur: return "Blur"
+        case .screenshots: return "Screenshots"
+        case .largeVideo: return "Large Video"
+        case .old: return "Old"
+        }
+    }
+
+    private func focusIcon(_ bucket: RoomBucket) -> String {
+        switch bucket {
+        case .blur: return "camera.filters"
+        case .screenshots: return "camera.viewfinder"
+        case .largeVideo: return "film.stack"
+        case .old: return "clock.arrow.circlepath"
+        }
     }
 
     /// Photos picker: hand-pick specific media and dive against exactly those

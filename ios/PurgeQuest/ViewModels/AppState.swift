@@ -33,6 +33,10 @@ final class AppState {
     /// targeted hunt; consumed (and cleared) by the next CombatView bootstrap.
     var pickedAssetIDs: [String] = []
 
+    /// The kind of clutter the next dive leans toward, set by the dashboard's Focused Dive menu and
+    /// consumed (and cleared on exit) by CombatView. Nil is the default mixed dive.
+    var diveFocus: RoomBucket? = nil
+
     func completeOnboarding() {
         hasOnboarded = true
         UserDefaults.standard.set(true, forKey: "pq.hasOnboarded")
