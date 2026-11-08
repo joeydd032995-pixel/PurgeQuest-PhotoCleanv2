@@ -14,7 +14,9 @@
 //
 
 import Foundation
+#if canImport(UIKit)
 import UIKit
+#endif
 
 /// A lightweight, persistable fingerprint for one library asset.
 struct MediaFingerprint: Sendable, Equatable {
@@ -205,31 +207,47 @@ private extension MediaFingerprint {
     var mediaKindSupportsDuplication: Bool { true }
 }
 
-// MARK: - Fingerprint building (UIImage-dependent)
+// MARK: - Perceptual hash
 
-enum MediaFingerprinter {
+/// The pure half of the 64-bit difference hash. `MediaFingerprinter` renders a 9×8 grayscale
+/// thumbnail and hands the bytes here, so the bit order, and with it every hash already stored in
+/// `MediaFingerprintRecord`, is defined in exactly one place. Do not change it: stored hashes
+/// would stop matching new ones.
+enum DHash {
+    static let width = 9
+    static let height = 8
 
-    /// dHash (difference hash): downsample to 9×8 grayscale, compare each
-    /// pixel with its right neighbor → 64 comparison bits.
-    static func dHash(image: UIImage) -> UInt64? {
-        guard let cg = image.cgImage else { return nil }
-        let width = 9, height = 8
-        guard let ctx = grayscaleContext(width: width, height: height) else { return nil }
-        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: width, height: height))
-        guard let data = ctx.data else { return nil }
-        let pixels = data.bindMemory(to: UInt8.self, capacity: width * height)
-
+    /// Bit `n` (least significant first) is set when a pixel is brighter than its right
+    /// neighbour, reading the 9×8 grid row by row. Nil unless exactly 72 samples are given.
+    static func hash(grayscale pixels: [UInt8]) -> UInt64? {
+        guard pixels.count == width * height else { return nil }
         var hash: UInt64 = 0
         var bit = 0
         for y in 0..<height {
             for x in 0..<(width - 1) {
-                let left = pixels[y * width + x]
-                let right = pixels[y * width + x + 1]
-                if left > right { hash |= (1 << UInt64(bit)) }
+                if pixels[y * width + x] > pixels[y * width + x + 1] { hash |= (1 << UInt64(bit)) }
                 bit += 1
             }
         }
         return hash
+    }
+}
+
+// MARK: - Fingerprint building (UIImage-dependent)
+
+#if canImport(UIKit)
+enum MediaFingerprinter {
+
+    /// dHash (difference hash): downsample to 9×8 grayscale, compare each
+    /// pixel with its right neighbor → 64 comparison bits (bit order: see `DHash`).
+    static func dHash(image: UIImage) -> UInt64? {
+        guard let cg = image.cgImage else { return nil }
+        guard let ctx = grayscaleContext(width: DHash.width, height: DHash.height) else { return nil }
+        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: DHash.width, height: DHash.height))
+        guard let data = ctx.data else { return nil }
+        let count = DHash.width * DHash.height
+        let samples = UnsafeBufferPointer(start: data.bindMemory(to: UInt8.self, capacity: count), count: count)
+        return DHash.hash(grayscale: Array(samples))
     }
 
     private static func grayscaleContext(width: Int, height: Int) -> CGContext? {
@@ -241,6 +259,7 @@ enum MediaFingerprinter {
         )
     }
 }
+#endif
 
 // Sorting helper so cluster output is deterministic for tests.
 extension Array where Element == DuplicateCluster {
