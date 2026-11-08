@@ -14,7 +14,9 @@
 //
 
 import Foundation
+#if canImport(UIKit)
 import UIKit
+#endif
 
 /// A lightweight, persistable fingerprint for one library asset.
 struct MediaFingerprint: Sendable, Equatable {
@@ -34,6 +36,31 @@ struct MediaFingerprint: Sendable, Equatable {
     let sharpness: Double?
     /// Partial SHA-256 of the primary resource (nil unless computed).
     let contentHash: String?
+    /// True for videos. The app passes the asset's real media type: a broken video can report a
+    /// duration of zero, so when the kind is known it must not be guessed from the duration.
+    let isVideo: Bool
+
+    init(
+        assetID: String, byteSize: Int64, pixelWidth: Int, pixelHeight: Int, durationSeconds: Double,
+        creationDate: Date?, isFavorite: Bool, isScreenshot: Bool, hasEdits: Bool, isScreenRecording: Bool,
+        dHash: UInt64?, sharpness: Double?, contentHash: String?, isVideo: Bool? = nil
+    ) {
+        self.assetID = assetID
+        self.byteSize = byteSize
+        self.pixelWidth = pixelWidth
+        self.pixelHeight = pixelHeight
+        self.durationSeconds = durationSeconds
+        self.creationDate = creationDate
+        self.isFavorite = isFavorite
+        self.isScreenshot = isScreenshot
+        self.hasEdits = hasEdits
+        self.isScreenRecording = isScreenRecording
+        self.dHash = dHash
+        self.sharpness = sharpness
+        self.contentHash = contentHash
+        // Without an explicit kind, a duration means a video.
+        self.isVideo = isVideo ?? (durationSeconds > 0)
+    }
 
     var longEdge: Int { max(pixelWidth, pixelHeight) }
 
@@ -44,7 +71,7 @@ struct MediaFingerprint: Sendable, Equatable {
             durationSeconds: durationSeconds, creationDate: creationDate,
             isFavorite: isFavorite, isScreenshot: isScreenshot,
             hasEdits: hasEdits, isScreenRecording: isScreenRecording,
-            dHash: dHash, sharpness: sharpness, contentHash: hash
+            dHash: dHash, sharpness: sharpness, contentHash: hash, isVideo: isVideo
         )
     }
 }
@@ -72,6 +99,17 @@ enum DuplicateDetectionEngine {
     /// Perceptual similarity threshold: ~10 of 64 bits may differ while
     /// images still read as the same capture.
     static let nearSimilarityThreshold = 10
+
+    /// Fewest set (and fewest cleared) bits a hash needs before it may be matched by shape. Two
+    /// hashes with at most `nearSimilarityThreshold` bits set between them are "near" whatever
+    /// the pictures are, and that is every pair of flat, near-black or near-white thumbnails.
+    static let minimumInformativeBits = nearSimilarityThreshold / 2 + 1
+
+    /// True when the hash has enough structure to compare perceptually.
+    static func isInformative(_ hash: UInt64) -> Bool {
+        let set = hash.nonzeroBitCount
+        return set >= minimumInformativeBits && 64 - set >= minimumInformativeBits
+    }
 
     /// Maximum capture-date span (seconds) for a cluster to count as a burst.
     static let burstWindow: TimeInterval = 3
@@ -108,47 +146,56 @@ enum DuplicateDetectionEngine {
             group.forEach { consumed.insert($0.assetID) }
         }
 
-        // Stage B — near: perceptual similarity via union-find over dHashes.
-        let remaining = fingerprints.filter { !consumed.contains($0.assetID) && $0.dHash != nil }
-        guard remaining.count >= 2 else { return clusters.sorted() }
-
-        var parent = Dictionary(uniqueKeysWithValues: remaining.map { ($0.assetID, $0.assetID) })
-        func find(_ id: String) -> String {
-            var root = id
-            while parent[root] != root { root = parent[root]! }
-            return root
+        // Stage B — near: perceptual similarity. Hashes without structure (flat frames) are left
+        // out, photos and videos are never mixed, and every pair in a cluster must be within the
+        // threshold (complete linkage), so a chain of look-alikes splits instead of merging.
+        let candidates = fingerprints.filter { f in
+            guard !consumed.contains(f.assetID), let hash = f.dHash else { return false }
+            return isInformative(hash)
         }
-        func union(_ a: String, _ b: String) {
-            let ra = find(a), rb = find(b)
-            if ra != rb { parent[rb] = ra }
-        }
-
-        for i in 0..<remaining.count {
-            for j in (i + 1)..<remaining.count {
-                let a = remaining[i], b = remaining[j]
-                guard let ha = a.dHash, let hb = b.dHash else { continue }
-                if hammingDistance(ha, hb) <= nearSimilarityThreshold {
-                    union(a.assetID, b.assetID)
-                }
+        for videos in [false, true] {
+            let pool = candidates.filter { $0.isVideo == videos }
+            for group in nearGroups(in: pool) {
+                clusters.append(DuplicateCluster(
+                    memberIDs: ordered(group.map(\.assetID), in: fingerprints),
+                    kind: kind(for: group)
+                ))
             }
         }
-
-        var grouped: [String: [MediaFingerprint]] = [:]
-        for f in remaining { grouped[find(f.assetID), default: []].append(f) }
-
-        for group in grouped.values where group.count >= 2 {
-            clusters.append(DuplicateCluster(memberIDs: ordered(group.map(\.assetID), in: fingerprints), kind: kind(for: group)))
-        }
-
         return clusters.sorted()
     }
 
-    /// Burst when every member lands in one short window; edited when
-    /// dimensions differ or a member carries edits; otherwise near.
+    /// Greedy complete-linkage grouping over dHashes. Members are visited oldest first (the asset
+    /// ID breaks ties), so the result does not depend on the order of the input.
+    private static func nearGroups(in pool: [MediaFingerprint]) -> [[MediaFingerprint]] {
+        var groups: [[MediaFingerprint]] = []
+        for f in pool.sorted(by: { capturedEarlier($0, $1) }) {
+            guard let hash = f.dHash else { continue }
+            let home = groups.firstIndex { group in
+                group.allSatisfy { member in
+                    member.dHash.map { hammingDistance($0, hash) <= nearSimilarityThreshold } ?? false
+                }
+            }
+            if let home { groups[home].append(f) } else { groups.append([f]) }
+        }
+        return groups.filter { $0.count >= 2 }
+    }
+
+    private static func capturedEarlier(_ a: MediaFingerprint, _ b: MediaFingerprint) -> Bool {
+        let da = a.creationDate ?? .distantFuture
+        let db = b.creationDate ?? .distantFuture
+        return da != db ? da < db : a.assetID < b.assetID
+    }
+
+    /// Burst when every member has a capture time and they all land in one short window; edited
+    /// when dimensions differ or a member carries edits; otherwise near. Undated assets say
+    /// nothing about proximity, so they can never make a burst.
     private static func kind(for group: [MediaFingerprint]) -> DuplicateClusterKind {
         let dates = group.compactMap(\.creationDate).sorted()
-        let span = (dates.count >= 2) ? dates.last!.timeIntervalSince(dates.first!) : 0
-        if span <= burstWindow { return .burst }
+        if dates.count == group.count, let first = dates.first, let last = dates.last,
+           last.timeIntervalSince(first) <= burstWindow {
+            return .burst
+        }
         let dims = Set(group.map { "\($0.pixelWidth)x\($0.pixelHeight)" })
         if dims.count > 1 || group.contains(where: \.hasEdits) { return .edited }
         return .near
@@ -164,19 +211,28 @@ enum DuplicateDetectionEngine {
         return buckets.values.filter { $0.count >= 2 }
     }
 
+    /// Exact copies are of one kind: a still and a video never share a key.
+    private static func kindTag(for f: MediaFingerprint) -> String {
+        f.isVideo ? "video" : "still"
+    }
+
     private static func metadataKey(for f: MediaFingerprint) -> String {
         let second = f.creationDate.map { Int($0.timeIntervalSince1970) } ?? -1
-        return "meta:\(f.byteSize):\(f.pixelWidth)x\(f.pixelHeight):\(Int(f.durationSeconds.rounded())):\(second)"
+        return "meta:\(kindTag(for: f)):\(f.byteSize):\(f.pixelWidth)x\(f.pixelHeight):\(Int(f.durationSeconds.rounded())):\(second)"
     }
 
     private static func exactKey(for f: MediaFingerprint) -> String {
-        if let hash = f.contentHash { return "hash:\(hash)" }
+        if let hash = f.contentHash { return "hash:\(kindTag(for: f)):\(hash)" }
         return metadataKey(for: f)
     }
 
     private static func ordered(_ ids: [String], in fingerprints: [MediaFingerprint]) -> [String] {
         let byID = Dictionary(uniqueKeysWithValues: fingerprints.map { ($0.assetID, $0) })
-        return ids.sorted { (byID[$0]?.creationDate ?? .distantFuture) < (byID[$1]?.creationDate ?? .distantFuture) }
+        return ids.sorted { a, b in
+            let da = byID[a]?.creationDate ?? .distantFuture
+            let db = byID[b]?.creationDate ?? .distantFuture
+            return da != db ? da < db : a < b
+        }
     }
 
     // MARK: - Survivor ranking
@@ -205,31 +261,47 @@ private extension MediaFingerprint {
     var mediaKindSupportsDuplication: Bool { true }
 }
 
-// MARK: - Fingerprint building (UIImage-dependent)
+// MARK: - Perceptual hash
 
-enum MediaFingerprinter {
+/// The pure half of the 64-bit difference hash. `MediaFingerprinter` renders a 9×8 grayscale
+/// thumbnail and hands the bytes here, so the bit order, and with it every hash already stored in
+/// `MediaFingerprintRecord`, is defined in exactly one place. Do not change it: stored hashes
+/// would stop matching new ones.
+enum DHash {
+    static let width = 9
+    static let height = 8
 
-    /// dHash (difference hash): downsample to 9×8 grayscale, compare each
-    /// pixel with its right neighbor → 64 comparison bits.
-    static func dHash(image: UIImage) -> UInt64? {
-        guard let cg = image.cgImage else { return nil }
-        let width = 9, height = 8
-        guard let ctx = grayscaleContext(width: width, height: height) else { return nil }
-        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: width, height: height))
-        guard let data = ctx.data else { return nil }
-        let pixels = data.bindMemory(to: UInt8.self, capacity: width * height)
-
+    /// Bit `n` (least significant first) is set when a pixel is brighter than its right
+    /// neighbour, reading the 9×8 grid row by row. Nil unless exactly 72 samples are given.
+    static func hash(grayscale pixels: [UInt8]) -> UInt64? {
+        guard pixels.count == width * height else { return nil }
         var hash: UInt64 = 0
         var bit = 0
         for y in 0..<height {
             for x in 0..<(width - 1) {
-                let left = pixels[y * width + x]
-                let right = pixels[y * width + x + 1]
-                if left > right { hash |= (1 << UInt64(bit)) }
+                if pixels[y * width + x] > pixels[y * width + x + 1] { hash |= (1 << UInt64(bit)) }
                 bit += 1
             }
         }
         return hash
+    }
+}
+
+// MARK: - Fingerprint building (UIImage-dependent)
+
+#if canImport(UIKit)
+enum MediaFingerprinter {
+
+    /// dHash (difference hash): downsample to 9×8 grayscale, compare each
+    /// pixel with its right neighbor → 64 comparison bits (bit order: see `DHash`).
+    static func dHash(image: UIImage) -> UInt64? {
+        guard let cg = image.cgImage else { return nil }
+        guard let ctx = grayscaleContext(width: DHash.width, height: DHash.height) else { return nil }
+        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: DHash.width, height: DHash.height))
+        guard let data = ctx.data else { return nil }
+        let count = DHash.width * DHash.height
+        let samples = UnsafeBufferPointer(start: data.bindMemory(to: UInt8.self, capacity: count), count: count)
+        return DHash.hash(grayscale: Array(samples))
     }
 
     private static func grayscaleContext(width: Int, height: Int) -> CGContext? {
@@ -241,6 +313,7 @@ enum MediaFingerprinter {
         )
     }
 }
+#endif
 
 // Sorting helper so cluster output is deterministic for tests.
 extension Array where Element == DuplicateCluster {

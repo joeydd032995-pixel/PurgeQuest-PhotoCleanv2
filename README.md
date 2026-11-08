@@ -43,13 +43,13 @@ Photos and videos in your library appear as monsters. Swipe left to slay (delete
 
 | Photo monsters | Trigger | Video monsters | Trigger |
 |---|---|---|---|
-| Duplicate Dragon | *(defined but never assigned — see Known Issues)* | Video Vampire | large file, medium duration |
+| Duplicate Dragon family (8 monsters) | near-identical groups: exact pairs, bursts, edited copies, hoards, echoes (see Duplicate detection) | Video Vampire | large file, medium duration |
 | Blur Beast | Laplacian-variance blur estimate | LongTake Leviathan | duration > 2 min |
 | Screenshot Specter | `PHAsset` screenshot subtype flag | Shaky Ghost | default video fallback |
 | Low-Quality Lich | narrow aspect ratio | Boring Blooper | duration < 5s |
 | Ancient Archive | photo older than 3 years | Memory Hog Minotaur | file size > 500 MB |
 | Dark Wraith | low average luminance | Timelapse Phantom | timelapse/high-frame-rate subtype |
-| | | Corrupted Codec | *(defined but never assigned — see Known Issues)* |
+| | | Corrupted Codec | video that cannot be read or reports no duration |
 
 Classification is behind a pluggable `PhotoClassifier`/`VideoClassifier` protocol (`Services/MediaClassifier.swift`), explicitly designed as a strategy-pattern seam for swapping in real Core ML models later.
 
@@ -236,8 +236,8 @@ Not automated: visual approval of art, and the physical-iPhone checks listed at 
 
 Evidence-based findings from reading the current source — not speculative:
 
-1. **"Duplicate Dragon" content is unreachable.** `MonsterType.duplicateDragon` has a daily quest ("Duplicate Dragon Slayer," `GameDataService.swift:113`), an achievement ("Duplicate Slayer," `GameDataService.swift:81`), and a seasonal-event bonus entry (`SeasonalEventService.swift:72`) — but `MLAnalysisService.classifyPhoto()` never returns `.duplicateDragon`, and no duplicate-detection logic (hashing, similarity comparison) exists anywhere in `Services/`. As shipped, that quest and achievement can never be completed. Same issue applies to `MonsterType.corruptedCodec`, referenced as a Halloween bonus monster but never returned by `classifyVideo()`.
-2. **Seasonal events reference cosmetic IDs that don't exist.** All 4 events in `SeasonalEventService.swift` declare `exclusiveCosmeticIDs` (e.g. `"fx.spectral"`, `"weapon.fireworkBlade"`, `"pet.beachSpirit"`) — none of these 7 IDs appear in the 27-item catalog seeded by `GameDataService.cosmeticSeeds`. Seasonal events currently cannot grant their advertised exclusive cosmetics.
+1. **"Duplicate Dragon" and "Corrupted Codec" are never assigned.** *Resolved in code; this note was stale.* `MonsterClassifier` summons the Duplicate Dragon from duplicate clusters and the Corrupted Codec from unreadable video, and `ContentReachabilityTests` proves all 36 monsters can be summoned. What was really wrong: only a cluster's oldest copy took the cluster's monster (the other copies were booked as whatever each would be alone), and the Duplicate Dragon quest and "Duplicate Slayer" achievement counted only the literal Duplicate Dragon, one of eight duplicate monsters. Copies now share their cluster's monster, and the quest and achievement count the whole Duplicate Dragons family.
+2. **Seasonal events reference cosmetic IDs that don't exist.** *Resolved in code; this note was stale.* All nine exclusive IDs are seeded and have art (`tools/ci/repo_guard.py` fails CI if one goes missing). What was missing was the link between an event and its gear: the Armory now shows a Seasonal shelf while an event runs and sells event gear only then. Items a player already owns stay theirs.
 3. **`ios/README-SETUP.md` is stale.** Its "Known v1 limitations" section lists StoreKit IAPs, WidgetKit, Live Activities, and the Foundation Models flavor-text generator as unbuilt "future v2" work — all four are fully implemented in current code (`StoreKitService.swift`, `PurgeQuestWidget/`, `CombatLiveActivityService.swift`, `FoundationFlavorService.swift`). Its "Architecture" section also predates the `Views/Hero/`, `SeasonalEventService`, and widget-extension additions. This file is left untouched by design (documentation-only change) — worth refreshing separately.
 4. **`Config.swift` is both git-tracked and gitignored.** It's committed to the repo (as an intentionally-empty placeholder — see its header comment) *and* listed in `ios/.gitignore`. This means `git status` will look clean even if the file's real, build-injected values differ locally — worth knowing so it doesn't cause confusion.
 5. **Both `.gitignore` files carry unused React Native/Expo patterns** (`node_modules/`, `.expo/`, `babel.config.js`, `package.json`, etc.) — leftovers from Rork's cross-platform template generator, self-acknowledged in `ios/.gitignore`'s own comment ("should not exist in Swift projects"). Harmless, but dead weight worth cleaning up.
@@ -253,7 +253,6 @@ Genuinely open items, verified against current code (not simply copied from the 
 - Replace heuristic photo/video classifiers with real bundled Core ML models (`BlurClassifier.mlmodel`, `VideoQualityScorer.mlmodel`) — flagged with `// TODO` in `Services/MLAnalysisService.swift`.
 - Real motion/shake analysis (via `AVFoundation` + `Vision` feature points) for the "Shaky Ghost" video classification, which currently is just the default fallback rather than a genuine shake detector — also flagged with a `// TODO` in the same file.
 - Actual duplicate-photo detection, to make the existing "Duplicate Dragon" quest/achievement completable (see Known Issue #1).
-- Reconciling seasonal-event exclusive cosmetics with the real catalog (see Known Issue #2).
 
 ---
 

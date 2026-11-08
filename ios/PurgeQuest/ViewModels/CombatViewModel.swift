@@ -426,7 +426,8 @@ final class CombatViewModel {
                 isScreenRecording: item.isScreenRecording,
                 dHash: dHash,
                 sharpness: item.sharpness,
-                contentHash: cached[item.id]?.contentHash
+                contentHash: cached[item.id]?.contentHash,
+                isVideo: item.kind == .video
             ))
         }
 
@@ -444,28 +445,12 @@ final class CombatViewModel {
         MediaFingerprintStore.persist(fingerprints, in: context)
 
         let library = MonsterClassifier.classify(items: items, fingerprints: fingerprints)
-        var classified = items
-        for i in classified.indices {
-            if let c = library.classifications[classified[i].id] {
-                classified[i].classification = c
-                classified[i].monsterType = c.monsterType
-            }
-        }
-        let byID = Dictionary(uniqueKeysWithValues: classified.map { ($0.id, $0) })
-
-        // Fold clusters into one group encounter each (representative = oldest).
-        var groups: [String: DuplicateGroup] = [:]
-        var nonRepresentatives = Set<String>()
-        for cluster in library.clusters where cluster.memberIDs.count >= 2 {
-            let members = cluster.memberIDs.compactMap { byID[$0] }
-            guard let representative = members.first else { continue }
-            groups[representative.id] = DuplicateGroup(
-                representativeID: representative.id,
-                members: members,
-                survivorID: library.recommendedSurvivorIDs[representative.id]
-            )
-            nonRepresentatives.formUnion(cluster.memberIDs.dropFirst())
-        }
+        // Fold clusters into one group encounter each (representative = oldest); every copy takes
+        // the cluster's verdict so rewards, quests and the bestiary agree with the card.
+        let folded = DuplicateGroupBuilder.fold(items: items, library: library)
+        let classified = folded.items
+        let groups = folded.groups
+        let nonRepresentatives = folded.nonRepresentatives
 
         // Theme from composition, with duplicate share raised by cluster membership.
         var composition = DungeonThemeEngine.composition(for: classified)

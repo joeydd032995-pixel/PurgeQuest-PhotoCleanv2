@@ -238,7 +238,7 @@ enum GameDataService {
         perfectRoom: Bool = false
     ) {
         let records = (try? context.fetch(FetchDescriptor<DeletedMediaRecord>())) ?? []
-        let dragons = records.filter { $0.monsterType == .duplicateDragon }.count
+        let dragons = records.filter { $0.monsterType.counts(as: .duplicateDragon) }.count
         let longTakes = records.filter { $0.mediaKind == .video && $0.durationSeconds >= 600 }.count
         let fiveYearsAgo = Calendar.current.date(byAdding: .year, value: -5, to: Date()) ?? Date()
         let ancient = records.filter { record in
@@ -276,6 +276,19 @@ enum GameDataService {
 
     // MARK: - Daily Quests
 
+    /// Every quest the daily draw can pick from. Exposed so tests can audit that each one can be completed.
+    static var dailyQuestPool: [Quest] {
+        [
+            Quest(title: "Blur Beast Hunter",      subtitle: "Slay 8 blurry photo monsters.",      kind: .photoSlay, monsterType: .blurBeast,      targetCount: 8, rewardXP: 120, rewardGems: 60),
+            Quest(title: "Duplicate Dragon Slayer", subtitle: "Vanquish 5 Duplicate Dragons.",     kind: .photoSlay, monsterType: .duplicateDragon, targetCount: 5, rewardXP: 160, rewardGems: 80),
+            Quest(title: "Video Vampire Purge",    subtitle: "Banish 6 Video Vampires.",           kind: .videoSlay, monsterType: .videoVampire,    targetCount: 6, rewardXP: 200, rewardGems: 100),
+            Quest(title: "Long-Take Leviathan",    subtitle: "Defeat 3 Leviathans over 2 minutes.", kind: .videoSlay, monsterType: .longTakeLeviathan, targetCount: 3, rewardXP: 240, rewardGems: 140),
+            Quest(title: "Storage Liberation",     subtitle: "Free 500 MB in a single session.",   kind: .mbFreed,    monsterType: nil,             targetCount: 500, rewardXP: 180, rewardGems: 120),
+            Quest(title: "Dungeon Clear",          subtitle: "Defeat 25 monsters of any kind.",    kind: .anySlay,    monsterType: nil,             targetCount: 25, rewardXP: 150, rewardGems: 70),
+            Quest(title: "Memory Hog Hunter",      subtitle: "Slay 2 Memory Hog Minotaurs.",       kind: .videoSlay,  monsterType: .memoryHogMinotaur, targetCount: 2, rewardXP: 220, rewardGems: 140)
+        ]
+    }
+
     static func refreshDailyQuestsIfNeeded(in context: ModelContext) {
         let descriptor = FetchDescriptor<Quest>()
         let existing = (try? context.fetch(descriptor)) ?? []
@@ -290,15 +303,7 @@ enum GameDataService {
         // wipe and reseed
         for q in existing { context.delete(q) }
 
-        let pool: [Quest] = [
-            Quest(title: "Blur Beast Hunter",      subtitle: "Slay 8 blurry photo monsters.",      kind: .photoSlay, monsterType: .blurBeast,      targetCount: 8, rewardXP: 120, rewardGems: 60),
-            Quest(title: "Duplicate Dragon Slayer", subtitle: "Vanquish 5 Duplicate Dragons.",     kind: .photoSlay, monsterType: .duplicateDragon, targetCount: 5, rewardXP: 160, rewardGems: 80),
-            Quest(title: "Video Vampire Purge",    subtitle: "Banish 6 Video Vampires.",           kind: .videoSlay, monsterType: .videoVampire,    targetCount: 6, rewardXP: 200, rewardGems: 100),
-            Quest(title: "Long-Take Leviathan",    subtitle: "Defeat 3 Leviathans over 2 minutes.", kind: .videoSlay, monsterType: .longTakeLeviathan, targetCount: 3, rewardXP: 240, rewardGems: 140),
-            Quest(title: "Storage Liberation",     subtitle: "Free 500 MB in a single session.",   kind: .mbFreed,    monsterType: nil,             targetCount: 500, rewardXP: 180, rewardGems: 120),
-            Quest(title: "Dungeon Clear",          subtitle: "Defeat 25 monsters of any kind.",    kind: .anySlay,    monsterType: nil,             targetCount: 25, rewardXP: 150, rewardGems: 70),
-            Quest(title: "Memory Hog Hunter",      subtitle: "Slay 2 Memory Hog Minotaurs.",       kind: .videoSlay,  monsterType: .memoryHogMinotaur, targetCount: 2, rewardXP: 220, rewardGems: 140)
-        ]
+        let pool = dailyQuestPool
 
         // Pick 4 distinct quests
         for quest in pool.shuffled().prefix(4) {
@@ -307,15 +312,20 @@ enum GameDataService {
         try? context.save()
     }
 
+    /// Whether slaying `slain` counts toward the quest's target monster (see `MonsterType.counts(as:)`).
+    private static func counts(_ slain: MonsterType, for quest: Quest) -> Bool {
+        quest.monsterType.map(slain.counts(as:)) ?? false
+    }
+
     static func updateQuests(_ quests: [Quest], for slainMonster: MonsterType, mbFreedThisAction: Double) {
         for q in quests where !q.completed {
             switch q.kind {
             case .photoSlay:
-                if slainMonster.kind == .photo, q.monsterType == slainMonster {
+                if slainMonster.kind == .photo, counts(slainMonster, for: q) {
                     q.currentCount += 1
                 }
             case .videoSlay:
-                if slainMonster.kind == .video, q.monsterType == slainMonster {
+                if slainMonster.kind == .video, counts(slainMonster, for: q) {
                     q.currentCount += 1
                 }
             case .anySlay:
