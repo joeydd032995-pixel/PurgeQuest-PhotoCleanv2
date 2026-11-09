@@ -252,6 +252,24 @@ final class PhotoLibraryService {
         return DungeonThemeEngine.composition(for: items)
     }
 
+    /// Estimated bytes of media not yet reviewed — items already spared or
+    /// purged are excluded — i.e. the cleanup opportunity still on the table.
+    /// Uses the same cheap pixel/duration heuristic as `fetchLibraryStats`;
+    /// the measured, verified number lives in StorageMeasurementService.
+    func fetchOpportunityBytes(excluding seen: Set<String>) -> Int64 {
+        let opts = PHFetchOptions()
+        opts.includeHiddenAssets = false
+        let all = PHAsset.fetchAssets(with: opts)
+        var bytes: Int64 = 0
+        all.enumerateObjects { asset, _, _ in
+            guard !seen.contains(asset.localIdentifier) else { return }
+            let estimate = Int64(asset.pixelWidth * asset.pixelHeight) / 6
+            let videoMultiplier = asset.mediaType == .video ? Int64(max(1, asset.duration)) * 600_000 : 0
+            bytes += estimate + videoMultiplier
+        }
+        return bytes
+    }
+
     /// Cheap, explainable signals read straight from PHAsset metadata and its resources.
     private func captureSignals(for asset: PHAsset, resources: [PHAssetResource]) -> (isScreenshot: Bool, hasEdits: Bool, isScreenRecording: Bool, isLivePhoto: Bool, isLooping: Bool, isHighFrameRate: Bool) {
         (

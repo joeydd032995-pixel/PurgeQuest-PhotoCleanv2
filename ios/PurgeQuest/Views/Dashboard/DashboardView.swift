@@ -16,6 +16,8 @@ struct DashboardView: View {
     @Query private var heroes: [Hero]
     @Query private var quests: [Quest]
     @Query private var cosmetics: [CosmeticItem]
+    @Query private var sparedRecords: [SparedMediaRecord]
+    @Query private var deletedRecords: [DeletedMediaRecord]
 
     @State private var libraryStats: LibraryStats = .init()
     @State private var scoutedTheme: DungeonTheme? = nil
@@ -24,6 +26,11 @@ struct DashboardView: View {
     /// Shown when the picker returned choices that carry no asset identifiers —
     /// the signature of missing photo-library access.
     @State private var showAccessHint = false
+
+    // The three storage measurements (identified / pending / reclaimed).
+    @State private var opportunityBytes: Int64 = 0
+    @State private var pendingDeletionBytes: Int64 = 0
+    @State private var reclaim = StorageMeasurementService.Reading(verifiedBytes: 0, unverifiedBytes: 0, isMeasurable: true)
 
     private var hero: Hero? { heroes.first }
     private var equippedItems: [CosmeticItem] { cosmetics.filter { $0.isEquipped } }
@@ -54,6 +61,7 @@ struct DashboardView: View {
             updateStreak()
             SeasonalEventService.shared.refresh()
             WidgetSnapshotService.write(hero: hero, quests: quests)
+            refreshStorageMeasurements()
         }
         .onChange(of: hero?.gems ?? 0) { _, _ in
             WidgetSnapshotService.write(hero: hero, quests: quests)
@@ -78,21 +86,38 @@ struct DashboardView: View {
 
     // MARK: - Library overview (utility surface)
 
+    /// The three storage measurements, kept deliberately separate: the
+    /// estimated opportunity is a heuristic, pending deletion is what the app
+    /// moved to Recently Deleted (still recoverable, still occupying space),
+    /// and only the third row is a real measurement of freed device storage.
     private var libraryOverview: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Library")
                 .font(.title.weight(.bold))
                 .foregroundStyle(.textPrimary)
 
-            VStack(alignment: .leading, spacing: 4) {
-                Text(String(format: "%.1f GB", libraryStats.estimatedGB))
-                    .font(.system(size: 40, weight: .bold).monospacedDigit())
-                    .foregroundStyle(.textPrimary)
-                Text("estimated recoverable space")
-                    .font(.subheadline)
-                    .foregroundStyle(.textSecondary)
+            VStack(alignment: .leading, spacing: 0) {
+                measurementRow(
+                    title: "Identified opportunity",
+                    value: opportunityBytes > 0 ? formattedBytes(opportunityBytes) : "All reviewed",
+                    caption: "Estimated size of items selected for cleanup.",
+                    tint: .questAmber
+                )
+                hairline
+                measurementRow(
+                    title: "Pending deletion",
+                    value: formattedBytes(pendingDeletionBytes),
+                    caption: "Items moved into Recently Deleted, still potentially occupying storage.",
+                    tint: .videoSapphire
+                )
+                hairline
+                measurementRow(
+                    title: "Actually reclaimed",
+                    value: reclaimValue,
+                    caption: "Confirmed reduction in device storage, measured separately.",
+                    tint: .gemEmerald
+                )
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(16)
             .background(
                 RoundedRectangle(cornerRadius: 12)
@@ -103,12 +128,65 @@ struct DashboardView: View {
             HStack(spacing: 10) {
                 StatTile(icon: "photo.fill", label: "Photos", value: "\(libraryStats.photoCount)", tint: .questAmber)
                 StatTile(icon: "video.fill", label: "Videos", value: "\(libraryStats.videoCount)", tint: .videoSapphire)
-            }
-            HStack(spacing: 10) {
-                StatTile(icon: "internaldrive.fill", label: "Freed so far", value: formattedFreed, tint: .gemEmerald)
                 StatTile(icon: "flame.fill", label: "Day streak", value: "\(hero?.streakDays ?? 0)", tint: .combatCrimson)
             }
         }
+    }
+
+    /// One labeled storage measurement inside the overview card.
+    private func measurementRow(title: String, value: String, caption: String, tint: Color) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
+            HStack(spacing: 6) {
+                Circle().fill(tint).frame(width: 6, height: 6)
+                Text(title.uppercased())
+                    .font(.dungeonCaption.weight(.bold))
+                    .foregroundStyle(.textSecondary)
+            }
+            Text(value)
+                .font(.system(size: 24, weight: .bold).monospacedDigit())
+                .foregroundStyle(.textPrimary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+            Text(caption)
+                .font(.caption2)
+                .foregroundStyle(.textSecondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, 10)
+        .accessibilityElement(children: .combine)
+    }
+
+    private var hairline: some View {
+        Rectangle().fill(Color.dungeonAsh.opacity(0.4)).frame(height: 1)
+    }
+
+    /// The measured number only shows once a verification cleared the noise
+    /// threshold; until then the honest answer is "not yet verified".
+    private var reclaimValue: String {
+        guard reclaim.isMeasurable else { return "No reading yet" }
+        return reclaim.verifiedBytes > 0 ? formattedBytes(reclaim.verifiedBytes) : "Not yet verified"
+    }
+
+    /// Recomputes all three measurements from their sources.
+    private func refreshStorageMeasurements() {
+        let seen = Set(sparedRecords.map(\.assetIdentifier))
+            .union(deletedRecords.map(\.assetIdentifier))
+        opportunityBytes = PhotoLibraryService.shared.fetchOpportunityBytes(excluding: seen)
+        // Recently Deleted keeps items for 30 days; until then they still
+        // occupy space even though the dungeon already banked them.
+        let cutoff = Date().addingTimeInterval(-30 * 86_400)
+        pendingDeletionBytes = deletedRecords
+            .filter { $0.deletedAt >= cutoff }
+            .reduce(0) { $0 + $1.fileSizeBytes }
+        reclaim = StorageMeasurementService.shared.refresh()
+    }
+
+    private func formattedBytes(_ bytes: Int64) -> String {
+        let gb = Double(bytes) / 1_073_741_824.0
+        if gb >= 1 { return String(format: "%.1f GB", gb) }
+        let mb = Double(bytes) / 1_048_576.0
+        if mb >= 1 { return String(format: "%.0f MB", mb) }
+        return "0 MB"
     }
 
     private var formattedFreed: String {
