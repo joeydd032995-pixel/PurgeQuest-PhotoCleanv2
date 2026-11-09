@@ -12,6 +12,9 @@ struct CombatHUD: View {
     let roomNumber: Int
     let totalRooms: Int
     let remaining: Int
+    /// Monsters marked for deletion this room — awaiting the Room Summary's
+    /// "Confirm Purge" before anything is actually deleted.
+    var marked: Int = 0
     var themeName: String? = nil
     let onExit: () -> Void
 
@@ -37,6 +40,11 @@ struct CombatHUD: View {
                         Text("· \(remaining) remaining")
                             .font(.caption)
                             .foregroundStyle(.textSecondary)
+                        if marked > 0 {
+                            Text("· \(marked) marked")
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(.combatCrimson)
+                        }
                         if let themeName {
                             Text("· \(themeName)")
                                 .font(.caption.weight(.semibold))

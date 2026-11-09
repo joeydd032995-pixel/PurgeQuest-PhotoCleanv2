@@ -133,6 +133,10 @@ final class CombatViewModel {
     /// Bonuses converted on the last completed dive, shown on the results screen.
     private(set) var diveBonusXP = 0
     private(set) var diveBonusGems = 0
+    /// Monsters marked for deletion (left swipes) that were discarded by the
+    /// last defeat — never confirmed at a Room Summary, so nothing was deleted
+    /// and no rewards were earned from them.
+    private(set) var releasedMarkedCount = 0
 
     func bootstrap(includeVideos: Bool, videoOnly: Bool, focus: RoomBucket? = nil, hero: Hero, context: ModelContext) async {
         roomFocus = focus
@@ -229,6 +233,7 @@ final class CombatViewModel {
         pendingBonusGems = 0
         lostBonusXP = 0
         lostBonusGems = 0
+        releasedMarkedCount = 0
         diveBonusXP = 0
         diveBonusGems = 0
     }
@@ -443,6 +448,9 @@ final class CombatViewModel {
         lostBonusGems = pendingBonusGems
         pendingBonusXP = 0
         pendingBonusGems = 0
+        // Marks never confirmed at a Room Summary are discarded with the run:
+        // the photos stay in the library untouched, and no rewards were earned.
+        releasedMarkedCount = pendingDecisions.filter { $0.willDelete }.count
         if let session = activeSession {
             session.pendingXP = 0
             session.pendingGems = 0
@@ -567,6 +575,12 @@ final class CombatViewModel {
         if let idx = pendingDecisions.firstIndex(where: { $0.id == id }) {
             pendingDecisions[idx].willDelete.toggle()
         }
+    }
+
+    /// Monsters marked for deletion so far this room (awaiting confirmation
+    /// at the Room Summary).
+    var markedCount: Int {
+        pendingDecisions.filter { $0.willDelete }.count
     }
 
     var pendingDeletionItems: [MediaItem] {

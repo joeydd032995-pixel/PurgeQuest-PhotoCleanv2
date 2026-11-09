@@ -116,6 +116,7 @@ struct CombatView: View {
                 roomNumber: combat.roomNumber,
                 totalRooms: CombatViewModel.totalRoomsPerSession,
                 remaining: combat.roomRemaining,
+                marked: combat.markedCount,
                 themeName: combat.theme.displayName,
                 onExit: { exit() }
             )
@@ -306,9 +307,14 @@ struct CombatView: View {
             .background(RoundedRectangle(cornerRadius: 12).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.gemEmerald.opacity(0.35), lineWidth: 1)))
             .padding(.horizontal, 24)
 
-            if combat.lostBonusXP > 0 || combat.lostBonusGems > 0 {
+            if combat.lostBonusXP > 0 || combat.lostBonusGems > 0 || combat.releasedMarkedCount > 0 {
                 VStack(spacing: 8) {
-                    summaryRow(label: "Dive bonuses lost", value: "+\(combat.lostBonusXP) XP · +\(combat.lostBonusGems) gems", tint: .combatCrimson)
+                    if combat.releasedMarkedCount > 0 {
+                        summaryRow(label: "Marked, never confirmed", value: "\(combat.releasedMarkedCount) released unharmed", tint: .combatCrimson)
+                    }
+                    if combat.lostBonusXP > 0 || combat.lostBonusGems > 0 {
+                        summaryRow(label: "Dive bonuses lost", value: "+\(combat.lostBonusXP) XP · +\(combat.lostBonusGems) gems", tint: .combatCrimson)
+                    }
                     summaryRow(label: "Combo", value: "Reset to 1×", tint: .combatCrimson)
                 }
                 .padding()
