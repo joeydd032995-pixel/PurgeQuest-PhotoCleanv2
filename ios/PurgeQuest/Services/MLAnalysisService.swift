@@ -4,7 +4,7 @@
 //
 //  Lightweight on-device signal extractors. Classification (which monster a
 //  signal summons) lives in MonsterClassifier; this file only measures.
-//  TODO: Replace the blur/luminance heuristics with CoreML
+//  TODO: Compare ThumbnailAnalysis' focus score with a CoreML
 //  BlurClassifier.mlmodel + VideoQualityScorer.mlmodel when available.
 //
 
@@ -18,22 +18,27 @@ enum MLAnalysisService {
 
     // MARK: - Signal extractors
 
-    /// Laplacian variance on a downsampled thumbnail — higher means sharper.
-    nonisolated static func sharpnessVariance(image: UIImage) -> Double {
-        guard let cg = image.cgImage else { return 100 }
-        let target = CGSize(width: 80, height: 80)
-        guard let scaled = downsample(cgImage: cg, to: target) else { return 100 }
-        return laplacianVariance(cgImage: scaled)
-    }
-
-    /// Blur estimate on a downsampled thumbnail.
-    nonisolated static func isLikelyBlurry(image: UIImage) -> Bool {
-        sharpnessVariance(image: image) < 9.0
-    }
-
-    nonisolated static func averageLuminance(image: UIImage) -> Double {
-        guard let cg = image.cgImage else { return 1.0 }
-        return averageLuminance(cgImage: cg)
+    /// Focus, exposure and the duplicate signature of a thumbnail, from a single 256×256 gray render
+    /// (see ThumbnailAnalysis, which does the arithmetic and is tested on Linux). Runs off the main
+    /// actor: with the app's approachable-concurrency settings a plain `nonisolated async` function
+    /// would run on its caller's actor, and this is the heaviest per-photo computation on that path.
+    /// Nil when the image has no bitmap to read.
+    @concurrent static func thumbnailMetrics(for image: UIImage) async -> ThumbnailMetrics? {
+        guard let cg = image.cgImage else { return nil }
+        let side = ThumbnailAnalysis.side
+        guard let ctx = CGContext(
+            data: nil, width: side, height: side,
+            bitsPerComponent: 8, bytesPerRow: side,
+            space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue
+        ) else { return nil }
+        // High-quality downscaling averages the pixels it drops. Anything cheaper samples them, and
+        // sampling invents fine detail that a focus measure would read as sharpness.
+        ctx.interpolationQuality = .high
+        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: side, height: side))
+        guard let data = ctx.data else { return nil }
+        let count = side * side
+        let samples = UnsafeBufferPointer(start: data.bindMemory(to: UInt8.self, capacity: count), count: count)
+        return ThumbnailAnalysis.metrics(grayscale: Array(samples), side: side)
     }
 
     /// Mean 0…1 luminance of any CGImage (16×16 readback).
@@ -66,41 +71,5 @@ enum MLAnalysisService {
         ctx.interpolationQuality = .medium
         ctx.draw(cgImage, in: CGRect(x: 0, y: 0, width: width, height: height))
         return ctx.makeImage()
-    }
-
-    private nonisolated static func laplacianVariance(cgImage: CGImage) -> Double {
-        let width = cgImage.width
-        let height = cgImage.height
-        let bytesPerRow = width * 4
-        var pixels = [UInt8](repeating: 0, count: width * height * 4)
-        let cs = CGColorSpaceCreateDeviceRGB()
-        guard let ctx = CGContext(data: &pixels, width: width, height: height, bitsPerComponent: 8, bytesPerRow: bytesPerRow, space: cs, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return 100 }
-        ctx.draw(cgImage, in: CGRect(x: 0, y: 0, width: width, height: height))
-
-        var lum = [Double](repeating: 0, count: width * height)
-        for i in 0..<(width * height) {
-            let r = Double(pixels[i*4])
-            let g = Double(pixels[i*4+1])
-            let b = Double(pixels[i*4+2])
-            lum[i] = 0.299*r + 0.587*g + 0.114*b
-        }
-
-        var values = [Double]()
-        values.reserveCapacity((width - 2) * (height - 2))
-        for y in 1..<(height - 1) {
-            for x in 1..<(width - 1) {
-                let c = lum[y * width + x]
-                let up = lum[(y - 1) * width + x]
-                let dn = lum[(y + 1) * width + x]
-                let lf = lum[y * width + (x - 1)]
-                let rt = lum[y * width + (x + 1)]
-                let v = (up + dn + lf + rt) - 4 * c
-                values.append(v)
-            }
-        }
-        guard !values.isEmpty else { return 100 }
-        let mean = values.reduce(0, +) / Double(values.count)
-        let variance = values.reduce(0) { $0 + ($1 - mean) * ($1 - mean) } / Double(values.count)
-        return variance
     }
 }

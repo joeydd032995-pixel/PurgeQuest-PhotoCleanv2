@@ -457,7 +457,8 @@ final class CombatViewModel {
                 dHash: dHash,
                 sharpness: item.sharpness,
                 contentHash: cached[item.id]?.contentHash,
-                isVideo: item.kind == .video
+                isVideo: item.kind == .video,
+                signature: item.signature
             ))
         }
 

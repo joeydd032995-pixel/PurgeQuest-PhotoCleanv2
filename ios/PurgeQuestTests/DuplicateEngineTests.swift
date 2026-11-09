@@ -281,5 +281,193 @@ struct DuplicateEngineTests {
         #expect(broken.withContentHash("abc").isVideo)
     }
 
+    // MARK: - Luminance signature
+
+    /// A 16x16 picture with real structure, different for every seed: mostly per-cell texture, so two
+    /// seeds are unrelated pictures, with a faint swell so each one is not pure noise.
+    private func texture(seed: UInt64, gain: Double = 1, offset: Double = 0, noise: Double = 0, noiseSeed: UInt64 = 99) -> [UInt8] {
+        var rng = SeededGenerator(seed: seed)
+        var jitter = SeededGenerator(seed: noiseSeed)
+        let fx = Double(rng.next() % 5 + 1), fy = Double(rng.next() % 5 + 1)
+        let phase = Double(rng.next() % 628) / 100
+        var out: [UInt8] = []
+        for y in 0..<16 {
+            for x in 0..<16 {
+                let swell = sin(Double(x) / 16 * fx * 3.14159 + phase) * cos(Double(y) / 16 * fy * 3.14159)
+                let cell = Double(rng.next() % 100) / 100 - 0.5
+                var v = 128 + 25 * swell + 80 * cell
+                v = v * gain + offset
+                v += (Double(jitter.next() % 100) / 100 - 0.5) * noise
+                out.append(UInt8(max(0, min(255, v.rounded()))))
+            }
+        }
+        return out
+    }
+
+    private func signature(_ pixels: [UInt8]) -> LumaSignature {
+        LumaSignature(grayscale: pixels)!
+    }
+
+    @Test func aSignatureNeedsExactlyTwoHundredFiftySixSamples() {
+        #expect(LumaSignature(grayscale: []) == nil)
+        #expect(LumaSignature(grayscale: [UInt8](repeating: 9, count: 255)) == nil)
+        #expect(LumaSignature(grayscale: [UInt8](repeating: 9, count: 257)) == nil)
+        #expect(LumaSignature(grayscale: [UInt8](repeating: 9, count: 256)) != nil)
+    }
+
+    @Test func aPictureCorrelatesPerfectlyWithItself() {
+        let s = signature(texture(seed: 1))
+        #expect(abs(s.correlation(with: s) - 1) < 1e-6)
+    }
+
+    @Test func brightnessAndContrastEditsDoNotChangeTheSignature() {
+        let original = signature(texture(seed: 2))
+        let brighter = signature(texture(seed: 2, gain: 1, offset: 40))
+        let flatter = signature(texture(seed: 2, gain: 0.6, offset: 10))
+        #expect(original.correlation(with: brighter) > 0.97)
+        #expect(original.correlation(with: flatter) > 0.97)
+    }
+
+    @Test func aNegativeIsNotACopy() {
+        let pixels = texture(seed: 3)
+        let inverted = pixels.map { 255 - $0 }
+        #expect(signature(pixels).correlation(with: signature(inverted)) < -0.95)
+    }
+
+    @Test func unrelatedPicturesDoNotCorrelate() {
+        for seed: UInt64 in 4...9 {
+            let a = signature(texture(seed: seed)), b = signature(texture(seed: seed + 100))
+            #expect(abs(a.correlation(with: b)) < 0.5, "seeds \(seed) and \(seed + 100)")
+        }
+    }
+
+    @Test func aFlatPictureCorrelatesWithNothing() {
+        let flat = signature([UInt8](repeating: 120, count: 256))
+        let faint = signature((0..<256).map { UInt8(120 + ($0 % 2)) })   // a gray-level of noise, no picture
+        let real = signature(texture(seed: 6))
+        #expect(flat.isFlat)
+        #expect(faint.isFlat)
+        #expect(!real.isFlat)
+        #expect(flat.correlation(with: flat) == 0)
+        #expect(flat.correlation(with: real) == 0)
+        #expect(faint.correlation(with: real) == 0)
+    }
+
+    // MARK: - Matching with the signature
+
+    private let nearBase: UInt64 = 0xAAAA_5555_AAAA_5555
+
+    /// A still with the given dHash and (optionally) a luminance signature.
+    private func shot(_ id: String, hash: UInt64, texture pixels: [UInt8]?, offset: TimeInterval, bytes: Int64) -> MediaFingerprint {
+        MediaFingerprint(
+            assetID: id, byteSize: bytes, pixelWidth: 4000, pixelHeight: 3000, durationSeconds: 0,
+            creationDate: Self.epoch.addingTimeInterval(offset), isFavorite: false, isScreenshot: false,
+            hasEdits: false, isScreenRecording: false, dHash: hash, sharpness: nil, contentHash: nil,
+            isVideo: false, signature: pixels.map(signature)
+        )
+    }
+
+    /// `nearBase` with exactly `count` of its low bits flipped.
+    private func hash(flipping count: Int) -> UInt64 { nearBase ^ ((UInt64(1) << UInt64(count)) - 1) }
+
+    @Test func aCloseShapeWithADifferentPictureIsNotADuplicate() {
+        // Eight bits apart passes the dHash test alone, but these two are different pictures.
+        let a = shot("a", hash: hash(flipping: 0), texture: texture(seed: 10), offset: 0, bytes: 2_000_000)
+        let b = shot("b", hash: hash(flipping: 8), texture: texture(seed: 11), offset: 86_400 * 3, bytes: 2_000_100)
+        #expect(DuplicateDetectionEngine.hammingDistance(a.dHash!, b.dHash!) == 8)
+        #expect(a.signature!.correlation(with: b.signature!) < DuplicateDetectionEngine.minimumCorrelation - 0.2)
+        #expect(DuplicateDetectionEngine.findClusters(in: [a, b]).isEmpty)
+    }
+
+    @Test func aCropSizedShapeDriftIsRescuedWhenThePictureAgrees() {
+        // Twelve bits apart is past the plain dHash line, but the pictures match.
+        let a = shot("a", hash: hash(flipping: 0), texture: texture(seed: 12), offset: 0, bytes: 2_000_000)
+        let b = shot("b", hash: hash(flipping: 12), texture: texture(seed: 12, gain: 0.9, offset: 8, noise: 6), offset: 86_400 * 3, bytes: 2_000_100)
+        #expect(DuplicateDetectionEngine.hammingDistance(a.dHash!, b.dHash!) == 12)
+        #expect(a.signature!.correlation(with: b.signature!) > DuplicateDetectionEngine.minimumCorrelation + 0.05)
+        #expect(DuplicateDetectionEngine.findClusters(in: [a, b]).map(\.memberIDs) == [["a", "b"]])
+    }
+
+    @Test func noAgreementOnThePictureCanOverrideTheShapeLimit() {
+        // Identical pictures, but sixteen bits of shape disagreement: past the hard ceiling.
+        let a = shot("a", hash: hash(flipping: 0), texture: texture(seed: 13), offset: 0, bytes: 2_000_000)
+        let b = shot("b", hash: hash(flipping: 16), texture: texture(seed: 13), offset: 86_400 * 3, bytes: 2_000_100)
+        #expect(DuplicateDetectionEngine.findClusters(in: [a, b]).isEmpty)
+    }
+
+    @Test func withoutASignatureOnBothSidesTheOldLineStillApplies() {
+        let plain = shot("plain", hash: hash(flipping: 0), texture: nil, offset: 0, bytes: 2_000_000)
+        let signed = shot("signed", hash: hash(flipping: 8), texture: texture(seed: 14), offset: 3_600, bytes: 2_000_100)
+        let farther = shot("farther", hash: hash(flipping: 12), texture: texture(seed: 14), offset: 7_200, bytes: 2_000_200)
+        #expect(DuplicateDetectionEngine.findClusters(in: [plain, signed]).map(\.memberIDs) == [["plain", "signed"]])
+        #expect(DuplicateDetectionEngine.findClusters(in: [plain, farther]).isEmpty)
+    }
+
+    @Test func aChainStillSplitsWhenSignaturesAreInvolved() {
+        // a~b and b~c by picture and shape, but a and c are sixteen bits apart.
+        let pic = texture(seed: 15)
+        let a = shot("a", hash: nearBase, texture: pic, offset: 0, bytes: 2_000_000)
+        let b = shot("b", hash: nearBase ^ 0xFF, texture: pic, offset: 86_400 * 4, bytes: 2_000_100)
+        let c = shot("c", hash: nearBase ^ 0xFF ^ 0xFF00, texture: pic, offset: 86_400 * 8, bytes: 2_000_200)
+        #expect(DuplicateDetectionEngine.hammingDistance(a.dHash!, b.dHash!) == 8)
+        #expect(DuplicateDetectionEngine.hammingDistance(b.dHash!, c.dHash!) == 8)
+        #expect(DuplicateDetectionEngine.hammingDistance(a.dHash!, c.dHash!) == 16)
+        #expect(DuplicateDetectionEngine.findClusters(in: [a, b, c]).map(\.memberIDs) == [["a", "b"]])
+    }
+
+    @Test func copyingAFingerprintKeepsItsSignature() {
+        let s = shot("s", hash: hash(flipping: 0), texture: texture(seed: 16), offset: 0, bytes: 1)
+        #expect(s.signature != nil)
+        #expect(s.withContentHash("abc").signature == s.signature)
+    }
+
+    // MARK: - The faster grouping gives the answers the original gave
+
+    /// The original greedy complete-linkage grouping, kept here as the specification.
+    private func referenceGroups(_ pool: [MediaFingerprint]) -> Set<Set<String>> {
+        func earlier(_ a: MediaFingerprint, _ b: MediaFingerprint) -> Bool {
+            let da = a.creationDate ?? .distantFuture, db = b.creationDate ?? .distantFuture
+            return da != db ? da < db : a.assetID < b.assetID
+        }
+        var groups: [[MediaFingerprint]] = []
+        for f in pool.sorted(by: earlier) {
+            let hash = f.dHash!
+            let home = groups.firstIndex { g in
+                g.allSatisfy { DuplicateDetectionEngine.hammingDistance($0.dHash!, hash) <= DuplicateDetectionEngine.nearSimilarityThreshold }
+            }
+            if let home { groups[home].append(f) } else { groups.append([f]) }
+        }
+        return Set(groups.filter { $0.count >= 2 }.map { Set($0.map(\.assetID)) })
+    }
+
+    @Test func theGroupingMatchesTheOriginalAlgorithmOnRandomLibraries() {
+        var rng = SeededGenerator(seed: 2026)
+        var groupsSeen = 0
+        for round in 0..<25 {
+            // A handful of scenes, each with copies that drift a few bits, so chains and splits both occur.
+            let scenes: [UInt64] = (0..<6).map { _ in rng.next() }
+            var prints: [MediaFingerprint] = []
+            for i in 0..<(40 + round * 3) {
+                var h = scenes[Int(rng.next() % UInt64(scenes.count))]
+                for _ in 0..<Int(rng.next() % 9) { h ^= UInt64(1) << (rng.next() % 64) }
+                guard DuplicateDetectionEngine.isInformative(h) else { continue }
+                prints.append(fingerprint("p\(round)-\(i)", dHash: h, offset: TimeInterval(rng.next() % 50_000) * 61, bytes: Int64(1_000_000 + i)))
+            }
+            let expected = referenceGroups(prints)
+            let actual = Set(DuplicateDetectionEngine.findClusters(in: prints).map { Set($0.memberIDs) })
+            #expect(actual == expected, "round \(round)")
+            groupsSeen += expected.count
+        }
+        #expect(groupsSeen > 40, "the random libraries should actually contain groups")
+    }
+
+    @Test func duplicateAssetIdentifiersDoNotTrap() {
+        let h: UInt64 = 0xFF00_FF00_FF00_FF00
+        let a = fingerprint("same", dHash: h, offset: 0)
+        let b = fingerprint("same", dHash: h, offset: 60, bytes: 2_000_100)
+        let c = fingerprint("other", dHash: h, offset: 120, bytes: 2_000_200)
+        _ = DuplicateDetectionEngine.findClusters(in: [a, b, c])
+    }
+
     // New tests go above this line.
 }

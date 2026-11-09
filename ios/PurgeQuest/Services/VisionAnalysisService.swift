@@ -26,26 +26,42 @@ struct VisionTextSignals: Sendable, Equatable {
 enum VisionAnalysisService {
 
     /// Runs fast text recognition plus barcode detection in a single handler
-    /// pass on the cooperative pool. Nil when the analysis fails — the
-    /// classifier simply falls back to metadata rules.
-    nonisolated static func analyze(image: UIImage) async -> VisionTextSignals? {
+    /// pass. Nil when the analysis fails — the classifier simply falls back to
+    /// metadata rules.
+    ///
+    /// `@concurrent` is deliberate. The app builds with approachable concurrency, under which a plain
+    /// `nonisolated async` function runs on the actor of whoever awaits it: here the main actor, so the
+    /// recognition below, a synchronous and compute-heavy Vision call, would block the UI and run one
+    /// photo at a time.
+    ///
+    /// `recognizeText: false` skips the text pass and only looks for codes. The classifier names a Live
+    /// Photo or a screenshot before it ever reads how much text there is, so for those the text pass can
+    /// never change the verdict; a code is checked first for every photo, so that pass always runs.
+    @concurrent static func analyze(image: UIImage, recognizeText: Bool = true) async -> VisionTextSignals? {
         guard let cg = image.cgImage else { return nil }
-
-        let ocr = VNRecognizeTextRequest()
-        ocr.recognitionLevel = .fast
-        ocr.usesLanguageCorrection = false
 
         let barcode = VNDetectBarcodesRequest()
         barcode.symbologies = [.qr, .ean13, .ean8, .code128, .dataMatrix, .pdf417, .aztec]
 
+        var requests: [VNRequest] = []
+        var ocr: VNRecognizeTextRequest?
+        if recognizeText {
+            let request = VNRecognizeTextRequest()
+            request.recognitionLevel = .fast
+            request.usesLanguageCorrection = false
+            ocr = request
+            requests.append(request)
+        }
+        requests.append(barcode)
+
         let handler = VNImageRequestHandler(cgImage: cg, options: [:])
         do {
-            try handler.perform([ocr, barcode])
+            try handler.perform(requests)
         } catch {
             return nil
         }
 
-        let texts = (ocr.results ?? []).compactMap { $0.topCandidates(1).first?.string }
+        let texts = (ocr?.results ?? []).compactMap { $0.topCandidates(1).first?.string }
         let characters = texts.reduce(0) { $0 + $1.count }
         let hasBarcode = !(barcode.results ?? []).isEmpty
 

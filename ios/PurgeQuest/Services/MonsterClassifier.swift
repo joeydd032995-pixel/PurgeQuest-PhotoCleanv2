@@ -30,9 +30,11 @@ enum MonsterClassifier {
     // Metadata thresholds. Cheap, high-impact, low false positives.
     static let panoramaAspect: Double = 2.5
     static let thumbGoblinLongEdge: Int = 640
-    static let lowQualityAspect: Double = 0.6
-    static let blurSharpness: Double = 9.0
-    static let darkLuminance: Double = 0.18
+    // The blur, dark, tall-download and dense-text lines are defined once, in PhotoRules, where the Linux
+    // harness tests them. They are restated here so the rest of the app and its tests keep one name.
+    static let lowQualityAspect: Double = PhotoRules.tallAspect
+    static let blurSharpness: Double = ThumbnailAnalysis.blurLine
+    static let darkLuminance: Double = PhotoRules.darkLuminance
     static let archiveYears: Int = 3
 
     static let gigabyte: Int64 = 1_000_000_000
@@ -41,8 +43,8 @@ enum MonsterClassifier {
 
     // Stage 5 thresholds: on-device text density (documents photographed
     // instead of kept). Measured by VisionAnalysisService.
-    static let denseTextCharacters = 300
-    static let denseTextRegions = 6
+    static let denseTextCharacters = PhotoRules.denseTextCharacters
+    static let denseTextRegions = PhotoRules.denseTextRegions
 
     // Stage 3: a motionless clip must at least outlive a blooper to summon
     // the Framed Phantom.
@@ -53,8 +55,9 @@ enum MonsterClassifier {
     static let tatterWraithMaxDuration: Double = 60
 
     static func classify(items: [MediaItem], fingerprints: [MediaFingerprint], now: Date = Date()) -> ClassifiedLibrary {
-        let byID = Dictionary(uniqueKeysWithValues: items.map { ($0.id, $0) })
-        let fpByID = Dictionary(uniqueKeysWithValues: fingerprints.map { ($0.assetID, $0) })
+        // A repeated identifier keeps its first entry rather than trapping.
+        let byID = Dictionary(items.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        let fpByID = Dictionary(fingerprints.map { ($0.assetID, $0) }, uniquingKeysWith: { first, _ in first })
         let clusters = DuplicateDetectionEngine.findClusters(in: fingerprints)
 
         var classifications: [String: MonsterClassification] = [:]
@@ -152,7 +155,7 @@ enum MonsterClassifier {
         }
         // Stage 5: dense text — a document or note photographed instead of kept.
         if let vision = item.visionSignals,
-           vision.characterCount >= denseTextCharacters || vision.regionCount >= denseTextRegions {
+           PhotoRules.isDenseText(characters: vision.characterCount, regions: vision.regionCount) {
             return MonsterClassification(
                 monsterType: .tomeWraith, confidence: 0.8,
                 reasons: [.denseText], estimatedBytes: bytes
@@ -182,21 +185,22 @@ enum MonsterClassifier {
                 requiresCarefulReview: true
             )
         }
-        // Tall narrow ratio — media saved from elsewhere.
-        if Double(item.pixelWidth) / Double(max(1, item.pixelHeight)) < lowQualityAspect {
+        // Tall narrow and small — media saved from elsewhere. A phone's own 16:9 portrait photo or a
+        // vertical panorama is just as narrow but several times larger, so it is left alone.
+        if PhotoRules.isTallDownload(width: item.pixelWidth, height: item.pixelHeight) {
             return MonsterClassification(
                 monsterType: .lowQualityLich, confidence: 0.7,
                 reasons: [.lowQuality], estimatedBytes: bytes
             )
         }
-        // Cheap thumbnail heuristics.
-        if let sharpness = item.sharpness, sharpness < blurSharpness {
+        // Cheap thumbnail measurements (ThumbnailAnalysis): focus, then exposure.
+        if PhotoRules.isBlurry(focus: item.sharpness) {
             return MonsterClassification(
                 monsterType: .blurBeast, confidence: 0.7,
                 reasons: [.lowQuality], estimatedBytes: bytes
             )
         }
-        if let luminance = item.luminance, luminance < darkLuminance {
+        if PhotoRules.isDark(luminance: item.luminance, highlight: item.highlightLuminance) {
             return MonsterClassification(
                 monsterType: .darkWraith, confidence: 0.7,
                 reasons: [.darkFrames], estimatedBytes: bytes
@@ -307,7 +311,7 @@ enum MonsterClassifier {
                 reasons: [.veryShortVideo], estimatedBytes: bytes
             )
         }
-        if let luminance = item.luminance, luminance < darkLuminance {
+        if PhotoRules.isDark(luminance: item.luminance, highlight: item.highlightLuminance) {
             return MonsterClassification(
                 monsterType: .pocketPoltergeist, confidence: 0.6,
                 reasons: [.darkFrames], estimatedBytes: bytes

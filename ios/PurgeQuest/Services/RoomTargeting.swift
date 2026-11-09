@@ -35,7 +35,7 @@ nonisolated enum RoomTargeting {
 
     // These restate MonsterClassifier's blur line, archive age and 100 MB, so a bucket means what the
     // game already means by it. RoomTargetingBridgeTests pins them to the classifier.
-    static let blurSharpness: Double = 9.0
+    static let blurSharpness: Double = 55.0
     static let oldPhotoYears: Int = 3
     static let largeVideoBytes: Int64 = 100_000_000
     static let longVideoSeconds: Double = 120

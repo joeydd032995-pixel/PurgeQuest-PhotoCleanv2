@@ -126,7 +126,13 @@ final class PhotoLibraryService {
     // MARK: - Resource size
 
     func estimateBytes(for asset: PHAsset) -> Int64 {
-        let resources = PHAssetResource.assetResources(for: asset)
+        estimateBytes(for: asset, resources: PHAssetResource.assetResources(for: asset))
+    }
+
+    /// The same estimate from resources already in hand. Listing an asset's resources is a PhotoKit call
+    /// of its own, and a scan needs the list twice (for the size and for the capture signals), so it is
+    /// fetched once and passed along.
+    func estimateBytes(for asset: PHAsset, resources: [PHAssetResource]) -> Int64 {
         for r in resources {
             if let size = r.value(forKey: "fileSize") as? Int64, size > 0 {
                 return size
@@ -144,57 +150,77 @@ final class PhotoLibraryService {
 
     // MARK: - Build MediaItems
 
+    /// How many assets a scan enriches at once. Each one spends most of its time waiting (a thumbnail
+    /// from PhotoKit, then recognition, then sampled video frames), so a few in flight overlap those
+    /// waits; the cap keeps memory, PhotoKit and Vision pressure bounded.
+    static let enrichmentConcurrency = 4
+
     /// Builds MediaItems with the cheap explainability signals captured at
     /// fetch time, plus the deep signals (stage 3 sampled frames for videos,
     /// stage 5 on-device Vision for photos). A provisional solo classification
     /// is attached; the batch classifier (MonsterClassifier) refines duplicate
-    /// groups afterwards.
+    /// groups afterwards. Items come back in the order of `assets`.
     func buildMediaItems(from assets: [PHAsset], thumbSize: CGSize, withThumbnails: Bool = true) async -> [MediaItem] {
-        var items: [MediaItem] = []
-        items.reserveCapacity(assets.count)
-        for asset in assets {
-            let bytes = estimateBytes(for: asset)
-            let thumb = withThumbnails ? await requestThumbnail(for: asset, size: thumbSize) : nil
-            let signals = captureSignals(for: asset)
-            // Stage 3: sampled-frame analysis for videos with healthy metadata.
-            var frames: VideoFrameSignals? = nil
-            if withThumbnails, asset.mediaType == .video, asset.duration > 0 {
-                frames = await VideoFrameAnalysisService.signals(for: asset)
-            }
-            // Stage 5: one on-device text/barcode pass per photo.
-            var vision: VisionTextSignals? = nil
-            if withThumbnails, let thumb {
-                vision = await VisionAnalysisService.analyze(image: thumb)
-            }
-            var item = MediaItem(
-                id: asset.localIdentifier,
-                kind: asset.mediaType == .video ? .video : .photo,
-                creationDate: asset.creationDate,
-                pixelWidth: asset.pixelWidth,
-                pixelHeight: asset.pixelHeight,
-                durationSeconds: asset.duration,
-                estimatedBytes: bytes,
-                isFavorite: asset.isFavorite,
-                playbackStyle: asset.playbackStyle.rawValue,
-                isScreenshot: signals.isScreenshot,
-                hasEdits: signals.hasEdits,
-                isScreenRecording: signals.isScreenRecording,
-                isLivePhoto: signals.isLivePhoto,
-                isLooping: signals.isLooping,
-                isHighFrameRate: signals.isHighFrameRate,
-                sharpness: thumb.map { MLAnalysisService.sharpnessVariance(image: $0) },
-                luminance: thumb.map { MLAnalysisService.averageLuminance(image: $0) },
-                thumbnail: thumb
-            )
-            item.loadFailed = withThumbnails && thumb == nil
-            item.frameSignals = frames
-            item.visionSignals = vision
-            let solo = MonsterClassifier.classifySolo(item)
-            item.monsterType = solo.monsterType
-            item.classification = solo
-            items.append(item)
+        await BoundedConcurrency.map(assets, limit: Self.enrichmentConcurrency) { asset in
+            await self.buildMediaItem(from: asset, thumbSize: thumbSize, withThumbnails: withThumbnails)
         }
-        return items
+    }
+
+    private func buildMediaItem(from asset: PHAsset, thumbSize: CGSize, withThumbnails: Bool) async -> MediaItem {
+        let resources = PHAssetResource.assetResources(for: asset)
+        let bytes = estimateBytes(for: asset, resources: resources)
+        let signals = captureSignals(for: asset, resources: resources)
+        let thumb = withThumbnails ? await requestThumbnail(for: asset, size: thumbSize) : nil
+
+        // Stage 3: sampled-frame analysis for videos with healthy metadata.
+        var frames: VideoFrameSignals? = nil
+        if withThumbnails, asset.mediaType == .video, asset.duration > 0 {
+            frames = await VideoFrameAnalysisService.signals(for: asset)
+        }
+
+        var metrics: ThumbnailMetrics? = nil
+        var vision: VisionTextSignals? = nil
+        if withThumbnails, let thumb {
+            // Focus, exposure and the duplicate signature from one gray render, off the main actor.
+            metrics = await MLAnalysisService.thumbnailMetrics(for: thumb)
+            // Stage 5: one on-device text/barcode pass per photo. Videos are never classified from text
+            // or codes, and a Live Photo or screenshot is named before text is ever consulted, so the text
+            // pass is skipped for them; only the (always-first) code check still runs.
+            if asset.mediaType != .video {
+                let textCanMatter = !(signals.isLivePhoto || signals.isScreenshot)
+                vision = await VisionAnalysisService.analyze(image: thumb, recognizeText: textCanMatter)
+            }
+        }
+
+        var item = MediaItem(
+            id: asset.localIdentifier,
+            kind: asset.mediaType == .video ? .video : .photo,
+            creationDate: asset.creationDate,
+            pixelWidth: asset.pixelWidth,
+            pixelHeight: asset.pixelHeight,
+            durationSeconds: asset.duration,
+            estimatedBytes: bytes,
+            isFavorite: asset.isFavorite,
+            playbackStyle: asset.playbackStyle.rawValue,
+            isScreenshot: signals.isScreenshot,
+            hasEdits: signals.hasEdits,
+            isScreenRecording: signals.isScreenRecording,
+            isLivePhoto: signals.isLivePhoto,
+            isLooping: signals.isLooping,
+            isHighFrameRate: signals.isHighFrameRate,
+            sharpness: metrics?.focus,
+            luminance: metrics?.meanLuminance,
+            highlightLuminance: metrics?.highlightLuminance,
+            signature: metrics?.signature,
+            thumbnail: thumb
+        )
+        item.loadFailed = withThumbnails && thumb == nil
+        item.frameSignals = frames
+        item.visionSignals = vision
+        let solo = MonsterClassifier.classifySolo(item)
+        item.monsterType = solo.monsterType
+        item.classification = solo
+        return item
     }
 
     /// Metadata-only composition snapshot (no thumbnails) for theme scouting.
@@ -203,7 +229,8 @@ final class PhotoLibraryService {
         var items: [MediaItem] = []
         items.reserveCapacity(assets.count)
         for asset in assets {
-            let signals = captureSignals(for: asset)
+            let resources = PHAssetResource.assetResources(for: asset)
+            let signals = captureSignals(for: asset, resources: resources)
             items.append(MediaItem(
                 id: asset.localIdentifier,
                 kind: asset.mediaType == .video ? .video : .photo,
@@ -211,7 +238,7 @@ final class PhotoLibraryService {
                 pixelWidth: asset.pixelWidth,
                 pixelHeight: asset.pixelHeight,
                 durationSeconds: asset.duration,
-                estimatedBytes: estimateBytes(for: asset),
+                estimatedBytes: estimateBytes(for: asset, resources: resources),
                 isFavorite: asset.isFavorite,
                 playbackStyle: asset.playbackStyle.rawValue,
                 isScreenshot: signals.isScreenshot,
@@ -225,10 +252,9 @@ final class PhotoLibraryService {
         return DungeonThemeEngine.composition(for: items)
     }
 
-    /// Cheap, explainable signals read straight from PHAsset metadata.
-    private func captureSignals(for asset: PHAsset) -> (isScreenshot: Bool, hasEdits: Bool, isScreenRecording: Bool, isLivePhoto: Bool, isLooping: Bool, isHighFrameRate: Bool) {
-        let resources = PHAssetResource.assetResources(for: asset)
-        return (
+    /// Cheap, explainable signals read straight from PHAsset metadata and its resources.
+    private func captureSignals(for asset: PHAsset, resources: [PHAssetResource]) -> (isScreenshot: Bool, hasEdits: Bool, isScreenRecording: Bool, isLivePhoto: Bool, isLooping: Bool, isHighFrameRate: Bool) {
+        (
             asset.mediaSubtypes.contains(.photoScreenshot),
             resources.contains { $0.type == .fullSizePhoto || $0.type == .fullSizeVideo || $0.type == .adjustmentData },
             resources.contains { $0.originalFilename.localizedCaseInsensitiveContains("screen recording") },

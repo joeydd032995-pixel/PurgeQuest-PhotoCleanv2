@@ -79,8 +79,8 @@ struct RoomTargetingTests {
     // MARK: - Which bucket an item is in
 
     @Test func aPhotoBelowTheClassifiersBlurLineIsBlurry() {
-        #expect(buckets(photo(sharp: 8.99)) == [.blur])
-        #expect(buckets(photo(sharp: 9.0)).isEmpty)
+        #expect(buckets(photo(sharp: RoomTargeting.blurSharpness - 0.01)) == [.blur])
+        #expect(buckets(photo(sharp: RoomTargeting.blurSharpness)).isEmpty)
         #expect(buckets(photo(sharp: nil)).isEmpty)
     }
 

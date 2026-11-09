@@ -45,14 +45,47 @@ Photos and videos in your library appear as monsters. Swipe left to slay (delete
 | Photo monsters | Trigger | Video monsters | Trigger |
 |---|---|---|---|
 | Duplicate Dragon family (8 monsters) | near-identical groups: exact pairs, bursts, edited copies, hoards, echoes (see Duplicate detection) | Video Vampire | large file, medium duration |
-| Blur Beast | Laplacian-variance blur estimate | LongTake Leviathan | duration > 2 min |
+| Blur Beast | focus score below 55 (re-blur detail loss on a 256×256 render; see Detection quality) | LongTake Leviathan | duration > 2 min |
 | Screenshot Specter | `PHAsset` screenshot subtype flag | Shaky Ghost | default video fallback |
-| Low-Quality Lich | narrow aspect ratio | Boring Blooper | duration < 5s |
+| Low-Quality Lich | narrow aspect ratio, and small (≤ 4 MP) | Boring Blooper | duration < 5s |
 | Ancient Archive | photo older than 3 years | Memory Hog Minotaur | file size > 500 MB |
-| Dark Wraith | low average luminance | Timelapse Phantom | timelapse/high-frame-rate subtype |
+| Dark Wraith | dark on average *and* at its highlights (a dead frame, not a night scene) | Timelapse Phantom | timelapse/high-frame-rate subtype |
 | | | Corrupted Codec | video that cannot be read or reports no duration |
 
 Classification is behind a pluggable `PhotoClassifier`/`VideoClassifier` protocol (`Services/MediaClassifier.swift`), explicitly designed as a strategy-pattern seam for swapping in real Core ML models later.
+
+### Detection quality
+
+The scan's measurements live in pure-Foundation files (`Services/ThumbnailAnalysis.swift`, `Services/DuplicateDetection.swift`) so the same code runs in the app, in the Linux test harness and in a real-photo benchmark (`tools/detection_bench`, see its README).
+
+- **Blur** is the fraction of fine detail lost to a light re-blur of a 256×256 grayscale render, scored 0–100 (`ThumbnailAnalysis.focusScore`). A picture with almost no edges (a clear sky, a black frame) is *not judged*, which is different from blurry.
+- **Dark** needs the mean luminance below 0.18 *and* the brightest 5% of the frame below 0.30 (`PhotoRules.isDark`). A night scene with lights is not a dead frame. Both numbers are single constants in `PhotoRules`.
+- **Duplicates** compare a 64-bit difference hash and a 16×16 luminance signature. Two copies match when the hashes are within 14 bits *and* the signatures correlate at 0.88 or better; an asset without a signature falls back to the dHash alone at 10 bits. Groups stay complete-linkage and deterministic.
+
+Measured on 157 real photographs from INRIA CopyDays plus edited and degraded copies of them (`tools/detection_bench`; numbers are from a release build of the app's own Swift, on thumbnails rendered with Pillow rather than CoreGraphics, so treat absolute values as estimates and the before/after comparison as exact):
+
+| | before | after |
+|---|---|---|
+| Different-scene pairs wrongly grouped (all 857 images in one batch) | 12 pairs, 16 images | **1 pair, 2 images** |
+| Pair precision in the app's 150-photo batches | 98.7% (49 false pairs) | **100.0%** (1 false pair) |
+| Mild 8% crop found with its original | 63.7% | **79.6%** |
+| Re-saved (1600 px, JPEG 70) and brightened copies found | 98.7% / 99.4% | 99.4% / 99.4% |
+| Blur flagged: Gaussian σ = 3 / 5 / 8 px at 600 px thumbnail scale | 0% / 0% / 2.5% | **74.5% / 98.7% / 98.1%** |
+| Blur flagged: 15 / 31 px horizontal motion blur, same scale | 0% / 0% | **51.0% / 96.8%** |
+| Sharp photographs flagged blurry | 0% (the old rule effectively never fired) | 0.6% (1 of 157, a hazy sunrise) |
+| Ordinary photographs flagged dark | 1.3% | **0%** |
+| Underexposed copies flagged dark: 4.6 / 3.6 / 2.7 stops under | 99.4% / 94.3% / 30.6% | 99.4% / **80.9% / 17.2%** |
+| Duplicate engine, 5,000 / 20,000 assets | 89 ms / 2,072 ms | **20 ms / 243 ms** |
+
+What this does **not** show:
+
+- The dark rule trades recall for precision: it spares low-key photographs with real highlights at the cost of missing some moderately underexposed ones (the table says by how much). Raise `PhotoRules.darkHighlight` to flag more.
+- The 157 scenes are one small collection. The thresholds (14 bits, 0.88, 55, 0.30) sit at the measured knee with margin, not at the optimum of a large library, and should be re-measured on a real one before being tightened. The benchmark contains no burst sequences and no hard negatives beyond what CopyDays happens to hold.
+- The strongest CopyDays edits (paintings, print-and-scan, heavy crops) are still found about 5% of the time. No cheap hash does better, and they are not typical library duplicates.
+- Duplicates are still only found among a dive's 150 assets (see `docs/superpowers/plans/2026-11-07-duplicate-detection-hardening.md`, "Not in this plan"): a twin elsewhere in the library is not seen.
+- Not measured, because there is no iPhone or Vision framework here: the scan-time effect of the scan-pipeline changes below, and the text-recognition changes. They are reasoned, not benchmarked.
+
+**Scan pipeline** (`Services/PhotoLibraryService.swift`, `VisionAnalysisService.swift`, `MLAnalysisService.swift`): the app builds with approachable concurrency, under which a plain `nonisolated async` function runs on its caller's actor, so the Vision pass was running on the main actor, one photo at a time. It is now `@concurrent`, assets are enriched four at a time (`BoundedConcurrency`), a photo's resources are listed once instead of twice, the three separate bitmap renders became one, the text pass is skipped for Live Photos and screenshots (the classifier names them before it reads text) and Vision is skipped for videos (their verdict never uses it). Text density now needs real words behind many regions (≥ 60 characters), so a street of shop signs is not a document.
 
 ### RPG progression
 - **4 hero classes** (`Models/Hero.swift`), each with a passive perk: Archivist (+20% photo XP), Cinematographer (+20% video XP), Purge Knight (+30% elite-monster XP), Digital Hermit (+10% gems).
@@ -228,6 +261,7 @@ to sprite sheets. Authors, licenses and what is still unconfirmed are listed in 
 - `PurgeQuestUITests/ForgeUITests.swift` — Forge flows (draft until Save, Cancel discards, save failure surfaced) against an in-memory store via the DEBUG `-UITestForge` launch argument.
 - `tools/modular_assets/tests/` and `tools/modular_assets/validate.py` — asset, manifest, fit, approval-gate and catalog-drift checks (`.github/workflows/modular-assets.yml`).
 - `tools/swift_harness/run.sh` — compiles and runs the pure-Foundation Swift suites on a Linux toolchain, no Xcode needed.
+- `tools/detection_bench/` — runs the app's duplicate, blur and dark rules over real photographs and reports precision, recall, false positives and timings (needs Pillow and NumPy to prepare the data; not run in CI).
 
 Not automated: visual approval of art, and the physical-iPhone checks listed at the end of `docs/modular/CHECKLIST.md`.
 
