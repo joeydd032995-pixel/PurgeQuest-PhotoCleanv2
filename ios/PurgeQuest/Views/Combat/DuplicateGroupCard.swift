@@ -11,6 +11,10 @@ import SwiftUI
 
 struct DuplicateGroupCard: View {
     let group: DuplicateGroup
+    /// Live reward preview per copy: `(item, comboStep)` → `(xp, gems)`.
+    /// `comboStep` is the kill's position in this batch, matching the order
+    /// the ViewModel will apply them in. Shades return (0, 0).
+    var previewReward: (MediaItem, Int) -> (xp: Int, gems: Int) = { _, _ in (0, 0) }
     let onConfirm: ([String: Bool]) -> Void
 
     /// Per-copy decision: false = keep, true = slay. Defaults to keep so a
@@ -32,6 +36,7 @@ struct DuplicateGroupCard: View {
             headerBar
             carousel
             decisionControls
+            markedRewardLine
             confirmButton
         }
         .background(Color.dungeonStoneLight)
@@ -268,6 +273,41 @@ struct DuplicateGroupCard: View {
         if let idx = group.members.firstIndex(where: { $0.id == member.id }) {
             let next = (idx + 1) % group.members.count
             selectedMemberID = group.members[next].id
+        }
+    }
+
+    // MARK: - Marked reward
+
+    /// Total payout for exactly the copies currently marked for slaying,
+    /// with the combo stepping per kill in member order — the same math the
+    /// ViewModel applies on confirm.
+    private var markedReward: (xp: Int, gems: Int) {
+        var step = 0
+        var xp = 0
+        var gems = 0
+        for member in group.members where decisions[member.id] == true {
+            let r = previewReward(member, step)
+            xp += r.xp
+            gems += r.gems
+            if r.xp > 0 { step += 1 }
+        }
+        return (xp, gems)
+    }
+
+    @ViewBuilder
+    private var markedRewardLine: some View {
+        if slayCount > 0 {
+            let r = markedReward
+            HStack(spacing: 8) {
+                Image(systemName: "bolt.fill")
+                Text("Purge reward: +\(r.xp) XP · +\(r.gems) gems")
+                    .font(.caption.weight(.bold).monospacedDigit())
+                Spacer()
+            }
+            .foregroundStyle(.questAmber)
+            .padding(.horizontal, 14)
+            .padding(.bottom, 8)
+            .accessibilityLabel("Marked copies pay \(r.xp) experience and \(r.gems) gems on confirm")
         }
     }
 

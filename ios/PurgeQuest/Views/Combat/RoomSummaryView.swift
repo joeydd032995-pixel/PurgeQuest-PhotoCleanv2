@@ -27,6 +27,8 @@ struct RoomSummaryView: View {
 
                 pendingGrid
 
+                questProgressPanel
+
                 actionButtons
             }
             .padding(.horizontal, 16)
@@ -90,6 +92,76 @@ struct RoomSummaryView: View {
                 }
             }
         }
+    }
+
+    /// Live quest math for THIS purge: each active quest's projected count
+    /// after the marked items are deleted, simulated with the same rules the
+    /// ViewModel applies on confirm (`GameDataService.updateQuests`). Quests
+    /// only advance at "Confirm Purge" — this makes that visible.
+    private var questDeltas: [UUID: Int] {
+        var result: [UUID: Int] = [:]
+        for decision in combat.pendingDecisions where decision.willDelete && decision.awardsProgress {
+            let slain = decision.item.monsterType
+            let mb = Double(decision.item.estimatedBytes) / 1_048_576.0
+            for q in quests where !q.completed {
+                switch q.kind {
+                case .photoSlay:
+                    if slain.kind == .photo, q.monsterType.map(slain.counts(as:)) ?? false {
+                        result[q.id, default: 0] += 1
+                    }
+                case .videoSlay:
+                    if slain.kind == .video, q.monsterType.map(slain.counts(as:)) ?? false {
+                        result[q.id, default: 0] += 1
+                    }
+                case .anySlay:
+                    result[q.id, default: 0] += 1
+                case .mbFreed:
+                    result[q.id, default: 0] += Int(mb.rounded())
+                }
+            }
+        }
+        return result
+    }
+
+    private var questProgressPanel: some View {
+        let deltas = questDeltas
+        let active = quests.filter { !$0.completed || (deltas[$0.id] ?? 0) > 0 }
+        return VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("Quest progress")
+                    .font(.headline)
+                    .foregroundStyle(.textPrimary)
+                Spacer()
+                Text("after this purge")
+                    .font(.caption)
+                    .foregroundStyle(.textSecondary)
+            }
+            if active.isEmpty {
+                Text("No active quests right now.")
+                    .font(.caption)
+                    .foregroundStyle(.textSecondary)
+            }
+            ForEach(active) { q in
+                let delta = deltas[q.id] ?? 0
+                HStack {
+                    Text(q.title)
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.textPrimary)
+                        .lineLimit(1)
+                    Spacer()
+                    if delta > 0 {
+                        Text("+\(delta)")
+                            .font(.caption.weight(.bold).monospacedDigit())
+                            .foregroundStyle(.gemEmerald)
+                    }
+                    Text("\(min(q.currentCount + delta, q.targetCount)) / \(q.targetCount)")
+                        .font(.caption.monospacedDigit())
+                        .foregroundStyle(.textSecondary)
+                }
+            }
+        }
+        .padding(12)
+        .background(RoundedRectangle(cornerRadius: 10).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1)))
     }
 
     private var actionButtons: some View {
@@ -194,8 +266,17 @@ private struct DecisionTile: View {
                         .font(.title)
                         .foregroundStyle(.gemEmerald)
                 } else {
-                    VStack {
+                    VStack(spacing: 3) {
                         Spacer()
+                        if decision.xpReward > 0 || decision.gemReward > 0 {
+                            Text("+\(decision.xpReward) XP · +\(decision.gemReward)")
+                                .font(.system(size: 9, weight: .black).monospacedDigit())
+                                .padding(.horizontal, 5).padding(.vertical, 2)
+                                .background(RoundedRectangle(cornerRadius: 4).fill(.black.opacity(0.65)))
+                                .foregroundStyle(.questAmber)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.7)
+                        }
                         Image(systemName: "trash.fill")
                             .font(.caption.weight(.bold))
                             .padding(4)

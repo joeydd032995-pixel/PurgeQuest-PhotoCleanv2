@@ -13,6 +13,9 @@ struct SwipeMediaCard: View {
     /// This asset was purged once before and recovered — deleting it again
     /// earns no XP, gems, or quest progress.
     var isShade: Bool = false
+    /// Live reward preview: what deleting this card pays at the current combo.
+    var rewardXP: Int = 0
+    var rewardGems: Int = 0
     let onDelete: () -> Void
     let onSpare: () -> Void
 
@@ -267,6 +270,20 @@ struct SwipeMediaCard: View {
                 Text(item.ageDescription)
                     .font(.caption2)
                     .foregroundStyle(.white.opacity(0.85))
+            }
+            if rewardXP > 0 || rewardGems > 0 {
+                HStack(spacing: 8) {
+                    Label("+\(rewardXP) XP", systemImage: "bolt.fill")
+                        .font(.caption2.weight(.bold).monospacedDigit())
+                        .foregroundStyle(.questAmber)
+                    Text("·").foregroundStyle(.white.opacity(0.5))
+                    Label("+\(rewardGems)", systemImage: "diamond.fill")
+                        .font(.caption2.weight(.bold).monospacedDigit())
+                        .foregroundStyle(.gemEmerald)
+                    Text("on confirm")
+                        .font(.caption2)
+                        .foregroundStyle(.white.opacity(0.6))
+                }
             }
         }
         .padding(12)

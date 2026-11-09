@@ -131,7 +131,10 @@ struct CombatView: View {
                 }
                 if let top = combat.topItem, let hero = heroes.first {
                     if let group = combat.group(for: top) {
-                        DuplicateGroupCard(group: group) { decisions in
+                        DuplicateGroupCard(
+                            group: group,
+                            previewReward: { item, step in combat.previewReward(for: item, comboStep: step, hero: hero) }
+                        ) { decisions in
                             combat.commitGroupDecisions(group, decisions: decisions, hero: hero, context: modelContext)
                         }
                         .id(top.id)
@@ -143,6 +146,8 @@ struct CombatView: View {
                             item: top,
                             isFront: true,
                             isShade: combat.isShade(top),
+                            rewardXP: combat.previewReward(for: top, hero: hero).xp,
+                            rewardGems: combat.previewReward(for: top, hero: hero).gems,
                             onDelete: { combat.decideDelete(top, hero: hero) },
                             onSpare: {
                                 if let hero = heroes.first { combat.decideSpare(top, hero: hero, context: modelContext) }

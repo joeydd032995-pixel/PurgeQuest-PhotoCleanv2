@@ -391,6 +391,14 @@ final class CombatViewModel {
         return (xp, gems)
     }
 
+    /// The XP/gems this asset would pay if slain right now, with the combo's
+    /// next step applied (`comboStep` = earlier kills in the same batch). Used
+    /// for the reward chip on the cards. Shades pay nothing.
+    func previewReward(for item: MediaItem, comboStep: Int = 0, hero: Hero) -> (xp: Int, gems: Int) {
+        guard !rewardedIDs.contains(item.id) else { return (0, 0) }
+        return reward(for: item, hero: hero, combo: combo + 1 + comboStep)
+    }
+
     func decideSpare(_ item: MediaItem, hero: Hero, context: ModelContext) {
         combo = 0
         perfectRoom = false
