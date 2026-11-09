@@ -2,3 +2,6 @@ node_modules
 .env
 .expo
 .rork
+
+# ai-pair-programming plugin: rewritten at the end of every session, so it is local state, not source
+.pair-programming-session.md
