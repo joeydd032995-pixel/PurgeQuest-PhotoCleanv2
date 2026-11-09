@@ -107,6 +107,33 @@ final class CombatViewModel {
     /// Gem cost to rally after defeat: restores full HP and resumes the room.
     static let rallyCostGems: Int = 100
 
+    // MARK: - Secured vs pending rewards
+    //
+    // SECURED rewards are banked onto the Hero the moment a Room Summary
+    // confirmation successfully deletes the assets: base XP (with the combo
+    // multiplier live at confirmation), gems, quest/achievement progress, and
+    // lifetime purge counters. They can never be lost, even if the hero later
+    // falls. On the session record these live in `xpEarned`/`gemsEarned` and
+    // the purge tallies.
+    //
+    // PENDING bonuses are dive-scoped: Perfect Room bonuses accrue per room
+    // and the Full Dive bonus is sized by rooms cleared. They only convert to
+    // secured when the dive completes (`applyFullDiveBonus`) and are discarded
+    // when HP drains (`enterDefeat`), which also resets the combo to 1×.
+    static let perfectRoomBonusXP: Int = 30
+    static let perfectRoomBonusGems: Int = 15
+    static let fullDiveBonusXPPerRoom: Int = 20
+    static let fullDiveBonusGemsPerRoom: Int = 10
+
+    private var pendingBonusXP = 0
+    private var pendingBonusGems = 0
+    /// Bonuses discarded by the last defeat, shown once on the Salvage screen.
+    private(set) var lostBonusXP = 0
+    private(set) var lostBonusGems = 0
+    /// Bonuses converted on the last completed dive, shown on the results screen.
+    private(set) var diveBonusXP = 0
+    private(set) var diveBonusGems = 0
+
     func bootstrap(includeVideos: Bool, videoOnly: Bool, focus: RoomBucket? = nil, hero: Hero, context: ModelContext) async {
         roomFocus = focus
         targetsRooms = true
@@ -195,6 +222,15 @@ final class CombatViewModel {
         context.insert(session)
         activeSession = session
         roomsCompleted = 0
+        // A new dive always starts clean: combo back to 1× and no leftover
+        // pending bonuses from a previous run.
+        combo = 0
+        pendingBonusXP = 0
+        pendingBonusGems = 0
+        lostBonusXP = 0
+        lostBonusGems = 0
+        diveBonusXP = 0
+        diveBonusGems = 0
     }
 
     /// Runs classification + duplicate folding on fetched items and opens room one.
@@ -394,6 +430,24 @@ final class CombatViewModel {
     /// (full heal, resume the room) or a retreat back to the Library.
     private func enterDefeat(context: ModelContext) {
         phase = .defeated
+        // SALVAGE RULES — what the hero keeps vs loses on HP drain:
+        // • Secured rewards (banked at each Room Summary confirmation: base
+        //   XP, gems, quest/achievement progress, lifetime counters) are
+        //   untouched and stay on the hero forever.
+        // • Pending dive bonuses (Perfect Room / Full Dive) are discarded and
+        //   stashed for the Salvage screen.
+        // • The live combo resets to 1× (combo 0 in the reward formula).
+        // No quest tracks "complete a dungeon" today; if one is added, its
+        // advancement belongs in `applyFullDiveBonus` only, never here.
+        lostBonusXP = pendingBonusXP
+        lostBonusGems = pendingBonusGems
+        pendingBonusXP = 0
+        pendingBonusGems = 0
+        if let session = activeSession {
+            session.pendingXP = 0
+            session.pendingGems = 0
+        }
+        combo = 0
         HapticsService.shared.warning()
         finalizeSession()
         CombatLiveActivityService.shared.end()
@@ -538,6 +592,7 @@ final class CombatViewModel {
             let identifiers = toDelete.map { $0.id }
             try await PhotoLibraryService.shared.deleteAssets(identifiers: identifiers)
             // Persist deletion records
+            let completedBefore = Set(quests.filter(\.completed).map(\.id))
             for item in toDelete {
                 let rec = DeletedMediaRecord(
                     assetIdentifier: item.id,
@@ -550,6 +605,16 @@ final class CombatViewModel {
                 context.insert(rec)
                 let mb = Double(item.estimatedBytes) / 1_048_576.0
                 GameDataService.updateQuests(quests, for: item.monsterType, mbFreedThisAction: mb)
+            }
+            // Quest payouts are SECURED: any quest this confirmation completed
+            // pays immediately, and its progress can never be lost to a later defeat.
+            let newlyCompleted = quests.filter { !completedBefore.contains($0.id) && $0.completed }
+            let questXP = newlyCompleted.reduce(0) { $0 + $1.rewardXP }
+            let questGems = newlyCompleted.reduce(0) { $0 + $1.rewardGems }
+            if questXP > 0 || questGems > 0 {
+                bank(xp: questXP, gems: questGems, hero: hero)
+                sessionXP += questXP
+                sessionGems += questGems
             }
             // Apply rewards to hero
             applyRewardsToHero(hero: hero)
@@ -605,6 +670,11 @@ final class CombatViewModel {
             context.insert(session)
             activeSession = session
             roomsCompleted = 0
+            // Dives after the first start their bonus ledger fresh too.
+            diveBonusXP = 0
+            diveBonusGems = 0
+            pendingBonusXP = 0
+            pendingBonusGems = 0
             try? context.save()
         }
         loadNextRoom()
@@ -621,6 +691,9 @@ final class CombatViewModel {
         activeSession?.roomsCompleted = roomsCompleted
         roomNumber += 1
         if roomNumber > Self.totalRoomsPerSession || queueIndex >= allItems.count {
+            // The dive completed: pending Perfect Room bonuses convert to
+            // secured, plus the Full Dive bonus for every room cleared.
+            applyFullDiveBonus(hero: hero)
             phase = .sessionComplete
             finalizeSession()
             CombatLiveActivityService.shared.end()
@@ -629,9 +702,11 @@ final class CombatViewModel {
         loadNextRoom()
     }
 
-    /// Banks every reward the player confirmed in the current room. Because each reward was
-    /// captured at swipe time, combo / class / seasonal bonuses all carry through — and any
-    /// items toggled off in the summary are simply excluded.
+    /// Banks every SECURED reward the player confirmed in the current room: base XP
+    /// (captured at swipe time, so combo / class / seasonal bonuses all carry
+    /// through), gems, and lifetime purge counters. Any items toggled off in the
+    /// summary are simply excluded. Perfect Room bonuses accrue as PENDING here —
+    /// they only pay out when the dive completes.
     private func applyRewardsToHero(hero: Hero) {
         let confirmed = pendingDecisions.filter { $0.willDelete }
         guard !confirmed.isEmpty else { return }
@@ -671,11 +746,55 @@ final class CombatViewModel {
             session.peakCombo = max(session.peakCombo, peakCombo)
         }
 
-        // A single fat room can pop multiple levels; +10 max HP each, full heal on level-up.
+        bank(xp: roomXP, gems: roomGems, hero: hero)
+
+        // Perfect Room bonus is PENDING, not secured: it accrues for the dive's
+        // end and only converts to secured if the dive completes.
+        if perfectRoom {
+            pendingBonusXP += Self.perfectRoomBonusXP
+            pendingBonusGems += Self.perfectRoomBonusGems
+            if let session = activeSession {
+                session.pendingXP += Self.perfectRoomBonusXP
+                session.pendingGems += Self.perfectRoomBonusGems
+            }
+        }
+    }
+
+    /// Banks XP and gems onto the hero's lifetime totals, applying any
+    /// level-ups. A single payout can pop multiple levels; +10 max HP each,
+    /// full heal on level-up. Shared by secured room rewards, quest payouts,
+    /// and converted dive bonuses.
+    private func bank(xp: Int, gems: Int, hero: Hero) {
+        hero.totalXP += xp
+        hero.gems += gems
         while hero.totalXP >= Hero.xpForLevel(hero.level + 1) {
             hero.level += 1
             hero.maxHP += 10
             hero.currentHP = hero.maxHP
         }
+    }
+
+    /// Converts all PENDING bonuses into SECURED rewards because the dive
+    /// completed: accrued Perfect Room bonuses plus the Full Dive bonus for
+    /// every room cleared. Mirrors onto the session record and clears pending.
+    private func applyFullDiveBonus(hero: Hero) {
+        let bonusXP = pendingBonusXP + roomsCompleted * Self.fullDiveBonusXPPerRoom
+        let bonusGems = pendingBonusGems + roomsCompleted * Self.fullDiveBonusGemsPerRoom
+        guard bonusXP > 0 || bonusGems > 0 else { return }
+
+        bank(xp: bonusXP, gems: bonusGems, hero: hero)
+        sessionXP += bonusXP
+        sessionGems += bonusGems
+        diveBonusXP = bonusXP
+        diveBonusGems = bonusGems
+        if let session = activeSession {
+            session.xpEarned += bonusXP
+            session.gemsEarned += bonusGems
+            session.pendingXP = 0
+            session.pendingGems = 0
+        }
+        pendingBonusXP = 0
+        pendingBonusGems = 0
+        try? sessionContext?.save()
     }
 }

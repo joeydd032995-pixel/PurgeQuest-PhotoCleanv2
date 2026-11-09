@@ -235,6 +235,9 @@ struct CombatView: View {
                 summaryRow(label: "Storage freed", value: ByteCountFormatter.string(fromByteCount: combat.sessionBytesFreed, countStyle: .file), tint: .gemEmerald)
                 summaryRow(label: "XP earned", value: "+\(combat.sessionXP)", tint: .questAmber)
                 summaryRow(label: "Gems earned", value: "+\(combat.sessionGems)", tint: .gemEmerald)
+                if combat.diveBonusXP > 0 || combat.diveBonusGems > 0 {
+                    summaryRow(label: "Dive bonus", value: "+\(combat.diveBonusXP) XP · +\(combat.diveBonusGems) gems", tint: .xpViolet)
+                }
                 summaryRow(label: "Peak combo", value: "\(combat.peakCombo)×", tint: .combatCrimson)
             }
             .padding()
@@ -285,10 +288,10 @@ struct CombatView: View {
                         .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.combatCrimson.opacity(0.6), lineWidth: 1))
                         .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.combatCrimson.opacity(0.3), lineWidth: 1).padding(3))
                 )
-            Text("Defeated")
+            Text("Salvage")
                 .font(.dungeonTitle)
                 .foregroundStyle(.textPrimary)
-            Text("Your hero falls. The monsters remain in your library.")
+            Text("Your hero fell — but every confirmed purge is already yours.")
                 .font(.callout).foregroundStyle(.textSecondary)
                 .multilineTextAlignment(.center)
 
@@ -296,11 +299,22 @@ struct CombatView: View {
                 summaryRow(label: "Photos purged", value: "\(combat.sessionPhotosDeleted)", tint: .questAmber)
                 summaryRow(label: "Videos purged", value: "\(combat.sessionVideosDeleted)", tint: .videoSapphire)
                 summaryRow(label: "Storage freed", value: ByteCountFormatter.string(fromByteCount: combat.sessionBytesFreed, countStyle: .file), tint: .gemEmerald)
-                summaryRow(label: "XP earned", value: "+\(combat.sessionXP)", tint: .questAmber)
+                summaryRow(label: "XP secured", value: "+\(combat.sessionXP)", tint: .questAmber)
+                summaryRow(label: "Gems secured", value: "+\(combat.sessionGems)", tint: .gemEmerald)
             }
             .padding()
-            .background(RoundedRectangle(cornerRadius: 12).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.dungeonAsh, lineWidth: 1)))
+            .background(RoundedRectangle(cornerRadius: 12).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.gemEmerald.opacity(0.35), lineWidth: 1)))
             .padding(.horizontal, 24)
+
+            if combat.lostBonusXP > 0 || combat.lostBonusGems > 0 {
+                VStack(spacing: 8) {
+                    summaryRow(label: "Dive bonuses lost", value: "+\(combat.lostBonusXP) XP · +\(combat.lostBonusGems) gems", tint: .combatCrimson)
+                    summaryRow(label: "Combo", value: "Reset to 1×", tint: .combatCrimson)
+                }
+                .padding()
+                .background(RoundedRectangle(cornerRadius: 12).fill(Color.dungeonAsh.opacity(0.5)).overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.combatCrimson.opacity(0.5), lineWidth: 1)))
+                .padding(.horizontal, 24)
+            }
 
             if let hero = heroes.first, hero.gems >= CombatViewModel.rallyCostGems {
                 Button {
