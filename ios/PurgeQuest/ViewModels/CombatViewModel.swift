@@ -38,6 +38,10 @@ struct PendingDecision: Identifiable {
     /// Stored per-decision so toggling items off in the room summary keeps rewards exact.
     var xpReward: Int = 0
     var gemReward: Int = 0
+    /// False for shades — assets purged once before (deleted, then recovered
+    /// from Recently Deleted). They can be deleted again, but earn nothing and
+    /// advance no quests, achievements, or lifetime counters.
+    var awardsProgress: Bool = true
     var id: String { item.id }
 }
 
@@ -88,6 +92,12 @@ final class CombatViewModel {
 
     // Duplicate group encounters keyed by representative asset ID
     var groupsByID: [String: DuplicateGroup] = [:]
+
+    // Anti-farm ledger: every asset that has ever been confirmed for deletion.
+    // iOS keeps deletions recoverable for 30 days, so a recovered photo could
+    // otherwise be re-deleted forever to farm XP, gems, quests, achievements,
+    // and lifetime stats. Each asset pays rewards exactly once, ever.
+    private var rewardedIDs: Set<String> = []
 
     // Dungeon theme for this dive — presentation and weighting only.
     var theme: DungeonTheme = .wildGallery
@@ -151,6 +161,7 @@ final class CombatViewModel {
         }
         if let purged = try? context.fetch(FetchDescriptor<DeletedMediaRecord>()) {
             seenIDs.formUnion(purged.map(\.assetIdentifier))
+            rewardedIDs = Set(purged.map(\.assetIdentifier))
         }
 
         let svc = PhotoLibraryService.shared
@@ -177,6 +188,12 @@ final class CombatViewModel {
     func bootstrapPicked(assetIDs: [String], hero: Hero, context: ModelContext) async {
         roomFocus = nil
         targetsRooms = false
+        // Picked hunts deal exactly what was chosen — seen or not — so the
+        // anti-farm ledger must be loaded here too: previously purged assets
+        // come back as shades instead of paying out a second time.
+        if let purged = try? context.fetch(FetchDescriptor<DeletedMediaRecord>()) {
+            rewardedIDs = Set(purged.map(\.assetIdentifier))
+        }
         openSession(hero: hero, context: context)
         Self.log.info("picked hunt: resolving \(assetIDs.count, privacy: .public) chosen assets")
 
@@ -310,7 +327,26 @@ final class CombatViewModel {
         max(0, currentRoomItems.count - currentRoomIndex)
     }
 
+    /// True when this asset paid rewards on a past purge. It still appears in
+    /// hand-picked hunts, but as a shade: deletable, never rewarding.
+    func isShade(_ item: MediaItem) -> Bool {
+        rewardedIDs.contains(item.id)
+    }
+
     func decideDelete(_ item: MediaItem, hero: Hero) {
+        // Shades: this asset was purged once before and later recovered. One
+        // reward per asset per lifetime — a re-kill earns nothing, builds no
+        // combo, and advances no quests, closing the recover-and-redelete loop.
+        if rewardedIDs.contains(item.id) {
+            HapticsService.shared.light()
+            pendingDecisions.append(
+                PendingDecision(item: item, willDelete: true, xpReward: 0, gemReward: 0, awardsProgress: false)
+            )
+            pushLiveActivityUpdate()
+            advance()
+            return
+        }
+
         // Combo gains
         combo += 1
         peakCombo = max(peakCombo, combo)
@@ -396,6 +432,14 @@ final class CombatViewModel {
         var spares = 0
         for member in group.members {
             if decisions[member.id] ?? false {
+                // Shades earn nothing and build no combo (see decideDelete).
+                if rewardedIDs.contains(member.id) {
+                    pendingDecisions.append(
+                        PendingDecision(item: member, willDelete: true, xpReward: 0, gemReward: 0, awardsProgress: false)
+                    )
+                    slays += 1
+                    continue
+                }
                 combo += 1
                 peakCombo = max(peakCombo, combo)
                 hero.highestCombo = max(hero.highestCombo, peakCombo)
@@ -605,21 +649,40 @@ final class CombatViewModel {
         do {
             let identifiers = toDelete.map { $0.id }
             try await PhotoLibraryService.shared.deleteAssets(identifiers: identifiers)
-            // Persist deletion records
+            // Persist deletion records — one ledger row per asset, ever.
+            // Re-purging a recovered photo refreshes its row instead of adding
+            // a second one, so record-driven achievements (long takes, ancient
+            // archives, duplicate counts) and the dashboard's pending-deletion
+            // math can't double-count a farmed asset.
             let completedBefore = Set(quests.filter(\.completed).map(\.id))
+            let decisionsByID = Dictionary(uniqueKeysWithValues: pendingDecisions.filter { $0.willDelete }.map { ($0.item.id, $0) })
             for item in toDelete {
-                let rec = DeletedMediaRecord(
-                    assetIdentifier: item.id,
-                    mediaKind: item.kind,
-                    monsterType: item.monsterType,
-                    fileSizeBytes: item.estimatedBytes,
-                    durationSeconds: item.durationSeconds,
-                    creationDate: item.creationDate
+                let awards = decisionsByID[item.id]?.awardsProgress ?? true
+                let assetID = item.id
+                let descriptor = FetchDescriptor<DeletedMediaRecord>(
+                    predicate: #Predicate { $0.assetIdentifier == assetID }
                 )
-                context.insert(rec)
-                let mb = Double(item.estimatedBytes) / 1_048_576.0
-                GameDataService.updateQuests(quests, for: item.monsterType, mbFreedThisAction: mb)
+                if let existing = try? context.fetch(descriptor).first {
+                    existing.deletedAt = Date()
+                    existing.fileSizeBytes = item.estimatedBytes
+                } else {
+                    context.insert(DeletedMediaRecord(
+                        assetIdentifier: item.id,
+                        mediaKind: item.kind,
+                        monsterType: item.monsterType,
+                        fileSizeBytes: item.estimatedBytes,
+                        durationSeconds: item.durationSeconds,
+                        creationDate: item.creationDate
+                    ))
+                }
+                // Farm-proofing: shades advance no quests.
+                if awards {
+                    let mb = Double(item.estimatedBytes) / 1_048_576.0
+                    GameDataService.updateQuests(quests, for: item.monsterType, mbFreedThisAction: mb)
+                }
             }
+            // Deletion succeeded: these assets can never pay rewards again.
+            rewardedIDs.formUnion(toDelete.map(\.id))
             // Quest payouts are SECURED: any quest this confirmation completed
             // pays immediately, and its progress can never be lost to a later defeat.
             let newlyCompleted = quests.filter { !completedBefore.contains($0.id) && $0.completed }
@@ -632,7 +695,7 @@ final class CombatViewModel {
             }
             // Apply rewards to hero
             applyRewardsToHero(hero: hero)
-            let videosThisRoom = pendingDecisions.filter { $0.willDelete && $0.item.kind == .video }.count
+            let videosThisRoom = pendingDecisions.filter { $0.willDelete && $0.awardsProgress && $0.item.kind == .video }.count
             GameDataService.syncAchievements(
                 hero: hero,
                 in: context,
@@ -729,19 +792,28 @@ final class CombatViewModel {
         var roomGems = 0
         var roomBytes: Int64 = 0
         var photos = 0, videos = 0
+        // Lifetime counters only advance for first-time kills; shade re-kills
+        // are real purges (they count in the session display) but must never
+        // inflate the hero's stats or the achievements built on them.
+        var lifeBytes: Int64 = 0
+        var lifePhotos = 0, lifeVideos = 0
         for d in confirmed {
             roomXP += d.xpReward
             roomGems += d.gemReward
             roomBytes += d.item.estimatedBytes
             if d.item.kind == .photo { photos += 1 } else { videos += 1 }
+            if d.awardsProgress {
+                lifeBytes += d.item.estimatedBytes
+                if d.item.kind == .photo { lifePhotos += 1 } else { lifeVideos += 1 }
+            }
         }
 
         // Bank onto the hero's lifetime totals.
         hero.totalXP += roomXP
         hero.gems += roomGems
-        hero.totalMBFreed += Double(roomBytes) / 1_048_576.0
-        hero.totalPhotosPurged += photos
-        hero.totalVideosPurged += videos
+        hero.totalMBFreed += Double(lifeBytes) / 1_048_576.0
+        hero.totalPhotosPurged += lifePhotos
+        hero.totalVideosPurged += lifeVideos
 
         // Roll the session tallies forward — only what was actually purged this room.
         sessionXP += roomXP

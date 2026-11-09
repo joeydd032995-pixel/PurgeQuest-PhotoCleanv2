@@ -10,6 +10,9 @@ import Photos
 struct SwipeMediaCard: View {
     let item: MediaItem
     let isFront: Bool
+    /// This asset was purged once before and recovered — deleting it again
+    /// earns no XP, gems, or quest progress.
+    var isShade: Bool = false
     let onDelete: () -> Void
     let onSpare: () -> Void
 
@@ -162,6 +165,9 @@ struct SwipeMediaCard: View {
             if item.isLivePhoto {
                 liveBadge
             }
+            if isShade {
+                shadeBadge
+            }
             Spacer()
             if item.kind == .video, !item.formattedDuration.isEmpty {
                 Text(item.formattedDuration)
@@ -189,6 +195,23 @@ struct SwipeMediaCard: View {
         .background(RoundedRectangle(cornerRadius: 6).fill(Color.goldFill))
         .overlay(RoundedRectangle(cornerRadius: 6).stroke(.white.opacity(0.55), lineWidth: 0.6))
         .accessibilityHidden(true)
+    }
+
+    /// Ashen tag marking a returned shade: this monster was slain once
+    /// already, so a second kill pays nothing.
+    private var shadeBadge: some View {
+        HStack(spacing: 3) {
+            Image(systemName: "moon.zzz.fill")
+                .font(.system(size: 9, weight: .black))
+            Text("SHADE")
+                .font(.system(size: 10, weight: .black))
+                .tracking(0.6)
+        }
+        .padding(.horizontal, 8).padding(.vertical, 5)
+        .foregroundStyle(.textSecondary)
+        .background(RoundedRectangle(cornerRadius: 6).fill(Color.dungeonAsh.opacity(0.9)))
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(.white.opacity(0.25), lineWidth: 0.6))
+        .accessibilityLabel("Shade. Already purged once — no rewards this time.")
     }
 
     /// Small gold tag marking a Live Photo — tap the card to play it.

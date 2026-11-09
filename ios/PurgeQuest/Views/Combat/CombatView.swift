@@ -142,6 +142,7 @@ struct CombatView: View {
                         SwipeMediaCard(
                             item: top,
                             isFront: true,
+                            isShade: combat.isShade(top),
                             onDelete: { combat.decideDelete(top, hero: hero) },
                             onSpare: {
                                 if let hero = heroes.first { combat.decideSpare(top, hero: hero, context: modelContext) }
