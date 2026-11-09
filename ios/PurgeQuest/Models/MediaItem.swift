@@ -29,8 +29,10 @@ struct MediaItem: Identifiable, Equatable {
     var isLivePhoto: Bool = false
     var isLooping: Bool = false
     var isHighFrameRate: Bool = false
-    var sharpness: Double? = nil     // Laplacian variance of the thumbnail
-    var luminance: Double? = nil     // Average thumbnail luminance
+    var sharpness: Double? = nil     // Focus score of the thumbnail, 0...100, higher is sharper; nil = not judged
+    var luminance: Double? = nil     // Average thumbnail luminance, 0...1
+    var highlightLuminance: Double? = nil   // Luminance the brightest 5% of the thumbnail reaches, 0...1
+    var signature: LumaSignature? = nil     // 16x16 luminance signature that confirms duplicate matches
 
     // Deep signals (rollout stages 3–5), captured when a dive enriches the batch.
     var loadFailed: Bool = false                  // Render failed — a Glitchborn signal
