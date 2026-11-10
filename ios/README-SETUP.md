@@ -71,4 +71,4 @@ Then:
 3. Decline the system's delete prompt once: nothing should be deleted and no reward paid.
 4. Add the Daily Quest and Streak widgets and a Lock Screen widget; finish a room and check they update.
 5. Buy a gem pack and a cosmetic with the local StoreKit configuration, delete the app, reinstall,
-   and tap Restore in the Shop: the cosmetic returns, the gems do not double.
+   and tap Restore in the Armory: the cosmetic returns, the gems do not double.
