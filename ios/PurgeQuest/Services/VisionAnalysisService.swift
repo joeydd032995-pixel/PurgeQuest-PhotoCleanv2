@@ -6,22 +6,12 @@
 //  text density (documents and notes photographed instead of kept) and
 //  embedded QR/barcodes (tickets, keys, one-time links — always review
 //  material). Everything runs locally; only the tiny Sendable signal struct
-//  leaves this file.
+//  (VisionTextSignals) leaves this file.
 //
 
 import Foundation
 import UIKit
 import Vision
-
-/// On-device text/barcode signals for one photo.
-struct VisionTextSignals: Sendable, Equatable {
-    /// Total characters recognized across all text regions.
-    let characterCount: Int
-    /// Number of distinct text regions detected.
-    let regionCount: Int
-    /// Any machine-readable code (QR, EAN, DataMatrix, …) present.
-    let hasBarcode: Bool
-}
 
 enum VisionAnalysisService {
 
