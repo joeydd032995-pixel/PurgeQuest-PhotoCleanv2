@@ -6,13 +6,6 @@
 import Foundation
 import SwiftData
 
-enum QuestKind: String, Codable {
-    case photoSlay     // delete N photo monsters of a specific type
-    case videoSlay     // delete N video monsters of a specific type
-    case mbFreed       // free X MB
-    case anySlay       // delete N items, any kind
-}
-
 @Model
 final class Quest {
     @Attribute(.unique) var id: UUID
@@ -50,5 +43,12 @@ final class Quest {
         self.rewardGems = rewardGems
         self.expiresAt = Calendar.current.date(byAdding: .day, value: durationDays, to: Date()) ?? Date().addingTimeInterval(86_400)
         self.completed = false
+    }
+
+    /// A fresh quest from the catalog (see QuestCatalog in GameContent.swift).
+    convenience init(template: QuestTemplate) {
+        self.init(title: template.title, subtitle: template.subtitle, kind: template.kind,
+                  monsterType: template.monsterType, targetCount: template.targetCount,
+                  rewardXP: template.rewardXP, rewardGems: template.rewardGems)
     }
 }

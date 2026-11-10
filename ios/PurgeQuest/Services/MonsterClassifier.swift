@@ -4,9 +4,18 @@
 //
 //  Explanation-first classifier (rollout stages 1–5). Duplicate clusters are
 //  resolved first — they carry the clearest "why" — then metadata rules and
-//  deep-signal rules (sampled frames, on-device Vision) run in confidence
-//  order for solo assets. Every verdict records its reasons so cards and the
-//  bestiary can answer "Why did this appear?".
+//  deep-signal rules (sampled frames, on-device Vision) run for solo assets.
+//  Every verdict records its reasons so cards and the bestiary can answer
+//  "Why did this appear?".
+//
+//  Photo rules run from the most specific fact to the least: what the item is
+//  (broken, a code, a Live Photo, a screenshot, a document, a panorama, a
+//  thumbnail), then what is wrong with it (saved from elsewhere, out of
+//  focus, dark), and only then how old it is. Age is true of every photo in
+//  an old library, and dives are dealt oldest first, so an age rule placed
+//  ahead of the defects would hide them behind "Ancient Archive" for years of
+//  photos. An old photo with a defect keeps the careful-review flag and says
+//  both things.
 //
 //  Pure over MediaItem + MediaFingerprint: UIImage and PHAsset work happens
 //  upstream (PhotoLibraryService / MediaFingerprinter), which keeps the rules
@@ -161,7 +170,13 @@ enum MonsterClassifier {
                 reasons: [.denseText], estimatedBytes: bytes
             )
         }
-        // Extreme width — panorama-style captures.
+        // Panoramas: Photos' own flag (which also covers a vertical sweep), or an extremely wide frame.
+        if item.isPanorama {
+            return MonsterClassification(
+                monsterType: .panoramaColossus, confidence: 0.9,
+                reasons: [.panoramaCapture], estimatedBytes: bytes
+            )
+        }
         if Double(item.pixelWidth) / Double(max(1, item.pixelHeight)) >= panoramaAspect {
             return MonsterClassification(
                 monsterType: .panoramaColossus, confidence: 0.8,
@@ -175,35 +190,34 @@ enum MonsterClassifier {
                 reasons: [.tinyResolution], estimatedBytes: bytes
             )
         }
-        // Ancient Archive — old memories, always handled gently.
-        if let date = item.creationDate,
-           let years = Calendar.current.dateComponents([.year], from: date, to: now).year,
-           years >= archiveYears {
-            return MonsterClassification(
-                monsterType: .ancientArchive, confidence: 0.9,
-                reasons: [.oldCapture], estimatedBytes: bytes,
-                requiresCarefulReview: true
+        // From here on a verdict about a defect also says when the photo is old, and an old photo is
+        // always reviewed carefully: a soft print from years ago may be the only one of its moment.
+        let isOld = isArchiveAge(item.creationDate, now: now)
+        func defect(_ type: MonsterType, _ reason: ClassificationReason) -> MonsterClassification {
+            MonsterClassification(
+                monsterType: type, confidence: 0.7,
+                reasons: isOld ? [reason, .oldCapture] : [reason], estimatedBytes: bytes,
+                requiresCarefulReview: isOld
             )
         }
         // Tall narrow and small — media saved from elsewhere. A phone's own 16:9 portrait photo or a
         // vertical panorama is just as narrow but several times larger, so it is left alone.
         if PhotoRules.isTallDownload(width: item.pixelWidth, height: item.pixelHeight) {
-            return MonsterClassification(
-                monsterType: .lowQualityLich, confidence: 0.7,
-                reasons: [.lowQuality], estimatedBytes: bytes
-            )
+            return defect(.lowQualityLich, .lowQuality)
         }
         // Cheap thumbnail measurements (ThumbnailAnalysis): focus, then exposure.
         if PhotoRules.isBlurry(focus: item.sharpness) {
-            return MonsterClassification(
-                monsterType: .blurBeast, confidence: 0.7,
-                reasons: [.lowQuality], estimatedBytes: bytes
-            )
+            return defect(.blurBeast, .outOfFocus)
         }
         if PhotoRules.isDark(luminance: item.luminance, highlight: item.highlightLuminance) {
+            return defect(.darkWraith, .darkFrames)
+        }
+        // Ancient Archive — an old memory with nothing wrong with it, always handled gently.
+        if isOld {
             return MonsterClassification(
-                monsterType: .darkWraith, confidence: 0.7,
-                reasons: [.darkFrames], estimatedBytes: bytes
+                monsterType: .ancientArchive, confidence: 0.9,
+                reasons: [.oldCapture], estimatedBytes: bytes,
+                requiresCarefulReview: true
             )
         }
         // No strong signal — routine gallery wanderer.
@@ -211,6 +225,12 @@ enum MonsterClassifier {
             monsterType: .blurBeast, confidence: 0.4,
             reasons: [.noStrongSignal], estimatedBytes: bytes
         )
+    }
+
+    /// True when a capture is at least `archiveYears` old.
+    static func isArchiveAge(_ date: Date?, now: Date) -> Bool {
+        guard let date, let years = Calendar.current.dateComponents([.year], from: date, to: now).year else { return false }
+        return years >= archiveYears
     }
 
     private static func classifyVideo(_ item: MediaItem) -> MonsterClassification {
@@ -271,10 +291,11 @@ enum MonsterClassifier {
                 reasons: [.screenRecording], estimatedBytes: bytes
             )
         }
-        if item.isLooping || item.isHighFrameRate {
+        // Captures that bend time: a time-lapse, slow motion, or a loop. Each says which it is.
+        if let bent = timeBendingReason(item) {
             return MonsterClassification(
                 monsterType: .timelapsePhantom, confidence: 0.85,
-                reasons: [.loopVideo], estimatedBytes: bytes
+                reasons: [bent], estimatedBytes: bytes
             )
         }
         // Stage 3: sampled-frame signals refine the phantoms.
@@ -343,6 +364,14 @@ enum MonsterClassifier {
             monsterType: wraith, confidence: 0.4,
             reasons: [.noStrongSignal], estimatedBytes: bytes
         )
+    }
+
+    /// Why a clip is a Timelapse Phantom, if it is one.
+    private static func timeBendingReason(_ item: MediaItem) -> ClassificationReason? {
+        if item.isTimelapse { return .timelapse }
+        if item.isHighFrameRate { return .highFrameRate }
+        if item.isLooping { return .loopVideo }
+        return nil
     }
 
     // MARK: - Cluster monster mapping

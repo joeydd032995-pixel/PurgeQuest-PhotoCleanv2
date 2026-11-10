@@ -53,7 +53,9 @@ struct ClassifierRulesTests {
     @Test func aSoftPhotoIsABlurBeastForBlur() {
         let v = verdict(photo(sharpness: 40))
         #expect(v.monsterType == .blurBeast)
-        #expect(v.reasons == [.lowQuality])
+        // The card must say what was measured: focus, not "unusual proportions".
+        #expect(v.reasons == [.outOfFocus])
+        #expect(v.whyText == "Looks out of focus")
     }
 
     @Test func aPhotoAtTheLineOrAboveIsNotCalledBlurry() {

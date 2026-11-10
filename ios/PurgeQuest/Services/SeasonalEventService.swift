@@ -20,13 +20,16 @@ struct SeasonalEvent: Identifiable, Sendable {
     let tone: Tone
     let primary: Color
     let secondary: Color
-    let bonusMonsters: Set<MonsterType>
-    let bonusXPMultiplier: Double
+    /// Which monsters pay extra XP while the event runs, and how much (SeasonalBonusCatalog).
+    let bonus: SeasonalBonus
     /// Closure-based date matcher so we don't bake any specific year in.
     let matches: @Sendable (DateComponents) -> Bool
     let exclusiveCosmeticIDs: [String]
     /// Small sprites shown on the event banner. Empty for events without art.
     var decor: [SpriteSheet] = []
+
+    var bonusMonsters: Set<MonsterType> { bonus.monsters }
+    var bonusXPMultiplier: Double { bonus.multiplier }
 }
 
 @MainActor
@@ -55,8 +58,7 @@ final class SeasonalEventService {
             tone: .spooky,
             primary: Color(red: 0.72, green: 0.40, blue: 0.16),
             secondary: Color(red: 0.38, green: 0.20, blue: 0.12),
-            bonusMonsters: [.darkWraith, .corruptedCodec, .shakyGhost, .mistWraith, .tatterWraith, .voidWraith],
-            bonusXPMultiplier: 1.5,
+            bonus: SeasonalBonusCatalog.halloween,
             matches: { dc in
                 guard let m = dc.month, let d = dc.day else { return false }
                 return m == 10 && d >= 20 || (m == 11 && d <= 1)
@@ -72,8 +74,7 @@ final class SeasonalEventService {
             tone: .newYear,
             primary: Color(red: 0.79, green: 0.64, blue: 0.15),
             secondary: Color(red: 0.36, green: 0.53, blue: 0.63),
-            bonusMonsters: [.ancientArchive, .duplicateDragon],
-            bonusXPMultiplier: 1.75,
+            bonus: SeasonalBonusCatalog.newYear,
             matches: { dc in
                 guard let m = dc.month, let d = dc.day else { return false }
                 return (m == 12 && d >= 27) || (m == 1 && d <= 7)
@@ -88,8 +89,7 @@ final class SeasonalEventService {
             tone: .summery,
             primary: Color(red: 0.72, green: 0.52, blue: 0.28),
             secondary: Color(red: 0.30, green: 0.50, blue: 0.52),
-            bonusMonsters: [.longTakeLeviathan, .videoVampire, .timelapsePhantom],
-            bonusXPMultiplier: 1.5,
+            bonus: SeasonalBonusCatalog.summer,
             matches: { dc in
                 guard let m = dc.month else { return false }
                 return m >= 6 && m <= 8
@@ -104,8 +104,7 @@ final class SeasonalEventService {
             tone: .festive,
             primary: Color(red: 0.70, green: 0.38, blue: 0.42),
             secondary: Color(red: 0.40, green: 0.20, blue: 0.26),
-            bonusMonsters: [.screenshotSpecter, .blurBeast, .lowQualityLich],
-            bonusXPMultiplier: 1.6,
+            bonus: SeasonalBonusCatalog.valentine,
             matches: { dc in
                 guard let m = dc.month, let d = dc.day else { return false }
                 return m == 2 && d >= 10 && d <= 16
@@ -126,7 +125,6 @@ final class SeasonalEventService {
 
     /// Bonus XP multiplier the combat VM should apply for a slain monster.
     func xpMultiplier(for monster: MonsterType) -> Double {
-        guard let e = activeEvent, e.bonusMonsters.contains(monster) else { return 1.0 }
-        return e.bonusXPMultiplier
+        activeEvent?.bonus.multiplier(for: monster) ?? 1.0
     }
 }

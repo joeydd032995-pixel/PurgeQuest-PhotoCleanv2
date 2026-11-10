@@ -7,8 +7,9 @@
 //
 
 import Foundation
-import Photos
+#if canImport(UIKit)
 import UIKit
+#endif
 
 /// Unified, in-memory model for a fetched photo or video, paired with its monster classification.
 struct MediaItem: Identifiable, Equatable {
@@ -29,6 +30,8 @@ struct MediaItem: Identifiable, Equatable {
     var isLivePhoto: Bool = false
     var isLooping: Bool = false
     var isHighFrameRate: Bool = false
+    var isTimelapse: Bool = false
+    var isPanorama: Bool = false     // Photos' own panorama flag; a vertical panorama is not wide
     var sharpness: Double? = nil     // Focus score of the thumbnail, 0...100, higher is sharper; nil = not judged
     var luminance: Double? = nil     // Average thumbnail luminance, 0...1
     var highlightLuminance: Double? = nil   // Luminance the brightest 5% of the thumbnail reaches, 0...1
@@ -41,7 +44,10 @@ struct MediaItem: Identifiable, Equatable {
 
     var monsterType: MonsterType = .blurBeast
     var classification: MonsterClassification? = nil
+    // The classifier never reads the bitmap, so the model also builds without UIKit (Linux harness).
+    #if canImport(UIKit)
     var thumbnail: UIImage?
+    #endif
 
     static func == (lhs: MediaItem, rhs: MediaItem) -> Bool { lhs.id == rhs.id }
 

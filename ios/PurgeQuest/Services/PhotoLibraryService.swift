@@ -208,6 +208,8 @@ final class PhotoLibraryService {
             isLivePhoto: signals.isLivePhoto,
             isLooping: signals.isLooping,
             isHighFrameRate: signals.isHighFrameRate,
+            isTimelapse: signals.isTimelapse,
+            isPanorama: signals.isPanorama,
             sharpness: metrics?.focus,
             luminance: metrics?.meanLuminance,
             highlightLuminance: metrics?.highlightLuminance,
@@ -246,7 +248,9 @@ final class PhotoLibraryService {
                 isScreenRecording: signals.isScreenRecording,
                 isLivePhoto: signals.isLivePhoto,
                 isLooping: signals.isLooping,
-                isHighFrameRate: signals.isHighFrameRate
+                isHighFrameRate: signals.isHighFrameRate,
+                isTimelapse: signals.isTimelapse,
+                isPanorama: signals.isPanorama
             ))
         }
         return DungeonThemeEngine.composition(for: items)
@@ -270,15 +274,22 @@ final class PhotoLibraryService {
         return bytes
     }
 
-    /// Cheap, explainable signals read straight from PHAsset metadata and its resources.
-    private func captureSignals(for asset: PHAsset, resources: [PHAssetResource]) -> (isScreenshot: Bool, hasEdits: Bool, isScreenRecording: Bool, isLivePhoto: Bool, isLooping: Bool, isHighFrameRate: Bool) {
-        (
-            asset.mediaSubtypes.contains(.photoScreenshot),
-            resources.contains { $0.type == .fullSizePhoto || $0.type == .fullSizeVideo || $0.type == .adjustmentData },
-            resources.contains { $0.originalFilename.localizedCaseInsensitiveContains("screen recording") },
-            asset.playbackStyle == .livePhoto,
-            asset.playbackStyle == .videoLooping,
-            asset.mediaSubtypes.contains(.videoHighFrameRate)
+    /// Cheap, explainable signals read straight from PHAsset metadata and its resources. This only
+    /// reads the flags; what they add up to is decided in CaptureSignalRules, which is tested off-device.
+    private func captureSignals(for asset: PHAsset, resources: [PHAssetResource]) -> CaptureSignals {
+        let subtypes = asset.mediaSubtypes
+        return CaptureSignals(
+            isScreenshot: subtypes.contains(.photoScreenshot),
+            hasEdits: resources.contains { $0.type == .fullSizePhoto || $0.type == .fullSizeVideo || $0.type == .adjustmentData },
+            isScreenRecording: CaptureSignalRules.isScreenRecording(
+                flagged: subtypes.contains(.videoScreenRecording),
+                filenames: resources.map(\.originalFilename)
+            ),
+            isLivePhoto: asset.playbackStyle == .livePhoto,
+            isLooping: asset.playbackStyle == .videoLooping,
+            isHighFrameRate: subtypes.contains(.videoHighFrameRate),
+            isTimelapse: subtypes.contains(.videoTimelapse),
+            isPanorama: subtypes.contains(.photoPanorama)
         )
     }
 

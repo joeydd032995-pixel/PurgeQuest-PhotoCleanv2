@@ -79,10 +79,12 @@ for cid in sorted(used - catalog_ids):
 
 # 5. harness files exist
 run_sh = (ROOT / "tools/swift_harness/run.sh").read_text()
-for m in re.finditer(r"for f in ([^;]+); do", run_sh):
-    for n in m.group(1).split():
-        if not (IOS / "PurgeQuest" / f"{n}.swift").exists():
-            failures.append(f"harness: run.sh lists missing source {n}.swift")
+harness_sources = [n for m in re.finditer(r"for [fs] in ([^;]+); do", run_sh) for n in m.group(1).split()]
+if len(harness_sources) < 20:
+    failures.append("harness: found too few sources in run.sh (parser out of date?)")
+for n in harness_sources:
+    if not (IOS / "PurgeQuest" / f"{n}.swift").exists():
+        failures.append(f"harness: run.sh lists missing source {n}.swift")
 for m in re.finditer(r"for t in ([^;]+); do", run_sh):
     for n in m.group(1).split():
         if not (IOS / "PurgeQuestTests" / f"{n}.swift").exists():
