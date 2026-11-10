@@ -12,6 +12,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 import fit as fitmod
+import pinning
 import validate
 
 REPO = Path(__file__).resolve().parents[2]
@@ -34,7 +35,9 @@ def main() -> None:
     races = json.loads(validate.RACES.read_text())
     gear = json.loads(validate.GEAR.read_text())
     report = json.loads((OUT / "race_build_report.json").read_text())
-    ledger = json.loads(validate.LEDGER.read_text())["approvals"]
+    # Only approvals that still match the files count (pinning.py); a stale one is reported, not counted.
+    view = pinning.evaluate(json.loads(validate.LEDGER.read_text()), races["parts"] + gear["items"], pinning.png_index(validate.ART))
+    ledger = [i["record"] for i in view["records"] if i["state"] == pinning.CURRENT]
     by_pack = defaultdict(list)
     for p in races["parts"]:
         by_pack[p["pack"]].append(p)
@@ -49,7 +52,8 @@ def main() -> None:
     for e in races["parts"] + gear["items"]:
         counts[e["verification"]["status"]] += 1
     lines += ["## Summary", "", "| status | assets |", "|---|---|"] + [f"| {k} | {v} |" for k, v in sorted(counts.items())]
-    lines += ["", f"Approvals recorded: **{len(ledger)}**. Race part layers: {len(races['parts'])} across {len(races['packs'])} art packs. "
+    stale = f" Stale approvals (asset changed since; not counted): **{len(view['stale'])}**." if view["stale"] else ""
+    lines += ["", f"Approvals recorded: **{len(ledger)}**.{stale} Race part layers: {len(races['parts'])} across {len(races['packs'])} art packs. "
                   f"Held/store gear: {len(gear['items'])} items.", ""]
 
     # ---- races
@@ -124,7 +128,7 @@ def main() -> None:
                    ("Kind | Masks | Packs", lambda i: f"{i['kind']} | {', '.join(sorted(i['maskResources']))} | {len(i['supportedPacks'])}"))
 
     lines += ["## Open gates (cannot be closed from an automated session)", "",
-              "- [ ] **Visual approval** of every `candidate` above — review `docs/modular/verification/*.png`, then record with `tools/modular_assets/approvals.py`.",
+              "- [ ] **Visual approval** of every `candidate` above — work through [`REVIEW.md`](REVIEW.md), which orders the packs into waves and gives the sheets and the command for each, then record with `tools/modular_assets/approvals.py`.",
               "- [ ] **Per-profile fit approval** for each supported adapted profile (see `*_fit.png`).",
               "- [ ] Run the Xcode unit tests and `PurgeQuestUITests/ForgeUITests` on an iOS simulator (CI runs both; see `.github/workflows/ios.yml`).",
               "- [ ] **Physical iPhone**: small previews (Dashboard strip, Armory tiles), combat rendering, relaunch persistence of equipment and colours, memory under repeated Forge use.",

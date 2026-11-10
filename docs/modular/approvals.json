@@ -1,5 +1,5 @@
 {
- "schemaVersion": 1,
- "_doc": "Human approvals only. Add records with tools/modular_assets/approvals.py approve ...",
+ "schemaVersion": 2,
+ "_doc": "Human approvals only, each pinned to the content hash of what was reviewed. Add and remove records with tools/modular_assets/approvals.py; see docs/modular/REVIEW.md.",
  "approvals": []
 }

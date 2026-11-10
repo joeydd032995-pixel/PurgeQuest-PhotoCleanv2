@@ -115,7 +115,7 @@ The three headpieces (Starlit Cap, Shadow Hood, Dragoncrest Helm) were drawn and
 
 ## Open gates (cannot be closed from an automated session)
 
-- [ ] **Visual approval** of every `candidate` above — review `docs/modular/verification/*.png`, then record with `tools/modular_assets/approvals.py`.
+- [ ] **Visual approval** of every `candidate` above — work through [`REVIEW.md`](REVIEW.md), which orders the packs into waves and gives the sheets and the command for each, then record with `tools/modular_assets/approvals.py`.
 - [ ] **Per-profile fit approval** for each supported adapted profile (see `*_fit.png`).
 - [ ] Run the Xcode unit tests and `PurgeQuestUITests/ForgeUITests` on an iOS simulator (CI runs both; see `.github/workflows/ios.yml`).
 - [ ] **Physical iPhone**: small previews (Dashboard strip, Armory tiles), combat rendering, relaunch persistence of equipment and colours, memory under repeated Forge use.

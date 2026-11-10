@@ -13,6 +13,7 @@ Everything here is produced by `tools/modular_assets/` (Python 3, Pillow + NumPy
 | 11 store weapon/shield sprites | `Art/Gear/store/` | `store_gear.py` |
 | QA sheets (layers, fit per body profile, gear, Titan) | `docs/modular/verification/` | the scripts above |
 | Checklist + status | `docs/modular/CHECKLIST.md`, `asset_status.json` | `checklist.py` |
+| Reviewer's guide (waves, sheets, commands) | `docs/modular/REVIEW.md`; order in `review_waves.json` | `review_kit.py` |
 | **Versioned inventory of every asset** (pass label, per-asset revision, content hash, attention flags) | `docs/modular/ASSET_INVENTORY.md`, `asset_inventory.json`; pass names in `asset_sets.json` | `inventory.py` |
 
 ## Which set am I looking at?
@@ -31,6 +32,7 @@ python3 -I tools/modular_assets/held_gear.py --masks-only --algorithm authored-s
 python3 -I tools/modular_assets/approvals.py apply   # re-stamp statuses from the ledger
 python3 -I tools/modular_assets/validate.py          # must exit 0
 python3 -I tools/modular_assets/checklist.py
+python3 -I tools/modular_assets/review_kit.py      # reviewer's guide
 python3 -I tools/modular_assets/inventory.py         # versioned inventory (add --sheets DIR for contact sheets + PDF)
 python3 -I tools/modular_assets/tests/test_modular_assets.py
 ```
@@ -60,15 +62,27 @@ Checked on the shipped art for all 27 packs by `WeaponInHand` and `CarryAngle` i
 
 ## Approving assets (the only way anything becomes `verified`)
 
-Open the sheets, then record who looked:
+Start with [`REVIEW.md`](REVIEW.md). It orders the work into waves (the default paint of each race first: eight packs that between them cover all five body profiles), and for every pack and gear group gives the sheets to open, what the inventory already flags, and the command. Then record who looked:
 
 ```sh
-python3 -I tools/modular_assets/approvals.py approve valkyrie_v1 --reviewer "Your Name"                 # part-level (native profile)
-python3 -I tools/modular_assets/approvals.py approve valkyrie_v1 --reviewer "Your Name" --profile standard   # an adapted fit
-python3 -I tools/modular_assets/approvals.py approve weapon.staff.1 --reviewer "Your Name"              # prefix match works for gear ids
+python3 -I tools/modular_assets/approvals.py status                                              # where review stands
+python3 -I tools/modular_assets/approvals.py approve pack:valkyrie_v1 --reviewer "Your Name"     # every layer of one pack
+python3 -I tools/modular_assets/approvals.py approve pack:valkyrie_v1 --reviewer "Your Name" --profile standard   # an adapted fit
+python3 -I tools/modular_assets/approvals.py approve group:staff1 --reviewer "Your Name"         # a gear group
+python3 -I tools/modular_assets/approvals.py approve id:weapon.staff --reviewer "Your Name"      # exactly one asset
+python3 -I tools/modular_assets/approvals.py revoke pack:valkyrie_v1 --reviewer "Your Name" --note "why"
+python3 -I tools/modular_assets/review_kit.py                                                    # refresh REVIEW.md
 ```
 
-`approvals.py` appends to `docs/modular/approvals.json` and re-stamps both manifests. The validator rejects `verified` without a ledger entry. At runtime `CharacterRenderPlanner` sends a recipe to the modular renderer only when **every** selected part is `verified` and each adapted profile is approved; anything else falls back to the legacy renderer without a blank frame.
+`approvals.py` writes `docs/modular/approvals.json` and re-stamps both manifests. What keeps the ledger honest:
+
+- **An approval is pinned to content.** Each record stores a SHA-256 of the files that were reviewed: the image and every mask, plus the fit numbers for a `--profile` approval (`pinning.py`). Regenerate an asset and its record is *stale*: the asset drops back to `candidate` at the next `apply`, and `status`, `validate.py` and `REVIEW.md` all report it until someone looks again (approving replaces the stale record) or revokes it.
+- **Only an asset whose automated checks passed can be approved.** A `mapped` asset is refused.
+- **A fit approval counts only alongside the layer's own**, and is recorded only for layers that adapt to that profile. Revoking a layer removes its fit approvals too.
+- **Revocations are kept** in the ledger, so it is a history.
+- **A bare target that is both an id and a prefix is refused.** `weapon.staff` is the Archmage Staff and also the start of forty staves; say `id:`, `pack:` or `group:`.
+
+The validator rejects `verified` without a current ledger record. At runtime `CharacterRenderPlanner` sends a recipe to the modular renderer only when **every** selected part is `verified` and each adapted profile is approved; anything else falls back to the legacy renderer without a blank frame. So approval is progressive, one art pack at a time: an approved pack renders modular and unlocks its Forge body colours, and every other pack looks exactly as it does today. Held-gear approval is a record that someone looked; no rendering path reads it.
 
 ## How the separation works (and its limits)
 

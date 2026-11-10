@@ -1,0 +1,80 @@
+{
+ "_doc": "The order in which to review modular assets, read by tools/modular_assets/review_kit.py to write REVIEW.md. Hand-authored. Every art pack is in exactly one of waves 1 and 2, and every gear group is in wave 4; tests/test_modular_assets.py checks both, and that wave 1 covers all five body profiles (slender, standard, athletic, skeletal, brute) through a pack that is native to each.",
+ "waves": [
+  {
+   "id": 1,
+   "kind": "packs",
+   "title": "The default paint of each race",
+   "why": "Eight packs: paint 1 of every race, the paint a new hero starts on unless the player picks another. Between them they are native to all five body profiles, so this is the smallest set that exercises every body shape the renderer has. Approve these and every hero on its race's default paint renders through the modular path.",
+   "packs": [
+    "valkyrie_v1",
+    "forest_ranger_v1",
+    "seer_v1",
+    "blood_alchemist_v1",
+    "dark_oracle_v1",
+    "necromancer_v1",
+    "skeleton_crusader_v1",
+    "golem_v1"
+   ]
+  },
+  {
+   "id": 2,
+   "kind": "packs",
+   "title": "The other paints",
+   "why": "The remaining nineteen packs: paints 2 and 3 of each race and the three Skeleton Warrior paints (Skeletal Undead paints 4 to 6). Same checks as wave 1; a hero switches to the modular path as soon as the paint it wears is approved.",
+   "packs": [
+    "valkyrie_v2",
+    "valkyrie_v3",
+    "forest_ranger_v2",
+    "forest_ranger_v3",
+    "seer_v2",
+    "seer_v3",
+    "blood_alchemist_v2",
+    "blood_alchemist_v3",
+    "dark_oracle_v2",
+    "dark_oracle_v3",
+    "necromancer_v2",
+    "necromancer_v3",
+    "skeleton_crusader_v2",
+    "skeleton_crusader_v3",
+    "skeleton_warrior_v1",
+    "skeleton_warrior_v2",
+    "skeleton_warrior_v3",
+    "golem_v2",
+    "golem_v3"
+   ]
+  },
+  {
+   "id": 3,
+   "kind": "fits",
+   "title": "Adapted body-profile fits",
+   "why": "A pack drawn for one body profile can be scaled onto others inside its safe range. Each such fit needs its own approval on top of the pack's. Nothing a player can do today selects a non-native profile, so this wave changes nothing on screen yet; it is the gate for offering body shapes later. Only packs already approved in waves 1 and 2 can take a fit approval."
+  },
+  {
+   "id": 4,
+   "kind": "gear",
+   "title": "Held gear (a record, not a switch)",
+   "why": "Weapons and shields already recolor through their masks under a recorded policy exception (docs/modular/README.md), and no rendering path checks their approval. Approving them records that someone looked. Do it last, signature and store items first because every player sees those.",
+   "groups": [
+    "signature",
+    "store",
+    "staff1",
+    "staff2",
+    "staff3",
+    "staff4",
+    "staff5",
+    "staff6",
+    "staff7",
+    "staff8",
+    "shield1",
+    "shield2",
+    "shield3",
+    "shield4",
+    "shield5",
+    "shield6",
+    "shield7",
+    "shield8"
+   ]
+  }
+ ]
+}
