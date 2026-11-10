@@ -51,3 +51,10 @@ CopyDays copies, are the "same picture" edits; the others test the blur and dark
   stand-in for hand-labelled data but is not the same thing. Real camera shake and defocus differ.
 - Nothing here measures scan *time* in the app (PhotoKit, Vision and AVFoundation are not available off
   Apple platforms), only the engine and the metric computation.
+- It measures each photo rule on its own. Which rule gets to a photo first is the classifier's business
+  (`MonsterClassifier`: a defect is named before age, so an old blurry photo is a Blur Beast, not an
+  Ancient Archive); changing that order changes which photos reach a rule, not the figures here.
+- There are no videos. The video rules (`VideoFrameSignals`: motionless, flicker, dark, the brightness
+  jump behind the Shaky Ghost) have never been run against real footage. The motionless rule compares
+  sampled frames cell by cell; its threshold was carried over from the brightness-only rule it replaced,
+  which it can only be stricter than, and has not been tuned.
