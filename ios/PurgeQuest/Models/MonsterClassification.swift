@@ -28,6 +28,8 @@ enum ClassificationReason: String, Codable, Sendable, CaseIterable {
     case livePhotoPair
     case screenRecording
     case lowQuality
+    case outOfFocus
+    case panoramaCapture
 
     // Storage Behemoths
     case resourceSize
@@ -42,6 +44,7 @@ enum ClassificationReason: String, Codable, Sendable, CaseIterable {
     case darkFrames
     case loopVideo
     case highFrameRate
+    case timelapse
 
     // Glitchborn
     case brokenMetadata
@@ -75,13 +78,17 @@ enum ClassificationReason: String, Codable, Sendable, CaseIterable {
         case .livePhotoPair:       return "A Live Photo with a paired motion file"
         case .screenRecording:     return "Recorded from the screen"
         case .lowQuality:          return "Unusual proportions, likely saved from elsewhere"
+        case .outOfFocus:          return "Looks out of focus"
+        case .panoramaCapture:     return "Captured as a panorama"
         case .resourceSize:        return "Takes up a very large amount of storage"
         case .videoDuration:       return "An unusually long recording"
         case .ultraHighResolution: return "Recorded in ultra-high resolution"
         case .oldCapture:          return "Captured years ago"
         case .veryShortVideo:      return "Barely a moment of video"
         case .darkFrames:          return "Captured in near darkness"
-        case .loopVideo, .highFrameRate: return "A looping or slow-motion clip"
+        case .loopVideo:           return "A looping clip"
+        case .highFrameRate:       return "A slow-motion capture"
+        case .timelapse:           return "A time-lapse capture"
         case .brokenMetadata:      return "Could not be fully loaded"
         case .staticFrames:        return "Frames barely change from start to finish"
         case .flickeringFrames:    return "Brightness swings sharply between frames"
