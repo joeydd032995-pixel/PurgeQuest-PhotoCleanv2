@@ -5,6 +5,8 @@ import Foundation
 struct Color: Equatable {
     static let questAmber = Color(), gemEmerald = Color(), xpViolet = Color()
     static let combatCrimson = Color(), videoSapphire = Color(), questAmberDeep = Color()
+    // Bestiary family and rarity tints (MonsterFamily.accentColor, MonsterRarity.frameColor).
+    static let behemothIndigo = Color(), dragonCoral = Color(), glitchRose = Color(), dungeonAsh = Color()
 }
 
 enum HeroClass: String { case paladinHoly, hunter, priestDivine, roguePoison, mageIce, paladinUnholy, shamanEarth }
