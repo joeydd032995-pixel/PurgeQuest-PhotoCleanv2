@@ -1,7 +1,9 @@
-node_modules
+# Rork (the builder that syncs this repository): its local state and build-time environment
+.rork/
 .env
-.expo
-.rork
 
-# ai-pair-programming plugin: rewritten at the end of every session, so it is local state, not source
+# Local tool state, rewritten every session
 .pair-programming-session.md
+
+# macOS
+.DS_Store

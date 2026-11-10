@@ -23,6 +23,7 @@ Checks:
      tracking and no collected data, and a reason for every required-reason API its sources call.
  13. Versions: the app and the widget carry the same marketing and build version.
  14. No web-app leftovers: nothing from a React Native / Expo template is in the tree.
+ 15. Rork's build-time Config.swift is not used by the app, and a copy in the tree holds no values.
 """
 import json
 import plistlib
@@ -339,6 +340,18 @@ for path in ROOT.rglob("*"):
         continue
     if path.name in LEFTOVERS or path.name in ("node_modules", ".expo"):
         failures.append(f"leftovers: {path.relative_to(ROOT)} belongs to a React Native / Expo project, not this one")
+
+# 15. Rork's Config.swift
+# Rork generates PurgeQuest/Config.swift at build time from its environment (API base URLs, a toolkit
+# key). The app is offline and must not depend on it, and a filled-in copy must never reach the repo.
+config = IOS / "PurgeQuest/Config.swift"
+for f in swift_files("PurgeQuest", "PurgeQuestWidget", "PurgeQuestTests", "PurgeQuestUITests"):
+    if f != config and re.search(r"\bConfig\.(EXPO_|allValues)", strip_comments(f.read_text())):
+        failures.append(f"config: {f.relative_to(ROOT)} reads Rork's build-time Config; the app must not depend on it")
+if config.exists():
+    for name, value in re.findall(r'static let (\w+)\s*=\s*"([^"]*)"', config.read_text()):
+        if value:
+            failures.append(f"config: Config.swift in the tree has a value for {name}; it must stay out of the repository")
 
 if failures:
     print("repo_guard FAILED:")
