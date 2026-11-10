@@ -51,4 +51,28 @@ struct SeasonalCatalogTests {
         #expect(SeasonalCatalog.isPurchasable("weapon.shard", activeEventID: nil))
         #expect(SeasonalCatalog.isPurchasable("pet.owl", activeEventID: "halloween"))
     }
+
+    /// The Linux harness audits SeasonalBonusCatalog.byEventID, so every event must be in it, with
+    /// the bonus the event really pays. An event added without an entry would escape that audit.
+    @Test func everyEventsBonusIsTheOneTheHarnessAudits() {
+        let events = SeasonalEventService.allEvents
+        #expect(Set(events.map(\.id)) == Set(SeasonalBonusCatalog.byEventID.keys))
+        for event in events {
+            #expect(SeasonalBonusCatalog.byEventID[event.id] == event.bonus, "\(event.name)")
+        }
+    }
+
+    @Test func theDailyPoolIsBuiltFromTheCatalogTheHarnessAudits() {
+        let pool = GameDataService.dailyQuestPool
+        #expect(pool.count == QuestCatalog.daily.count)
+        for (quest, template) in zip(pool, QuestCatalog.daily) {
+            #expect(quest.title == template.title)
+            #expect(quest.kind == template.kind)
+            #expect(quest.monsterType == template.monsterType)
+            #expect(quest.targetCount == template.targetCount)
+            #expect(quest.rewardXP == template.rewardXP)
+            #expect(quest.rewardGems == template.rewardGems)
+            #expect(quest.currentCount == 0 && !quest.completed)
+        }
+    }
 }

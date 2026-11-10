@@ -7,6 +7,13 @@
 //  exactly that monster. A new MonsterType without a witness fails the first test, so game content
 //  can never again point at a monster nothing summons.
 //
+//  Being summonable from a hand-built item is not the same as turning up in a real library, so the
+//  last section pins the two ways a monster used to be reachable here and not on a phone: a rule that
+//  an older rule always got to first, and a signal nothing on the device ever set (CaptureSignalTests
+//  covers the second).
+//
+//  Foundation only: the content comes from GameContent.swift, so this runs in the Linux harness too.
+//
 
 import Testing
 import Foundation
@@ -153,7 +160,7 @@ struct ContentReachabilityTests {
     // MARK: - Content that names monsters
 
     @Test func everyQuestNamesAMonsterItsKindCanSlay() {
-        let pool = GameDataService.dailyQuestPool
+        let pool = QuestCatalog.daily
         #expect(!pool.isEmpty)
         for quest in pool {
             switch quest.kind {
@@ -169,13 +176,47 @@ struct ContentReachabilityTests {
         }
     }
 
+    @Test func everyQuestTargetCanBeSummoned() {
+        let summonable = Set(witnesses().filter { $0.actual == $0.expected }.map(\.expected))
+        for quest in QuestCatalog.daily {
+            guard let target = quest.monsterType else { continue }
+            #expect(summonable.contains(target), "\(quest.title) targets \(target), which nothing summons")
+        }
+    }
+
     @Test func everySeasonalBonusNamesAMonsterThatCanBeSummoned() {
         let summonable = Set(witnesses().filter { $0.actual == $0.expected }.map(\.expected))
-        for event in SeasonalEventService.allEvents {
-            #expect(!event.bonusMonsters.isEmpty, "\(event.name) rewards no monster")
-            for monster in event.bonusMonsters {
-                #expect(summonable.contains(monster), "\(event.name) rewards \(monster), which nothing summons")
+        #expect(!SeasonalBonusCatalog.byEventID.isEmpty)
+        for (event, bonus) in SeasonalBonusCatalog.byEventID {
+            #expect(!bonus.monsters.isEmpty, "\(event) rewards no monster")
+            #expect(bonus.multiplier > 1, "\(event) pays no bonus")
+            for monster in bonus.monsters {
+                #expect(summonable.contains(monster), "\(event) rewards \(monster), which nothing summons")
             }
+        }
+    }
+
+    // MARK: - Reachable in a real library, not only in a fixture
+
+    /// Dives are dealt oldest first, so in a library that goes back years every photo of the first
+    /// many dives is old. A photo monster that game content names must still be summoned there.
+    @Test func thePhotoMonstersContentNamesAreSummonedInAnOldLibraryToo() {
+        let longAgo = Self.epoch.addingTimeInterval(-6 * 365 * Self.day)
+        var named = Set(QuestCatalog.daily.compactMap(\.monsterType))
+        for bonus in SeasonalBonusCatalog.byEventID.values { named.formUnion(bonus.monsters) }
+
+        let oldLibrary: [MonsterType: MediaItem] = [
+            .blurBeast: item(capturedAt: longAgo, sharpness: 3),
+            .darkWraith: item(capturedAt: longAgo, luminance: 0.1),
+            .lowQualityLich: item(width: 1_000, height: 3_000, capturedAt: longAgo),
+            .screenshotSpecter: item(capturedAt: longAgo, screenshot: true),
+            .ancientArchive: item(capturedAt: longAgo)
+        ]
+        // Duplicate Dragons come from clusters, which never look at age.
+        let soloPhotos = named.filter { $0.kind == .photo && $0.family != .duplicateDragons }
+        #expect(soloPhotos == Set(oldLibrary.keys), "a photo monster named by content has no old-library case: \(soloPhotos.subtracting(oldLibrary.keys))")
+        for (monster, photo) in oldLibrary {
+            #expect(alone(photo) == monster, "an old photo that should be \(monster) was called \(alone(photo))")
         }
     }
 }
