@@ -22,7 +22,7 @@ for s in Models/HeroRace Models/MonsterType Models/MonsterFamily Models/MonsterR
   sed 's/^import SwiftUI$/import Foundation/' "$APP/$s.swift" > "Sources/PurgeQuest/$(basename "$s").swift"
 done
 cp "$HERE/Stubs.swift" Sources/PurgeQuest/Stubs.swift
-for t in ModularCharacterFoundationTests ModularGearTests ModularManifestFileTests LookRecolorTests ThemePaletteTests DuplicateEngineTests ThumbnailAnalysisTests BoundedConcurrencyTests RoomTargetingTests ClassifierRulesTests ClusterReasonTests ContentReachabilityTests CaptureSignalTests ClassifierPrecedenceTests GameContentTests; do ln -sf "$TESTS/$t.swift" "Tests/PurgeQuestTests/$t.swift"; done
+for t in ModularCharacterFoundationTests ModularGearTests ModularManifestFileTests LookRecolorTests ThemePaletteTests DuplicateEngineTests ThumbnailAnalysisTests BoundedConcurrencyTests RoomTargetingTests ClassifierRulesTests ClusterReasonTests ContentReachabilityTests CaptureSignalTests ClassifierPrecedenceTests GameContentTests VideoFrameSignalTests; do ln -sf "$TESTS/$t.swift" "Tests/PurgeQuestTests/$t.swift"; done
 cat > Package.swift <<'PKG'
 // swift-tools-version: 6.0
 import PackageDescription

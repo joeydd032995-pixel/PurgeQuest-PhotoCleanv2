@@ -41,25 +41,24 @@ enum MLAnalysisService {
         return ThumbnailAnalysis.metrics(grayscale: Array(samples), side: side)
     }
 
-    /// Mean 0…1 luminance of any CGImage (16×16 readback).
-    nonisolated static func averageLuminance(cgImage: CGImage) -> Double {
+    /// The image as a 16×16 grid of 0…1 luminances, row by row. Nil when it cannot be drawn.
+    nonisolated static func luminanceGrid(cgImage: CGImage) -> [Double]? {
         let width = 16
         let height = 16
-        guard let scaled = downsample(cgImage: cgImage, to: CGSize(width: width, height: height)) else { return 1.0 }
+        guard let scaled = downsample(cgImage: cgImage, to: CGSize(width: width, height: height)) else { return nil }
         let bytesPerRow = width * 4
         var pixels = [UInt8](repeating: 0, count: width * height * 4)
         let cs = CGColorSpaceCreateDeviceRGB()
-        guard let ctx = CGContext(data: &pixels, width: width, height: height, bitsPerComponent: 8, bytesPerRow: bytesPerRow, space: cs, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return 1.0 }
+        guard let ctx = CGContext(data: &pixels, width: width, height: height, bitsPerComponent: 8, bytesPerRow: bytesPerRow, space: cs, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
         ctx.draw(scaled, in: CGRect(x: 0, y: 0, width: width, height: height))
-        var total = 0.0
-        let count = width * height
-        for i in 0..<count {
+        var grid = [Double](repeating: 0, count: width * height)
+        for i in 0..<grid.count {
             let r = Double(pixels[i*4]) / 255.0
             let g = Double(pixels[i*4+1]) / 255.0
             let b = Double(pixels[i*4+2]) / 255.0
-            total += 0.299*r + 0.587*g + 0.114*b
+            grid[i] = 0.299*r + 0.587*g + 0.114*b
         }
-        return total / Double(count)
+        return grid
     }
 
     private nonisolated static func downsample(cgImage: CGImage, to size: CGSize) -> CGImage? {

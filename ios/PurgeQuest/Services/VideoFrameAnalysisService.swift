@@ -53,12 +53,15 @@ enum VideoFrameAnalysisService {
 
         // Sample deep enough to miss intros, centered enough to catch content.
         let fractions = [0.1, 0.5, 0.9].prefix(max(2, min(sampleCount, 3)))
-        var luminances: [Double] = []
+        // Each frame is kept as a 16x16 luminance grid, not just its average: whether a clip moves is
+        // decided by comparing the grids (VideoFrameSignals.evaluate(frames:)).
+        var frames: [[Double]] = []
         for fraction in fractions {
             let time = CMTime(seconds: seconds * fraction, preferredTimescale: 600)
-            guard let (image, _) = try? await generator.image(at: time) else { continue }
-            luminances.append(MLAnalysisService.averageLuminance(cgImage: image))
+            guard let (image, _) = try? await generator.image(at: time),
+                  let grid = MLAnalysisService.luminanceGrid(cgImage: image) else { continue }
+            frames.append(grid)
         }
-        return VideoFrameSignals.evaluate(luminances: luminances)
+        return VideoFrameSignals.evaluate(frames: frames)
     }
 }
