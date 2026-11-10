@@ -2,15 +2,15 @@
 
 **A native iOS dungeon-crawler RPG that turns Camera Roll cleanup into combat.**
 
-Photos and videos in your library appear as monsters. Swipe left to slay (delete) or right to spare. Nothing is ever permanently destroyed by the app — every "kill" simply moves the item to Photos' **Recently Deleted**, where it stays recoverable for 30 days.
+Photos and videos in your library appear as monsters. Swipe left to slay (delete) or right to spare. Nothing is ever permanently destroyed by the app: every "kill" moves the item to Photos' **Recently Deleted**, where it stays recoverable for 30 days, and nothing moves until you confirm the room.
 
-- **Platform:** iOS 18.0+, iPhone only (Dynamic Island devices fully supported)
-- **Language:** 100% Swift (Swift 5), ~7,100 lines across 50 files
-- **UI:** SwiftUI · **Persistence:** SwiftData · **Dependencies:** none — first-party Apple frameworks only
+- **Platform:** iOS 18.0+, iPhone only, portrait
+- **Language:** Swift (language mode 5, built with the Swift 6.2 toolchain), about 27,000 lines across 151 files, tests included
+- **UI:** SwiftUI · **Persistence:** SwiftData · **Dependencies:** none, first-party Apple frameworks only
 - **Bundle ID:** `com.purgequest.app` · **Version:** 1.0.0
-- **Network activity:** none — the app is fully offline, with no analytics, ads, or third-party SDKs
+- **Network activity:** none. No analytics, ads, accounts or third-party SDKs. `tools/ci/repo_guard.py` fails the build if that changes.
 
-> Built and iterated on via [Rork](https://rork.com), an AI-native iOS app builder (see `rork.json`). Several files and `.gitignore` entries in this repo carry Rork's fingerprints — see [Known Issues & Recommendations](#known-issues--recommendations).
+> Built and iterated on via [Rork](https://rork.com), an AI-native iOS app builder (see `rork.json`), which still syncs commits into this repository.
 
 ---
 
@@ -24,8 +24,7 @@ Photos and videos in your library appear as monsters. Swipe left to slay (delete
 - [Asset Organization](#asset-organization)
 - [Getting Started](#getting-started)
 - [Testing](#testing)
-- [Known Issues & Recommendations](#known-issues--recommendations)
-- [Roadmap](#roadmap)
+- [Open Items](#open-items)
 - [License](#license)
 
 ---
@@ -35,24 +34,28 @@ Photos and videos in your library appear as monsters. Swipe left to slay (delete
 ### Core combat loop
 - Your Camera Roll is split into **dungeon dives**: 5 rooms per session, 20 items per room (`ViewModels/CombatViewModel.swift`).
 - **Rooms lean toward clutter, without going predictable.** A dive loads the 150 oldest unseen items. Before each room is dealt it counts what is left in four buckets: blurry photos, screenshots, videos over 100 MB or 2 minutes, and photos three or more years old. It then fills 30–50% of the room from the largest bucket and the rest at random. A bucket with nothing left means a pure random room (`Services/RoomTargeting.swift`). The dashboard's **Focused Dive** menu (Blur / Screenshots / Large Video / Old) names a bucket instead and fills rooms from it first; it applies to that one dive, and "Enter the Dungeon" stays the mixed default. A focus can only lean on what the dive's 150 items hold, and hand-picked hunts are dealt exactly as chosen.
-- Each item is classified into one of **13 monster types** (below) and rendered as a swipeable combat card (`Views/Combat/SwipeMediaCard.swift`) — swipe left to slay (queue for deletion), right to spare.
+- Each item is classified into one of **36 monsters in six families** (below) and rendered as a swipeable combat card (`Views/Combat/SwipeMediaCard.swift`): swipe left to slay (queue for deletion), right to spare. Duplicates are dealt as one group card with a suggested keeper (`Views/Combat/DuplicateGroupCard.swift`).
 - A **combo multiplier** ramps your XP/gem rewards every 5 consecutive slays without sparing; sparing resets the combo.
-- Before anything is deleted, a **Room Summary** screen lists every queued item and requires explicit user confirmation (`Views/Combat/RoomSummaryView.swift`) — individual items can be flipped from delete → spare right up until that point.
+- Before anything is deleted, a **Room Summary** screen lists every queued item and requires explicit confirmation (`Views/Combat/RoomSummaryView.swift`). Individual items can be flipped from delete to spare right up until that point. Photos then shows its own delete prompt; rewards are booked only after that succeeds.
 
-### Monster classification (on-device, heuristic)
-`Services/MLAnalysisService.swift` classifies each photo/video using cheap on-device heuristics — no bundled ML model yet (see [Known Issues](#known-issues--recommendations)):
+### Monster classification (on-device)
 
-| Photo monsters | Trigger | Video monsters | Trigger |
-|---|---|---|---|
-| Duplicate Dragon family (8 monsters) | near-identical groups: exact pairs, bursts, edited copies, hoards, echoes (see Duplicate detection) | Video Vampire | large file, medium duration |
-| Blur Beast | focus score below 55 (re-blur detail loss on a 256×256 render; see Detection quality) | LongTake Leviathan | duration > 2 min |
-| Screenshot Specter | `PHAsset` screenshot subtype flag | Shaky Ghost | default video fallback |
-| Low-Quality Lich | narrow aspect ratio, and small (≤ 4 MP) | Boring Blooper | duration < 5s |
-| Ancient Archive | photo older than 3 years | Memory Hog Minotaur | file size > 500 MB |
-| Dark Wraith | dark on average *and* at its highlights (a dead frame, not a night scene) | Timelapse Phantom | timelapse/high-frame-rate subtype |
-| | | Corrupted Codec | video that cannot be read or reports no duration |
+Classification is two steps with a hard line between them. **Signals** are measured from PhotoKit, a thumbnail, three sampled video frames and an on-device Vision pass. **`Services/MonsterClassifier.swift`** then turns signals into a monster and the reasons for it. The classifier is pure Foundation over plain values, so every rule runs in the Linux test harness.
 
-Classification is behind a pluggable `PhotoClassifier`/`VideoClassifier` protocol (`Services/MediaClassifier.swift`), explicitly designed as a strategy-pattern seam for swapping in real Core ML models later.
+| Family | Monsters | What summons them |
+|---|---|---|
+| Duplicate Dragons (8) | Perfect Pair Wyrmling, Duplicate Dragon, Burst Hydra, Clone Chimera, Screenshot Twin, Download Drake, Album Echo, Hoard Hydra | A cluster of look-alikes: identical files, a burst seconds apart, cropped or edited copies, the same picture saved again later, six or more copies |
+| Clutter Undead (8) | Screenshot Specter, Live Photo Lycan, Tome Wraith, Sigil Specter, Thumb Goblin, Low-Quality Lich, Blur Beast, Dark Wraith | The screenshot flag; a Live Photo; dense text (a photographed document); a QR or barcode; a long edge under 640 px; a tall, small image saved from elsewhere; a focus score under 55; a frame that is dark even at its highlights |
+| Archive Relics (1) | Ancient Archive | A photo at least three years old **with none of the defects above** |
+| Storage Behemoths (5) | Gigabyte Gorgon, Memory Hog Minotaur, 4K Kraken, LongTake Leviathan, Panorama Colossus | A video of 1 GB or more; 500 MB or more; a 3840 px edge; over two minutes. A panorama (Photos' flag, or 2.5 times wider than tall) |
+| Video Phantoms (11) | Screen Recording Shade, Timelapse Phantom, Flicker Wraith, Framed Phantom, Pocket Poltergeist, Shaky Ghost, Boring Blooper, Video Vampire, Mist / Tatter / Void Wraith | Photos' screen-recording flag (or the file names iOS gives recordings); a time-lapse, slow-motion or looping clip; brightness strobing between sampled frames; sampled frames that hold still; near-black or under two seconds; a large brightness jump between samples; under five seconds; 100 MB or more; otherwise a Wraith by length (under 20 s, under 60 s, longer) |
+| Glitchborn (3) | Corrupted Codec, Null Portrait, Static Husk | A video with no duration or that will not load; a photo that will not render; an empty file |
+
+Rule order, briefly: broken media first, then what the item *is* (a code, a Live Photo, a screenshot, a document, a panorama, a thumbnail), then what is *wrong* with it (proportions, focus, exposure), and only then its age. Age is true of every photo in an old library and dives are dealt oldest first, so an age rule ahead of the defects would hide them for years of photos. An old photo with a defect is named for the defect, says it is old as well, and keeps the careful-review flag.
+
+Every verdict carries its reasons (`Models/MonsterClassification.swift`), shown on the card as "why did this appear?". Fragile kinds (old photos, broken media, anything with a code) are flagged for careful review. The only verdict that is a guess is the fallback for a photo or clip with no signal at all, and it says so. See [Open Items](#open-items) for the weak spots.
+
+**Where a Core ML model would go.** There is no bundled model. A model replaces a *signal*, not the classifier: the focus score (`ThumbnailAnalysis`), the frame signals (`VideoFrameSignals`) or the text signals (`VisionTextSignals`) each have one producer and one plain struct the classifier reads. Keep the heuristic as the fallback when the model is missing or fails (`.agents/skills/coreml-model-swap`).
 
 ### Detection quality
 
@@ -87,46 +90,55 @@ What this does **not** show:
 
 **Scan pipeline** (`Services/PhotoLibraryService.swift`, `VisionAnalysisService.swift`, `MLAnalysisService.swift`): the app builds with approachable concurrency, under which a plain `nonisolated async` function runs on its caller's actor, so the Vision pass was running on the main actor, one photo at a time. It is now `@concurrent`, assets are enriched four at a time (`BoundedConcurrency`), a photo's resources are listed once instead of twice, the three separate bitmap renders became one, the text pass is skipped for Live Photos and screenshots (the classifier names them before it reads text) and Vision is skipped for videos (their verdict never uses it). Text density now needs real words behind many regions (≥ 60 characters), so a street of shop signs is not a document.
 
+**Since those numbers were measured**, two things changed that the benchmark does not cover, and no threshold moved:
+
+- *Rule order.* Blur, dark and tall-download now run before the three-year age rule (see above). The benchmark measures each rule on its own, so its figures stand; what changed is which photos reach those rules.
+- *Motionless video.* The Framed Phantom was decided from the change in each sampled frame's **average brightness**, which movement does not alter. The three frames are now compared cell by cell on a 16×16 grid, with the same 0.015 threshold. A frame difference is never smaller than the difference of the averages, so the new rule's motionless clips are a subset of the old rule's. **This is not measured on real video**: none is available off a device.
+
 ### RPG progression
-- **4 hero classes** (`Models/Hero.swift`), each with a passive perk: Archivist (+20% photo XP), Cinematographer (+20% video XP), Purge Knight (+30% elite-monster XP), Digital Hermit (+10% gems).
-- **2 cosmetic character archetypes** (Knight, Magician) — purely visual, independent of hero class.
-- XP/leveling curve, HP, gems, purge/streak stats, all persisted on the `Hero` SwiftData model.
-- **Daily quests** — 4 randomly drawn each day from a pool of 7 (`Services/GameDataService.swift`), e.g. "Blur Beast Hunter," "Storage Liberation" (free 500 MB), refreshed once expired.
-- **11 achievements/trophies** (`Views/Achievements/AchievementsView.swift`), e.g. "First Blood," "The Great Purge" (free 1 GB), "Combo King" (20× combo).
-- **Daily login streak** tracking (`Hero.streakDays`).
+- **17 hero classes** in three styles (melee, ranged, magic), each with one passive perk such as +20% XP from a monster family or a gem multiplier (`Models/Hero.swift`).
+- **8 races** with three paints each (Skeletal Undead has six), 27 art packs in all. Race and paint are cosmetic and independent of class.
+- XP and levels, HP, gems, purge and streak stats, all on the `Hero` SwiftData model.
+- **Daily quests**: 4 drawn each day from a pool of 7 (`QuestCatalog` in `Models/GameContent.swift`). A quest that names the Duplicate Dragon counts the whole Duplicate Dragons family.
+- **11 achievements** (`Services/GameDataService.swift`), recomputed from lifetime stats and the deletion log after each room, so progress never depends on one event firing.
+- **Anti-farm ledger**: an item deleted once never pays again if it is restored and deleted a second time.
+- **Bestiary**: every monster met, with its signal, lore and review guidance (`Views/Bestiary/`).
 
 ### Cosmetics & avatar
-- A **27-item cosmetic catalog** across 7 gear slots — skin, head, armor, weapon, shield, pet, FX (`Models/CosmeticItem.swift`, seeded in `GameDataService.swift`) — purchased with in-game "Storage Gems" earned by freeing space.
-- `Views/Hero/MiniAvatarView.swift` hand-draws the entire hero avatar in pure SwiftUI vector shapes, changing live as gear is equipped — see [Asset Organization](#asset-organization).
+- A **41-item cosmetic catalog** (skin, head, armor, legs, hands, weapon, shield, pet, effect, upgrade), bought with gems earned by freeing space.
+- The hero is drawn from layered sprite art with skin, hair, eye and armor-dye recoloring, held weapons and shields, and a **Forge** for editing a look as a draft until saved (`Views/Hero/`). A hand-drawn vector avatar (`MiniAvatarView` and its `MiniAvatar+…` files) serves compact contexts.
+- Two color themes (Classic, Verdigris) and a Light / Dark / System appearance setting.
 
 ### Monetization
-- **StoreKit 2** consumable gem packs and non-consumable cosmetic bundles (`Services/StoreKitService.swift`, local test config in `Configuration.storekit`). Core gameplay is entirely free; purchases are cosmetic-only.
+- **StoreKit 2**: three consumable gem packs and three non-consumable cosmetic unlocks (`Services/StoreKitService.swift`, local test configuration in `Configuration.storekit`). All gameplay and all cleanup is free; purchases are cosmetic, and nothing bought is random.
 
 ### Seasonal events
-- 4 date-based limited-time events — Halloween ("Phantom Purge"), New Year ("Resolution Purge"), Summer ("Vacation Bloat"), Valentine's ("Heartbreak Hunt") — each applying an XP multiplier to specific monster types (`Services/SeasonalEventService.swift`). No remote config; pure local date matching.
+- Four date-based events (Halloween, New Year, Summer, Valentine's), each paying bonus XP for a few monsters and selling event gear only while it runs (`Services/SeasonalEventService.swift`, bonuses in `SeasonalBonusCatalog`). No remote config; local date matching only. A bonus for the Duplicate Dragon pays for the whole family, as quests do.
 
-### Widgets & Live Activities
-- **Home Screen widgets** (Daily Quest, Streak) and two **Lock Screen** accessory widgets, fed via an App Group snapshot (`Services/WidgetSnapshotService.swift`, `PurgeQuestWidget/` target).
-- **Live Activities / Dynamic Island** support showing HP, combo, and room progress during an active dive (`Services/CombatLiveActivityService.swift`, gated behind iOS 16.1+/`ActivityKit` availability).
+### Widgets
+- **Home Screen widgets** (Daily Quest, Streak) and two **Lock Screen** widgets, fed by a small snapshot in the App Group (`Services/WidgetSnapshotService.swift`, `PurgeQuestWidget/`). They show level, streak, gems and the current quest, never photos.
+- **Live Activities are not shipped.** `CombatLiveActivityService` requests one, but the widget extension declares no activity UI and the app lacks the `NSSupportsLiveActivities` key, so nothing appears. See [Open Items](#open-items).
 
 ### Other features
-- **Apple Intelligence flavor text** (iOS 26+) — on-device `FoundationModels` generates witty per-monster taunts, with a static-string fallback when unavailable (`Services/FoundationFlavorService.swift`).
-- **7-day undo/audit log** of deletions, surfaced in Settings with a deep link to Photos' Recently Deleted (`Models/DeletedMediaRecord.swift`).
-- **Spared-item memory** — re-entering the dungeon skips previously-spared items rather than re-showing them; resettable in Settings (`Models/SparedMediaRecord.swift`).
-- **Muted, looping video previews** on combat cards via a single pooled `AVQueuePlayer` (`Services/VideoPreviewService.swift`).
-- **Custom haptics** for delete/spare/combo events, respecting Reduce Motion (`Services/HapticsService.swift`).
-- **Shareable Hero Card** — an `ImageRenderer`-based stat card shared via `ShareLink` (`Views/Settings/SettingsView.swift`).
-- **5-page onboarding**: intro → photo-permission request → class selection → archetype/avatar selection → animated swipe tutorial (`Views/Onboarding/OnboardingView.swift`).
-- **Settings**: video-only "Focus Mode" toggle, lifetime stats, privacy statement, full data reset.
+- **Apple Intelligence flavor text** (iOS 26+): the system's on-device model writes a one-line taunt per monster, with fixed strings when it is unavailable (`Services/FoundationFlavorService.swift`).
+- **7-day deletion log** in Settings, with a button that opens Photos.
+- **Spared-item memory**: re-entering the dungeon skips items you already spared; resettable in Settings.
+- **Muted, looping video previews** on combat cards from a single pooled player (`Services/VideoPreviewService.swift`).
+- **Haptics** for delete, spare and combo, respecting Reduce Motion.
+- **Shareable Hero Card** rendered with `ImageRenderer` and shared through `ShareLink`.
+- **Storage measurement**: free space is read before and after a purge, so the dashboard separates what was measured from what is estimated (`Services/StorageMeasurementService.swift`).
 
 ---
 
 ## Privacy & Safety Model
 
-- **Deletion is always recoverable.** Every delete action calls `PHAssetChangeRequest.deleteAssets` (`Services/PhotoLibraryService.swift`), which Apple's Photos framework routes to **Recently Deleted** — a 30-day recovery window. PurgeQuest never bypasses this; nothing is permanently erased by the app itself.
-- **Explicit confirmation required.** The Room Summary screen must be confirmed before any deletion is committed.
-- **Fully offline.** No network requests, no analytics, no third-party SDKs, no cloud sync — restated both in `ios/README-SETUP.md`'s App Review notes and in-app in the Settings privacy section.
-- **Permissions requested** (`NSPhotoLibraryUsageDescription`, `NSPhotoLibraryAddUsageDescription`, configured directly as `INFOPLIST_KEY_*` build settings): read/write Photos access for gameplay, and add-only access for saving the shareable Hero Card.
+- **Deletion is always recoverable.** The only delete call is `PHAssetChangeRequest.deleteAssets`, in `Services/PhotoLibraryService.swift`, which Photos routes to **Recently Deleted**. `repo_guard.py` fails if any other file deletes assets.
+- **Two confirmations.** The Room Summary must be confirmed, and then the system's own delete prompt. Declining either deletes nothing.
+- **Fully offline.** No network requests, analytics, third-party SDKs or cloud sync. `repo_guard.py` fails on any networking API or package reference. (Photos itself may download an iCloud original when a thumbnail is requested.)
+- **Privacy manifests.** The app and the widget each ship a `PrivacyInfo.xcprivacy`: no tracking, no collected data, and a declared reason for the two required-reason APIs in use (user defaults, free disk space).
+- **Permissions:** read/write Photos access for gameplay, add-only access for saving the Hero Card, both set as `INFOPLIST_KEY_*` build settings.
+
+Submission material, including the privacy-label answers and App Review notes, is in [`docs/appstore/`](docs/appstore/).
 
 ---
 
@@ -134,22 +146,21 @@ What this does **not** show:
 
 | Layer | Choice |
 |---|---|
-| Language | Swift 5.0 |
+| Language | Swift, language mode 5, approachable concurrency with default main-actor isolation; needs the Swift 6.2 toolchain (Xcode 26) |
 | UI framework | SwiftUI (iOS 18.0+ deployment target) |
-| State management | Swift's `@Observable` macro (no Combine/Redux/MVVM library) |
-| Persistence | SwiftData — 7-model schema, on-device only, with in-memory fallback if disk init fails |
-| Media access | `Photos` / `PhotosUI` (`PHPhotoLibrary`, `PHCachingImageManager`, `PHAssetChangeRequest`) |
-| Video | `AVFoundation` (pooled `AVQueuePlayer` for card previews) |
+| State management | Swift's `@Observable` macro |
+| Persistence | SwiftData, 9-model schema, on-device only, with an in-memory fallback if disk init fails |
+| Media access | `Photos` / `PhotosUI` |
+| Video | `AVFoundation` (pooled preview player; three sampled frames per clip for classification) |
 | Haptics | `CoreHaptics` |
-| Classification | `Vision` / `CoreImage` (heuristic blur & luminance analysis) |
-| Widgets | `WidgetKit` (Home Screen + Lock Screen), shared via App Group `group.com.purgequest.app` |
-| Live Activities | `ActivityKit` (conditionally compiled, `#if canImport(ActivityKit)`) |
-| In-app purchases | `StoreKit` 2 (async API) |
-| On-device generative text | `FoundationModels` (Apple Intelligence, iOS 26+, conditionally compiled) |
-| Testing | Swift `Testing` framework (unit) + `XCUITest` (UI) — scaffolds only, see [Testing](#testing) |
-| Build system | Xcode project (`.xcodeproj`) — no SwiftPM `Package.swift`, no CocoaPods, no Carthage |
-| Third-party dependencies | **None.** Every framework above is first-party Apple. |
-| Backend | **None.** 100% on-device, no server component. |
+| Classification | Pure-Swift rules over signals from `Photos`, `CoreGraphics` thumbnails, `AVFoundation` frames and `Vision` (text, barcodes). No bundled model. |
+| Widgets | `WidgetKit`, sharing one snapshot through App Group `group.com.purgequest.app` |
+| In-app purchases | `StoreKit` 2 |
+| On-device generative text | `FoundationModels` (iOS 26+, conditionally compiled) |
+| Testing | Swift Testing (unit), XCUITest (UI), a Linux harness for the pure logic, Python checks for assets and repository contracts |
+| Build system | Xcode project with file-system-synchronized groups; no SwiftPM, CocoaPods or Carthage |
+| Third-party dependencies | **None** |
+| Backend | **None** |
 
 ---
 
@@ -157,64 +168,53 @@ What this does **not** show:
 
 ```
 PurgeQuest-PhotoCleanv2/
-├── .gitignore
-├── rork.json                        # Rork platform manifest ({"apps":[{"name":"PurgeQuest","path":"ios","framework":"swift"}]})
-└── ios/                              # The entire Xcode project — this is the whole app
-    ├── README-SETUP.md               # Original setup doc (partially stale — see Known Issues)
-    ├── .gitignore
-    ├── PurgeQuest.xcodeproj/         # Xcode project, shared scheme
-    │
-    ├── PurgeQuest/                   # Main app target
-    │   ├── PurgeQuestApp.swift       # @main entry point — builds the SwiftData ModelContainer
-    │   ├── ContentView.swift         # Root view: splash → onboarding → 5-tab TabView
-    │   ├── Config.swift              # Empty build-time env placeholder (Rork-injected; see Known Issues)
-    │   ├── PurgeQuest.entitlements   # App Group entitlement
-    │   ├── Configuration.storekit    # Local StoreKit testing config (mock IAP products)
-    │   ├── Assets.xcassets/          # App icon + accent color — the only bitmap asset in the repo
-    │   ├── Models/                   # 9 files — SwiftData models + value types (Hero, Quest, Achievement,
-    │   │                             #   CosmeticItem, DeletedMediaRecord, CombatSession, SparedMediaRecord,
-    │   │                             #   MediaItem, MonsterType)
-    │   ├── Services/                 # 11 files — singleton/enum services (PhotoLibraryService,
-    │   │                             #   MLAnalysisService, GameDataService, StoreKitService,
-    │   │                             #   SeasonalEventService, WidgetSnapshotService, CombatLiveActivityService,
-    │   │                             #   FoundationFlavorService, HapticsService, VideoPreviewService,
-    │   │                             #   MediaClassifier protocol)
-    │   ├── ViewModels/                # AppState (root @Observable), CombatViewModel
-    │   ├── Views/
-    │   │   ├── Onboarding/            ├── Achievements/
-    │   │   ├── Dashboard/             ├── Hero/            (incl. 1,109-line MiniAvatarView.swift)
-    │   │   ├── Combat/                ├── Shop/
-    │   │   ├── Settings/              └── Components/      (shared: XPBarView, GemCounterView, etc.)
-    │   └── Extensions/
-    │       └── Color+Theme.swift      # Entire app color palette, code-based (no design-token file)
-    │
-    ├── PurgeQuestTests/               # Swift Testing unit test target — scaffold only
-    ├── PurgeQuestUITests/             # XCUITest UI test target — scaffold only
-    └── PurgeQuestWidget/               # WidgetKit extension target
-        ├── PurgeQuestWidget.swift      # Daily Quest + Streak widget views
-        ├── PurgeQuestWidgetBundle.swift # @main widget bundle entry
-        └── SharedSnapshot.swift        # Codable snapshot struct (duplicated from the app target —
-                                         #   widget extensions can't import the app module)
+├── LICENSE                       proprietary notice
+├── rork.json                     Rork manifest
+├── .agents/skills/               working notes for agents on this codebase
+├── .github/workflows/            ios.yml (unit + UI tests), objective-c-xcode.yml (build + analyze),
+│                                 modular-assets.yml (asset checks + Linux harness), repo-guard.yml
+├── docs/
+│   ├── appstore/                 submission checklist, review notes, privacy answers, screenshot plan
+│   ├── modular/                  modular character pipeline: README, REVIEW.md (start here to approve), CHECKLIST.md, ledger
+│   ├── CREDITS.md, licenses/     third-party art
+│   └── superpowers/              design specs and plans
+├── tools/
+│   ├── ci/                       repo_guard.py (offline, no deps, recoverable deletion, ship-path invariants), xcode-test.sh
+│   ├── swift_harness/            run.sh: the pure-Foundation sources and suites on a Linux toolchain
+│   ├── detection_bench/          duplicate, blur and dark rules measured on real photographs
+│   └── modular_assets/           Python pipeline, validator, approvals, review guide generator
+└── ios/
+    ├── README-SETUP.md           build, sign, run, device test pass
+    ├── PurgeQuest.xcodeproj/
+    ├── PurgeQuest/               app target
+    │   ├── PurgeQuestApp.swift, ContentView.swift, PrivacyInfo.xcprivacy, Configuration.storekit
+    │   ├── Models/               SwiftData models and value types; GameContent.swift (quests, seasonal bonuses)
+    │   ├── Services/             PhotoLibraryService, MonsterClassifier and the signal types, DuplicateDetection,
+    │   │                         ThumbnailAnalysis, RoomTargeting, SpriteEngine, StoreKitService, widgets, haptics
+    │   ├── ViewModels/           AppState, CombatViewModel
+    │   ├── Views/                Onboarding, Dashboard, Combat, Hero, Bestiary, Shop, Achievements, Settings, Components
+    │   ├── Extensions/           palette, fonts
+    │   └── Art/, Assets.xcassets race packs, gear, modular layers and masks, sprite sheets, icons
+    ├── PurgeQuestWidget/         WidgetKit extension (its own copy of the snapshot struct)
+    ├── PurgeQuestTests/          Swift Testing suites
+    └── PurgeQuestUITests/        Forge flows, onboarding reset, Light/Dark screenshot tour
 ```
 
 ---
 
 ## Architecture
 
-- **Pattern:** Feature-folder MVVM. Two `@Observable` view models drive the whole app — `AppState` (root: app phase, active tab, photo-library authorization) and `CombatViewModel` (room/session state, swipe outcomes, reward math) — injected via `.environment(...)`.
-- **Navigation:** `ContentView.swift` switches on an `AppPhase` enum (`.launching` → `.onboarding` → `.main`) and hosts a 5-tab `TabView`: **Dungeon** (Dashboard) → **Hero** → **Trophies** (Achievements) → **Shop** → **Settings**. Combat is pushed via `NavigationStack.navigationDestination(isPresented:)`.
-- **Data layer:** SwiftData is the *only* persistence mechanism — `PurgeQuestApp.swift` builds a `ModelContainer` from a 7-model schema (`Hero`, `Achievement`, `CosmeticItem`, `Quest`, `DeletedMediaRecord`, `CombatSession`, `SparedMediaRecord`), falling back to an in-memory store if disk creation fails. There is no backend, cache layer, or API client anywhere.
-- **Cross-process sharing:** the app and the widget extension can't share Swift modules, so state crosses that boundary via `UserDefaults(suiteName: "group.com.purgequest.app")` and a duplicated `Codable` snapshot struct on each side.
-- **Design patterns in use:**
-  - **Strategy pattern** — `PhotoClassifier`/`VideoClassifier` protocols (`MediaClassifier.swift`) abstract monster classification, explicitly built so heuristic logic can be swapped for real Core ML models without touching call sites.
-  - **Singleton services** — `PhotoLibraryService.shared`, `HapticsService.shared`, `VideoPreviewService.shared`, `StoreKitService.shared`, `SeasonalEventService.shared`.
-  - **Stateless enum-namespaced services** — `GameDataService`, `MLAnalysisService`, `WidgetSnapshotService` (all `@MainActor enum` with static functions — no instance state).
+- **Pattern:** feature-folder MVVM. Two `@Observable` view models drive the app: `AppState` (phase, tab, photo authorization) and `CombatViewModel` (room and session state, swipe outcomes, rewards).
+- **Navigation:** `ContentView.swift` switches on `AppPhase` (launching, onboarding, main) and hosts six tabs: **Library**, **Hero**, **Bestiary**, **Armory**, **Trophies**, **Settings**. Combat is pushed from the Library tab.
+- **Data:** SwiftData only. `PurgeQuestApp.swift` builds a container for `Hero`, `Achievement`, `CosmeticItem`, `Quest`, `DeletedMediaRecord`, `CombatSession`, `SparedMediaRecord`, `MediaFingerprintRecord` and `MonsterSightingRecord`.
+- **App and widget:** the widget cannot import the app module, so state crosses through `UserDefaults(suiteName:)` and a snapshot struct duplicated on each side. `repo_guard.py` fails if the two copies, the key or the App Group name drift apart.
+- **Pure logic apart from frameworks.** Anything that decides (classification, duplicate clustering, thumbnail metrics, room targeting, fitting, recolor math, game content) is Foundation-only and has no PhotoKit, UIKit or SwiftData in it. Framework-facing services measure and persist; they do not decide. That line is what lets the Linux harness run the rules.
 
 ---
 
 ## Asset Organization
 
-The hero is rendered from layered PNG parts plus Spriter (SCML) animation projects, composited at runtime by `Services/SpriteEngine.swift`. `Views/Hero/MiniAvatarView.swift` still hand-draws a vector avatar for compact contexts. UI icons use SF Symbols; the palette lives in `Extensions/Color+Theme.swift`.
+The hero is rendered from layered PNG parts plus Spriter (SCML) animation projects, composited at runtime by `Services/SpriteEngine.swift`. `Views/Hero/MiniAvatarView.swift` and its `MiniAvatar+…` files hand-draw a vector avatar for compact contexts. UI icons use SF Symbols; the palette lives in `Extensions/Color+Theme.swift`.
 
 ```
 ios/PurgeQuest/Art/Races/<race>/v1..v3/   baked race parts + .scml animation (27 packs; Skeletal Undead ships two)
@@ -223,7 +223,9 @@ ios/PurgeQuest/Art/Gear/store/            the 11 store weapons and shields (gene
 ios/PurgeQuest/Art/Modular/               separated anatomy / armor / headgear layers, recolor masks, and the two bundled manifests
 ```
 
-The modular character pipeline (separated anatomy and armor, material masks, per-body-profile fits, held-gear grips, and Titan Blade scaling) is generated by `tools/modular_assets/` and documented in [`docs/modular/README.md`](docs/modular/README.md). Its assets are **candidates until a human approves them**; until then the legacy renderer serves every hero. `docs/modular/CHECKLIST.md` lists exactly what is mapped, candidate, and verified.
+The modular character pipeline (separated anatomy and armor, material masks, per-body-profile fits, held-gear grips, Titan Blade scaling) is generated by `tools/modular_assets/` and documented in [`docs/modular/README.md`](docs/modular/README.md).
+
+**Its assets are candidates until a person approves them.** Approval is one art pack at a time: an approved pack renders through the modular path and unlocks its body colors in the Forge; every other pack keeps the legacy renderer and looks as it does today. Today **0 of 27 packs are approved**, so every hero uses the legacy renderer, which is a complete state. Each approval is pinned to a hash of the files reviewed, so regenerating an asset strands its approval rather than silently keeping it. To review, start at [`docs/modular/REVIEW.md`](docs/modular/REVIEW.md).
 
 ---
 
@@ -234,63 +236,57 @@ to sprite sheets. Authors, licenses and what is still unconfirmed are listed in 
 
 ## Getting Started
 
-**Requirements**
-- Xcode 16+
-- iOS 18.0+ SDK
-- iPhone 12 or newer recommended (for Dynamic Island / Live Activities testing)
-- A **real device is strongly recommended** — the iOS Simulator's Photos library is limited, and several features (haptics, Live Activities, widgets) don't fully exercise on Simulator.
+Full steps, the StoreKit configuration and the device test pass are in [`ios/README-SETUP.md`](ios/README-SETUP.md). In short:
 
-**Build & run**
-1. Open `ios/PurgeQuest.xcodeproj` in Xcode.
-2. Under *Signing & Capabilities*, set your own Development Team — `DEVELOPMENT_TEAM` is blank in every build configuration in this repo.
-3. If you want to exercise the `PurgeQuestWidget` target, its App Group entitlement (`group.com.purgequest.app`) needs to be provisioned under your own team.
-4. To test in-app purchases locally without an App Store Connect record, select `Configuration.storekit` in the run scheme's StoreKit configuration (defines mock gem-pack and cosmetic-bundle products).
-5. Build & run (⌘R) on device.
-
-**Manual QA checklist** (there's no automated test coverage yet — see [Testing](#testing)):
-- Use a library with mixed photos and videos of varying sizes/durations.
-- Include photos older than 3 years (exercises Ancient Archive) and a video over 2 minutes / over 500 MB (LongTake Leviathan / Memory Hog Minotaur).
-- Test with **Limited Photo Access** granted — the app should degrade gracefully.
-- Run a full swipe loop through a Room Summary confirmation, then verify deleted items land in Photos → Recently Deleted.
+1. Xcode 26 or later; open `ios/PurgeQuest.xcodeproj`.
+2. Set your team on **PurgeQuest** and **PurgeQuestWidget** (`DEVELOPMENT_TEAM` is blank in the repository) and provision the App Group `group.com.purgequest.app`.
+3. Run on a real iPhone. The Simulator's library has no screen recordings, time-lapses or Live Photos, and several features (haptics, widgets) do not fully exercise there.
 
 ---
 
 ## Testing
 
-- `PurgeQuestTests/` — Swift Testing suites for classification, XP curves, bestiary, hero identity/migration, the modular character foundation, held-gear fitting and Titan scaling, recolor math, planner gating, Forge save/ancestry logic, and (app-hosted) bundled-resource checks. Run in CI by `.github/workflows/ios.yml`.
-- `PurgeQuestUITests/ForgeUITests.swift` — Forge flows (draft until Save, Cancel discards, save failure surfaced) against an in-memory store via the DEBUG `-UITestForge` launch argument.
-- `tools/modular_assets/tests/` and `tools/modular_assets/validate.py` — asset, manifest, fit, approval-gate and catalog-drift checks (`.github/workflows/modular-assets.yml`).
-- `tools/swift_harness/run.sh` — compiles and runs the pure-Foundation Swift suites on a Linux toolchain, no Xcode needed.
-- `tools/detection_bench/` — runs the app's duplicate, blur and dark rules over real photographs and reports precision, recall, false positives and timings (needs Pillow and NumPy to prepare the data; not run in CI).
+| What | Where | Runs in |
+|---|---|---|
+| Unit tests (Swift Testing): classification, duplicates, thumbnail rules, room targeting, XP, bestiary, hero identity and migration, modular foundation, held gear, recolor, Forge logic, seasonal catalog, bundled resources | `ios/PurgeQuestTests/` | `.github/workflows/ios.yml` |
+| UI tests: Forge draft/save/cancel, onboarding after a reset, a Light/Dark screenshot tour (artifact `ui-snapshots`) | `ios/PurgeQuestUITests/` | `ios.yml` |
+| Build and static analysis | | `.github/workflows/objective-c-xcode.yml` |
+| **Linux harness**: the pure-Foundation sources and their suites, no Xcode or simulator. 262 tests in 18 suites, including the classifier, the audit that every monster named by a quest or event can be summoned, capture rules, rule precedence and video frame signals | `tools/swift_harness/run.sh` | `.github/workflows/modular-assets.yml` |
+| Asset checks: manifests, masks, fits, the approval gate (content-pinned), catalog drift, generated docs up to date. 72 tests | `tools/modular_assets/` | `modular-assets.yml` |
+| Repository contracts: offline, no dependencies, recoverable deletion, StoreKit IDs, App Group and snapshot agreement, privacy manifests, versions | `tools/ci/repo_guard.py` | `.github/workflows/repo-guard.yml` |
+| Detection benchmark on real photographs (not in CI) | `tools/detection_bench/` | by hand |
 
-Not automated: visual approval of art, and the physical-iPhone checks listed at the end of `docs/modular/CHECKLIST.md`.
-
----
-
-## Known Issues & Recommendations
-
-Evidence-based findings from reading the current source — not speculative:
-
-1. **"Duplicate Dragon" and "Corrupted Codec" are never assigned.** *Resolved in code; this note was stale.* `MonsterClassifier` summons the Duplicate Dragon from duplicate clusters and the Corrupted Codec from unreadable video, and `ContentReachabilityTests` proves all 36 monsters can be summoned. What was really wrong: only a cluster's oldest copy took the cluster's monster (the other copies were booked as whatever each would be alone), and the Duplicate Dragon quest and "Duplicate Slayer" achievement counted only the literal Duplicate Dragon, one of eight duplicate monsters. Copies now share their cluster's monster, and the quest and achievement count the whole Duplicate Dragons family.
-2. **Seasonal events reference cosmetic IDs that don't exist.** *Resolved in code; this note was stale.* All nine exclusive IDs are seeded and have art (`tools/ci/repo_guard.py` fails CI if one goes missing). What was missing was the link between an event and its gear: the Armory now shows a Seasonal shelf while an event runs and sells event gear only then. Items a player already owns stay theirs.
-3. **`ios/README-SETUP.md` is stale.** Its "Known v1 limitations" section lists StoreKit IAPs, WidgetKit, Live Activities, and the Foundation Models flavor-text generator as unbuilt "future v2" work — all four are fully implemented in current code (`StoreKitService.swift`, `PurgeQuestWidget/`, `CombatLiveActivityService.swift`, `FoundationFlavorService.swift`). Its "Architecture" section also predates the `Views/Hero/`, `SeasonalEventService`, and widget-extension additions. This file is left untouched by design (documentation-only change) — worth refreshing separately.
-4. **`Config.swift` is both git-tracked and gitignored.** It's committed to the repo (as an intentionally-empty placeholder — see its header comment) *and* listed in `ios/.gitignore`. This means `git status` will look clean even if the file's real, build-injected values differ locally — worth knowing so it doesn't cause confusion.
-5. **Both `.gitignore` files carry unused React Native/Expo patterns** (`node_modules/`, `.expo/`, `babel.config.js`, `package.json`, etc.) — leftovers from Rork's cross-platform template generator, self-acknowledged in `ios/.gitignore`'s own comment ("should not exist in Swift projects"). Harmless, but dead weight worth cleaning up.
-6. **`MiniAvatarView.swift` is disproportionately large** — 1,109 lines vs. the next-largest file at 426 (`ShopView.swift`). It mixes avatar-rendering logic with roughly 10 private `Shape` struct definitions. Worth splitting (e.g. shapes into their own file, or per-gear-slot rendering functions) if the avatar system keeps growing.
-7. **No LICENSE file exists.** The legal terms under which this code may be used, modified, or redistributed are currently unspecified. Recommend the project owner add one.
+Not automated: visual approval of art, anything on a physical iPhone, and video classification on real footage.
 
 ---
 
-## Roadmap
+## Open Items
 
-Genuinely open items, verified against current code (not simply copied from the older setup doc — several previously-listed "future" items turned out to already be shipped, see Known Issue #3 above):
+What is known to be unfinished or weak, checked against the source. The submission blockers that only the owner can close (art licenses, signing, App Store Connect products, a privacy policy URL, a device pass) are listed in [`docs/appstore/README.md`](docs/appstore/README.md).
 
-- Replace heuristic photo/video classifiers with real bundled Core ML models (`BlurClassifier.mlmodel`, `VideoQualityScorer.mlmodel`) — flagged with `// TODO` in `Services/MLAnalysisService.swift`.
-- Real motion/shake analysis (via `AVFoundation` + `Vision` feature points) for the "Shaky Ghost" video classification, which currently is just the default fallback rather than a genuine shake detector — also flagged with a `// TODO` in the same file.
-- Actual duplicate-photo detection, to make the existing "Duplicate Dragon" quest/achievement completable (see Known Issue #1).
+**Classification**
+
+1. **An ordinary photo is called a Blur Beast.** A sharp, recent photo with no signal falls back to the Blur Beast with the reason "no strong signals". It then counts toward the "Blur Beast Hunter" quest and the Valentine's bonus. Videos have three Wraiths for this case; photos need a neutral monster of their own. Not done because it adds a monster (name, lore, art), which is a content decision.
+2. **The Shaky Ghost does not measure shake.** It fires when average brightness jumps by 0.14 between sampled frames. Real shake needs adjacent frames and motion between them.
+3. **Video rules are unmeasured.** The photo rules have a benchmark; the video thresholds (flicker, dark, the brightness jump) have never been run against real footage.
+4. **Dense text is read from a thumbnail.** A photographed page whose text is small at thumbnail size may not reach the 60-character line and so will not become a Tome Wraith.
+5. **Duplicates are found within a dive's 150 items only**; a twin elsewhere in the library is not seen.
+6. **No Core ML model.** The seam is described above.
+
+**Product**
+
+7. **Live Activities are not wired** (see Widgets). Either build the widget-side UI and add the plist key, tested on a device, or remove the service.
+8. **`photos-redirect://`.** Settings opens Photos with an undocumented URL scheme, under a label that promises Recently Deleted.
+9. **Modular characters: 0 of 27 packs approved.** The path, the tooling and the review guide exist; the looking has to be done by a person.
+
+**Repository**
+
+10. **Art provenance.** The Forest Spirit pets have no known license, and the 27 hero packs and 80 staves and shields are not in `docs/CREDITS.md`.
+11. **The shared scheme selects no StoreKit configuration**, so local purchase testing needs one manual step (`ios/README-SETUP.md`).
+12. **Test bundle identifiers** still carry Rork's generated prefix (`app.rork.…`). Harmless; left alone.
 
 ---
 
 ## License
 
-No LICENSE file is currently present in this repository. All rights are reserved by default under copyright law unless the project owner adds explicit licensing terms.
+Proprietary, all rights reserved: see [`LICENSE`](LICENSE). The app is a commercial game that bundles third-party art whose licenses forbid redistributing it as assets, so an open-source license over the repository could not cover those files. Third-party art keeps its own terms, listed in [`docs/CREDITS.md`](docs/CREDITS.md).

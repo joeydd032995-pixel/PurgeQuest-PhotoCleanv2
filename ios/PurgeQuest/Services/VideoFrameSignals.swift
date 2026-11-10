@@ -20,6 +20,10 @@ struct VideoFrameSignals: Sendable, Equatable {
     let maxLuminanceSwing: Double
     /// Frames at or below the dark-luminance threshold.
     let darkFrameCount: Int
+    /// Mean absolute difference between consecutive sampled frames, pixel by pixel on a small
+    /// luminance grid (0…1). Unlike `meanMotion`, which only compares each frame's average
+    /// brightness, this sees movement that leaves the picture as bright as it was.
+    let meanFrameDifference: Double
 
     var darkFrameRatio: Double { frameCount == 0 ? 0 : Double(darkFrameCount) / Double(frameCount) }
 
@@ -28,9 +32,16 @@ struct VideoFrameSignals: Sendable, Equatable {
     static let flickerSwingThreshold: Double = 0.45
     static let erraticMotionThreshold: Double = 0.14
 
-    /// Motionless footage — a slideshow posing as a video.
+    /// Motionless footage — a slideshow posing as a video. The pixels themselves must hold still.
+    ///
+    /// This used to ask only that the average brightness held (`meanMotion`), and a pan across an
+    /// evenly lit room, or someone walking through the frame, keeps the average where it was: such
+    /// clips were called motionless and never reached the rules below this one (the Video Vampire,
+    /// the Boring Blooper, the three Wraiths). A frame-to-frame difference is never smaller than
+    /// the difference of the two averages, so with the same threshold every clip this calls
+    /// motionless is one the old rule did too; it only stops calling moving footage still.
     var isStatic: Bool {
-        frameCount >= 2 && meanMotion <= Self.staticMotionThreshold
+        frameCount >= 2 && meanFrameDifference <= Self.staticMotionThreshold
     }
     /// Strobing footage — brightness swings hard between frames while motion persists.
     var isFlickering: Bool {
@@ -45,8 +56,31 @@ struct VideoFrameSignals: Sendable, Equatable {
         frameCount > 0 && averageLuminance <= MonsterClassifier.darkLuminance
     }
 
-    /// Pure evaluation over per-frame luminances — fully unit-testable.
-    static func evaluate(luminances: [Double]) -> VideoFrameSignals? {
+    /// Evaluation over whole frames, each a luminance grid (0…1) of the same size. Brightness
+    /// signals come from each frame's average, exactly as `evaluate(luminances:)` computes them;
+    /// stillness comes from comparing the grids cell by cell. Frames whose size differs from the
+    /// first one's, or that hold a value that is not finite, are left out.
+    static func evaluate(frames: [[Double]]) -> VideoFrameSignals? {
+        guard let size = frames.first?.count, size > 0 else { return nil }
+        let usable = frames.filter { $0.count == size && $0.allSatisfy(\.isFinite) }
+        guard !usable.isEmpty else { return nil }
+        var difference = 0.0
+        if usable.count > 1 {
+            for i in 1..<usable.count {
+                var sum = 0.0
+                for cell in 0..<size { sum += abs(usable[i][cell] - usable[i - 1][cell]) }
+                difference += sum / Double(size)
+            }
+            difference /= Double(usable.count - 1)
+        }
+        let means = usable.map { $0.reduce(0, +) / Double(size) }
+        return evaluate(luminances: means, frameDifference: difference)
+    }
+
+    /// Pure evaluation over per-frame luminances — fully unit-testable. When only each frame's
+    /// average is known, the difference of the averages stands in for the frame difference (its
+    /// lower bound); pass `frameDifference` when the frames themselves were compared.
+    static func evaluate(luminances: [Double], frameDifference: Double? = nil) -> VideoFrameSignals? {
         let values = luminances.filter { $0.isFinite }
         guard !values.isEmpty else { return nil }
 
@@ -69,7 +103,8 @@ struct VideoFrameSignals: Sendable, Equatable {
             averageLuminance: meanLuminance,
             meanMotion: meanDelta,
             maxLuminanceSwing: maxSwing,
-            darkFrameCount: darkCount
+            darkFrameCount: darkCount,
+            meanFrameDifference: max(frameDifference ?? meanDelta, meanDelta)
         )
     }
 }

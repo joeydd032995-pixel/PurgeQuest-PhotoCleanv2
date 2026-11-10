@@ -7,6 +7,7 @@ build_assets.py / held_gear.py and re-checked here against thresholds.
 """
 from __future__ import annotations
 
+import datetime
 import json
 import re
 import sys
@@ -20,11 +21,13 @@ sys.path.insert(0, str(Path(__file__).parent))
 import fit as fitmod
 import gear_algorithms
 import gear_materials
+import pinning
 import scml
 
 REPO = Path(__file__).resolve().parents[2]
 APP = REPO / "ios" / "PurgeQuest"
 MODULAR = APP / "Art" / "Modular"
+ART = APP / "Art"     # the files an approval pins (pinning.content_hash); tests point this at a copy
 RACES = MODULAR / "modular_races_manifest.json"
 GEAR = MODULAR / "modular_gear_manifest.json"
 LEDGER = REPO / "docs" / "modular" / "approvals.json"
@@ -213,19 +216,41 @@ def main() -> int:
         if pack.get("weaponHand") not in ("left_hand", "right_hand"):
             errors.append(f"{pid}: weaponHand must be left_hand or right_hand, found {pack.get('weaponHand')!r}")
 
-    # 4. approvals ledger
+    # 4. approvals ledger: every record is well formed, and a manifest is `verified` exactly where a record that
+    #    still matches the files says so (pinning.py). A stale record is a warning: regenerating an asset strands
+    #    its approval legitimately. A manifest still stamped `verified` because of one is an error.
+    pinned = ledger.get("schemaVersion", 1) >= 2
     for rec in ledger["approvals"]:
-        if rec["assetId"] not in ids:
-            errors.append(f"ledger references unknown asset {rec['assetId']}")
+        who = pinning.describe(rec)
+        if rec.get("assetId") not in ids:
+            errors.append(f"ledger references unknown asset {rec.get('assetId')}")
         if rec.get("profile") and rec["profile"] not in PROFILES:
             errors.append(f"ledger bad profile {rec['profile']}")
-    approved = {r["assetId"] for r in ledger["approvals"] if not r.get("profile")}
+        if not str(rec.get("reviewer") or "").strip():
+            errors.append(f"ledger record without a reviewer: {who}")
+        if pinned:
+            try:
+                datetime.date.fromisoformat(str(rec.get("date")))
+            except ValueError:
+                errors.append(f"ledger record without an ISO date: {who}")
+            if not pinning.wellformed_hash(rec.get("contentHash")):
+                errors.append(f"ledger record without a content hash: {who}")
+    view = pinning.evaluate(ledger, races["parts"] + gear["items"], pinning.png_index(ART))
+    for info in view["stale"]:
+        warnings.append(f"stale approval, not counted: {pinning.describe(info['record'])}: {info['reason']}")
+    stale_parts = {i["record"].get("assetId") for i in view["stale"] if not i["record"].get("profile")}
     for entry in races["parts"] + gear["items"]:
-        status = entry["verification"]["status"]
-        if status == "verified" and entry["id"] not in approved:
-            errors.append(f"{entry['id']}: verified without a ledger approval")
-        if status != "verified" and entry["id"] in approved and entry["verification"].get("automatedPass"):
+        ver = entry["verification"]
+        want = pinning.stamp(entry, view)
+        if ver["status"] == "verified" and want["status"] != "verified":
+            why = ("its approval is stale (run approvals.py apply)" if entry["id"] in stale_parts
+                   else "verified without a ledger approval")
+            errors.append(f"{entry['id']}: {why}")
+        if ver["status"] != "verified" and want["status"] == "verified":
             errors.append(f"{entry['id']}: approved in ledger but not stamped (run approvals.py apply)")
+        if sorted(ver.get("approvedProfiles") or []) != want["approvedProfiles"]:
+            errors.append(f"{entry['id']}: approvedProfiles {sorted(ver.get('approvedProfiles') or [])} do not match the "
+                          f"ledger's current fit approvals {want['approvedProfiles']} (run approvals.py apply)")
 
     # 5. catalog preservation + Swift parity
     cat = catalog_ids_and_prices()

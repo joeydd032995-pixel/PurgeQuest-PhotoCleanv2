@@ -29,6 +29,10 @@ jobs:
         run: |
           python -I tools/modular_assets/checklist.py
           git diff --exit-code docs/modular/CHECKLIST.md docs/modular/asset_status.json
+      - name: Reviewer's guide is up to date
+        run: |
+          python -I tools/modular_assets/review_kit.py
+          git diff --exit-code docs/modular/REVIEW.md
 
   swift-pure-logic:
     runs-on: ubuntu-latest

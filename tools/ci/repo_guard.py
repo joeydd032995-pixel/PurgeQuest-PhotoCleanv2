@@ -15,7 +15,18 @@ Checks:
      on the widget backgrounds, and the widget views use no fixed colors.
   9. Sprite sheets: each SpriteArt sheet is an imageset exactly frames x cell wide, its pets are in the
      cosmetic catalog, and the Wraith monsters have a sheet.
+ 10. StoreKit: the local Configuration.storekit and StoreKitService.ProductID list the same products,
+     each with the same kind (consumable or not).
+ 11. App Group: both entitlements name one identical group, both targets use that name and the same
+     snapshot key, and the snapshot struct has the same fields on both sides.
+ 12. Privacy manifests: the app and the widget each ship a PrivacyInfo.xcprivacy that declares no
+     tracking and no collected data, and a reason for every required-reason API its sources call.
+ 13. Versions: the app and the widget carry the same marketing and build version.
+ 14. No web-app leftovers: nothing from a React Native / Expo template is in the tree.
+ 15. Rork's build-time Config.swift is not used by the app, and a copy in the tree holds no values.
 """
+import json
+import plistlib
 import re
 import sys
 from pathlib import Path
@@ -235,9 +246,118 @@ for wraith in ("mistWraith", "tatterWraith", "voidWraith"):
     if not re.search(rf"^\s*case {wraith}\s*$", monster_src, re.M):
         failures.append(f"sprite sheets: MonsterType has no case {wraith}")
 
+# 10. StoreKit products
+storekit = json.loads((IOS / "PurgeQuest/Configuration.storekit").read_text())
+store_src = (IOS / "PurgeQuest/Services/StoreKitService.swift").read_text()
+config_products = {p["productID"]: p["type"] for p in storekit.get("products", [])}
+code_products = dict(re.findall(r'case (\w+)\s*=\s*"(com\.purgequest\.[^"]+)"', store_src))
+consumable_block = re.search(r"var isConsumable: Bool \{.*?case ([^:]+): return true", store_src, re.S)
+consumable_cases = set(re.findall(r"\.(\w+)", consumable_block.group(1))) if consumable_block else set()
+if not code_products or not consumable_cases:
+    failures.append("storekit: could not read ProductID from StoreKitService.swift (parser out of date?)")
+for pid in sorted(set(config_products) ^ set(code_products.values())):
+    where = "Configuration.storekit" if pid in config_products else "StoreKitService.ProductID"
+    failures.append(f"storekit: product '{pid}' is only in {where}")
+for case, pid in code_products.items():
+    kind = config_products.get(pid)
+    if kind and (kind == "Consumable") != (case in consumable_cases):
+        failures.append(f"storekit: '{pid}' is {kind} in Configuration.storekit but StoreKitService treats it otherwise")
+if storekit.get("subscriptionGroups"):
+    failures.append("storekit: Configuration.storekit has subscriptions; the app sells none")
+
+# 11. App Group and the widget snapshot
+def entitled_groups(rel):
+    return plistlib.loads((IOS / rel).read_bytes()).get("com.apple.security.application-groups", [])
+
+
+app_groups = entitled_groups("PurgeQuest/PurgeQuest.entitlements")
+widget_groups = entitled_groups("PurgeQuestWidget/PurgeQuestWidget.entitlements")
+if len(app_groups) != 1 or app_groups != widget_groups:
+    failures.append(f"app group: entitlements differ or are not exactly one group (app {app_groups}, widget {widget_groups})")
+app_snapshot = (IOS / "PurgeQuest/Services/WidgetSnapshotService.swift").read_text()
+widget_snapshot = (IOS / "PurgeQuestWidget/SharedSnapshot.swift").read_text()
+for constant in ("appGroupID", "snapshotKey"):
+    values = [re.findall(rf'static let {constant} = "([^"]+)"', src) for src in (app_snapshot, widget_snapshot)]
+    if len(values[0]) != 1 or values[0] != values[1]:
+        failures.append(f"app group: {constant} differs between the app and the widget ({values[0]} vs {values[1]})")
+    elif constant == "appGroupID" and values[0] != app_groups:
+        failures.append(f"app group: code uses {values[0]} but the entitlements grant {app_groups}")
+
+
+def snapshot_fields(src):
+    body = re.search(r"struct PurgeQuestWidgetSnapshot[^{]*\{(.*?)\n\s*nonisolated static let placeholder", src, re.S)
+    return re.findall(r"^\s*var (\w+): (\w+)", body.group(1), re.M) if body else []
+
+
+if not snapshot_fields(app_snapshot) or snapshot_fields(app_snapshot) != snapshot_fields(widget_snapshot):
+    failures.append("app group: PurgeQuestWidgetSnapshot has different fields in the app and the widget; "
+                    "the widget would fail to decode and fall back to its placeholder")
+
+# 12. privacy manifests
+# Required-reason APIs (Apple: "Describing use of required reason API") and how the sources reach them.
+REQUIRED_REASON = {
+    "NSPrivacyAccessedAPICategoryUserDefaults": r"\bUserDefaults\b",
+    "NSPrivacyAccessedAPICategoryDiskSpace": r"volumeAvailableCapacity\w*|volumeTotalCapacity\w*|\bsystemFreeSize\b|\bsystemSize\b|\bstatv?fs\(",
+    "NSPrivacyAccessedAPICategoryFileTimestamp": r"\.creationDateKey\b|\.contentModificationDateKey\b|fileModificationDate|\.modificationDate\b|attributesOfItem|\bf?stat\(",
+    "NSPrivacyAccessedAPICategorySystemBootTime": r"\bsystemUptime\b|mach_absolute_time",
+    "NSPrivacyAccessedAPICategoryActiveKeyboards": r"activeInputModes",
+}
+for target in ("PurgeQuest", "PurgeQuestWidget"):
+    manifest_path = IOS / target / "PrivacyInfo.xcprivacy"
+    if not manifest_path.exists():
+        failures.append(f"privacy manifest: {target} has no PrivacyInfo.xcprivacy")
+        continue
+    manifest = plistlib.loads(manifest_path.read_bytes())
+    if manifest.get("NSPrivacyTracking") is not False or manifest.get("NSPrivacyTrackingDomains"):
+        failures.append(f"privacy manifest: {target} declares tracking; the app does none")
+    if manifest.get("NSPrivacyCollectedDataTypes"):
+        failures.append(f"privacy manifest: {target} declares collected data; the app collects none")
+    declared = {t["NSPrivacyAccessedAPIType"]: set(t.get("NSPrivacyAccessedAPITypeReasons", []))
+                for t in manifest.get("NSPrivacyAccessedAPITypes", [])}
+    code = "\n".join(strip_comments(f.read_text()) for f in swift_files(target))
+    for category, pattern in REQUIRED_REASON.items():
+        used_here = re.search(pattern, code) is not None
+        if used_here and not declared.get(category):
+            failures.append(f"privacy manifest: {target} calls a {category} API but declares no reason for it")
+        if not used_here and category in declared:
+            failures.append(f"privacy manifest: {target} declares {category} but no source uses it")
+    defaults = declared.get("NSPrivacyAccessedAPICategoryUserDefaults", set())
+    if re.search(r"UserDefaults\(suiteName:", code) and "1C8F.1" not in defaults:
+        failures.append(f"privacy manifest: {target} uses App Group defaults without reason 1C8F.1")
+    if re.search(r"UserDefaults\.standard|@AppStorage", code) and "CA92.1" not in defaults:
+        failures.append(f"privacy manifest: {target} uses its own defaults without reason CA92.1")
+
+# 13. versions
+for setting in ("MARKETING_VERSION", "CURRENT_PROJECT_VERSION"):
+    found = set(re.findall(rf"{setting} = ([^;]+);", pbx))
+    if len(found) != 1:
+        failures.append(f"versions: {setting} differs between targets or configurations: {sorted(found)}")
+
+# 14. no web-app leftovers
+LEFTOVERS = ("package.json", "package-lock.json", "babel.config.js", "metro.config.js", "app.json", "tsconfig.json")
+for path in ROOT.rglob("*"):
+    if ".git" in path.parts:
+        continue
+    if path.name in LEFTOVERS or path.name in ("node_modules", ".expo"):
+        failures.append(f"leftovers: {path.relative_to(ROOT)} belongs to a React Native / Expo project, not this one")
+
+# 15. Rork's Config.swift
+# Rork generates PurgeQuest/Config.swift at build time from its environment (API base URLs, a toolkit
+# key). The app is offline and must not depend on it, and a filled-in copy must never reach the repo.
+config = IOS / "PurgeQuest/Config.swift"
+for f in swift_files("PurgeQuest", "PurgeQuestWidget", "PurgeQuestTests", "PurgeQuestUITests"):
+    if f != config and re.search(r"\bConfig\.(EXPO_|allValues)", strip_comments(f.read_text())):
+        failures.append(f"config: {f.relative_to(ROOT)} reads Rork's build-time Config; the app must not depend on it")
+if config.exists():
+    for name, value in re.findall(r'static let (\w+)\s*=\s*"([^"]*)"', config.read_text()):
+        if value:
+            failures.append(f"config: Config.swift in the tree has a value for {name}; it must stay out of the repository")
+
 if failures:
     print("repo_guard FAILED:")
     for f in failures:
         print("  -", f)
     sys.exit(1)
-print(f"repo_guard ok ({len(used)} seasonal IDs, {len(catalog_ids)} catalog items, {len(family_cases)} family icons, {len(widget_tokens)} widget tokens, {len(sheets)} sprite sheets)")
+print(f"repo_guard ok ({len(used)} seasonal IDs, {len(catalog_ids)} catalog items, {len(family_cases)} family icons, "
+      f"{len(widget_tokens)} widget tokens, {len(sheets)} sprite sheets, {len(code_products)} store products, "
+      f"app group {app_groups[0] if app_groups else '-'})")

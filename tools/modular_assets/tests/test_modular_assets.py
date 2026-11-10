@@ -9,11 +9,14 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
+REPO = HERE.parents[2]
 
 import approvals  # noqa: E402
 import fit  # noqa: E402
 import held_gear as hg  # noqa: E402
+import pinning  # noqa: E402
 import qa  # noqa: E402
+import review_kit  # noqa: E402
 import scml  # noqa: E402
 import validate  # noqa: E402
 
@@ -348,27 +351,263 @@ class ApprovalGate(unittest.TestCase):
         finally:
             shutil.rmtree(tmp)
 
-    def test_apply_only_verifies_automated_passes_with_ledger(self):
-        tmp = Path(tempfile.mkdtemp())
-        try:
-            races, gear, ledger = tmp / "r.json", tmp / "g.json", tmp / "l.json"
-            shutil.copy(validate.RACES, races)
-            shutil.copy(validate.GEAR, gear)
-            r = json.loads(races.read_text())
-            target = r["parts"][0]["id"]
-            ledger.write_text(json.dumps({"approvals": [{"assetId": target, "profile": None, "reviewer": "T", "date": "x", "note": ""}]}))
-            old = (approvals.RACES, approvals.GEAR, approvals.LEDGER)
-            approvals.RACES, approvals.GEAR, approvals.LEDGER = races, gear, ledger
-            try:
-                counts = approvals.apply()
-                self.assertEqual(counts["verified"], 1)
-                again = json.loads(races.read_text())
-                self.assertEqual(again["parts"][0]["verification"]["status"], "verified")
-                self.assertEqual(sum(p["verification"]["status"] == "verified" for p in again["parts"]), 1)
-            finally:
-                approvals.RACES, approvals.GEAR, approvals.LEDGER = old
-        finally:
-            shutil.rmtree(tmp)
+    def test_a_ledger_from_before_pinning_loads_and_verifies_nothing(self):
+        # Schema 1 records carry no content hash, so there is nothing to tie them to the files as they are now.
+        with Sandbox(["valkyrie_v1.head.anatomy"]) as box:
+            box.ledger.write_text(json.dumps({"approvals": [
+                {"assetId": "valkyrie_v1.head.anatomy", "profile": None, "reviewer": "T", "date": "x", "note": ""}]}))
+            counts = approvals.apply()
+            self.assertEqual(counts["verified"], 0)
+            self.assertEqual(len(counts["stale"]), 1)
+            self.assertIn("no content hash", counts["stale"][0])
+            self.assertEqual(box.status_of("valkyrie_v1.head.anatomy"), "candidate")
+
+
+class Sandbox:
+    """Copies of the manifests, an empty ledger and the files of a few assets, with approvals/validate pointed at them.
+    The real ledger, manifests and art are never written."""
+
+    def __init__(self, asset_ids=(), packs=()):
+        self.asset_ids, self.packs = set(asset_ids), set(packs)
+
+    def __enter__(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        self.races, self.gear, self.ledger = self.tmp / "r.json", self.tmp / "g.json", self.tmp / "l.json"
+        self.art = self.tmp / "Art"
+        self.art.mkdir()
+        shutil.copy(validate.RACES, self.races)
+        shutil.copy(validate.GEAR, self.gear)
+        self.ledger.write_text(json.dumps({"schemaVersion": 2, "approvals": []}))
+        index = pinning.png_index()
+        for entry in json.loads(self.races.read_text())["parts"] + json.loads(self.gear.read_text())["items"]:
+            if entry["id"] in self.asset_ids or entry.get("pack") in self.packs:
+                for path in pinning.asset_files(entry, index):
+                    shutil.copy(path, self.art / path.name)
+        self.saved = (approvals.RACES, approvals.GEAR, approvals.LEDGER, approvals.ART,
+                      validate.RACES, validate.GEAR, validate.LEDGER, validate.ART)
+        approvals.RACES, approvals.GEAR, approvals.LEDGER, approvals.ART = self.races, self.gear, self.ledger, self.art
+        validate.RACES, validate.GEAR, validate.LEDGER, validate.ART = self.races, self.gear, self.ledger, self.art
+        return self
+
+    def __exit__(self, *exc):
+        (approvals.RACES, approvals.GEAR, approvals.LEDGER, approvals.ART,
+         validate.RACES, validate.GEAR, validate.LEDGER, validate.ART) = self.saved
+        shutil.rmtree(self.tmp)
+
+    def entry(self, asset_id):
+        for path, key in ((self.races, "parts"), (self.gear, "items")):
+            for e in json.loads(path.read_text())[key]:
+                if e["id"] == asset_id:
+                    return e
+        raise KeyError(asset_id)
+
+    def status_of(self, asset_id):
+        return self.entry(asset_id)["verification"]["status"]
+
+    def records(self):
+        return json.loads(self.ledger.read_text())["approvals"]
+
+    def edit(self, path, key, asset_id, change):
+        manifest = json.loads(path.read_text())
+        change(next(e for e in manifest[key] if e["id"] == asset_id))
+        path.write_text(json.dumps(manifest))
+
+    def flip_a_byte(self, asset_id):
+        """Change one byte of the asset's image, as regenerating it would."""
+        path = self.art / (self.entry(asset_id)["resourceBaseName"] + ".png")
+        data = bytearray(path.read_bytes())
+        data[-1] ^= 0xFF
+        path.write_bytes(bytes(data))
+
+
+class PinnedApprovals(unittest.TestCase):
+    HEAD = "valkyrie_v1.head.anatomy"       # athletic native; adapts to slender, standard, skeletal, brute
+
+    def test_a_fresh_approval_verifies_the_asset_and_pins_its_content(self):
+        with Sandbox([self.HEAD]) as box:
+            result = approvals.approve(f"id:{self.HEAD}", "Reviewer")
+            self.assertEqual(result["added"], [self.HEAD])
+            counts = approvals.apply()
+            self.assertEqual((counts["verified"], counts["stale"]), (1, []))
+            self.assertEqual(box.status_of(self.HEAD), "verified")
+            self.assertEqual(box.entry(self.HEAD)["verification"]["approvedBy"], ["Reviewer"])
+            record, = box.records()
+            self.assertTrue(pinning.wellformed_hash(record["contentHash"]))
+            self.assertEqual(record["contentHash"], pinning.content_hash(box.entry(self.HEAD), pinning.png_index(box.art)))
+            self.assertEqual(validate.main(), 0)
+
+    def test_changing_the_asset_strands_its_approval(self):
+        with Sandbox([self.HEAD]) as box:
+            approvals.approve(f"id:{self.HEAD}", "Reviewer")
+            approvals.apply()
+            box.flip_a_byte(self.HEAD)
+            counts = approvals.apply()
+            self.assertEqual(counts["verified"], 0)
+            self.assertEqual(len(counts["stale"]), 1)
+            self.assertIn("changed after approval", counts["stale"][0])
+            self.assertEqual(box.status_of(self.HEAD), "candidate")
+            self.assertEqual(len(box.records()), 1, "a stale record is history: it stays until revoked or replaced")
+            self.assertEqual(validate.main(), 0, "a stale record is a warning once the manifest no longer says verified")
+
+    def test_a_manifest_still_verified_on_a_stale_approval_fails_validation(self):
+        with Sandbox([self.HEAD]) as box:
+            approvals.approve(f"id:{self.HEAD}", "Reviewer")
+            approvals.apply()
+            self.assertEqual(validate.main(), 0)
+            box.flip_a_byte(self.HEAD)          # regenerated, and nobody ran apply
+            self.assertEqual(box.status_of(self.HEAD), "verified")
+            self.assertEqual(validate.main(), 1)
+
+    def test_approving_again_replaces_the_stale_record(self):
+        with Sandbox([self.HEAD]) as box:
+            approvals.approve(f"id:{self.HEAD}", "First")
+            first = box.records()[0]["contentHash"]
+            box.flip_a_byte(self.HEAD)
+            result = approvals.approve(f"id:{self.HEAD}", "Second")
+            self.assertEqual(result["replaced"], [self.HEAD])
+            record, = box.records()
+            self.assertEqual(record["reviewer"], "Second")
+            self.assertNotEqual(record["contentHash"], first)
+            self.assertEqual(approvals.apply()["verified"], 1)
+            self.assertEqual(approvals.approve(f"id:{self.HEAD}", "Third")["alreadyApproved"], [self.HEAD])
+            self.assertEqual(len(box.records()), 1)
+
+    def test_a_fit_approval_goes_stale_when_the_fit_changes(self):
+        with Sandbox([self.HEAD]) as box:
+            approvals.approve(f"id:{self.HEAD}", "Reviewer")
+            approvals.approve(f"id:{self.HEAD}", "Reviewer", profile="standard")
+            approvals.apply()
+            self.assertEqual(box.entry(self.HEAD)["verification"]["approvedProfiles"], ["standard"])
+
+            def rescale(entry):
+                entry["profileOverrides"]["standard"]["scaleX"] = 1.07
+            box.edit(box.races, "parts", self.HEAD, rescale)
+            counts = approvals.apply()
+            self.assertEqual(len(counts["stale"]), 1)
+            self.assertIn("standard fit", counts["stale"][0])
+            after = box.entry(self.HEAD)["verification"]
+            self.assertEqual(after["status"], "verified", "the pixels did not change, so the layer itself stays approved")
+            self.assertEqual(after["approvedProfiles"], [])
+
+    def test_a_fit_approval_counts_only_with_the_layer_and_only_where_the_layer_adapts(self):
+        with Sandbox([self.HEAD]) as box:
+            native = approvals.approve(f"id:{self.HEAD}", "Reviewer", profile="athletic")
+            self.assertEqual((native["added"], native["notAdapted"]), ([], [self.HEAD]))
+            approvals.approve(f"id:{self.HEAD}", "Reviewer", profile="standard")
+            approvals.apply()
+            alone = box.entry(self.HEAD)["verification"]
+            self.assertEqual((alone["status"], alone["approvedProfiles"]), ("candidate", []))
+            with self.assertRaises(SystemExit):
+                approvals.approve(f"id:{self.HEAD}", "Reviewer", profile="giant")
+
+    def test_an_asset_the_automated_checks_rejected_cannot_be_approved(self):
+        with Sandbox([self.HEAD]) as box:
+            def reject(entry):
+                entry["verification"]["status"] = "mapped"
+                entry["verification"]["automatedPass"] = False
+            box.edit(box.races, "parts", self.HEAD, reject)
+            result = approvals.approve(f"id:{self.HEAD}", "Reviewer")
+            self.assertEqual(result["added"], [])
+            self.assertEqual(len(result["refused"]), 1)
+            self.assertEqual(box.records(), [])
+            self.assertEqual(approvals.apply()["verified"], 0)
+
+    def test_an_approval_needs_a_named_reviewer(self):
+        with Sandbox([self.HEAD]) as box:
+            for nobody in ("", "   "):
+                with self.assertRaises(SystemExit):
+                    approvals.approve(f"id:{self.HEAD}", nobody)
+            self.assertEqual(box.records(), [])
+
+    def test_revoking_removes_the_approval_its_fits_and_keeps_a_record(self):
+        with Sandbox([self.HEAD]) as box:
+            approvals.approve(f"id:{self.HEAD}", "Reviewer")
+            approvals.approve(f"id:{self.HEAD}", "Reviewer", profile="standard")
+            approvals.approve(f"id:{self.HEAD}", "Reviewer", profile="brute")
+            only_fit = approvals.revoke(f"id:{self.HEAD}", "Reviewer", profile="brute")
+            self.assertEqual([r["profile"] for r in only_fit], ["brute"])
+            self.assertEqual(sorted(str(r["profile"]) for r in box.records()), ["None", "standard"])
+            removed = approvals.revoke(f"id:{self.HEAD}", "Second", note="cheek mask")
+            self.assertEqual(len(removed), 2)
+            self.assertEqual(box.records(), [])
+            self.assertEqual(approvals.apply()["verified"], 0)
+            self.assertEqual(box.status_of(self.HEAD), "candidate")
+            log = json.loads(box.ledger.read_text())["revocations"]
+            self.assertEqual(len(log), 3)
+            self.assertEqual((log[-1]["revokedBy"], log[-1]["approvedBy"], log[-1]["note"]), ("Second", "Reviewer", "cheek mask"))
+
+    def test_a_whole_pack_renders_modular_only_when_every_layer_is_approved(self):
+        with Sandbox(packs=["golem_v1"]) as box:
+            before = approvals.status()["packs"]["golem_v1"]
+            self.assertFalse(before["rendersModular"])
+            approvals.approve("pack:golem_v1", "Reviewer")
+            approvals.apply()
+            after = approvals.status()
+            self.assertTrue(after["packs"]["golem_v1"]["rendersModular"])
+            self.assertEqual(after["packs"]["golem_v1"]["approved"], after["packs"]["golem_v1"]["layers"])
+            self.assertEqual(after["totals"]["packsRenderingModular"], 1)
+            # One layer short keeps the whole pack on the legacy renderer.
+            approvals.revoke("id:golem_v1.body.anatomy", "Reviewer")
+            self.assertFalse(approvals.status()["packs"]["golem_v1"]["rendersModular"])
+
+    def test_a_target_that_is_an_id_and_a_prefix_is_refused(self):
+        with Sandbox(["weapon.staff"]) as box:
+            with self.assertRaises(SystemExit):
+                approvals.approve("weapon.staff", "Reviewer")       # the Archmage Staff, and the start of 40 staves
+            self.assertEqual(approvals.approve("id:weapon.staff", "Reviewer")["added"], ["weapon.staff"])
+            self.assertEqual(len(box.records()), 1)
+            with self.assertRaises(SystemExit):
+                approvals.approve("pack:no_such_pack", "Reviewer")
+
+
+class ReviewGuide(unittest.TestCase):
+    def setUp(self):
+        self.waves = json.loads((REPO / "docs" / "modular" / "review_waves.json").read_text())["waves"]
+        self.races = json.loads(validate.RACES.read_text())
+        self.gear = json.loads(validate.GEAR.read_text())
+
+    def test_every_pack_is_in_exactly_one_pack_wave_and_every_gear_group_in_the_gear_wave(self):
+        packs = [p for w in self.waves if w["kind"] == "packs" for p in w["packs"]]
+        self.assertEqual(sorted(packs), sorted(self.races["packs"]))
+        self.assertEqual(len(packs), len(set(packs)))
+        groups = [g for w in self.waves if w["kind"] == "gear" for g in w["groups"]]
+        self.assertEqual(sorted(groups), sorted({i["group"] for i in self.gear["items"]}))
+        self.assertEqual(len(groups), len(set(groups)))
+
+    def test_wave_one_covers_every_body_profile_with_a_pack_native_to_it(self):
+        first = next(w for w in self.waves if w["id"] == 1)["packs"]
+        native = {p["pack"]: set(p["nativeProfiles"]) for p in self.races["parts"] if p["part"] == "body" and p["kind"] == "anatomy"}
+        covered = set().union(*(native[p] for p in first))
+        self.assertEqual(covered, set(fit.PROFILES))
+        self.assertTrue(all(p.endswith("_v1") for p in first))
+
+    def test_status_counts_match_the_manifests(self):
+        s = approvals.status()
+        self.assertEqual(s["totals"]["assets"], len(self.races["parts"]) + len(self.gear["items"]))
+        self.assertEqual(s["totals"]["packs"], len(self.races["packs"]))
+        self.assertEqual(sum(p["layers"] for p in s["packs"].values()), len(self.races["parts"]))
+        self.assertEqual(sum(g["items"] for g in s["gear"].values()), len(self.gear["items"]))
+        stamped = sum(e["verification"]["status"] == "verified" for e in self.races["parts"] + self.gear["items"])
+        self.assertEqual(s["totals"]["approved"], stamped, "the manifests' stamps and the ledger disagree: run approvals.py apply")
+
+    def test_the_committed_guide_is_current_and_regenerates_byte_for_byte(self):
+        guide = REPO / "docs" / "modular" / "REVIEW.md"
+        committed = guide.read_bytes()
+        review_kit.main()
+        once = guide.read_bytes()
+        review_kit.main()
+        self.assertEqual(once, guide.read_bytes())
+        self.assertEqual(committed, once, "docs/modular/REVIEW.md is out of date: run review_kit.py")
+
+    def test_every_sheet_the_guide_links_to_exists(self):
+        import re
+        text = (REPO / "docs" / "modular" / "REVIEW.md").read_text()
+        linked = set(re.findall(r"\]\(verification/([^)]+)\)", text))
+        self.assertGreater(len(linked), 60)
+        for name in linked:
+            self.assertTrue((REPO / "docs" / "modular" / "verification" / name).exists(), name)
+        for pack in self.races["packs"]:
+            self.assertIn(f"approve pack:{pack} ", text)
 
 
 class RecolorMaterials(unittest.TestCase):
