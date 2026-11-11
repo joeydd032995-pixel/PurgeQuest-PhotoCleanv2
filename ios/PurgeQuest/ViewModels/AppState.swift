@@ -47,7 +47,8 @@ final class AppState {
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
-        self.dateScope = DateScopeStore.load(from: defaults)
+        // A screenshot tour can force a range (in memory only); otherwise it is the saved one.
+        self.dateScope = UITestSupport.forcedDateScope ?? DateScopeStore.load(from: defaults)
     }
 
     func setDateScope(_ scope: DateScope) {

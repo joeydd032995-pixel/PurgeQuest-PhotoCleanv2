@@ -11,6 +11,7 @@
 //    -UITestMet <types>     comma-separated MonsterType raw values to mark as encountered
 //    -UITestEvent <id>      seasonal event to show as running (e.g. halloween)
 //    -UITestVariant <n>     paint variant (1...3) of the hero's race; pick the race with -pq.race
+//    -UITestDateScope <json>  date range to start with, in the form a range is saved in (kept in memory only)
 //
 
 import Foundation
@@ -55,6 +56,25 @@ enum UITestSupport {
         #else
         return nil
         #endif
+    }
+
+    /// The date range a tour launch starts with, or nil: `-UITestDateScope '<json>'`. It is held in memory
+    /// only, so it never lands in the simulator's defaults to colour the next test's launch.
+    static var forcedDateScope: DateScope? {
+        #if DEBUG
+        guard isTour else { return nil }
+        return dateScope(in: CommandLine.arguments)
+        #else
+        return nil
+        #endif
+    }
+
+    /// The range after `-UITestDateScope` in `arguments`, or nil. It is read from the arguments
+    /// themselves: through UserDefaults a `-key value` argument is taken for a property list, JSON is
+    /// not one, and the range never arrived.
+    static func dateScope(in arguments: [String]) -> DateScope? {
+        guard let flag = arguments.firstIndex(of: "-UITestDateScope"), arguments.indices.contains(flag + 1) else { return nil }
+        return DateScopeStore.decode(arguments[flag + 1])
     }
 
     /// Wears the requested items and marks the requested monsters as met, so the tour can

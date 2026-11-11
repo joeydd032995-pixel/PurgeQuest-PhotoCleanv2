@@ -1,6 +1,6 @@
 # Date range for dives: design
 
-**Date:** 2026-11-11 · **Status:** built, not yet run under Xcode or on a device (see Verification)
+**Date:** 2026-11-11 · **Status:** built; CI built it and passed its tests; not yet tried on a device (see Verification)
 
 The design was agreed in conversation in three parts (the rule and the fetch; the Dashboard row, the
 sheet and the empty states; edge cases and tests). The separate "review the written spec" step was
@@ -46,7 +46,8 @@ is a standing setting, not a per-dive choice.
 8. **"Reset all PurgeQuest data" clears it**, since it also wipes the spared and purged memory the range
    narrows. Leaving a dive does not (unlike `diveFocus`).
 9. **Saved as JSON text** under `pq.dateScope` in `UserDefaults` (already declared in the privacy
-   manifest). Text rather than `Data` so a UI test can preset it with `-pq.dateScope '<json>'`.
+   manifest). The UI tour forces a range in memory with `-UITestDateScope '<json>'`, read from the
+   process arguments (see Verification for why it is not an ordinary `-key value` default).
 
 ## Behaviour
 
@@ -72,6 +73,7 @@ dates given days) is All dates. Unreadable saved data is All dates.
 | `ios/PurgeQuest/Views/Dashboard/DashboardView.swift` | the Dates row; previews recomputed when the range changes |
 | `ios/PurgeQuest/Views/Dashboard/DatesSheet.swift` | new: the draft editor (mode, start/end switches and pickers, quick picks, Apply) |
 | `GameDataService.swift`, `SettingsView.swift` | reset clears the saved range and AppState's copy |
+| `ios/PurgeQuest/UITestSupport.swift` | `-UITestDateScope` hook: a tour launch forces a range, in memory only (DEBUG builds) |
 | `tools/swift_harness/run.sh` | the new source and test file join the Linux harness |
 
 `PhotoKit` never sees `DateScope` internals: it gets a format and dates from `predicateParts`, and each
@@ -98,22 +100,25 @@ set (covered); a dive in progress keeps its batch; the seen-memory is never writ
 
 ## Verification
 
-Run while building this (Swift 6.2.1 on Linux, the toolchain CI uses):
+**On Linux while building** (Swift 6.2.1, the toolchain CI uses): `tools/swift_harness/run.sh` passes,
+307 tests in 21 suites (the 275 that existed plus 32 in `DateScopeTests`). The new tests were written
+first and failed to compile before the implementation existed; four deliberate breakages of the rule
+(inclusive upper bound, device calendar instead of Gregorian, undated admitted, a wrong predicate
+boundary) were each caught. `tools/ci/repo_guard.py` passes.
 
-- `tools/swift_harness/run.sh`: 305 tests in 21 suites pass (the 275 that existed plus 30 in
-  `DateScopeTests`). The new tests were written first and failed to compile before the implementation
-  existed; four deliberate breakages of the rule (inclusive upper bound, device calendar instead of
-  Gregorian, undated admitted, a wrong predicate boundary) were each caught.
-- `tools/ci/repo_guard.py` passes; every touched Swift file parses with `swiftc -parse`.
+**In CI on the pull request** (macOS, Xcode), first push: the app builds and analyzes; the unit-test
+target passes (490 tests in 40 suites, including `DateScopeTests` and all six `DateScopeIntegrationTests`:
+the predicate agrees with the rule under `NSPredicate`, `AppState` saves and restores, reset forgets);
+the UI tour passes, including `testDatesRange`, which found the Dates row and opened the sheet in all
+four looks. Looking at that run's screenshots showed the tour's preset range had **not** arrived: the
+row read "All dates". A JSON value passed as an ordinary `-key value` launch argument is read by
+UserDefaults as a property list, which JSON is not. The tour now reads `-UITestDateScope` from the
+process arguments and forces the range in memory only (so it cannot linger in the simulator's defaults
+and tint the next test's launch).
 
-**Not run, because it needs Xcode or a device** (CI runs the first two on the pull request):
-
-- Compiling the SwiftUI, Photos and SwiftData code (`DatesSheet`, `DashboardView`, `AppState`,
-  `PhotoLibraryService`, `CombatView`, `CombatViewModel`).
-- `DateScopeIntegrationTests` (predicate agrees with the rule via `NSPredicate`, which swift-corelibs
-  lacks; `AppState` persistence; reset) and the `testDatesRange` UI tour capture.
-- PhotoKit accepting the predicate on a real library. It uses plain `creationDate` comparisons with
-  AND/OR. Device-pass checks 6 to 9 in `ios/README-SETUP.md` cover this.
+**Not verified: PhotoKit accepting the predicate on a real library.** It uses plain `creationDate`
+comparisons with AND/OR, but only a device confirms it end to end. Device-pass checks 6 to 9 in
+`ios/README-SETUP.md` cover this.
 
 ## Left out on purpose (each can be added without rework)
 
