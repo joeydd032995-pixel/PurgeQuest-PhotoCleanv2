@@ -295,13 +295,10 @@ final class AppearanceTourUITests: XCTestCase {
         if enter.waitForExistence(timeout: 5) {
             enter.tap()
             dismissPhotoPrompt()
-            // With photos in the library the room takes a while to scan. Wait for whichever arrives,
-            // a card's way out or the empty state, then let the screen settle.
-            let cardReady = app.buttons["Exit dungeon"]
-            let emptyReady = app.buttons["Back to Library"]
-            let deadline = Date().addingTimeInterval(45)
-            while Date() < deadline, !cardReady.exists, !emptyReady.exists { settle(1.0) }
-            settle(3.0)
+            // With photos in the library the room takes a while to scan, and while it does the app
+            // is too busy to answer accessibility queries (each one times out after about 30 s and
+            // fails the test). So wait without asking it anything, then let the screen settle.
+            settle(20.0)
             shot("\(mode)-11-combat")
             let exit = app.buttons["Exit dungeon"]
             let back = app.buttons["Back to Library"]
