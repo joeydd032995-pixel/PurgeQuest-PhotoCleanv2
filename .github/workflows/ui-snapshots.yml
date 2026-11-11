@@ -65,6 +65,11 @@ jobs:
           TEST_RUNNER_SNAPSHOT_DIR: ${{ runner.temp }}/ui-snapshots
         run: |
           mkdir -p "$TEST_RUNNER_SNAPSHOT_DIR"
+          # The app's own log lines (how long a scan took, a Vision call that stopped answering) go into the
+          # same artifact, so a slow dive reads as a timeline. Like the sampler, it never fails the job.
+          xcrun simctl spawn "$SIMULATOR_UDID" log stream --level debug --style compact \
+            --predicate 'subsystem == "PurgeQuest"' > "$TEST_RUNNER_SNAPSHOT_DIR/app-log.txt" 2>&1 &
+          logstream=$!
           # While the tour runs, sample the app's threads every 15 s. If a screen ever stalls, the samples
           # say what the app was doing, which a screenshot cannot. They are uploaded with the PNGs, and a
           # sampling failure never fails the job.
@@ -89,7 +94,7 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             test
           status=$?
-          kill "$sampler" 2>/dev/null || true
+          kill "$sampler" "$logstream" 2>/dev/null || true
           exit $status
       - name: Upload UI snapshots
         if: always()
