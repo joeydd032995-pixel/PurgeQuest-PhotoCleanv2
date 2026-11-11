@@ -210,7 +210,7 @@ struct DashboardView: View {
         Group {
             if let hero {
                 HStack(alignment: .center, spacing: 8) {
-                    HeroStageView(hero: hero, equipped: equippedItems, height: 84, accent: hero.race.accent)
+                    HeroStageView(hero: hero, equipped: equippedItems, height: 84, accent: hero.race.accent, isAnimated: false)
 
                     VStack(alignment: .leading, spacing: 8) {
                         HStack(alignment: .firstTextBaseline, spacing: 8) {
