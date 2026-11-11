@@ -34,8 +34,11 @@ struct CharacterAvatarView: View {
     var body: some View {
         ZStack {
             backdrop
-            HeroSpriteView(hero: hero, appearance: appearance, equipped: equipped, size: size * 0.8)
-                .frame(width: size * 0.62, height: size * 0.72)
+            // The hero's own height is set here, not the canvas's: the figure stands 0.56 of the
+            // portrait tall with its feet on the frame's bottom edge, which is the ground line the
+            // pet below is placed on.
+            HeroSpriteView(hero: hero, appearance: appearance, equipped: equipped, size: size * 0.56, framing: .body)
+                .frame(width: size * 0.62, height: size * 0.72, alignment: .bottom)
                 .overlay(alignment: .bottom) { petCompanion }
 
             ForEach(AvatarBadgeLayout.slots, id: \.type) { slot in

@@ -90,12 +90,7 @@ struct HeroTabView: View {
         .padding(.vertical, 18)
         .padding(.horizontal, 16)
         .frame(maxWidth: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.dungeonStone.opacity(0.85))
-                .overlay(RoundedRectangle(cornerRadius: 12).stroke(hero.race.accent.opacity(0.5), lineWidth: 1))
-                .overlay(RoundedRectangle(cornerRadius: 10).stroke(hero.race.accent.opacity(0.25), lineWidth: 1).padding(2))
-        )
+        .background(DungeonPanelBackground(cornerRadius: DungeonRadius.hero, accent: hero.race.accent))
         .fullScreenCover(isPresented: $showForge) {
             HeroForgeView(hero: hero)
         }
