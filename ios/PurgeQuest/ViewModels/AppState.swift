@@ -37,6 +37,24 @@ final class AppState {
     /// consumed (and cleared on exit) by CombatView. Nil is the default mixed dive.
     var diveFocus: RoomBucket? = nil
 
+    /// The capture dates dives draw from (see DateScope): all dates, only a range, or everything but a
+    /// range. A standing setting, unlike `diveFocus`: it outlives a dive and a relaunch, and the
+    /// Dashboard shows it for as long as it is on. Hand-picked hunts ignore it. Change it with
+    /// `setDateScope`, which also saves it.
+    private(set) var dateScope: DateScope
+
+    private let defaults: UserDefaults
+
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+        self.dateScope = DateScopeStore.load(from: defaults)
+    }
+
+    func setDateScope(_ scope: DateScope) {
+        dateScope = scope
+        DateScopeStore.save(scope, to: defaults)
+    }
+
     func completeOnboarding() {
         hasOnboarded = true
         UserDefaults.standard.set(true, forKey: "pq.hasOnboarded")

@@ -27,6 +27,8 @@ struct DashboardView: View {
     /// Shown when the picker returned choices that carry no asset identifiers —
     /// the signature of missing photo-library access.
     @State private var showAccessHint = false
+    /// The date range sheet (see DatesSheet).
+    @State private var showDatesSheet = false
 
     // The three storage measurements (identified / pending / reclaimed).
     @State private var opportunityBytes: Int64 = 0
@@ -46,6 +48,7 @@ struct DashboardView: View {
                     focusedDiveMenu
                     pickedHuntPicker
                 }
+                datesRow
                 if let event = SeasonalEventService.shared.activeEvent {
                     SeasonalEventBanner(event: event)
                 }
@@ -60,11 +63,15 @@ struct DashboardView: View {
         .background(DungeonBackgroundView())
         .task {
             libraryStats = PhotoLibraryService.shared.fetchLibraryStats()
-            scoutedTheme = DungeonThemeEngine.theme(for: PhotoLibraryService.shared.fetchLibraryComposition())
             updateStreak()
             SeasonalEventService.shared.refresh()
             WidgetSnapshotService.write(hero: hero, quests: quests)
             refreshStorageMeasurements()
+        }
+        // The theme strip and the opportunity figure describe the dive the player is about to start, so
+        // they follow the date range: worked out when the screen appears and again whenever it changes.
+        .task(id: appState.dateScope) {
+            refreshScopedPreviews()
         }
         .onChange(of: hero?.gems ?? 0) { _, _ in
             WidgetSnapshotService.write(hero: hero, quests: quests)
@@ -84,6 +91,9 @@ struct DashboardView: View {
             Button("Not now", role: .cancel) {}
         } message: {
             Text("PurgeQuest needs full photo access to hunt the monsters you choose. Allow all photos in Settings, then pick them again.")
+        }
+        .sheet(isPresented: $showDatesSheet) {
+            DatesSheet(initial: appState.dateScope)
         }
     }
 
@@ -113,8 +123,12 @@ struct DashboardView: View {
 
                 measurementRow(
                     title: "Identified opportunity",
-                    value: opportunityBytes > 0 ? formattedBytes(opportunityBytes) : "All reviewed",
-                    caption: "Estimated size of items selected for cleanup.",
+                    value: opportunityBytes > 0
+                        ? formattedBytes(opportunityBytes)
+                        : (appState.dateScope.isActive ? "None in range" : "All reviewed"),
+                    caption: appState.dateScope.isActive
+                        ? "Estimated size of items selected for cleanup, within your date range."
+                        : "Estimated size of items selected for cleanup.",
                     tint: .questAmber
                 )
                 hairline
@@ -176,11 +190,10 @@ struct DashboardView: View {
         return reclaim.verifiedBytes > 0 ? formattedBytes(reclaim.verifiedBytes) : "Not yet verified"
     }
 
-    /// Recomputes all three measurements from their sources.
+    /// Recomputes the measurements that do not depend on the date range: what is pending in Recently
+    /// Deleted and what was actually reclaimed. (The opportunity figure follows the range; see
+    /// `refreshScopedPreviews`.)
     private func refreshStorageMeasurements() {
-        let seen = Set(sparedRecords.map(\.assetIdentifier))
-            .union(deletedRecords.map(\.assetIdentifier))
-        opportunityBytes = PhotoLibraryService.shared.fetchOpportunityBytes(excluding: seen)
         // Recently Deleted keeps items for 30 days; until then they still
         // occupy space even though the dungeon already banked them.
         let cutoff = Date().addingTimeInterval(-30 * 86_400)
@@ -188,6 +201,16 @@ struct DashboardView: View {
             .filter { $0.deletedAt >= cutoff }
             .reduce(0) { $0 + $1.fileSizeBytes }
         reclaim = StorageMeasurementService.shared.refresh()
+    }
+
+    /// Recomputes the figures that describe the next dive, which follow the date range: the estimated
+    /// opportunity and the scouted dungeon theme.
+    private func refreshScopedPreviews() {
+        let scope = appState.dateScope
+        let seen = Set(sparedRecords.map(\.assetIdentifier))
+            .union(deletedRecords.map(\.assetIdentifier))
+        opportunityBytes = PhotoLibraryService.shared.fetchOpportunityBytes(excluding: seen, scope: scope)
+        scoutedTheme = DungeonThemeEngine.theme(for: PhotoLibraryService.shared.fetchLibraryComposition(scope: scope))
     }
 
     private func formattedBytes(_ bytes: Int64) -> String {
@@ -363,6 +386,76 @@ struct DashboardView: View {
         case .screenshots: return "camera.viewfinder"
         case .largeVideo: return "film.stack"
         case .old: return "clock.arrow.circlepath"
+        }
+    }
+
+    // MARK: - Dates
+
+    /// The standing date range (see DateScope). A quiet panel button like its neighbours. While a range
+    /// is on it names the range, takes an accent border and offers a one-tap clear, so a range can never
+    /// narrow the dungeon without the player seeing it.
+    private var datesRow: some View {
+        let scope = appState.dateScope
+        return HStack(spacing: 8) {
+            Button {
+                HapticsService.shared.light()
+                showDatesSheet = true
+            } label: {
+                HStack(spacing: 10) {
+                    Image(systemName: datesIcon(for: scope.mode))
+                        .font(.headline)
+                        .foregroundStyle(scope.isActive ? Color.questAmber : Color.textSecondary)
+                        .frame(width: 24)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("DATES")
+                            .font(.dungeonCaption.weight(.bold))
+                            .foregroundStyle(.textSecondary)
+                        Text(scope.summary())
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(.textPrimary)
+                            .lineLimit(2)
+                            .multilineTextAlignment(.leading)
+                    }
+                    Spacer(minLength: 8)
+                    if !scope.isActive {
+                        Image(systemName: "chevron.right")
+                            .font(.caption.weight(.bold))
+                            .foregroundStyle(.textSecondary)
+                    }
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Dates, \(scope.summary())")
+            .accessibilityHint("Opens the date range options")
+            .accessibilityIdentifier("dashboard.dates")
+
+            if scope.isActive {
+                Button {
+                    HapticsService.shared.light()
+                    appState.setDateScope(.all)
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.title3)
+                        .foregroundStyle(.textSecondary)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Clear date range")
+                .accessibilityIdentifier("dashboard.dates.clear")
+            }
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 11)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(DungeonPanelBackground(accent: scope.isActive ? Color.questAmber : nil))
+    }
+
+    /// A different calendar glyph per mode, so the mode never depends on color alone.
+    private func datesIcon(for mode: DateScope.Mode) -> String {
+        switch mode {
+        case .all:     return "calendar"
+        case .only:    return "calendar.badge.checkmark"
+        case .exclude: return "calendar.badge.minus"
         }
     }
 

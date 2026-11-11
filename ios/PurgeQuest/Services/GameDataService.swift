@@ -86,7 +86,9 @@ enum GameDataService {
 
     /// "Reset all PurgeQuest data": erases the hero, the progress and the seeded catalogs, and
     /// forgets that onboarding ever ran, including any choices still waiting to be applied, so
-    /// the player starts again from a clean slate. The caller sends the UI back to onboarding.
+    /// the player starts again from a clean slate (the saved date range included: the spared and
+    /// purged memory it narrows is gone too). The caller sends the UI back to onboarding and clears
+    /// AppState's copy of the range.
     static func resetAllData(in context: ModelContext, defaults: UserDefaults = .standard) {
         for hero in (try? context.fetch(FetchDescriptor<Hero>())) ?? [] { context.delete(hero) }
         for record in (try? context.fetch(FetchDescriptor<DeletedMediaRecord>())) ?? [] { context.delete(record) }
@@ -97,6 +99,7 @@ enum GameDataService {
         try? context.save()
         defaults.removeObject(forKey: "pq.hasOnboarded")
         clearOnboardingChoices(from: defaults)
+        DateScopeStore.clear(in: defaults)
     }
 
     // MARK: - Cosmetics

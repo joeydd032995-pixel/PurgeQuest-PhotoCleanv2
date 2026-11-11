@@ -72,3 +72,15 @@ Then:
 4. Add the Daily Quest and Streak widgets and a Lock Screen widget; finish a room and check they update.
 5. Buy a gem pack and a cosmetic with the local StoreKit configuration, delete the app, reinstall,
    and tap Restore in the Armory: the cosmetic returns, the gems do not double.
+6. **Dates, Only.** On the Library screen tap **Dates**, choose **Only**, pick a year you know has
+   photos and apply. Enter the Dungeon, then a Focused Dive: every card should be from that year,
+   oldest first. The Identified opportunity figure and the Next dive strip should change with it.
+   (This is the one check that exercises PhotoKit's date predicate on a real library; CI cannot.)
+7. **Dates, Exclude.** Choose **Exclude** over a range you know has photos and dive several times,
+   including Focused Dive > Blur, Screenshots and Old: nothing from that range may ever appear.
+   **Hunt Chosen** still deals exactly what you pick, from any date.
+8. **Open ends, saving, clearing.** Exclude from a date onward with the end switched off: photos taken
+   after you set it stay covered. Force-quit and relaunch with a range on: it is still on, and the row
+   shows it. Clear it with the x; then set one again and run **Reset all PurgeQuest data**: it is gone.
+9. **The Dates sheet** at the largest Dynamic Type size, in Light and Dark: nothing clipped, Apply
+   reachable. Pick a start date after the end date: the end follows it.

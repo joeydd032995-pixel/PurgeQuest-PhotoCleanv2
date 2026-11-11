@@ -52,6 +52,40 @@ final class AppearanceTourUITests: XCTestCase {
         }
     }
 
+    /// The Dashboard's date range, switched on and being edited, in all four looks. The range is preset
+    /// through the `-pq.dateScope` launch argument (it reaches UserDefaults as a string), so the tour never
+    /// has to drive the date pickers.
+    @MainActor
+    func testDatesRange() {
+        let range = #"{"mode":"exclude","from":{"year":2025,"month":10,"day":12}}"#
+        for palette in ["classic", "verdigris"] {
+            for mode in ["light", "dark"] {
+                let app = launch(mode, phase: "main", palette: palette, extra: ["-pq.dateScope", range])
+                guard app.tabBars.firstMatch.waitForExistence(timeout: 25) else {
+                    XCTFail("tab bar did not appear (dates \(palette) \(mode))")
+                    app.terminate()
+                    continue
+                }
+                dismissPhotoPrompt()
+                settle(1.5)
+                shot("dates-\(palette)-\(mode)-1-library")
+                let row = app.buttons["dashboard.dates"]
+                if row.waitForExistence(timeout: 5) {
+                    row.tap()
+                    if app.buttons["dates.apply"].waitForExistence(timeout: 5) {
+                        settle(1.0)
+                        shot("dates-\(palette)-\(mode)-2-sheet")
+                    } else {
+                        XCTFail("the Dates sheet did not open (\(palette) \(mode))")
+                    }
+                } else {
+                    XCTFail("the Dates row was not found on the Library screen (\(palette) \(mode))")
+                }
+                app.terminate()
+            }
+        }
+    }
+
     /// The Wraith, Forest Spirit and Phantom Purge art, which a fresh simulator never reaches. Launch
     /// hooks (UITestSupport) wear a pet, mark the Wraiths as met and pretend the event is running.
     @MainActor

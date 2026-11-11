@@ -230,6 +230,7 @@ struct SettingsView: View {
 
     private func resetAllData() {
         GameDataService.resetAllData(in: modelContext)
+        appState.setDateScope(.all)
         appState.hasOnboarded = false
         appState.phase = .onboarding
     }
