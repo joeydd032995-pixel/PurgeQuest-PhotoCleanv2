@@ -82,12 +82,15 @@ final class PhotoLibraryService {
 
     // MARK: - Fetching
 
-    /// Fetch oldest-first up to `limit` assets, optionally filtered to videos only.
-    func fetchAssets(limit: Int, includeVideos: Bool = true, videoOnly: Bool = false) -> [PHAsset] {
+    /// Fetch oldest-first up to `limit` assets, optionally filtered to videos only and to the dates a dive
+    /// may draw from. PhotoKit applies the date predicate before the sort and the limit, so the batch is
+    /// the oldest `limit` assets inside the range, not the oldest of the library thinned out afterwards.
+    func fetchAssets(limit: Int, includeVideos: Bool = true, videoOnly: Bool = false, scope: DateScope = .all) -> [PHAsset] {
         let opts = PHFetchOptions()
         opts.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
         opts.fetchLimit = limit
         opts.includeHiddenAssets = false
+        applyDateScope(scope, to: opts)
 
         let result: PHFetchResult<PHAsset>
         if videoOnly {
@@ -99,12 +102,22 @@ final class PhotoLibraryService {
             result = PHAsset.fetchAssets(with: opts)
         }
 
+        // The predicate already did this. Checking each asset again keeps an excluded range excluded
+        // whatever PhotoKit does with the predicate: the one failure that would put in front of a player a
+        // photo they asked never to see.
+        let rule = scope.resolved()
         var assets: [PHAsset] = []
         assets.reserveCapacity(result.count)
         result.enumerateObjects { asset, _, _ in
-            assets.append(asset)
+            if rule.admits(asset.creationDate) { assets.append(asset) }
         }
         return assets
+    }
+
+    /// Narrows a fetch to the dates in `scope`; all dates leaves it alone.
+    private func applyDateScope(_ scope: DateScope, to options: PHFetchOptions) {
+        guard let parts = scope.predicateParts() else { return }
+        options.predicate = NSPredicate(format: parts.format, argumentArray: parts.arguments)
     }
 
     // MARK: - Thumbnails
@@ -238,8 +251,8 @@ final class PhotoLibraryService {
     }
 
     /// Metadata-only composition snapshot (no thumbnails) for theme scouting.
-    func fetchLibraryComposition(limit: Int = 400) -> LibraryComposition {
-        let assets = fetchAssets(limit: limit, includeVideos: true)
+    func fetchLibraryComposition(limit: Int = 400, scope: DateScope = .all) -> LibraryComposition {
+        let assets = fetchAssets(limit: limit, includeVideos: true, scope: scope)
         var items: [MediaItem] = []
         items.reserveCapacity(assets.count)
         for asset in assets {
@@ -271,14 +284,17 @@ final class PhotoLibraryService {
     /// Estimated bytes of media not yet reviewed — items already spared or
     /// purged are excluded — i.e. the cleanup opportunity still on the table.
     /// Uses the same cheap pixel/duration heuristic as `fetchLibraryStats`;
-    /// the measured, verified number lives in StorageMeasurementService.
-    func fetchOpportunityBytes(excluding seen: Set<String>) -> Int64 {
+    /// the measured, verified number lives in StorageMeasurementService. Only media inside `scope`'s dates
+    /// counts, so the figure describes the dive the player is about to start.
+    func fetchOpportunityBytes(excluding seen: Set<String>, scope: DateScope = .all) -> Int64 {
         let opts = PHFetchOptions()
         opts.includeHiddenAssets = false
+        applyDateScope(scope, to: opts)
+        let rule = scope.resolved()
         let all = PHAsset.fetchAssets(with: opts)
         var bytes: Int64 = 0
         all.enumerateObjects { asset, _, _ in
-            guard !seen.contains(asset.localIdentifier) else { return }
+            guard rule.admits(asset.creationDate), !seen.contains(asset.localIdentifier) else { return }
             let estimate = Int64(asset.pixelWidth * asset.pixelHeight) / 6
             let videoMultiplier = asset.mediaType == .video ? Int64(max(1, asset.duration)) * 600_000 : 0
             bytes += estimate + videoMultiplier

@@ -148,7 +148,9 @@ final class CombatViewModel {
     /// and no rewards were earned from them.
     private(set) var releasedMarkedCount = 0
 
-    func bootstrap(includeVideos: Bool, videoOnly: Bool, focus: RoomBucket? = nil, hero: Hero, context: ModelContext) async {
+    /// `scope` is the standing date range: the dive draws only from the dates it allows. A hand-picked
+    /// hunt (`bootstrapPicked`) ignores it.
+    func bootstrap(includeVideos: Bool, videoOnly: Bool, focus: RoomBucket? = nil, scope: DateScope = .all, hero: Hero, context: ModelContext) async {
         roomFocus = focus
         targetsRooms = true
         openSession(hero: hero, context: context)
@@ -166,14 +168,16 @@ final class CombatViewModel {
 
         let svc = PhotoLibraryService.shared
         // Over-fetch by the seen count — seen items cluster at the oldest end of
-        // the library, so this guarantees a full batch of fresh monsters.
+        // the library, so this guarantees a full batch of fresh monsters. (It holds inside a date
+        // range as well: at most `seenIDs.count` of the fetched assets can be seen.)
         let assets = svc.fetchAssets(
             limit: Self.initialFetchLimit + seenIDs.count,
             includeVideos: includeVideos,
-            videoOnly: videoOnly
+            videoOnly: videoOnly,
+            scope: scope
         )
         let fresh = assets.filter { !seenIDs.contains($0.localIdentifier) }
-        Self.log.info("dive: fetched \(assets.count, privacy: .public), \(fresh.count, privacy: .public) fresh after seen-filter")
+        Self.log.info("dive: fetched \(assets.count, privacy: .public), \(fresh.count, privacy: .public) fresh after seen-filter, dates \(scope.mode.rawValue, privacy: .public)")
         if fresh.isEmpty {
             phase = .empty
             return

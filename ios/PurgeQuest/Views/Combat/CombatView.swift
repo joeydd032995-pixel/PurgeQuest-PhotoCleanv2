@@ -42,7 +42,7 @@ struct CombatView: View {
             if !appState.pickedAssetIDs.isEmpty {
                 await combat.bootstrapPicked(assetIDs: appState.pickedAssetIDs, hero: hero, context: modelContext)
             } else {
-                await combat.bootstrap(includeVideos: appState.includeVideos, videoOnly: appState.videoOnlyMode, focus: appState.diveFocus, hero: hero, context: modelContext)
+                await combat.bootstrap(includeVideos: appState.includeVideos, videoOnly: appState.videoOnlyMode, focus: appState.diveFocus, scope: appState.dateScope, hero: hero, context: modelContext)
             }
         }
         .onChange(of: combat.screenShakeTrigger) { _, _ in
@@ -86,18 +86,32 @@ struct CombatView: View {
         }
     }
 
+    /// With a date range on, "nothing to review" may only mean nothing in those dates, so say so and
+    /// offer the way out. Without one the screen is what it always was.
     private var emptyView: some View {
-        VStack(spacing: 16) {
+        let scope = appState.dateScope
+        return VStack(spacing: 16) {
             Image(systemName: "checkmark.seal")
                 .font(.system(size: 64)).foregroundStyle(.gemEmerald)
-            Text("All clear")
+            Text(scope.isActive ? "Nothing left in these dates" : "All clear")
                 .font(.dungeonTitle).foregroundStyle(.textPrimary)
-            Text("Your library has nothing to review right now.\nReturn another day.")
+                .multilineTextAlignment(.center)
+            Text(scope.isActive
+                 ? "\(scope.summary()) has nothing left to review.\nChange the dates from the Library."
+                 : "Your library has nothing to review right now.\nReturn another day.")
                 .font(.callout).foregroundStyle(.textSecondary).multilineTextAlignment(.center)
             Button("Back to Library") {
                 exit()
             }
             .buttonStyle(.gold)
+            if scope.isActive {
+                Button("Show all dates") {
+                    appState.setDateScope(.all)
+                    exit()
+                }
+                .font(.callout.weight(.semibold))
+                .foregroundStyle(.textSecondary)
+            }
         }
         .padding()
     }
