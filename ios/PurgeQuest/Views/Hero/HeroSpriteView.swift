@@ -21,6 +21,17 @@ struct HeroSpriteView: View {
     var isAnimated: Bool = true
     /// Increment to play the race's attack animation once.
     var attackPulse: Int = 0
+    /// What `size` measures. Defaults to the long-standing behavior.
+    var framing: Framing = .canvas
+
+    enum Framing {
+        /// `size` is the height of the pack's whole canvas, which leaves room for every animation
+        /// frame; the standing hero fills only part of it.
+        case canvas
+        /// `size` is the height of the standing hero. The view's box is the hero's own box with the
+        /// feet on its bottom edge; a weapon and the rest of the canvas overflow it.
+        case body
+    }
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var idleFrame: Int = 0
@@ -93,10 +104,25 @@ struct HeroSpriteView: View {
         .accessibilityLabel("\(race.displayName) hero sprite")
     }
 
-    /// Keeps the character the same size when a Titan blade enlarges the canvas: the extra
-    /// canvas overflows the layout box instead of shrinking the hero to fit it.
+    /// The standing hero's box in the pack's canvas, when the caller asked for body framing.
+    private var bodyRect: CGRect? {
+        guard framing == .body else { return nil }
+        return SpriteBodyFraming.bodyRect(race: race, variant: variant, appearance: look)
+    }
+
+    /// Places the frame's bitmap. With body framing the hero's own box becomes the layout box and
+    /// everything else overflows it. Otherwise the canvas fills `size`, and a Titan blade that
+    /// enlarges the canvas overflows the box instead of shrinking the hero to fit it.
     @ViewBuilder private func spriteImage(_ frame: SpriteFrame) -> some View {
-        if frame.layout == .zero {
+        if let box = bodyRect {
+            let k = size / box.height
+            Image(uiImage: frame.image)
+                .resizable()
+                .frame(width: frame.image.size.width * k, height: frame.image.size.height * k)
+                .offset(x: -(CGFloat(frame.layout.left) + box.minX) * k,
+                        y: -(CGFloat(frame.layout.top) + box.minY) * k)
+                .frame(width: box.width * k, height: size, alignment: .topLeading)
+        } else if frame.layout == .zero {
             Image(uiImage: frame.image)
                 .resizable()
                 .scaledToFit()

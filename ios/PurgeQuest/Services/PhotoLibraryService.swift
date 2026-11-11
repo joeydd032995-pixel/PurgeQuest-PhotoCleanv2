@@ -7,6 +7,7 @@ import Foundation
 import Photos
 import UIKit
 import CryptoKit
+import os
 
 enum PhotoLibraryError: Error, LocalizedError {
     case denied
@@ -38,6 +39,8 @@ final class PhotoLibraryService {
     static let shared = PhotoLibraryService()
 
     let cachingManager = PHCachingImageManager()
+
+    private static let log = Logger(subsystem: "PurgeQuest", category: "Scan")
 
     private init() {}
 
@@ -161,12 +164,21 @@ final class PhotoLibraryService {
     /// is attached; the batch classifier (MonsterClassifier) refines duplicate
     /// groups afterwards. Items come back in the order of `assets`.
     func buildMediaItems(from assets: [PHAsset], thumbSize: CGSize, withThumbnails: Bool = true) async -> [MediaItem] {
-        await BoundedConcurrency.map(assets, limit: Self.enrichmentConcurrency) { asset in
-            await self.buildMediaItem(from: asset, thumbSize: thumbSize, withThumbnails: withThumbnails)
+        // One tripwire per scan: if Vision stops answering for one photo, the rest of this scan does not
+        // wait on it again (see VisionAnalysisService.analyze).
+        let visionTripwire = BlockingCall.Tripwire()
+        let started = Date()
+        Self.log.info("scan: enriching \(assets.count, privacy: .public) assets")
+        let items = await BoundedConcurrency.map(assets, limit: Self.enrichmentConcurrency) { asset in
+            await self.buildMediaItem(from: asset, thumbSize: thumbSize, withThumbnails: withThumbnails, visionTripwire: visionTripwire)
         }
+        let seconds = Date().timeIntervalSince(started)
+        let visionState = visionTripwire.isTripped ? "stopped answering" : "answered"
+        Self.log.info("scan: built \(items.count, privacy: .public) items in \(seconds, format: .fixed(precision: 1), privacy: .public) s; vision \(visionState, privacy: .public)")
+        return items
     }
 
-    private func buildMediaItem(from asset: PHAsset, thumbSize: CGSize, withThumbnails: Bool) async -> MediaItem {
+    private func buildMediaItem(from asset: PHAsset, thumbSize: CGSize, withThumbnails: Bool, visionTripwire: BlockingCall.Tripwire) async -> MediaItem {
         let resources = PHAssetResource.assetResources(for: asset)
         let bytes = estimateBytes(for: asset, resources: resources)
         let signals = captureSignals(for: asset, resources: resources)
@@ -188,7 +200,7 @@ final class PhotoLibraryService {
             // pass is skipped for them; only the (always-first) code check still runs.
             if asset.mediaType != .video {
                 let textCanMatter = !(signals.isLivePhoto || signals.isScreenshot)
-                vision = await VisionAnalysisService.analyze(image: thumb, recognizeText: textCanMatter)
+                vision = await VisionAnalysisService.analyze(image: thumb, recognizeText: textCanMatter, tripwire: visionTripwire)
             }
         }
 

@@ -1,0 +1,106 @@
+name: UI snapshots
+
+# A fast look at the real app: builds it, fills the simulator's photo library with synthetic
+# pictures, runs the Light/Dark screenshot tour and uploads the PNGs. It runs only when the app's
+# views, art or this tour change, and it never gates a merge: iOS Unit Tests (ios.yml) is the gate
+# and runs the same tour after its tests. This one exists so a UI change can be seen in minutes.
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'ios/PurgeQuest/**'
+      - 'ios/PurgeQuestUITests/**'
+      - 'tools/ci/make_library_fixtures.py'
+      - '.github/workflows/ui-snapshots.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ui-snapshots-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tour:
+    runs-on: macos-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Show Xcode version
+        run: xcodebuild -version
+      - name: Select an available iPhone simulator
+        run: |
+          simulator_udid="$(
+            xcrun simctl list -j devices available |
+            jq -r '[.devices | to_entries[]
+              | select(.key | test("iOS-(1[89]|[2-9][0-9])-"))
+              | .value[]
+              | select(.name | startswith("iPhone"))
+              | .udid][0] // empty'
+          )"
+          if [[ -z "$simulator_udid" ]]; then
+            echo 'No available iPhone simulator running iOS 18 or newer.' >&2
+            xcrun simctl list devices available
+            exit 1
+          fi
+          echo "SIMULATOR_UDID=$simulator_udid" >> "$GITHUB_ENV"
+      - name: Fill the simulator's photo library with synthetic pictures
+        # Without photos the dungeon is empty and the combat screenshot is the "All clear" state.
+        # The pictures are drawn by the script from a fixed seed; nothing is downloaded.
+        run: |
+          python3 -m venv "$RUNNER_TEMP/venv"
+          "$RUNNER_TEMP/venv/bin/pip" install --quiet pillow
+          "$RUNNER_TEMP/venv/bin/python" tools/ci/make_library_fixtures.py "$RUNNER_TEMP/library"
+          xcrun simctl boot "$SIMULATOR_UDID" 2>/dev/null || true
+          xcrun simctl bootstatus "$SIMULATOR_UDID" -b
+          xcrun simctl addmedia "$SIMULATOR_UDID" "$RUNNER_TEMP"/library/*.jpg
+          xcrun simctl privacy "$SIMULATOR_UDID" grant photos com.purgequest.app || true
+      - name: Capture the Light/Dark appearance tour
+        env:
+          # The tour saves each screen here (xcodebuild strips the TEST_RUNNER_ prefix).
+          TEST_RUNNER_SNAPSHOT_DIR: ${{ runner.temp }}/ui-snapshots
+        run: |
+          mkdir -p "$TEST_RUNNER_SNAPSHOT_DIR"
+          # The app's own log lines (how long a scan took, a Vision call that stopped answering) go into the
+          # same artifact, so a slow dive reads as a timeline. Like the sampler, it never fails the job.
+          xcrun simctl spawn "$SIMULATOR_UDID" log stream --level debug --style compact \
+            --predicate 'subsystem == "PurgeQuest"' > "$TEST_RUNNER_SNAPSHOT_DIR/app-log.txt" 2>&1 &
+          logstream=$!
+          # While the tour runs, sample the app's threads every 15 s. If a screen ever stalls, the samples
+          # say what the app was doing, which a screenshot cannot. They are uploaded with the PNGs, and a
+          # sampling failure never fails the job.
+          (
+            while true; do
+              sleep 15
+              pid="$(pgrep -x PurgeQuest | head -n 1 || true)"
+              if [ -n "$pid" ]; then
+                sample "$pid" 2 -file "$TEST_RUNNER_SNAPSHOT_DIR/sample-$(date -u +%H%M%S).txt" > /dev/null 2>&1 || true
+              fi
+            done
+          ) &
+          sampler=$!
+          set +e
+          xcodebuild \
+            -project ios/PurgeQuest.xcodeproj \
+            -scheme PurgeQuest \
+            -configuration Debug \
+            -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
+            -parallel-testing-enabled NO \
+            -only-testing:PurgeQuestUITests/AppearanceTourUITests \
+            CODE_SIGNING_ALLOWED=NO \
+            test
+          status=$?
+          kill "$sampler" "$logstream" 2>/dev/null || true
+          exit $status
+      - name: Upload UI snapshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-snapshots-tour
+          path: ${{ runner.temp }}/ui-snapshots
+          if-no-files-found: warn
+          retention-days: 14

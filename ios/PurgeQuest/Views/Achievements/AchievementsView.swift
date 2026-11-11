@@ -52,12 +52,7 @@ struct AchievementsView: View {
                 .font(.title2.weight(.bold))
                 .foregroundStyle(.questAmber)
                 .frame(width: 52, height: 52)
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.dungeonStone)
-                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.questAmber.opacity(0.6), lineWidth: 1))
-                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmber.opacity(0.3), lineWidth: 1).padding(2))
-                )
+                .background(DungeonPanelBackground(accent: .questAmber))
         }
     }
 }
@@ -65,44 +60,51 @@ struct AchievementsView: View {
 private struct AchievementCard: View {
     let achievement: Achievement
 
+    private var fraction: Double {
+        min(Double(achievement.progress) / Double(max(1, achievement.goal)), 1.0)
+    }
+
+    private var tint: Color { achievement.isUnlocked ? Color.questAmber : Color.textSecondary }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Image(systemName: achievement.isUnlocked ? "medal.fill" : achievement.iconName)
                 .font(.title2.weight(.bold))
-                .foregroundStyle(achievement.isUnlocked ? AnyShapeStyle(Color.questAmber) : AnyShapeStyle(Color.textSecondary))
+                .foregroundStyle(tint)
                 .frame(width: 52, height: 52)
                 .background(
-                    RoundedRectangle(cornerRadius: 10)
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .fill(achievement.isUnlocked ? Color.questAmber.opacity(0.14) : Color.dungeonStoneLight)
-                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(achievement.isUnlocked ? Color.questAmber.opacity(0.5) : Color.dungeonAsh, lineWidth: 1))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .strokeBorder(achievement.isUnlocked ? Color.questAmber.opacity(0.5) : Color.dungeonAsh, lineWidth: 1)
                 )
 
             Text(achievement.title)
                 .font(.subheadline.weight(.bold))
                 .foregroundStyle(.textPrimary)
                 .lineLimit(1)
+                .minimumScaleFactor(0.8)
+            // Two lines are always reserved, so every card in a row is the same height.
             Text(achievement.subtitle)
                 .font(.caption)
                 .foregroundStyle(.textSecondary)
-                .lineLimit(2)
+                .lineLimit(2, reservesSpace: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            ProgressView(value: min(Double(achievement.progress) / Double(max(1, achievement.goal)), 1.0))
-                .tint(achievement.isUnlocked ? Color.gemEmerald : Color.questAmber)
+            DungeonProgressBar(
+                value: fraction,
+                tint: achievement.isUnlocked ? Color.gemEmerald : Color.questAmber,
+                height: 6
+            )
             Text("\(min(achievement.progress, achievement.goal)) / \(achievement.goal)")
                 .font(.caption2.monospacedDigit())
                 .foregroundStyle(.textSecondary)
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.dungeonStone.opacity(achievement.isUnlocked ? 1.0 : 0.7))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(achievement.isUnlocked ? Color.questAmber.opacity(0.7) : Color.dungeonAsh, lineWidth: 1)
-                )
-        )
-        .opacity(achievement.isUnlocked ? 1.0 : 0.85)
+        .background(DungeonPanelBackground(accent: achievement.isUnlocked ? Color.questAmber : nil))
+        .opacity(achievement.isUnlocked ? 1.0 : 0.9)
     }
 }

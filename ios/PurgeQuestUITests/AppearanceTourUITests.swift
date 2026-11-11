@@ -286,23 +286,6 @@ final class AppearanceTourUITests: XCTestCase {
         settle(1.0)
         shot("\(mode)-12-library-scrolled")
 
-        // A combat room: the simulator's sample photos, or the empty state without any.
-        let enter = app.buttons["Enter the dungeon and start a cleanup session"]
-        if enter.waitForExistence(timeout: 5) {
-            enter.tap()
-            dismissPhotoPrompt()
-            settle(3.0)
-            shot("\(mode)-11-combat")
-            let exit = app.buttons["Exit dungeon"]
-            let back = app.buttons["Back to Library"]
-            if exit.waitForExistence(timeout: 3) {
-                exit.tap()
-            } else if back.waitForExistence(timeout: 3) {
-                back.tap()
-            }
-            settle(1.0)
-        }
-
         for (index, name) in ["Hero", "Bestiary", "Armory"].enumerated() {
             if open(tab: name, in: app) {
                 settle(1.5)
@@ -314,6 +297,23 @@ final class AppearanceTourUITests: XCTestCase {
             if open(tab: name, in: app) {
                 settle(1.5)
                 shot("\(mode)-\(30 + index)-\(name.lowercased())")
+            }
+        }
+
+        // Combat goes last, and nothing asks the app anything after it. While a dive scans a real photo
+        // library the app can stop answering accessibility queries for a long time, and every query that
+        // times out fails the test, so everything above must not depend on it. Return to the Library, go in,
+        // wait with a plain sleep, take the picture, and end the app without asking it anything.
+        if open(tab: "Library", in: app) {
+            settle(1.0)
+            app.swipeDown()
+            settle(0.5)
+            let enter = app.buttons["Enter the dungeon and start a cleanup session"]
+            if enter.waitForExistence(timeout: 5) {
+                enter.tap()
+                dismissPhotoPrompt()
+                settle(20.0)
+                shot("\(mode)-11-combat")
             }
         }
         app.terminate()

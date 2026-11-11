@@ -214,7 +214,7 @@ PurgeQuest-PhotoCleanv2/
 
 ## Asset Organization
 
-The hero is rendered from layered PNG parts plus Spriter (SCML) animation projects, composited at runtime by `Services/SpriteEngine.swift`. `Views/Hero/MiniAvatarView.swift` and its `MiniAvatar+…` files hand-draw a vector avatar for compact contexts. UI icons use SF Symbols; the palette lives in `Extensions/Color+Theme.swift`.
+The hero is rendered from layered PNG parts plus Spriter (SCML) animation projects, composited at runtime by `Services/SpriteEngine.swift`. `Views/Hero/MiniAvatarView.swift` and its `MiniAvatar+…` files hand-draw a vector avatar for compact contexts. UI icons use SF Symbols; the palette lives in `Extensions/Color+Theme.swift`. Composition rules and the shared surface, bar and hero-stage components are in [`docs/design/DESIGN_SYSTEM.md`](docs/design/DESIGN_SYSTEM.md).
 
 ```
 ios/PurgeQuest/Art/Races/<race>/v1..v3/   baked race parts + .scml animation (27 packs; Skeletal Undead ships two)
@@ -251,7 +251,8 @@ Full steps, the StoreKit configuration and the device test pass are in [`ios/REA
 | Unit tests (Swift Testing): classification, duplicates, thumbnail rules, room targeting, XP, bestiary, hero identity and migration, modular foundation, held gear, recolor, Forge logic, seasonal catalog, bundled resources | `ios/PurgeQuestTests/` | `.github/workflows/ios.yml` |
 | UI tests: Forge draft/save/cancel, onboarding after a reset, a Light/Dark screenshot tour (artifact `ui-snapshots`) | `ios/PurgeQuestUITests/` | `ios.yml` |
 | Build and static analysis | | `.github/workflows/objective-c-xcode.yml` |
-| **Linux harness**: the pure-Foundation sources and their suites, no Xcode or simulator. 262 tests in 18 suites, including the classifier, the audit that every monster named by a quest or event can be summoned, capture rules, rule precedence and video frame signals | `tools/swift_harness/run.sh` | `.github/workflows/modular-assets.yml` |
+| Screenshots of every screen, Light and Dark, with a synthetic photo library in the simulator (artifact `ui-snapshots-tour`; not a merge gate) | `tools/ci/make_library_fixtures.py` | `.github/workflows/ui-snapshots.yml`, on pull requests that touch the app |
+| **Linux harness**: the pure-Foundation sources and their suites, no Xcode or simulator. 275 tests in 20 suites, including the classifier, the audit that every monster named by a quest or event can be summoned, capture rules, rule precedence, video frame signals and the scan's bounded-concurrency and deadline helpers | `tools/swift_harness/run.sh` | `.github/workflows/modular-assets.yml` |
 | Asset checks: manifests, masks, fits, the approval gate (content-pinned), catalog drift, generated docs up to date. 72 tests | `tools/modular_assets/` | `modular-assets.yml` |
 | Repository contracts: offline, no dependencies, recoverable deletion, StoreKit IDs, App Group and snapshot agreement, privacy manifests, versions | `tools/ci/repo_guard.py` | `.github/workflows/repo-guard.yml` |
 | Detection benchmark on real photographs (not in CI) | `tools/detection_bench/` | by hand |

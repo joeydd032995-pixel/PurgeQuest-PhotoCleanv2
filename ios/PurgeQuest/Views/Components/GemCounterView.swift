@@ -20,11 +20,7 @@ struct GemCounterView: View {
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 6)
-        .background(
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color.dungeonStone)
-                .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gemEmerald.opacity(0.4), lineWidth: 1))
-        )
+        .background(DungeonPanelBackground(cornerRadius: DungeonRadius.chip, accent: .gemEmerald, elevated: false))
     }
 }
 
@@ -50,13 +46,6 @@ struct StatTile: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.dungeonStone)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.dungeonAsh, lineWidth: 1)
-                )
-        )
+        .background(DungeonPanelBackground())
     }
 }

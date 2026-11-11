@@ -257,6 +257,7 @@ final class CombatViewModel {
 
     /// Runs classification + duplicate folding on fetched items and opens room one.
     private func loadBatch(_ items: [MediaItem], context: ModelContext) async {
+        let started = Date()
         let batch = await classifyAndGroup(items, context: context)
         self.groupsByID = batch.groups
         self.theme = batch.theme
@@ -264,6 +265,8 @@ final class CombatViewModel {
         BestiaryService.recordEncounters(for: batch.allItems, context: context)
         self.queueIndex = 0
         loadNextRoom()
+        let seconds = Date().timeIntervalSince(started)
+        Self.log.info("dive: grouped \(items.count, privacy: .public) items and opened room one in \(seconds, format: .fixed(precision: 1), privacy: .public) s")
     }
 
     private func loadNextRoom() {
