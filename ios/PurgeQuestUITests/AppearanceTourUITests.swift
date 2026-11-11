@@ -53,14 +53,15 @@ final class AppearanceTourUITests: XCTestCase {
     }
 
     /// The Dashboard's date range, switched on and being edited, in all four looks. The range is preset
-    /// through the `-pq.dateScope` launch argument (it reaches UserDefaults as a string), so the tour never
-    /// has to drive the date pickers.
+    /// through the `-UITestDateScope` launch argument (UITestSupport), so the tour never has to drive the
+    /// date pickers. Each look is checked on the picture: the Library row must read "Exclude ...", not
+    /// "All dates", or the preset did not arrive.
     @MainActor
     func testDatesRange() {
         let range = #"{"mode":"exclude","from":{"year":2025,"month":10,"day":12}}"#
         for palette in ["classic", "verdigris"] {
             for mode in ["light", "dark"] {
-                let app = launch(mode, phase: "main", palette: palette, extra: ["-pq.dateScope", range])
+                let app = launch(mode, phase: "main", palette: palette, extra: ["-UITestDateScope", range])
                 guard app.tabBars.firstMatch.waitForExistence(timeout: 25) else {
                     XCTFail("tab bar did not appear (dates \(palette) \(mode))")
                     app.terminate()
@@ -75,6 +76,13 @@ final class AppearanceTourUITests: XCTestCase {
                     if app.buttons["dates.apply"].waitForExistence(timeout: 5) {
                         settle(1.0)
                         shot("dates-\(palette)-\(mode)-2-sheet")
+                        // Pull the sheet up to its full height so the date rows and quick picks show too.
+                        // Best-effort: if it does not move, this picture repeats the last one.
+                        let low = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.55))
+                        let high = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.08))
+                        low.press(forDuration: 0.1, thenDragTo: high)
+                        settle(1.0)
+                        shot("dates-\(palette)-\(mode)-3-sheet-full")
                     } else {
                         XCTFail("the Dates sheet did not open (\(palette) \(mode))")
                     }

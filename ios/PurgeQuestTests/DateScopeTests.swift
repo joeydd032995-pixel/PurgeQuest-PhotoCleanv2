@@ -337,8 +337,7 @@ struct DateScopeTests {
         }
     }
 
-    /// The saved form is JSON text, because the UI tour presets the range with `-pq.dateScope '<json>'`
-    /// and a launch argument reaches UserDefaults as a string.
+    /// The saved form is readable JSON text under one key, with its keys in a fixed order.
     @Test func theSavedFormIsReadableJSONText() throws {
         try withDefaults { defaults in
             DateScopeStore.save(exclude(day(2025, 10, 12), nil), to: defaults)
@@ -346,7 +345,7 @@ struct DateScopeTests {
         }
     }
 
-    @Test func aLaunchArgumentCanPresetTheRange() throws {
+    @Test func jsonWrittenByHandIsRead() throws {
         try withDefaults { defaults in
             defaults.set(
                 #"{"mode":"only","from":{"year":2018,"month":1,"day":1},"to":{"year":2018,"month":12,"day":31}}"#,
@@ -354,6 +353,18 @@ struct DateScopeTests {
             )
             #expect(DateScopeStore.load(from: defaults) == only(day(2018, 1, 1), day(2018, 12, 31)))
         }
+    }
+
+    /// `decode` is what the UI tour's launch argument goes through (see UITestSupport), so it reads text
+    /// exactly as it comes, in any key order.
+    @Test func savedTextIsReadWhateverTheOrderOfItsKeys() {
+        let text = #"{"to":{"day":31,"month":12,"year":2018},"mode":"only","from":{"year":2018,"month":1,"day":1}}"#
+        #expect(DateScopeStore.decode(text) == only(day(2018, 1, 1), day(2018, 12, 31)))
+    }
+
+    @Test(arguments: ["", "not json", #"{"mode":"someday"}"#, #"{"mode":"only","from":{"year":"2018"}}"#])
+    func textThatIsNotASavedRangeDecodesToNothing(text: String) {
+        #expect(DateScopeStore.decode(text) == nil)
     }
 
     @Test(arguments: ["", "not json", "{}", #"{"mode":"someday"}"#, #"{"mode":"only"}"#])

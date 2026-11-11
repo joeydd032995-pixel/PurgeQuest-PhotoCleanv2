@@ -282,18 +282,21 @@ nonisolated enum DateQuickPick: CaseIterable, Sendable {
 
 // MARK: - Saving
 
-/// Where the range is kept. It is saved as JSON text, not Data, so the UI tour can preset it with the
-/// launch argument `-pq.dateScope '<json>'` (launch arguments reach UserDefaults as strings).
+/// Where the range is kept: JSON text under one UserDefaults key, readable in a defaults dump.
 nonisolated enum DateScopeStore {
     static let key = "pq.dateScope"
 
     /// The saved range; anything missing or unreadable is all dates.
     static func load(from defaults: UserDefaults = .standard) -> DateScope {
-        guard let text = defaults.string(forKey: key),
-              let data = text.data(using: .utf8),
-              let scope = try? JSONDecoder().decode(DateScope.self, from: data)
-        else { return .all }
-        return scope
+        guard let text = defaults.string(forKey: key) else { return .all }
+        return decode(text) ?? .all
+    }
+
+    /// A range from its saved text, or nil when the text is not one. A tour launch argument goes through
+    /// here as well (see UITestSupport).
+    static func decode(_ text: String) -> DateScope? {
+        guard let data = text.data(using: .utf8) else { return nil }
+        return try? JSONDecoder().decode(DateScope.self, from: data)
     }
 
     /// All dates is saved as nothing at all, so the defaults stay clean for anyone who never uses a range.
