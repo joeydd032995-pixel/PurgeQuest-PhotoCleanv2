@@ -2,8 +2,9 @@
 //  DashboardView.swift
 //  PurgeQuest
 //
-//  Storage-first. The Library overview (recoverable space, media counts) leads;
-//  the hero strip and daily quests follow as framed dungeon panels.
+//  Storage-first. A compact storage ledger leads, then the hero on its stage and the one primary
+//  action, Enter the Dungeon, all above the fold. The two optional ways in sit beside each other
+//  under it; the next dive and the daily quests follow.
 //
 
 import SwiftUI
@@ -37,17 +38,19 @@ struct DashboardView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 18) {
+            VStack(alignment: .leading, spacing: 16) {
                 libraryOverview
+                heroStrip
+                enterDungeonButton
+                HStack(spacing: 10) {
+                    focusedDiveMenu
+                    pickedHuntPicker
+                }
                 if let event = SeasonalEventService.shared.activeEvent {
                     SeasonalEventBanner(event: event)
                 }
-                heroStrip
                 themeStrip
                 questsPanel
-                enterDungeonButton
-                focusedDiveMenu
-                pickedHuntPicker
                 Color.clear.frame(height: 16)
             }
             .padding(.horizontal, 16)
@@ -93,10 +96,21 @@ struct DashboardView: View {
     private var libraryOverview: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Library")
-                .font(.title.weight(.bold))
+                .font(.dungeonScreenTitle)
                 .foregroundStyle(.textPrimary)
 
             VStack(alignment: .leading, spacing: 0) {
+                HStack(alignment: .firstTextBaseline) {
+                    Text("Storage")
+                        .font(.dungeonHeader)
+                        .foregroundStyle(.textPrimary)
+                    Spacer()
+                    Text("\(libraryStats.photoCount) photos · \(libraryStats.videoCount) videos")
+                        .font(.caption.monospacedDigit())
+                        .foregroundStyle(.textSecondary)
+                }
+                .padding(.bottom, 4)
+
                 measurementRow(
                     title: "Identified opportunity",
                     value: opportunityBytes > 0 ? formattedBytes(opportunityBytes) : "All reviewed",
@@ -118,41 +132,36 @@ struct DashboardView: View {
                     tint: .gemEmerald
                 )
             }
-            .padding(16)
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.dungeonStone)
-                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.dungeonAsh, lineWidth: 1))
-            )
-
-            HStack(spacing: 10) {
-                StatTile(icon: "photo.fill", label: "Photos", value: "\(libraryStats.photoCount)", tint: .questAmber)
-                StatTile(icon: "video.fill", label: "Videos", value: "\(libraryStats.videoCount)", tint: .videoSapphire)
-                StatTile(icon: "flame.fill", label: "Day streak", value: "\(hero?.streakDays ?? 0)", tint: .combatCrimson)
-            }
+            .padding(14)
+            .background(DungeonPanelBackground())
         }
     }
 
     /// One labeled storage measurement inside the overview card.
     private func measurementRow(title: String, value: String, caption: String, tint: Color) -> some View {
-        VStack(alignment: .leading, spacing: 3) {
-            HStack(spacing: 6) {
-                Circle().fill(tint).frame(width: 6, height: 6)
-                Text(title.uppercased())
-                    .font(.dungeonCaption.weight(.bold))
+        HStack(alignment: .center, spacing: 12) {
+            VStack(alignment: .leading, spacing: 3) {
+                HStack(spacing: 6) {
+                    Circle().fill(tint).frame(width: 6, height: 6)
+                    Text(title.uppercased())
+                        .font(.dungeonCaption.weight(.bold))
+                        .foregroundStyle(.textSecondary)
+                }
+                Text(caption)
+                    .font(.caption2)
                     .foregroundStyle(.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
+            Spacer(minLength: 8)
             Text(value)
-                .font(.system(size: 24, weight: .bold).monospacedDigit())
+                .font(.title3.weight(.bold).monospacedDigit())
                 .foregroundStyle(.textPrimary)
                 .lineLimit(1)
-                .minimumScaleFactor(0.5)
-            Text(caption)
-                .font(.caption2)
-                .foregroundStyle(.textSecondary)
+                .minimumScaleFactor(0.6)
+                .layoutPriority(1)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.vertical, 10)
+        .padding(.vertical, 9)
         .accessibilityElement(children: .combine)
     }
 
@@ -200,47 +209,33 @@ struct DashboardView: View {
     private var heroStrip: some View {
         Group {
             if let hero {
-                HStack(alignment: .center, spacing: 14) {
-                    ZStack {
-                        Circle()
-                            .fill(Color.dungeonStoneLight)
-                            .overlay(Circle().stroke(Color.questAmber.opacity(0.6), lineWidth: 1))
-                            .overlay(Circle().stroke(Color.questAmber.opacity(0.3), lineWidth: 1).padding(3))
-                        MiniAvatarView(hero: hero, equipped: equippedItems, size: 88)
-                            .frame(width: 52, height: 62)
-                            .clipped()
-                    }
-                    .frame(width: 68, height: 68)
+                HStack(alignment: .center, spacing: 8) {
+                    HeroStageView(hero: hero, equipped: equippedItems, height: 84, accent: hero.race.accent)
 
-                    VStack(alignment: .leading, spacing: 6) {
-                        HStack(spacing: 8) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack(alignment: .firstTextBaseline, spacing: 8) {
                             Text(hero.name)
                                 .font(.dungeonHeader)
                                 .foregroundStyle(.textPrimary)
-                            Text("LV \(hero.level)")
-                                .font(.caption.weight(.bold).monospacedDigit())
-                                .padding(.horizontal, 6).padding(.vertical, 2)
-                                .background(RoundedRectangle(cornerRadius: 4).fill(Color.questAmber.opacity(0.15)))
-                                .foregroundStyle(.questAmber)
+                                .lineLimit(1)
+                            LevelChip(level: hero.level)
                         }
                         Text("\(hero.race.displayName) · \(hero.heroClass.displayName)")
                             .font(.caption)
                             .foregroundStyle(.textSecondary)
+                            .lineLimit(1)
                         XPBarView(progress: hero.levelProgress, level: hero.level, compact: true)
+                        HStack(spacing: 8) {
+                            GemCounterView(count: hero.gems)
+                            StreakChip(days: hero.streakDays)
+                        }
                     }
-
-                    Spacer()
-
-                    GemCounterView(count: hero.gems)
+                    Spacer(minLength: 0)
                 }
-                .padding(14)
-                .frame(maxWidth: .infinity)
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.dungeonStone.opacity(0.85))
-                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.questAmber.opacity(0.35), lineWidth: 1))
-                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.questAmber.opacity(0.18), lineWidth: 1).padding(2))
-                )
+                .padding(.vertical, 10)
+                .padding(.horizontal, 12)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(DungeonPanelBackground(cornerRadius: DungeonRadius.hero, accent: hero.race.accent))
             }
         }
     }
@@ -269,11 +264,7 @@ struct DashboardView: View {
                 Spacer()
             }
             .padding(12)
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.dungeonStone.opacity(0.85))
-                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(theme.tintColor.opacity(0.35), lineWidth: 1))
-            )
+            .background(DungeonPanelBackground(accent: theme.tintColor))
             .accessibilityElement(children: .combine)
             .accessibilityLabel("Next dive: \(theme.displayName). \(theme.tagline)")
         }
@@ -337,14 +328,12 @@ struct DashboardView: View {
             }
         } label: {
             Label("Focused Dive", systemImage: "scope")
-                .font(.headline)
+                .font(.subheadline.weight(.semibold))
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.dungeonStone)
-                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
-                )
+                .padding(.vertical, 12)
+                .background(DungeonPanelBackground())
                 .foregroundStyle(.textPrimary)
         }
         .accessibilityLabel("Focused dive: choose one kind of clutter to hunt first")
@@ -386,15 +375,13 @@ struct DashboardView: View {
             maxSelectionCount: 40,
             matching: .any(of: [.images, .videos])
         ) {
-            Label("Hunt Chosen Monsters", systemImage: "hand.raised.fill")
-                .font(.headline)
+            Label("Hunt Chosen", systemImage: "hand.raised.fill")
+                .font(.subheadline.weight(.semibold))
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.dungeonStone)
-                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
-                )
+                .padding(.vertical, 12)
+                .background(DungeonPanelBackground())
                 .foregroundStyle(.textPrimary)
         }
         .accessibilityLabel("Pick specific photos and videos to review")
@@ -440,42 +427,54 @@ struct DashboardView: View {
 private struct QuestRow: View {
     let quest: Quest
 
+    /// What the quest asks for, as a glyph.
+    private var icon: String {
+        switch quest.kind {
+        case .photoSlay: return "photo.fill"
+        case .videoSlay: return "video.fill"
+        case .mbFreed:   return "internaldrive.fill"
+        case .anySlay:   return "shield.lefthalf.filled"
+        }
+    }
+
+    private var tint: Color { quest.completed ? Color.gemEmerald : Color.questAmber }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: 4) {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: quest.completed ? "checkmark.seal.fill" : icon)
+                .font(.subheadline.weight(.bold))
+                .foregroundStyle(tint)
+                .frame(width: 36, height: 36)
+                .background(RoundedRectangle(cornerRadius: DungeonRadius.chip, style: .continuous).fill(Color.dungeonStoneLight))
+                .overlay(RoundedRectangle(cornerRadius: DungeonRadius.chip, style: .continuous).strokeBorder(tint.opacity(0.45), lineWidth: 1))
+
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(alignment: .firstTextBaseline) {
                     Text(quest.title)
                         .font(.callout.weight(.bold))
                         .foregroundStyle(quest.completed ? .gemEmerald : .textPrimary)
-                    Text(quest.subtitle)
-                        .font(.caption)
+                        .lineLimit(1)
+                    Spacer(minLength: 8)
+                    Text("\(quest.currentCount) / \(quest.targetCount)")
+                        .font(.caption.monospacedDigit().weight(.semibold))
                         .foregroundStyle(.textSecondary)
                 }
-                Spacer()
-                VStack(alignment: .trailing, spacing: 4) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "diamond.fill").font(.caption2)
-                        Text("+\(quest.rewardGems)").font(.caption2.monospacedDigit().weight(.bold))
-                    }.foregroundStyle(.gemEmerald)
+                Text(quest.subtitle)
+                    .font(.caption)
+                    .foregroundStyle(.textSecondary)
+                    .lineLimit(2)
+                DungeonProgressBar(value: quest.progressFraction, tint: tint, height: 6)
+                HStack(spacing: 10) {
+                    Label("+\(quest.rewardGems)", systemImage: "diamond.fill")
+                        .foregroundStyle(.gemEmerald)
                     Text("+\(quest.rewardXP) XP")
-                        .font(.caption2.monospacedDigit().weight(.bold))
                         .foregroundStyle(.questAmber)
                 }
+                .font(.caption2.monospacedDigit().weight(.bold))
             }
-            ProgressView(value: quest.progressFraction)
-                .tint(quest.completed ? Color.gemEmerald : Color.questAmber)
-            Text("\(quest.currentCount) / \(quest.targetCount)")
-                .font(.caption2.monospacedDigit())
-                .foregroundStyle(.textSecondary)
         }
         .padding(12)
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.dungeonStone)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(quest.completed ? Color.gemEmerald.opacity(0.6) : Color.dungeonAsh, lineWidth: 1)
-                )
-        )
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(DungeonPanelBackground(accent: quest.completed ? Color.gemEmerald : nil))
     }
 }

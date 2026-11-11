@@ -286,11 +286,21 @@ final class AppearanceTourUITests: XCTestCase {
         settle(1.0)
         shot("\(mode)-12-library-scrolled")
 
-        // A combat room: the simulator's sample photos, or the empty state without any.
+        // Back to the top: Enter the Dungeon sits just under the hero.
+        app.swipeDown()
+        settle(0.5)
+
+        // A combat room: the simulator's photos, or the empty state without any.
         let enter = app.buttons["Enter the dungeon and start a cleanup session"]
         if enter.waitForExistence(timeout: 5) {
             enter.tap()
             dismissPhotoPrompt()
+            // With photos in the library the room takes a while to scan. Wait for whichever arrives,
+            // a card's way out or the empty state, then let the screen settle.
+            let cardReady = app.buttons["Exit dungeon"]
+            let emptyReady = app.buttons["Back to Library"]
+            let deadline = Date().addingTimeInterval(45)
+            while Date() < deadline, !cardReady.exists, !emptyReady.exists { settle(1.0) }
             settle(3.0)
             shot("\(mode)-11-combat")
             let exit = app.buttons["Exit dungeon"]
