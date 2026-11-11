@@ -214,7 +214,7 @@ PurgeQuest-PhotoCleanv2/
 
 ## Asset Organization
 
-The hero is rendered from layered PNG parts plus Spriter (SCML) animation projects, composited at runtime by `Services/SpriteEngine.swift`. `Views/Hero/MiniAvatarView.swift` and its `MiniAvatar+…` files hand-draw a vector avatar for compact contexts. UI icons use SF Symbols; the palette lives in `Extensions/Color+Theme.swift`.
+The hero is rendered from layered PNG parts plus Spriter (SCML) animation projects, composited at runtime by `Services/SpriteEngine.swift`. `Views/Hero/MiniAvatarView.swift` and its `MiniAvatar+…` files hand-draw a vector avatar for compact contexts. UI icons use SF Symbols; the palette lives in `Extensions/Color+Theme.swift`. Composition rules and the shared surface, bar and hero-stage components are in [`docs/design/DESIGN_SYSTEM.md`](docs/design/DESIGN_SYSTEM.md).
 
 ```
 ios/PurgeQuest/Art/Races/<race>/v1..v3/   baked race parts + .scml animation (27 packs; Skeletal Undead ships two)
