@@ -64,6 +64,21 @@ jobs:
           # The tour saves each screen here (xcodebuild strips the TEST_RUNNER_ prefix).
           TEST_RUNNER_SNAPSHOT_DIR: ${{ runner.temp }}/ui-snapshots
         run: |
+          mkdir -p "$TEST_RUNNER_SNAPSHOT_DIR"
+          # While the tour runs, sample the app's threads every 15 s. If a screen ever stalls, the samples
+          # say what the app was doing, which a screenshot cannot. They are uploaded with the PNGs, and a
+          # sampling failure never fails the job.
+          (
+            while true; do
+              sleep 15
+              pid="$(pgrep -x PurgeQuest | head -n 1 || true)"
+              if [ -n "$pid" ]; then
+                sample "$pid" 2 -file "$TEST_RUNNER_SNAPSHOT_DIR/sample-$(date -u +%H%M%S).txt" > /dev/null 2>&1 || true
+              fi
+            done
+          ) &
+          sampler=$!
+          set +e
           xcodebuild \
             -project ios/PurgeQuest.xcodeproj \
             -scheme PurgeQuest \
@@ -73,6 +88,9 @@ jobs:
             -only-testing:PurgeQuestUITests/AppearanceTourUITests \
             CODE_SIGNING_ALLOWED=NO \
             test
+          status=$?
+          kill "$sampler" 2>/dev/null || true
+          exit $status
       - name: Upload UI snapshots
         if: always()
         uses: actions/upload-artifact@v4
