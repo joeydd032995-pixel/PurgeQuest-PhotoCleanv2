@@ -442,7 +442,7 @@ struct DashboardView: View {
                         .font(.title)
                         .foregroundStyle(.textSecondary)
                         // The glyph sits in a 44 pt square so a thumb can find it. The row gives up padding
-                        // to make room (below), so it keeps its height.
+                        // to make room (below).
                         .frame(minWidth: Self.clearTapTarget, minHeight: Self.clearTapTarget)
                         .contentShape(Rectangle())
                 }
@@ -453,8 +453,9 @@ struct DashboardView: View {
         }
         .padding(.leading, 14)
         // The clear button's 44 pt target is taller than the two lines of text, so while a range is on the
-        // row trades padding for it and stays the height it has with no range. The glyph still sits 14 pt
-        // from the edge, where the chevron does.
+        // row trades padding for it. That lands the row a little shorter than it is with no range: 56.0 pt
+        // against 58.3 pt at the default text size (measured), and up to 10 pt shorter at larger sizes. At
+        // the default size the glyph sits 14 pt from the edge, where the chevron does.
         .padding(.trailing, scope.isActive ? 6 : 14)
         .padding(.vertical, scope.isActive ? 6 : 11)
         .frame(maxWidth: .infinity, alignment: .leading)
