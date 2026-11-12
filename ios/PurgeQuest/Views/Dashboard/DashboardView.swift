@@ -391,6 +391,9 @@ struct DashboardView: View {
 
     // MARK: - Dates
 
+    /// The smallest tap target Apple recommends, in points. The clear button gets this much.
+    private static let clearTapTarget: CGFloat = 44
+
     /// The standing date range (see DateScope). A quiet panel button like its neighbours. While a range
     /// is on it names the range, takes an accent border and offers a one-tap clear, so a range can never
     /// narrow the dungeon without the player seeing it.
@@ -436,16 +439,25 @@ struct DashboardView: View {
                     appState.setDateScope(.all)
                 } label: {
                     Image(systemName: "xmark.circle.fill")
-                        .font(.title3)
+                        .font(.title)
                         .foregroundStyle(.textSecondary)
+                        // The glyph sits in a 44 pt square so a thumb can find it. The row gives up padding
+                        // to make room (below).
+                        .frame(minWidth: Self.clearTapTarget, minHeight: Self.clearTapTarget)
+                        .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel("Clear date range")
                 .accessibilityIdentifier("dashboard.dates.clear")
             }
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 11)
+        .padding(.leading, 14)
+        // The clear button's 44 pt target is taller than the two lines of text, so while a range is on the
+        // row trades padding for it. That lands the row a little shorter than it is with no range: 56.0 pt
+        // against 58.3 pt at the default text size (measured), and up to 10 pt shorter at larger sizes. At
+        // the default size the glyph sits 14 pt from the edge, where the chevron does.
+        .padding(.trailing, scope.isActive ? 6 : 14)
+        .padding(.vertical, scope.isActive ? 6 : 11)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(DungeonPanelBackground(accent: scope.isActive ? Color.questAmber : nil))
     }

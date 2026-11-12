@@ -55,7 +55,8 @@ final class AppearanceTourUITests: XCTestCase {
     /// The Dashboard's date range, switched on and being edited, in all four looks. The range is preset
     /// through the `-UITestDateScope` launch argument (UITestSupport), so the tour never has to drive the
     /// date pickers. Each look is checked on the picture: the Library row must read "Exclude ...", not
-    /// "All dates", or the preset did not arrive.
+    /// "All dates", or the preset did not arrive. The clear button's size is asserted as well (at least
+    /// 44 x 44 pt), which the pictures cannot guard.
     @MainActor
     func testDatesRange() {
         let range = #"{"mode":"exclude","from":{"year":2025,"month":10,"day":12}}"#
@@ -70,6 +71,15 @@ final class AppearanceTourUITests: XCTestCase {
                 dismissPhotoPrompt()
                 settle(1.5)
                 shot("dates-\(palette)-\(mode)-1-library")
+                // The clear button must be a real tap target: 44 x 44 pt is the smallest size Apple recommends.
+                let clear = app.buttons["dashboard.dates.clear"]
+                if clear.exists {
+                    let size = clear.frame.size
+                    XCTAssertGreaterThanOrEqual(size.width, 44, "the clear button is too narrow to hit (\(palette) \(mode))")
+                    XCTAssertGreaterThanOrEqual(size.height, 44, "the clear button is too short to hit (\(palette) \(mode))")
+                } else {
+                    XCTFail("the clear button was not found with a range on (\(palette) \(mode))")
+                }
                 let row = app.buttons["dashboard.dates"]
                 if row.waitForExistence(timeout: 5) {
                     row.tap()
