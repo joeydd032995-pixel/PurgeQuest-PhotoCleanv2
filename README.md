@@ -232,8 +232,10 @@ The modular character pipeline (separated anatomy and armor, material masks, per
 
 ## Third-party art
 
-The Wraith monsters, Forest Spirit pets and Phantom Purge event art come from outside packs, converted
-to sprite sheets. Authors, licenses and what is still unconfirmed are listed in [`docs/CREDITS.md`](docs/CREDITS.md).
+The hero art (27 packs), the staves and shields, the Wraith monsters, the Forest Spirit pets and the
+Phantom Purge event art come from outside packs (CraftPix free downloads and itch.io), and the titles use
+the Cinzel font under the SIL Open Font License. Authors, licenses and what is still unrecorded are listed
+in [`docs/CREDITS.md`](docs/CREDITS.md).
 
 ## Getting Started
 
@@ -283,7 +285,7 @@ What is known to be unfinished or weak, checked against the source. The submissi
 
 **Repository**
 
-10. **Art provenance.** The Forest Spirit pets have no known license, and the 27 hero packs and 80 staves and shields are not in `docs/CREDITS.md`.
+10. **Art provenance, one gap.** `docs/CREDITS.md` records every third-party pack and its terms. Still unrecorded: where the design mockups behind the app icon, the emblem and the six Bestiary icons came from.
 11. **The shared scheme selects no StoreKit configuration**, so local purchase testing needs one manual step (`ios/README-SETUP.md`).
 12. **Test bundle identifiers** still carry Rork's generated prefix (`app.rork.…`). Harmless; left alone.
 
