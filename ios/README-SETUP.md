@@ -40,7 +40,10 @@ Set as `INFOPLIST_KEY_*` build settings (there is no hand-written Info.plist for
 
 - `NSPhotoLibraryUsageDescription`: read and delete access, and says deleted items go to Recently
   Deleted for 30 days.
-- `NSPhotoLibraryAddUsageDescription`: saving the shareable Hero Card.
+
+The app never adds anything to the library, so it has no `NSPhotoLibraryAddUsageDescription`. If App
+Store Connect ever reports a missing purpose string for it (ITMS-90683), add the key back with an
+accurate sentence.
 
 The app follows the system appearance unless the player picks Light or Dark in Settings; nothing
 pins it.

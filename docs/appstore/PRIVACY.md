@@ -41,6 +41,6 @@ A policy URL is required even for an app that collects nothing. It can be one sh
 ## Permission strings in the build
 
 - **Photo Library (read/write):** "PurgeQuest needs access to your Photo Library so you can battle photo and video monsters and reclaim storage. Items you choose to delete are moved to Recently Deleted in Photos and can be recovered for 30 days."
-- **Photo Library (add only):** "PurgeQuest may save your shareable Hero Card to your Photo Library."
+The app never adds anything to the Photo Library, so there is no add-only permission string.
 
-Both say what the access is for in plain words, which is what Guideline 5.1.1 asks.
+The string says what the access is for in plain words, which is what Guideline 5.1.1 asks.

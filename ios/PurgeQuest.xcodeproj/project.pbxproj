@@ -501,7 +501,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "PurgeQuest needs access to your Photo Library so you can battle photo and video monsters and reclaim storage. Items you choose to delete are moved to Recently Deleted in Photos and can be recovered for 30 days.";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "PurgeQuest may save your shareable Hero Card to your Photo Library.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -536,7 +535,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "PurgeQuest needs access to your Photo Library so you can battle photo and video monsters and reclaim storage. Items you choose to delete are moved to Recently Deleted in Photos and can be recovered for 30 days.";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "PurgeQuest may save your shareable Hero Card to your Photo Library.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

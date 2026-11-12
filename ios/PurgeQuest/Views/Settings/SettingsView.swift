@@ -140,7 +140,7 @@ struct SettingsView: View {
                     Button {
                         showHeroCard = true
                     } label: {
-                        Label("Share Hero Card", systemImage: "square.and.arrow.up")
+                        Label("Hero Card", systemImage: "person.crop.rectangle")
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     Button(role: .destructive) {
@@ -236,12 +236,13 @@ struct SettingsView: View {
     }
 }
 
-// MARK: - Hero Card share
+// MARK: - Hero Card
 
+/// A summary of the hero, view-only on purpose. The hero art is CraftPix's (see docs/CREDITS.md) and its
+/// license does not let an app save or export the art, so there is no share or save button here.
 private struct HeroCardSheet: View {
     let hero: Hero
     @Environment(\.dismiss) private var dismiss
-    @State private var renderedImage: UIImage?
 
     var body: some View {
         VStack(spacing: 18) {
@@ -251,14 +252,6 @@ private struct HeroCardSheet: View {
             HeroCardArtwork(hero: hero)
                 .padding(.horizontal, 24)
 
-            if let img = renderedImage {
-                ShareLink(item: Image(uiImage: img), preview: SharePreview("PurgeQuest Hero Card", image: Image(uiImage: img))) {
-                    Label("Share", systemImage: "square.and.arrow.up")
-                }
-                .buttonStyle(.gold)
-            } else {
-                ProgressView().tint(.questAmber)
-            }
             Button("Close") { dismiss() }
                 .foregroundStyle(.textSecondary)
                 .padding(.bottom, 12)
@@ -266,12 +259,6 @@ private struct HeroCardSheet: View {
         .padding(.top, 24)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(DungeonBackgroundView())
-        .task {
-            // Render off-screen for share
-            let renderer = ImageRenderer(content: HeroCardArtwork(hero: hero).frame(width: 540, height: 720))
-            renderer.scale = 2
-            renderedImage = renderer.uiImage
-        }
     }
 }
 

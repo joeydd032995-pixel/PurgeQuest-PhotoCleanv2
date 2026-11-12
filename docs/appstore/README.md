@@ -15,7 +15,7 @@ source and not otherwise verified.
 | No network use, no third-party code | The app and widget call no networking API and have no package dependencies | `tools/ci/repo_guard.py` (1, 2) |
 | Deletion is recoverable | Only `PHAssetChangeRequest.deleteAssets`, from one file; Photos moves items to Recently Deleted | `repo_guard.py` (3) |
 | Privacy manifest | App and widget each ship `PrivacyInfo.xcprivacy`; every required-reason API in the sources has a declared reason | `repo_guard.py` (12) |
-| Purpose strings | `NSPhotoLibraryUsageDescription` and `NSPhotoLibraryAddUsageDescription` are set as build settings | read from `project.pbxproj` |
+| Purpose strings | `NSPhotoLibraryUsageDescription` is set as a build setting. The app never adds to the library, so it declares no add-only string | read from `project.pbxproj`, `repo_guard.py` (3) |
 | Export compliance | `ITSAppUsesNonExemptEncryption = NO`. The only cryptography is SHA-256 hashing of file prefixes to find exact duplicates | read from `project.pbxproj` and `PhotoLibraryService.contentHash` |
 | In-app purchase products | Six products; the local StoreKit file and the code agree on IDs and kinds | `repo_guard.py` (10) |
 | Widget and app agree | Same App Group in both entitlements and both targets, same snapshot key and fields, same version | `repo_guard.py` (11, 13) |

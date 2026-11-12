@@ -126,7 +126,7 @@ What this does **not** show:
 - **Spared-item memory**: re-entering the dungeon skips items you already spared; resettable in Settings.
 - **Muted, looping video previews** on combat cards from a single pooled player (`Services/VideoPreviewService.swift`).
 - **Haptics** for delete, spare and combo, respecting Reduce Motion.
-- **Shareable Hero Card** rendered with `ImageRenderer` and shared through `ShareLink`.
+- **Hero Card** in Settings, a view-only summary of the hero. It has no share or save button on purpose: the hero art is CraftPix's, and its license does not let an app export the art.
 - **Storage measurement**: free space is read before and after a purge, so the dashboard separates what was measured from what is estimated (`Services/StorageMeasurementService.swift`).
 
 ---
@@ -137,7 +137,7 @@ What this does **not** show:
 - **Two confirmations.** The Room Summary must be confirmed, and then the system's own delete prompt. Declining either deletes nothing.
 - **Fully offline.** No network requests, analytics, third-party SDKs or cloud sync. `repo_guard.py` fails on any networking API or package reference. (Photos itself may download an iCloud original when a thumbnail is requested.)
 - **Privacy manifests.** The app and the widget each ship a `PrivacyInfo.xcprivacy`: no tracking, no collected data, and a declared reason for the two required-reason APIs in use (user defaults, free disk space).
-- **Permissions:** read/write Photos access for gameplay, add-only access for saving the Hero Card, both set as `INFOPLIST_KEY_*` build settings.
+- **Permissions:** read/write Photos access, set as an `INFOPLIST_KEY_*` build setting. The app never adds anything to the library, so it declares no add-only access.
 
 Submission material, including the privacy-label answers and App Review notes, is in [`docs/appstore/`](docs/appstore/).
 
