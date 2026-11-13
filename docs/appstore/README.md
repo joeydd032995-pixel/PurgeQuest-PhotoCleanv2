@@ -29,6 +29,7 @@ source and not otherwise verified.
 3. **Privacy policy URL.** Required for every app. `PRIVACY.md` lists what it has to say.
 4. **A device pass.** Nothing in this repository has been run on an iPhone by the sessions that wrote it. Work through "Device test pass" in `ios/README-SETUP.md`, including iPad compatibility mode (Apple reviews iPhone-only apps on iPad too).
 5. **LICENSE.** The copyright line names "the PurgeQuest authors". Put the legal owner there.
+6. **Make the repository private before launch.** The owner decided on 13 November 2026 to keep it public until then. It holds the third-party art files (`docs/CREDITS.md`), and the licenses are clearest when they are not publicly downloadable. Private repositories get limited free CI minutes, and macOS minutes count extra, so check Settings > Billing first and consider dropping the duplicate `tour` job in `ui-snapshots.yml` (the same tour runs inside `ios.yml`).
 
 ## Decide before submitting
 
