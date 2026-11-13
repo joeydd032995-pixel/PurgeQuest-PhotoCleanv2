@@ -40,7 +40,10 @@ Set as `INFOPLIST_KEY_*` build settings (there is no hand-written Info.plist for
 
 - `NSPhotoLibraryUsageDescription`: read and delete access, and says deleted items go to Recently
   Deleted for 30 days.
-- `NSPhotoLibraryAddUsageDescription`: saving the shareable Hero Card.
+
+The app never adds anything to the library, so it has no `NSPhotoLibraryAddUsageDescription`. If App
+Store Connect ever reports a missing purpose string for it (ITMS-90683), add the key back with an
+accurate sentence.
 
 The app follows the system appearance unless the player picks Light or Dark in Settings; nothing
 pins it.
@@ -84,3 +87,5 @@ Then:
    shows it. Clear it with the x; then set one again and run **Reset all PurgeQuest data**: it is gone.
 9. **The Dates sheet** at the largest Dynamic Type size, in Light and Dark: nothing clipped, Apply
    reachable. Pick a start date after the end date: the end follows it.
+10. **Credits.** Settings, About, Credits: the list shows the CraftPix, Mica, LumioLab and Cinzel
+    credits, the Cinzel license row expands to the full license text and scrolls, and Close dismisses it.

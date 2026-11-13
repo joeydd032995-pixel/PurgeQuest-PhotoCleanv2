@@ -12,7 +12,7 @@ Paste the block below into the Notes field. It is written for a reviewer who has
 
 **No account, no network.** There is no sign-in. The app makes no network requests and contains no third-party SDK, analytics or advertising. All analysis (blur, darkness, duplicates, text and barcode detection) runs on the device with Apple frameworks. Photos may fetch an iCloud original when a thumbnail is requested; that is the system, not the app.
 
-**Photo access.** The app asks for read/write library access because it both reads items and requests their deletion. It works with Limited access, showing only the selected items. The add-only permission is used when the user saves their shareable Hero Card image.
+**Photo access.** The app asks for read/write library access because it both reads items and requests their deletion. It works with Limited access, showing only the selected items. The app never saves or adds anything to the library.
 
 **Purchases.** Three consumable gem packs and three non-consumable cosmetic unlocks. All are cosmetic: every game mode and all cleanup functionality is free. Each purchase gives a named item or a fixed number of gems, never a random reward. Restore is at the top right of the Armory tab.
 

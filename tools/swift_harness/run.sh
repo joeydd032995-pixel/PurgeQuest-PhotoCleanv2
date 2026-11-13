@@ -14,7 +14,7 @@ APP="$REPO/ios/PurgeQuest"
 TESTS="$REPO/ios/PurgeQuestTests"
 mkdir -p "$WORK/Sources/PurgeQuest" "$WORK/Tests/PurgeQuestTests"
 cd "$WORK"
-for f in Models/ModularCharacterFoundation Models/ModularAssetCatalog Models/HeldGearFit Models/RecolorMath Models/ForgeDraft Models/HeroAppearance Models/LookRecolor Models/ThemePalette Models/AppearanceMode Models/ColorTheme Models/MediaItem Models/MonsterClassification Models/GameContent Models/SpriteBodyBounds Services/DuplicateDetection Services/ThumbnailAnalysis Services/BoundedConcurrency Services/BlockingCall Services/RoomTargeting Services/DateScope Services/MonsterClassifier Services/MonsterType+Counting Services/CaptureSignals Services/VideoFrameSignals Services/VisionTextSignals; do
+for f in Models/ModularCharacterFoundation Models/ModularAssetCatalog Models/HeldGearFit Models/RecolorMath Models/ForgeDraft Models/HeroAppearance Models/LookRecolor Models/ThemePalette Models/AppearanceMode Models/ColorTheme Models/MediaItem Models/MonsterClassification Models/GameContent Models/SpriteBodyBounds Services/DuplicateDetection Services/ThumbnailAnalysis Services/BoundedConcurrency Services/BlockingCall Services/RoomTargeting Services/DateScope Services/MonsterClassifier Services/MonsterType+Counting Services/CaptureSignals Services/VideoFrameSignals Services/VisionTextSignals Models/ThirdPartyCredits; do
   ln -sf "$APP/$f.swift" "Sources/PurgeQuest/$(basename "$f").swift"
 done
 # These import SwiftUI only for a Color (an accent, a frame tint); compile them against Foundation + the stub Color.
@@ -22,7 +22,7 @@ for s in Models/HeroRace Models/MonsterType Models/MonsterFamily Models/MonsterR
   sed 's/^import SwiftUI$/import Foundation/' "$APP/$s.swift" > "Sources/PurgeQuest/$(basename "$s").swift"
 done
 cp "$HERE/Stubs.swift" Sources/PurgeQuest/Stubs.swift
-for t in ModularCharacterFoundationTests ModularGearTests ModularManifestFileTests LookRecolorTests ThemePaletteTests DuplicateEngineTests ThumbnailAnalysisTests BoundedConcurrencyTests BlockingCallTests RoomTargetingTests ClassifierRulesTests ClusterReasonTests ContentReachabilityTests CaptureSignalTests ClassifierPrecedenceTests GameContentTests VideoFrameSignalTests SpriteBodyBoundsTests DateScopeTests; do ln -sf "$TESTS/$t.swift" "Tests/PurgeQuestTests/$t.swift"; done
+for t in ModularCharacterFoundationTests ModularGearTests ModularManifestFileTests LookRecolorTests ThemePaletteTests DuplicateEngineTests ThumbnailAnalysisTests BoundedConcurrencyTests BlockingCallTests RoomTargetingTests ClassifierRulesTests ClusterReasonTests ContentReachabilityTests CaptureSignalTests ClassifierPrecedenceTests GameContentTests VideoFrameSignalTests SpriteBodyBoundsTests DateScopeTests ThirdPartyCreditsTests; do ln -sf "$TESTS/$t.swift" "Tests/PurgeQuestTests/$t.swift"; done
 cat > Package.swift <<'PKG'
 // swift-tools-version: 6.0
 import PackageDescription

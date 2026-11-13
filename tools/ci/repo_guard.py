@@ -24,6 +24,8 @@ Checks:
  13. Versions: the app and the widget carry the same marketing and build version.
  14. No web-app leftovers: nothing from a React Native / Expo template is in the tree.
  15. Rork's build-time Config.swift is not used by the app, and a copy in the tree holds no values.
+ 16. Cinzel license: the Credits screen shows the SIL Open Font License from a data asset, and that
+     asset is byte-identical to the copy kept in docs/licenses.
 """
 import json
 import plistlib
@@ -352,6 +354,21 @@ if config.exists():
     for name, value in re.findall(r'static let (\w+)\s*=\s*"([^"]*)"', config.read_text()):
         if value:
             failures.append(f"config: Config.swift in the tree has a value for {name}; it must stay out of the repository")
+
+# 16. Cinzel license
+# Cinzel's license (the SIL Open Font License) asks that its notice and text travel with the font. The
+# Credits screen shows the text from the data asset ThirdPartyCredits.fontLicenseAssetName names, so
+# that asset must exist and must stay identical to the file kept in docs/licenses.
+ofl_docs = ROOT / "docs/licenses/cinzel-OFL.txt"
+credits_swift = IOS / "PurgeQuest/Models/ThirdPartyCredits.swift"
+asset_name = re.search(r'fontLicenseAssetName\s*=\s*"([^"]+)"', credits_swift.read_text()) if credits_swift.exists() else None
+ofl_asset = IOS / f"PurgeQuest/Assets.xcassets/{asset_name.group(1)}.dataset/{asset_name.group(1)}.txt" if asset_name else None
+if not ofl_docs.exists():
+    failures.append("cinzel license: docs/licenses/cinzel-OFL.txt is missing")
+elif ofl_asset is None or not ofl_asset.exists():
+    failures.append("cinzel license: ThirdPartyCredits.fontLicenseAssetName does not name a .txt data asset in Assets.xcassets")
+elif ofl_docs.read_bytes() != ofl_asset.read_bytes():
+    failures.append(f"cinzel license: {ofl_asset.relative_to(ROOT)} differs from docs/licenses/cinzel-OFL.txt")
 
 if failures:
     print("repo_guard FAILED:")
