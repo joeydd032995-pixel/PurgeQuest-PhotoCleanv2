@@ -17,7 +17,7 @@ struct HeroTabView: View {
 
     /// Items currently equipped, one per wearable slot.
     private var equippedItems: [CosmeticItem] {
-        cosmetics.filter { $0.isEquipped }
+        cosmetics.filter { $0.isEquipped && $0.type.isShownOnHero }
     }
 
     var body: some View {
@@ -117,7 +117,7 @@ struct HeroTabView: View {
             }
 
             VStack(spacing: 8) {
-                ForEach(CosmeticType.allCases, id: \.self) { slot in
+                ForEach(CosmeticType.allCases.filter(\.isShownOnHero), id: \.self) { slot in
                     gearRow(slot)
                 }
             }

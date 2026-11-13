@@ -20,6 +20,14 @@ struct ShopListingTests {
         }
     }
 
+    @Test func theSameSlotsAreHiddenOnTheHero() {
+        #expect(CosmeticType.hiddenFromHero == CosmeticType.hiddenFromShop)
+        #expect(CosmeticType.weapon.isShownOnHero)
+        #expect(CosmeticType.shield.isShownOnHero)
+        #expect(!CosmeticType.head.isShownOnHero)
+        #expect(!CosmeticType.armor.isShownOnHero)
+    }
+
     @Test func everythingElseIsStillSold() {
         for type in CosmeticType.allCases where !CosmeticType.hiddenFromShop.contains(type) {
             #expect(type.isSoldInShop, "\(type) should stay in the shop")

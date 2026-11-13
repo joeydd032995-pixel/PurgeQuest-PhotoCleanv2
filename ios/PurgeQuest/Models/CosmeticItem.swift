@@ -26,6 +26,12 @@ enum CosmeticType: String, CaseIterable, Codable {
 
     nonisolated var isSoldInShop: Bool { !Self.hiddenFromShop.contains(self) }
 
+    /// The same slots are not shown on the hero either: no tag, no row under Equipped Gear, no vector
+    /// figure helm or armor, and no vote in the plaque tier. Held weapons and shields are unaffected.
+    nonisolated static var hiddenFromHero: Set<CosmeticType> { hiddenFromShop }
+
+    nonisolated var isShownOnHero: Bool { !Self.hiddenFromHero.contains(self) }
+
     /// Human-friendly slot name shown in the Hero tab.
     var displayName: String {
         switch self {
