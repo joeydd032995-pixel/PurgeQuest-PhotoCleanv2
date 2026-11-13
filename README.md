@@ -288,7 +288,6 @@ What is known to be unfinished or weak, checked against the source. The submissi
 
 10. **The shared scheme selects no StoreKit configuration**, so local purchase testing needs one manual step (`ios/README-SETUP.md`).
 11. **Test bundle identifiers** still carry Rork's generated prefix (`app.rork.…`). Harmless; left alone.
-12. **xAI's terms for Grok output have not been read.** The app icon, the emblem and the Bestiary icons were made with Grok; `docs/CREDITS.md` says what to check.
 
 ---
 

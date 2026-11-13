@@ -39,7 +39,7 @@ source and not otherwise verified.
 | StoreKit file in the bundle | `Configuration.storekit` sits in the app's synchronized folder, so Xcode may copy it into the shipped app. It is inert there. | Check the archived `.app`; if present, exclude it from the target's membership. |
 | Modular characters | 0 of 27 art packs are approved, so every hero renders through the legacy renderer. That is a complete, shippable state. | Ship as is, or approve wave 1 first (`docs/modular/REVIEW.md`). |
 | Minimum Xcode | The sources need Swift 6.2 (`@concurrent`). | Build the release with Xcode 26 or later. |
-| Grok-made icons | The app icon, the emblem and the six Bestiary icons were made with Grok (xAI). xAI's terms for its output have not been read here: their legal page refuses automated fetches. | Read them for who owns the output and whether it may be used commercially in an app, and note the date in `docs/CREDITS.md`; or redraw the icons. |
+| Grok-made icons | The app icon, the emblem and the six Bestiary icons were made with Grok (xAI). By the owner's summary of xAI's terms (`docs/CREDITS.md`), the owner owns the output and may use it commercially, but xAI gives no IP indemnification and trains on what is submitted. | Skim xAI's own terms once for those lines; never upload third-party art to Grok; keep any watermark or provenance metadata. |
 
 ## Listing facts
 

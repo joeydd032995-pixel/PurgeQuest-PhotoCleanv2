@@ -53,20 +53,24 @@ confirmed on 13 November 2026 that they are the CraftPix packs.
   (xAI), as the owner said on 13 November 2026. The emblem is cut out of
   `docs/design/mockups/splash-light.jpg` and the icons are traced from `docs/design/mockups/bestiary-dark.jpg`;
   the app icon arrived with the Rork-generated project (commit `f0a853d`).
-- **Still to check: xAI's terms for Grok output.** xAI's legal page refused an automated fetch, so the terms
-  have not been read here. Before release, read them for who owns the output and whether it may be used
-  commercially in an app, then record the date and the result on the next line. Copyright protection for
-  AI-generated images is limited in some countries (in the US only the human-authored part is protected),
-  which affects how far anyone could stop others copying the icons, not the right to use them.
-
-  xAI terms checked: not yet.
+- **xAI's terms for Grok output.** xAI's legal page refuses automated fetches, so these points come from a
+  summary the owner pasted on 13 November 2026 (its source is not recorded); skim xAI's own terms for them
+  once before release. They say: the user owns the output and may use it commercially, with no caps;
+  xAI gives no IP indemnification, so the owner is liable if an icon infringes someone else's copyright or
+  trademark; xAI gets a broad, perpetual license to the inputs and outputs and trains its models on them;
+  no output is guaranteed to be unique; and provenance metadata or watermarks on outputs must not be
+  stripped or altered. Checked in the repo on 13 November 2026: the mockups are screenshots, and the app
+  icon and the emblem are plain PNGs; none carries embedded provenance metadata or a watermark.
+- Copyright protection for AI-generated images is limited in some countries (in the US only the
+  human-authored part is protected). That affects how far anyone could stop others copying the icons, not
+  the right to use them.
 
 ## Rules that keep these licenses satisfied
 
 - **Never let the app save, share or export the third-party art.** The CraftPix terms forbid it, which is why
   the Hero Card in Settings is view-only. Check any new feature that turns the art into an image (a share
   sheet, saving to Photos, an export) against these terms first.
-- **Never use this art to train, test or improve an AI or machine-learning model.** CraftPix and LumioLab both forbid it.
+- **Never use this art to train, test or improve an AI or machine-learning model.** CraftPix and LumioLab both forbid it. That includes uploading it to an image generator as a reference: xAI trains on what users submit.
 - **Keep the original archives out of the repo.** Only converted files belong here.
 - **Keep the Credits screen in step with this file.** `ThirdPartyCredits.swift` lists the packs on the screen,
   and `repo_guard.py` (16) keeps the Cinzel license text in the app identical to `licenses/cinzel-OFL.txt`.
