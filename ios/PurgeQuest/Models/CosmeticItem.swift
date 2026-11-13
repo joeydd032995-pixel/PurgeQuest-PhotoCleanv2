@@ -18,6 +18,14 @@ enum CosmeticType: String, CaseIterable, Codable {
     case effect
     case upgrade
 
+    /// Slots the Armory does not sell in 1.0. The hero sprite draws only held gear (`SpriteLoadout`), so a
+    /// helm, chest piece, legs or hands would show as a badge and not on the hero. The items stay in the
+    /// catalog (nothing is deleted from a store, and a save that already owns one keeps it); they only
+    /// come back to the shop once the layered art can draw them.
+    nonisolated static let hiddenFromShop: Set<CosmeticType> = [.head, .armor, .legs, .hands]
+
+    nonisolated var isSoldInShop: Bool { !Self.hiddenFromShop.contains(self) }
+
     /// Human-friendly slot name shown in the Hero tab.
     var displayName: String {
         switch self {

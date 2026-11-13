@@ -28,7 +28,7 @@ private enum ShopFilter: String, CaseIterable {
 
 struct ShopView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: [SortDescriptor(\CosmeticItem.priceGems)]) private var cosmetics: [CosmeticItem]
+    @Query(sort: [SortDescriptor(\CosmeticItem.priceGems)]) private var allCosmetics: [CosmeticItem]
     @Query private var heroes: [Hero]
     @Query private var achievements: [Achievement]
 
@@ -47,6 +47,11 @@ struct ShopView: View {
 
     private var hero: Hero? { heroes.first }
 
+    /// What the Armory lists. Helm, chest, legs and hands items are left out for now (see
+    /// `CosmeticType.hiddenFromShop`); equipping and previewing look at this same list, so nothing
+    /// hidden can be reached from here.
+    private var cosmetics: [CosmeticItem] { allCosmetics.filter { $0.type.isSoldInShop } }
+
     /// Whether the Titan Blade's gating achievement has been earned.
     private var titanGateUnlocked: Bool {
         achievements.first { $0.id == DyeGate.titanWeaponAchievementID }?.isUnlocked ?? false
@@ -64,12 +69,17 @@ struct ShopView: View {
             .id
     }
 
+    /// Chips that only ever listed slots the Armory does not sell yet.
+    private static let filtersForHiddenSlots: Set<ShopFilter> = [.head, .armor, .armorSets]
+
     /// The seasonal event running today, if any.
     private var activeEvent: SeasonalEvent? { SeasonalEventService.shared.activeEvent }
 
     /// The Seasonal chip only exists while an event is live.
     private var visibleFilters: [ShopFilter] {
-        ShopFilter.allCases.filter { $0 != .seasonal || activeEvent != nil }
+        ShopFilter.allCases.filter {
+            ($0 != .seasonal || activeEvent != nil) && !Self.filtersForHiddenSlots.contains($0)
+        }
     }
 
     /// The event an unowned seasonal exclusive waits for, or nil when the item can be bought now.
