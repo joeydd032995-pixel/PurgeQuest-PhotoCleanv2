@@ -87,3 +87,5 @@ Then:
    shows it. Clear it with the x; then set one again and run **Reset all PurgeQuest data**: it is gone.
 9. **The Dates sheet** at the largest Dynamic Type size, in Light and Dark: nothing clipped, Apply
    reachable. Pick a start date after the end date: the end follows it.
+10. **Credits.** Settings, About, Credits: the list shows the CraftPix, Mica, LumioLab and Cinzel
+    credits, the Cinzel license row expands to the full license text and scrolls, and Close dismisses it.

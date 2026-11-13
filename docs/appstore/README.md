@@ -20,15 +20,15 @@ source and not otherwise verified.
 | In-app purchase products | Six products; the local StoreKit file and the code agree on IDs and kinds | `repo_guard.py` (10) |
 | Widget and app agree | Same App Group in both entitlements and both targets, same snapshot key and fields, same version | `repo_guard.py` (11, 13) |
 | Restore purchases | The Armory tab has a Restore button (`StoreKitService.restore`) | read from `ShopView.swift` |
+| Art licenses | Every third-party pack and its terms are recorded in `docs/CREDITS.md`; the Credits screen in Settings lists them and shows the Cinzel license; the app cannot share or save the art | `repo_guard.py` (16) for the license text; the rest read from `CREDITS.md` and `SettingsView.swift` |
 
 ## Blocks submission: only the owner can close these
 
-1. **Art provenance: one gap left.** `docs/CREDITS.md` records every third-party pack with its terms: the CraftPix free downloads (27 hero packs, 80 staves and shields, the Wraiths), the Forest Spirit pack and the LumioLab sampler on itch.io, and the Cinzel font. Still unrecorded: where the design mockups behind the app icon, the emblem and the six Bestiary icons came from. Say who made them and under what terms, or replace them. Two things to keep true: the CraftPix terms forbid letting users save or export the art (the Hero Card is view-only for that reason), and the staves and shields were matched to their packs by art style, so confirm them against your downloads. Shipping art without a license is the one item here that can get an app removed after release.
-2. **Signing.** `DEVELOPMENT_TEAM` is blank. Set the team, register `com.purgequest.app` and `com.purgequest.app.purgequestwidget`, and provision the App Group `group.com.purgequest.app` for both.
-3. **App Store Connect products.** Create the six in-app purchases with exactly the IDs in `StoreKitService.ProductID`, with prices and review screenshots. They exist today only in the local StoreKit file.
-4. **Privacy policy URL.** Required for every app. `PRIVACY.md` lists what it has to say.
-5. **A device pass.** Nothing in this repository has been run on an iPhone by the sessions that wrote it. Work through "Device test pass" in `ios/README-SETUP.md`, including iPad compatibility mode (Apple reviews iPhone-only apps on iPad too).
-6. **LICENSE.** The copyright line names "the PurgeQuest authors". Put the legal owner there.
+1. **Signing.** `DEVELOPMENT_TEAM` is blank. Set the team, register `com.purgequest.app` and `com.purgequest.app.purgequestwidget`, and provision the App Group `group.com.purgequest.app` for both.
+2. **App Store Connect products.** Create the six in-app purchases with exactly the IDs in `StoreKitService.ProductID`, with prices and review screenshots. They exist today only in the local StoreKit file.
+3. **Privacy policy URL.** Required for every app. `PRIVACY.md` lists what it has to say.
+4. **A device pass.** Nothing in this repository has been run on an iPhone by the sessions that wrote it. Work through "Device test pass" in `ios/README-SETUP.md`, including iPad compatibility mode (Apple reviews iPhone-only apps on iPad too).
+5. **LICENSE.** The copyright line names "the PurgeQuest authors". Put the legal owner there.
 
 ## Decide before submitting
 
@@ -39,6 +39,7 @@ source and not otherwise verified.
 | StoreKit file in the bundle | `Configuration.storekit` sits in the app's synchronized folder, so Xcode may copy it into the shipped app. It is inert there. | Check the archived `.app`; if present, exclude it from the target's membership. |
 | Modular characters | 0 of 27 art packs are approved, so every hero renders through the legacy renderer. That is a complete, shippable state. | Ship as is, or approve wave 1 first (`docs/modular/REVIEW.md`). |
 | Minimum Xcode | The sources need Swift 6.2 (`@concurrent`). | Build the release with Xcode 26 or later. |
+| Grok-made icons | The app icon, the emblem and the six Bestiary icons were made with Grok (xAI). xAI's terms for its output have not been read here: their legal page refuses automated fetches. | Read them for who owns the output and whether it may be used commercially in an app, and note the date in `docs/CREDITS.md`; or redraw the icons. |
 
 ## Listing facts
 

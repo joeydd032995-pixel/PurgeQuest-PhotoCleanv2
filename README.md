@@ -127,6 +127,7 @@ What this does **not** show:
 - **Muted, looping video previews** on combat cards from a single pooled player (`Services/VideoPreviewService.swift`).
 - **Haptics** for delete, spare and combo, respecting Reduce Motion.
 - **Hero Card** in Settings, a view-only summary of the hero. It has no share or save button on purpose: the hero art is CraftPix's, and its license does not let an app export the art.
+- **Credits** in Settings > About: the third-party art and the Cinzel typeface, with the SIL Open Font License text that the font asks to travel with it (`Views/Settings/CreditsSheet.swift`, `Models/ThirdPartyCredits.swift`).
 - **Storage measurement**: free space is read before and after a purge, so the dashboard separates what was measured from what is estimated (`Services/StorageMeasurementService.swift`).
 
 ---
@@ -234,8 +235,8 @@ The modular character pipeline (separated anatomy and armor, material masks, per
 
 The hero art (27 packs), the staves and shields, the Wraith monsters, the Forest Spirit pets and the
 Phantom Purge event art come from outside packs (CraftPix free downloads and itch.io), and the titles use
-the Cinzel font under the SIL Open Font License. Authors, licenses and what is still unrecorded are listed
-in [`docs/CREDITS.md`](docs/CREDITS.md).
+the Cinzel font under the SIL Open Font License. Authors, licenses and the owner's own icons (made with Grok) are
+listed in [`docs/CREDITS.md`](docs/CREDITS.md), and the Credits screen in Settings shows the credits and the Cinzel license in the app.
 
 ## Getting Started
 
@@ -255,7 +256,7 @@ Full steps, the StoreKit configuration and the device test pass are in [`ios/REA
 | UI tests: Forge draft/save/cancel, onboarding after a reset, a Light/Dark screenshot tour (artifact `ui-snapshots`) | `ios/PurgeQuestUITests/` | `ios.yml` |
 | Build and static analysis | | `.github/workflows/objective-c-xcode.yml` |
 | Screenshots of every screen, Light and Dark, with a synthetic photo library in the simulator (artifact `ui-snapshots-tour`; not a merge gate) | `tools/ci/make_library_fixtures.py` | `.github/workflows/ui-snapshots.yml`, on pull requests that touch the app |
-| **Linux harness**: the pure-Foundation sources and their suites, no Xcode or simulator. 307 tests in 21 suites, including the date range, the classifier, the audit that every monster named by a quest or event can be summoned, capture rules, rule precedence, video frame signals and the scan's bounded-concurrency and deadline helpers | `tools/swift_harness/run.sh` | `.github/workflows/modular-assets.yml` |
+| **Linux harness**: the pure-Foundation sources and their suites, no Xcode or simulator. 312 tests in 22 suites, including the date range, the classifier, the audit that every monster named by a quest or event can be summoned, capture rules, rule precedence, video frame signals and the scan's bounded-concurrency and deadline helpers | `tools/swift_harness/run.sh` | `.github/workflows/modular-assets.yml` |
 | Asset checks: manifests, masks, fits, the approval gate (content-pinned), catalog drift, generated docs up to date. 72 tests | `tools/modular_assets/` | `modular-assets.yml` |
 | Repository contracts: offline, no dependencies, recoverable deletion, StoreKit IDs, App Group and snapshot agreement, privacy manifests, versions | `tools/ci/repo_guard.py` | `.github/workflows/repo-guard.yml` |
 | Detection benchmark on real photographs (not in CI) | `tools/detection_bench/` | by hand |
@@ -266,7 +267,7 @@ Not automated: visual approval of art, anything on a physical iPhone, and video 
 
 ## Open Items
 
-What is known to be unfinished or weak, checked against the source. The submission blockers that only the owner can close (art licenses, signing, App Store Connect products, a privacy policy URL, a device pass) are listed in [`docs/appstore/README.md`](docs/appstore/README.md).
+What is known to be unfinished or weak, checked against the source. The submission blockers that only the owner can close (signing, App Store Connect products, a privacy policy URL, a device pass) are listed in [`docs/appstore/README.md`](docs/appstore/README.md).
 
 **Classification**
 
@@ -285,9 +286,9 @@ What is known to be unfinished or weak, checked against the source. The submissi
 
 **Repository**
 
-10. **Art provenance, one gap.** `docs/CREDITS.md` records every third-party pack and its terms. Still unrecorded: where the design mockups behind the app icon, the emblem and the six Bestiary icons came from.
-11. **The shared scheme selects no StoreKit configuration**, so local purchase testing needs one manual step (`ios/README-SETUP.md`).
-12. **Test bundle identifiers** still carry Rork's generated prefix (`app.rork.…`). Harmless; left alone.
+10. **The shared scheme selects no StoreKit configuration**, so local purchase testing needs one manual step (`ios/README-SETUP.md`).
+11. **Test bundle identifiers** still carry Rork's generated prefix (`app.rork.…`). Harmless; left alone.
+12. **xAI's terms for Grok output have not been read.** The app icon, the emblem and the Bestiary icons were made with Grok; `docs/CREDITS.md` says what to check.
 
 ---
 

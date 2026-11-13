@@ -3,7 +3,9 @@
 Everything in the app that was not made for it: where it came from and the terms it comes under. The
 CraftPix, itch.io and font terms below were read on the vendors' own pages on 12 November 2026. Terms can
 change, so read them again before each release. Only converted or derived files are in this repo, never the
-original packs; keep the original archives out of it.
+original packs; keep the original archives out of it. The Credits screen in Settings (About) lists the packs
+and shows Cinzel's license; its list is `ios/PurgeQuest/Models/ThirdPartyCredits.swift`, so change both when
+a pack is added or dropped.
 
 ## CraftPix free downloads
 
@@ -24,8 +26,8 @@ All twelve packs in this section are CraftPix freebies, so the **Freebies terms 
 | Mist, Tatter and Void Wraith monsters (`Monster-*Wraith`) | [Free Wraith Tiny Style 2D Sprites](https://craftpix.net/freebies/free-wraith-tiny-style-2d-sprites/) (idle loop of each of the 3 wraiths) | `ios/PurgeQuest/Assets.xcassets/Monsters` |
 
 **How these were matched to the repo.** The hero packs and the Wraiths by name and by comparing the pictures
-with each product image. The staves and shields by art style and one identical shield design; the archives
-themselves were not compared, so confirm those two against your CraftPix downloads.
+with each product image. The staves and shields by art style and one identical shield design, and the owner
+confirmed on 13 November 2026 that they are the CraftPix packs.
 
 ## itch.io
 
@@ -38,20 +40,26 @@ themselves were not compared, so confirm those two against your CraftPix downloa
 
 | Used for | Font | Author | License | Status |
 |---|---|---|---|---|
-| Titles and headings (Regular, SemiBold and Bold, in `ios/PurgeQuest/Assets.xcassets/Cinzel-*.dataset`) | Cinzel | Natanael Gama and The Cinzel Project Authors | SIL Open Font License 1.1, copied in [`licenses/cinzel-OFL.txt`](licenses/cinzel-OFL.txt) | The fonts are used unmodified. The license asks that its notice and text travel with the font; the files carry the copyright line and a license URL, and the app does not show the full text yet |
+| Titles and headings (Regular, SemiBold and Bold, in `ios/PurgeQuest/Assets.xcassets/Cinzel-*.dataset`) | Cinzel | Natanael Gama and The Cinzel Project Authors | SIL Open Font License 1.1, copied in [`licenses/cinzel-OFL.txt`](licenses/cinzel-OFL.txt) | The fonts are used unmodified. The license asks that its notice and text travel with the font: the files carry the copyright line and a license URL, and the Credits screen in Settings shows the full text (the `Cinzel-OFL` data asset, kept identical to `licenses/cinzel-OFL.txt` by `repo_guard.py` check 16) |
 
 ## Made for this app
 
 - The 11 store weapons and shields (`ios/PurgeQuest/Art/Gear/store/`) are drawn in code by `tools/modular_assets/store_gear.py`.
 - The fallback hero avatar (`MiniAvatar*`) is drawn in SwiftUI.
 
-## Not recorded yet
+## Made by the owner, with Grok
 
-- **App icon, PurgeQuest emblem and the six Bestiary family icons.** The emblem is cut out of
-  `docs/design/mockups/splash-light.jpg` and the icons are traced from `docs/design/mockups/bestiary-dark.jpg`.
-  Where those mockups came from (who drew or generated them, and under what terms) is not written down. The
-  app icon arrived with the Rork-generated project (commit `f0a853d`) and has no recorded source either.
-  Record each one here, or replace the art.
+- **App icon, PurgeQuest emblem and the six Bestiary family icons** are the owner's own icons, made with Grok
+  (xAI), as the owner said on 13 November 2026. The emblem is cut out of
+  `docs/design/mockups/splash-light.jpg` and the icons are traced from `docs/design/mockups/bestiary-dark.jpg`;
+  the app icon arrived with the Rork-generated project (commit `f0a853d`).
+- **Still to check: xAI's terms for Grok output.** xAI's legal page refused an automated fetch, so the terms
+  have not been read here. Before release, read them for who owns the output and whether it may be used
+  commercially in an app, then record the date and the result on the next line. Copyright protection for
+  AI-generated images is limited in some countries (in the US only the human-authored part is protected),
+  which affects how far anyone could stop others copying the icons, not the right to use them.
+
+  xAI terms checked: not yet.
 
 ## Rules that keep these licenses satisfied
 
@@ -60,6 +68,8 @@ themselves were not compared, so confirm those two against your CraftPix downloa
   sheet, saving to Photos, an export) against these terms first.
 - **Never use this art to train, test or improve an AI or machine-learning model.** CraftPix and LumioLab both forbid it.
 - **Keep the original archives out of the repo.** Only converted files belong here.
+- **Keep the Credits screen in step with this file.** `ThirdPartyCredits.swift` lists the packs on the screen,
+  and `repo_guard.py` (16) keeps the Cinzel license text in the app identical to `licenses/cinzel-OFL.txt`.
 
 ## How the files were prepared
 
