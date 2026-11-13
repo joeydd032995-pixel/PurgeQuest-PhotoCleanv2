@@ -16,6 +16,7 @@ struct SettingsView: View {
     @State private var confirmReset = false
     @State private var confirmForgetSpared = false
     @State private var showHeroCard = false
+    @State private var showCredits = false
 
     /// Light / Dark / System, shared with the app root.
     @AppStorage(AppearanceMode.storageKey) private var appearanceRaw = AppearanceMode.system.rawValue
@@ -143,6 +144,13 @@ struct SettingsView: View {
                         Label("Hero Card", systemImage: "person.crop.rectangle")
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
+                    Button {
+                        showCredits = true
+                    } label: {
+                        Label("Credits", systemImage: "doc.text")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .accessibilityIdentifier("settings.credits")
                     Button(role: .destructive) {
                         confirmReset = true
                     } label: {
@@ -171,6 +179,9 @@ struct SettingsView: View {
         }
         .sheet(isPresented: $showHeroCard) {
             if let hero { HeroCardSheet(hero: hero) }
+        }
+        .sheet(isPresented: $showCredits) {
+            CreditsSheet()
         }
     }
 
