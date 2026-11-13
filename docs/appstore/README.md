@@ -45,6 +45,6 @@ source and not otherwise verified.
 ## Listing facts
 
 - **Category:** Utilities or Games. The app deletes photos as its function and is a game in presentation; pick the one the screenshots support.
-- **Age rating:** cartoon/fantasy violence, infrequent or mild. No user-generated content, no web access, no gambling. Purchases buy named items or a fixed number of gems; nothing bought is random.
+- **Age rating:** the owner chose 13+ to be safe. The content would likely qualify for a lower tier (cartoon/fantasy violence, infrequent or mild; no user-generated content, no web access, no gambling), so answer the App Store Connect questionnaire truthfully and, if it computes a lower rating, use the age-rating override to set 13+. Purchases buy named items or a fixed number of gems; nothing bought is random.
 - **Device support:** iPhone, portrait, iOS 18.0 or later.
 - **On-device generated text:** on iOS 26 with Apple Intelligence available, a one-line taunt per monster comes from the system's on-device model (`FoundationFlavorService`); otherwise fixed strings are used. Nothing is sent anywhere.

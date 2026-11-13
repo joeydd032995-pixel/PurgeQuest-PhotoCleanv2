@@ -46,7 +46,7 @@ on-device model. This happens on your device and nothing is sent to the develope
 
 ## Children
 
-PurgeQuest does not knowingly collect any information from anyone, including children.
+PurgeQuest is rated 13+ on the App Store. It does not knowingly collect any information from anyone, including children.
 
 ## Changes to this policy
 
