@@ -36,4 +36,19 @@ struct WordingTests {
             #expect(!text.contains("×") && !text.contains("x"), "\"\(text)\" reads as a multiplier")
         }
     }
+
+    // MARK: Room Summary
+
+    @Test func theCommitButtonSaysHowManyAndWhere() {
+        #expect(Wording.moveToRecentlyDeleted(12) == "Move 12 to Recently Deleted")
+        #expect(Wording.moveToRecentlyDeleted(1) == "Move 1 to Recently Deleted")
+        #expect(Wording.recoverableNote(size: "48 MB") == "48 MB · recoverable for 30 days")
+    }
+
+    @Test func theRoomVerdictCountsMarkedAndKept() {
+        #expect(Wording.roomVerdict(marked: 12, kept: 8) == "12 marked, 8 kept")
+        #expect(Wording.roomVerdict(marked: 20, kept: 0) == "20 marked")
+        #expect(Wording.roomVerdict(marked: 0, kept: 20) == "Nothing marked, 20 kept")
+        #expect(Wording.roomVerdict(marked: 0, kept: 0) == "Nothing marked")
+    }
 }

@@ -323,7 +323,7 @@ struct SwipeMediaCard: View {
         return ZStack {
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color.gemEmerald.opacity(0.4 * strength))
-            Text("SPARE")
+            Text("KEEP")
                 .font(.system(size: 26, weight: .black))
                 .foregroundStyle(.onAccent)
                 .padding(10).padding(.horizontal, 6)

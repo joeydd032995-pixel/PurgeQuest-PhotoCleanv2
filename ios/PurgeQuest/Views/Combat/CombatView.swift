@@ -16,6 +16,7 @@ struct CombatView: View {
     @State private var combat = CombatViewModel()
     @State private var shakeOffset: CGFloat = 0
     @State private var fxTrigger: Int = 0
+    @State private var confirmingExit = false
 
     var body: some View {
         ZStack {
@@ -35,6 +36,15 @@ struct CombatView: View {
                 .ignoresSafeArea()
         }
         .navigationBarBackButtonHidden(true)
+        // A dive is full screen: the tab bar would sit over the card's buttons and invite a tab change
+        // in the middle of a room. Leaving the dive brings it back.
+        .toolbar(.hidden, for: .tabBar)
+        .confirmationDialog("Leave this dive?", isPresented: $confirmingExit, titleVisibility: .visible) {
+            Button("Leave dive", role: .destructive) { exit() }
+            Button("Keep going", role: .cancel) {}
+        } message: {
+            Text("Nothing has been moved yet. The \(combat.markedCount) items you marked will be forgotten.")
+        }
         .task {
             guard let hero = heroes.first else { return }
             // A dive can only deal with what the library shows. Without access it would find nothing and
@@ -71,9 +81,13 @@ struct CombatView: View {
             fightingView
         case .roomSummary, .purging:
             if let hero = heroes.first {
-                RoomSummaryView(combat: combat, hero: hero, quests: quests) {
-                    Task { await combat.skipRoom(hero: hero, context: modelContext, quests: quests) }
-                }
+                RoomSummaryView(
+                    combat: combat,
+                    hero: hero,
+                    quests: quests,
+                    onContinue: { Task { await combat.skipRoom(hero: hero, context: modelContext, quests: quests) } },
+                    onExit: { requestExit() }
+                )
             }
         case .sessionComplete:
             sessionCompleteView
@@ -89,6 +103,12 @@ struct CombatView: View {
             ProgressView().tint(.questAmber).scaleEffect(1.4)
             Text("Summoning monsters from your library…")
                 .font(.callout).foregroundStyle(.textSecondary)
+            // The tab bar is hidden during a dive, so a scan that stalls needs its own way out.
+            Button("Cancel") { exit() }
+                .font(.callout.weight(.semibold))
+                .foregroundStyle(.textSecondary)
+                .frame(minHeight: 44)
+                .padding(.top, 6)
         }
     }
 
@@ -139,12 +159,8 @@ struct CombatView: View {
                 heroHP: combat.heroCurrentHP,
                 heroMaxHP: combat.heroMaxHP,
                 combo: combat.combo,
-                roomNumber: combat.roomNumber,
-                totalRooms: CombatViewModel.totalRoomsPerSession,
-                remaining: combat.roomRemaining,
-                marked: combat.markedCount,
-                themeName: combat.theme.displayName,
-                onExit: { exit() }
+                progress: combat.progress,
+                onExit: { requestExit() }
             )
             .padding(.horizontal, 14)
             .padding(.top, combat.roomNumber == 1 ? 0 : 8)
@@ -202,7 +218,7 @@ struct CombatView: View {
                     .accessibilityHint("Mark this item for deletion")
 
                     Button { if let top = combat.topItem, let hero = heroes.first { combat.decideSpare(top, hero: hero, context: modelContext) } } label: {
-                        Label("SPARE", systemImage: "shield.fill")
+                        Label("KEEP", systemImage: "shield.fill")
                             .font(.headline.weight(.heavy))
                             .frame(maxWidth: .infinity).padding(.vertical, 14)
                             .background(RoundedRectangle(cornerRadius: 10).fill(Color.dungeonStoneLight))
@@ -424,6 +440,16 @@ struct CombatView: View {
             withAnimation(.linear(duration: 0.05)) { shakeOffset = 8 }
             try? await Task.sleep(for: .milliseconds(60))
             withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) { shakeOffset = 0 }
+        }
+    }
+
+    /// Leaving drops the cards marked in this room (nothing has been moved yet), so ask first, but only
+    /// when there is something to lose.
+    private func requestExit() {
+        if combat.markedCount > 0 {
+            confirmingExit = true
+        } else {
+            exit()
         }
     }
 

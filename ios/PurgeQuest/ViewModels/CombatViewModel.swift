@@ -336,6 +336,19 @@ final class CombatViewModel {
         max(0, currentRoomItems.count - currentRoomIndex)
     }
 
+    /// Where the player is in the dive, for the HUD. The room count is the real one: a library of 45
+    /// items is three rooms, not five.
+    var progress: DiveProgress {
+        DiveProgress(
+            room: roomNumber,
+            dealtRoomSize: currentRoomItems.count,
+            remaining: roomRemaining,
+            undealt: max(0, allItems.count - queueIndex),
+            itemsPerRoom: Self.roomSize,
+            maxRooms: Self.totalRoomsPerSession
+        )
+    }
+
     /// True when this asset paid rewards on a past purge. It still appears in
     /// hand-picked hunts, but as a shade: deletable, never rewarding.
     func isShade(_ item: MediaItem) -> Bool {

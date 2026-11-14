@@ -468,7 +468,7 @@ struct OnboardingView: View {
                     .foregroundStyle(.combatCrimson)
                     .padding(.vertical, 8).padding(.horizontal, 12)
                     .background(RoundedRectangle(cornerRadius: 8).fill(Color.combatCrimson.opacity(0.12)).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.combatCrimson.opacity(0.5), lineWidth: 1)))
-                Label("Swipe right to spare", systemImage: "arrow.right")
+                Label("Swipe right to keep", systemImage: "arrow.right")
                     .font(.callout.weight(.semibold))
                     .foregroundStyle(.gemEmerald)
                     .padding(.vertical, 8).padding(.horizontal, 12)
