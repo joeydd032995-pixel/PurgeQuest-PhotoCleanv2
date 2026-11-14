@@ -10,7 +10,9 @@
 //    Classic    charcoal / parchment (default)
 //    Verdigris  the original "Verdigris Deep" green-black / pale sage
 //  Light-mode accents are deepened so every accent that doubles as text keeps
-//  4.5:1 on the light surfaces. Accents and the brand gold are shared.
+//  4.5:1 on the light surfaces. Accents and the brand gold are shared. All three text tiers,
+//  the dimmest included, clear 4.5:1 on the canvas, the cards and the wells.
+//  Text that sits on a photograph uses `Glass`, which does not follow either axis.
 //
 
 import Foundation
@@ -49,6 +51,15 @@ nonisolated struct ThemeRGB: Equatable, Sendable {
         let a = relativeLuminance
         let b = other.relativeLuminance
         return (max(a, b) + 0.05) / (min(a, b) + 0.05)
+    }
+
+    /// This color drawn at `alpha` (0...1) over an opaque `background`, as the opaque color the eye sees.
+    func over(_ background: ThemeRGB, alpha: Double) -> ThemeRGB {
+        ThemeRGB(
+            red: red * alpha + background.red * (1 - alpha),
+            green: green * alpha + background.green * (1 - alpha),
+            blue: blue * alpha + background.blue * (1 - alpha)
+        )
     }
 }
 
@@ -115,8 +126,8 @@ nonisolated enum ThemePalette {
         surfaceRaised: ThemePair(light: 0xECE9DB, dark: ThemeRGB(hex: 0x353431)),
         hairline: ThemePair(light: 0xD9D4C0, dark: ThemeRGB(hex: 0x45433F)),
         textPrimary: ThemePair(light: 0x1B1B17, dark: ThemeRGB(hex: 0xF2EFE9)),
-        textSecondary: ThemePair(light: 0x5A574A, dark: ThemeRGB(hex: 0xB0ACA3)),
-        textTertiary: ThemePair(light: 0x787464, dark: ThemeRGB(hex: 0x7C786F)),
+        textSecondary: ThemePair(light: 0x5A574A, dark: ThemeRGB(hex: 0xBCB8B0)),
+        textTertiary: ThemePair(light: 0x6B6859, dark: ThemeRGB(hex: 0xA19D94)),
         onAccent: ThemePair(light: 0xFFFBF0, dark: ThemeRGB(hex: 0x141413)),
         lightVignetteTint: ThemeRGB(red: 0.36, green: 0.29, blue: 0.12)
     )
@@ -129,8 +140,8 @@ nonisolated enum ThemePalette {
         surfaceRaised: ThemePair(light: 0xE2E9DE, dark: ThemeRGB(red: 0.106, green: 0.165, blue: 0.141)),
         hairline: ThemePair(light: 0xCCD6C7, dark: ThemeRGB(red: 0.149, green: 0.216, blue: 0.188)),
         textPrimary: ThemePair(light: 0x13201B, dark: ThemeRGB(red: 0.937, green: 0.949, blue: 0.937)),
-        textSecondary: ThemePair(light: 0x44564E, dark: ThemeRGB(red: 0.576, green: 0.651, blue: 0.612)),
-        textTertiary: ThemePair(light: 0x66766E, dark: ThemeRGB(red: 0.365, green: 0.435, blue: 0.396)),
+        textSecondary: ThemePair(light: 0x44564E, dark: ThemeRGB(hex: 0x9CAEA4)),
+        textTertiary: ThemePair(light: 0x596A62, dark: ThemeRGB(hex: 0x819389)),
         onAccent: ThemePair(light: 0xFFFBF0, dark: ThemeRGB(red: 0.047, green: 0.082, blue: 0.071)),
         lightVignetteTint: ThemeRGB(red: 0.12, green: 0.25, blue: 0.17)
     )
@@ -178,6 +189,35 @@ nonisolated enum ThemePalette {
             (ThemeRGB(hex: 0xDCBB6A), 0.60),
             (ThemeRGB(hex: 0xD0A85A), 0.85),
             (ThemeRGB(hex: 0xB98F52), 1.00)
+        ]
+    }
+
+    // MARK: Glass over photographs (identical in both appearances)
+
+    /// The strip that carries text over a photograph or a video frame. A photo can be anything from
+    /// black to white, so the strip follows neither the palette nor the appearance: it is one dark
+    /// glass, and the colors of the text on it are fixed to it (the Dark role values, which hold on
+    /// any photo). Light-mode accents drawn on it measured 2.2:1.
+    nonisolated enum Glass {
+        /// The tint laid over a blur of the photo.
+        static let fill = ThemeRGB(hex: 0x080C0A)
+        /// How much of the photo the tint hides: enough that a white photo still leaves a dark ground.
+        static let fillOpacity = 0.82
+        /// The lightest the strip can get, over a pure white photo. It is the worst ground its text faces.
+        static var lightestGround: ThemeRGB { fill.over(ThemeRGB(hex: 0xFFFFFF), alpha: fillOpacity) }
+
+        /// Flavor text and the reason a monster appeared.
+        static let text = ThemeRGB(hex: 0xF6F4EC)
+        /// Size, age and small captions.
+        static let textSecondary = ThemeRGB(hex: 0xD2D6CC)
+        /// Rewards.
+        static let brass = ThemeRGB(hex: 0xE6B84A)
+        /// Measured results and gems.
+        static let patina = ThemeRGB(hex: 0x5ED0A8)
+
+        /// Every color a person reads on the strip, for tests.
+        static let texts: [(name: String, color: ThemeRGB)] = [
+            ("text", text), ("textSecondary", textSecondary), ("brass", brass), ("patina", patina)
         ]
     }
 

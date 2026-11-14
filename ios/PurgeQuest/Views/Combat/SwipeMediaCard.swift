@@ -233,13 +233,15 @@ struct SwipeMediaCard: View {
         .accessibilityHidden(true)
     }
 
-    /// Frosted-glass footer: a real UIVisualEffectView blur keeps flavor text
-    /// readable over any photo or video frame.
+    /// Dark-glass footer: a blur of the photo under an 82% tint, so the text on it keeps its contrast over
+    /// any photo or video frame, white ones included. Its text colors are the fixed on-glass set
+    /// (ThemePalette.Glass), measured at 4.5:1 or better over a white photo. The theme's own accents are
+    /// not used here: the Light-mode ones are dark inks and measured 2.2:1 on this strip.
     private var bottomMetaBar: some View {
         VStack(alignment: .leading, spacing: 5) {
             Text("“\(dynamicFlavor ?? item.monsterType.flavor)”")
                 .font(.callout.italic())
-                .foregroundStyle(.white.opacity(0.95))
+                .foregroundStyle(.onGlass)
                 .lineLimit(3)
                 .animation(.easeInOut(duration: 0.25), value: dynamicFlavor)
             // "Why did this appear?" — plain-language reason from the classifier.
@@ -247,10 +249,10 @@ struct SwipeMediaCard: View {
                 HStack(alignment: .top, spacing: 5) {
                     Image(systemName: "questionmark.circle.fill")
                         .font(.caption2.weight(.bold))
-                        .foregroundStyle(.white.opacity(0.7))
+                        .foregroundStyle(.onGlassMuted)
                     Text(why)
                         .font(.caption2.weight(.semibold))
-                        .foregroundStyle(.white.opacity(0.92))
+                        .foregroundStyle(.onGlass)
                         .lineLimit(2)
                 }
             }
@@ -265,31 +267,34 @@ struct SwipeMediaCard: View {
             HStack(spacing: 8) {
                 Label(item.formattedSize, systemImage: "internaldrive.fill")
                     .font(.caption2.weight(.bold))
-                    .foregroundStyle(.gemEmerald)
-                Text("·").foregroundStyle(.white.opacity(0.5))
+                    .foregroundStyle(.patinaOnGlass)
+                Text("·").foregroundStyle(.onGlassMuted)
                 Text(item.ageDescription)
                     .font(.caption2)
-                    .foregroundStyle(.white.opacity(0.85))
+                    .foregroundStyle(.onGlassMuted)
             }
             if rewardXP > 0 || rewardGems > 0 {
                 HStack(spacing: 8) {
                     Label("+\(rewardXP) XP", systemImage: "bolt.fill")
                         .font(.caption2.weight(.bold).monospacedDigit())
-                        .foregroundStyle(.questAmber)
-                    Text("·").foregroundStyle(.white.opacity(0.5))
+                        .foregroundStyle(.brassOnGlass)
+                    Text("·").foregroundStyle(.onGlassMuted)
                     Label("+\(rewardGems)", systemImage: "diamond.fill")
                         .font(.caption2.weight(.bold).monospacedDigit())
-                        .foregroundStyle(.gemEmerald)
+                        .foregroundStyle(.patinaOnGlass)
                     Text("on confirm")
                         .font(.caption2)
-                        .foregroundStyle(.white.opacity(0.6))
+                        .foregroundStyle(.onGlassMuted)
                 }
             }
         }
         .padding(12)
         .background {
-            BlurEffectView(style: .systemUltraThinMaterialDark)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+            ZStack {
+                BlurEffectView(style: .systemUltraThinMaterialDark)
+                Color.glassFill
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 12))
         }
         .padding(10)
     }

@@ -49,13 +49,33 @@ struct ThemePaletteTests {
     }
 
     @Test(arguments: ColorTheme.allCases, [false, true])
-    func tertiaryHintTextStaysLegibleOnCanvasAndCards(theme: ColorTheme, isDark: Bool) {
+    func tertiaryTextClearsAAOnEverySurface(theme: ColorTheme, isDark: Bool) {
+        // The dimmest tier is still text a person has to read. It used to be held to 3:1 on the canvas
+        // and the cards and to nothing on the wells, where it measured 2.8:1 in Dark.
         let neutrals = ThemePalette.neutrals(for: theme)
         let text = neutrals.textTertiary.resolved(isDark: isDark)
-        for background in [neutrals.canvas, neutrals.surface] {
-            let ratio = text.contrast(with: background.resolved(isDark: isDark))
-            #expect(ratio >= 3, "\(theme) textTertiary is \(ratio) (dark: \(isDark))")
+        for background in neutrals.textBackgrounds {
+            let ratio = text.contrast(with: background.pair.resolved(isDark: isDark))
+            #expect(ratio >= 4.5, "\(theme) textTertiary on \(background.name) is \(ratio) (dark: \(isDark))")
         }
+    }
+
+    @Test(arguments: ColorTheme.allCases, [false, true])
+    func theThreeTextTiersStillStepDown(theme: ColorTheme, isDark: Bool) {
+        // Lifting the dimmest tier to 4.5:1 must not fold it into the tier above. Compare CIE lightness:
+        // primary is far from secondary, and secondary keeps a visible step from tertiary.
+        func lightness(_ color: ThemeRGB) -> Double {
+            let y = color.relativeLuminance
+            return y > 216.0 / 24389.0 ? 116 * cbrt(y) - 16 : 24389.0 / 27.0 * y
+        }
+        let neutrals = ThemePalette.neutrals(for: theme)
+        let primary = lightness(neutrals.textPrimary.resolved(isDark: isDark))
+        let secondary = lightness(neutrals.textSecondary.resolved(isDark: isDark))
+        let tertiary = lightness(neutrals.textTertiary.resolved(isDark: isDark))
+        // Toward the ground: lower in Dark, higher in Light.
+        let step: (Double, Double) -> Double = { isDark ? $0 - $1 : $1 - $0 }
+        #expect(step(primary, secondary) >= 12, "\(theme) primary to secondary is \(step(primary, secondary)) (dark: \(isDark))")
+        #expect(step(secondary, tertiary) >= 5, "\(theme) secondary to tertiary is \(step(secondary, tertiary)) (dark: \(isDark))")
     }
 
     // MARK: Accents
@@ -126,6 +146,32 @@ struct ThemePaletteTests {
         #expect(ratio >= 4.5, "\(theme) goldTitle is \(ratio) (dark: \(isDark))")
     }
 
+    // MARK: Glass over photographs
+
+    @Test func textOnTheGlassStripClearsAAOverAWhitePhoto() {
+        // A white photo is the worst ground for light text. Light-mode accents drawn here measured 2.2:1.
+        let ground = ThemePalette.Glass.lightestGround
+        for text in ThemePalette.Glass.texts {
+            let ratio = text.color.contrast(with: ground)
+            #expect(ratio >= 4.5, "\(text.name) on the glass over white is \(ratio)")
+        }
+    }
+
+    @Test func theGlassStripStaysDarkEvenOverAWhitePhoto() {
+        #expect(ThemePalette.Glass.lightestGround.relativeLuminance < 0.05)
+        // And it hides most of what is behind it, so a busy photo cannot show through the text.
+        #expect(ThemePalette.Glass.fillOpacity >= 0.8)
+    }
+
+    @Test func drawingOverABackgroundBlendsLikeTheEyeSees() {
+        let black = ThemeRGB(hex: 0x000000)
+        let white = ThemeRGB(hex: 0xFFFFFF)
+        #expect(white.over(black, alpha: 0) == black)
+        #expect(white.over(black, alpha: 1) == white)
+        let half = white.over(black, alpha: 0.5)
+        #expect(abs(half.red - 0.5) < 1e-9 && abs(half.green - 0.5) < 1e-9 && abs(half.blue - 0.5) < 1e-9)
+    }
+
     // MARK: The palettes really differ, and what was kept did not change
 
     @Test(arguments: ColorTheme.allCases)
@@ -150,16 +196,18 @@ struct ThemePaletteTests {
         #expect(neutrals.surface.dark.relativeLuminance < neutrals.surfaceRaised.dark.relativeLuminance)
     }
 
-    @Test func verdigrisDarkIsTheOriginalVerdigrisDeep() {
+    @Test func verdigrisDarkKeepsItsSurfacesAndHasHintTextThatCanBeRead() {
         func rgb(_ r: Double, _ g: Double, _ b: Double) -> ThemeRGB { ThemeRGB(red: r, green: g, blue: b) }
         let v = ThemePalette.verdigris
+        // The surfaces and primary text are the original Verdigris Deep.
         #expect(v.canvas.dark == rgb(0.047, 0.082, 0.071))
         #expect(v.surface.dark == rgb(0.078, 0.129, 0.110))
         #expect(v.surfaceRaised.dark == rgb(0.106, 0.165, 0.141))
         #expect(v.hairline.dark == rgb(0.149, 0.216, 0.188))
         #expect(v.textPrimary.dark == rgb(0.937, 0.949, 0.937))
-        #expect(v.textSecondary.dark == rgb(0.576, 0.651, 0.612))
-        #expect(v.textTertiary.dark == rgb(0.365, 0.435, 0.396))
+        // Hint text was raised (it measured 2.8:1 to 3.5:1) and secondary text with it, so the tiers still step down.
+        #expect(v.textSecondary.dark == ThemeRGB(hex: 0x9CAEA4))
+        #expect(v.textTertiary.dark == ThemeRGB(hex: 0x819389))
     }
 
     @Test func sharedDarkAccentsAreTheOriginals() {
