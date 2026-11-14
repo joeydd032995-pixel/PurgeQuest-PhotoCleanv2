@@ -234,7 +234,7 @@ struct DuplicateGroupCard: View {
                 Button {
                     setDecision(true)
                 } label: {
-                    Label("Slay this copy", systemImage: "xmark")
+                    Label("Delete this copy", systemImage: "xmark")
                         .font(.subheadline.weight(.heavy))
                         .frame(maxWidth: .infinity).padding(.vertical, 11)
                         .background(RoundedRectangle(cornerRadius: 9).fill(decisionForSelected == true ? Color.combatCrimson : Color.dungeonStone))

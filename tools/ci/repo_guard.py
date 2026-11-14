@@ -26,6 +26,8 @@ Checks:
  15. Rork's build-time Config.swift is not used by the app, and a copy in the tree holds no values.
  16. Cinzel license: the Credits screen shows the SIL Open Font License from a data asset, and that
      asset is byte-identical to the copy kept in docs/licenses.
+ 17. Visible wording: nothing the player reads says "spare" (keeping a photo is free, D1, so there is
+     nothing to be spared from). Names in code, such as SparedMediaRecord, are not visible and stay.
 """
 import json
 import plistlib
@@ -369,6 +371,18 @@ elif ofl_asset is None or not ofl_asset.exists():
     failures.append("cinzel license: ThirdPartyCredits.fontLicenseAssetName does not name a .txt data asset in Assets.xcassets")
 elif ofl_docs.read_bytes() != ofl_asset.read_bytes():
     failures.append(f"cinzel license: {ofl_asset.relative_to(ROOT)} differs from docs/licenses/cinzel-OFL.txt")
+
+# 17. visible wording
+# D1 made keeping a photo free, so the player-facing word is "keep". Only text inside string literals is
+# checked, with comments and the code inside \( ) interpolations removed: `stats.spared` is a property name
+# the player never reads, "Forget spared monsters" is something they do.
+STRING_LITERAL = re.compile(r'"(?:[^"\\\n]|\\.)*"')
+INTERPOLATION = re.compile(r"\\\((?:[^()]|\([^()]*\))*\)")
+SPARE_WORD = re.compile(r"\bspar(?:e|ed|es|ing)\b", re.I)
+for f in swift_files("PurgeQuest", "PurgeQuestWidget"):
+    for literal in STRING_LITERAL.findall(strip_comments(f.read_text())):
+        if SPARE_WORD.search(INTERPOLATION.sub("", literal)):
+            failures.append(f"visible wording: {f.relative_to(ROOT)} says \"spare\" to the player in {literal[:60]}")
 
 if failures:
     print("repo_guard FAILED:")
