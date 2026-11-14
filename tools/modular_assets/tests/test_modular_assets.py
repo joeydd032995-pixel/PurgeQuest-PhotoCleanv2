@@ -1138,5 +1138,51 @@ class SheetArtImport(unittest.TestCase):
             self.assertEqual(self.isa.align_for(item), expected, item["id"])
 
 
+class EnclosedPixels(unittest.TestCase):
+    """gear_masks_chroma._enclosed_pixels counts the background a fragment encloses on its bounding box, because a flood
+    fill of the whole image per fragment made the mask algorithm 20-40x slower on the v7 sprites (about fifty outline
+    fragments each) and pushed the asset checks past their time limit. It must equal the whole-image count exactly."""
+
+    @classmethod
+    def setUpClass(cls):
+        import numpy as np
+        import gear_masks_chroma as chroma
+        cls.np, cls.chroma = np, chroma
+
+    def whole_image(self, comp):
+        return int((self.chroma._fill_holes(comp) & ~comp).sum())
+
+    def test_matches_the_whole_image_flood_fill_on_random_shapes(self):
+        np, chroma = self.np, self.chroma
+        rng = np.random.default_rng(3)
+        for trial in range(60):
+            mask = rng.random((24, 30)) < rng.choice([0.35, 0.5, 0.65])
+            labels, n = chroma.ops.label(mask)
+            for cid in range(1, n + 1):
+                comp = labels == cid
+                self.assertEqual(chroma._enclosed_pixels(comp), self.whole_image(comp), (trial, cid))
+
+    def test_rings_gaps_and_shapes_touching_the_image_border(self):
+        np, chroma = self.np, self.chroma
+        ring = np.zeros((9, 9), bool)
+        ring[2:7, 2:7] = True
+        ring[3:6, 3:6] = False
+        self.assertEqual(chroma._enclosed_pixels(ring), 9)                  # a 3x3 hole
+        gap = ring.copy()
+        gap[2, 4] = False
+        self.assertEqual(chroma._enclosed_pixels(gap), 0)                   # one gap opens it to the outside
+        corner = np.zeros((6, 6), bool)
+        corner[0:4, 0:4] = True
+        corner[1:3, 1:3] = False
+        self.assertEqual(chroma._enclosed_pixels(corner), 4)                # touches the border, hole still enclosed
+        cup = np.zeros((6, 6), bool)
+        cup[0:4, 0:4] = True
+        cup[1:4, 1:3] = False                                                # the cavity reaches the bottom of the box
+        cup[4, 1:3] = False
+        self.assertEqual(chroma._enclosed_pixels(cup), self.whole_image(cup))
+        for shape in (ring, gap, corner, cup):
+            self.assertEqual(chroma._enclosed_pixels(shape), self.whole_image(shape))
+
+
 if __name__ == "__main__":
     unittest.main()
