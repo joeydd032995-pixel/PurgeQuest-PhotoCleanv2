@@ -215,7 +215,20 @@ class ChromaCellsV5Assets(unittest.TestCase):
             layer = Layer(resource, "armor", item["slot"], rgba, masks)
             pool_tones([layer])
             self.assertEqual(layer.region_tone, item["regionTone"], resource)
-            self.assertTrue(algo.quality_passes(algo.quality(rgba, masks, protected)), resource)
+            self.assertTrue(algo.quality_passes(algo.quality(rgba, masks, protected), resource), resource)
+
+    def test_low_coverage_floors_are_exactly_the_items_that_need_them(self):
+        """Every item holds to COVERAGE_MIN except the documented exceptions, and an exception must actually be needed
+        (so the list cannot silently outlive the art that required it). Uses the coverage recorded in the manifest."""
+        import gear_masks_chroma as chroma
+        by_resource = {i["resourceName"]: i["verification"]["automated"]["materialMasks"]["coverage"] for i in self.items}
+        self.assertLessEqual(set(chroma.LOW_COVERAGE_FLOORS), set(by_resource), "a floor names an unknown gear resource")
+        for resource, coverage in by_resource.items():
+            if resource in chroma.LOW_COVERAGE_FLOORS:
+                self.assertLess(coverage, chroma.COVERAGE_MIN, f"{resource} reaches COVERAGE_MIN now: drop its floor")
+                self.assertGreaterEqual(coverage, chroma.LOW_COVERAGE_FLOORS[resource], resource)
+            else:
+                self.assertGreaterEqual(coverage, chroma.COVERAGE_MIN, resource)
 
 
 class Inventory(unittest.TestCase):
@@ -719,7 +732,9 @@ class GearMaterialRegression(unittest.TestCase):
 
     These assert what *that algorithm* must produce, so they run on its own output, not on the shipped masks: the shipped
     gear may use another algorithm (see gear_algorithms.py; the shipped set is checked in ChromaCellsV5Assets and by
-    validate.py, each against its own gate).
+    validate.py, each against its own gate). They also run on the art the algorithm was authored against, kept in
+    tests/fixtures/gear_art_v6, not on the shipped sprites: its polygons and the exact pigments asserted below belong to
+    the v6 sprites, which the v7 art swap replaced.
     """
     @classmethod
     def setUpClass(cls):
@@ -731,7 +746,8 @@ class GearMaterialRegression(unittest.TestCase):
         cls.np = np
         cls.items = json.loads(validate.GEAR.read_text())["items"]
         cls.by_resource = {i["resourceName"]: i for i in cls.items}
-        sources = {i["resource"]: i["path"] for i in held_gear.build_items()}
+        fixtures = HERE / "fixtures" / "gear_art_v6"
+        sources = {i["resource"]: fixtures / f"{i['resource']}.png" for i in held_gear.build_items()}
         cls.images, cls.masks, cls.metrics, cls.tones = {}, {}, {}, {}
         for item in cls.items:
             resource = item["resourceName"]
@@ -1052,6 +1068,74 @@ class CarryAngle(unittest.TestCase):
                         f = fit(anchor)
                         for x, y in hg.item_rect_corners(anchor, img_size, f["offset"], s, f["rotation"]):
                             self.assertTrue(ox <= x <= ox + w and oy <= y <= oy + h, (pid, s, x, y))
+
+
+class SheetArtImport(unittest.TestCase):
+    """tools/modular_assets/import_sheet_art.py: the 99 v7 sprites are cut out of named tiles in the owner's photos."""
+
+    @classmethod
+    def setUpClass(cls):
+        import import_sheet_art
+        cls.isa = import_sheet_art
+        cls.items = json.loads(validate.GEAR.read_text())["items"]
+
+    def test_layouts_name_every_gear_item_and_nothing_else(self):
+        named = [n for lay in self.isa.LAYOUTS for row in lay["rows"] for n in row]
+        self.assertEqual(sorted(set(named)), sorted(i["name"] for i in self.items))
+        for lay in self.isa.LAYOUTS:
+            names = [n for row in lay["rows"] for n in row]
+            self.assertEqual(len(names), len(set(names)), lay["key"])
+
+    def test_every_photo_is_committed_and_its_tile_grid_matches_its_layout(self):
+        import numpy as np
+        from PIL import Image
+        for lay in self.isa.LAYOUTS:
+            path = self.isa.PHOTOS / lay["file"]
+            self.assertTrue(path.exists(), path)
+            im = self.isa.trim_black(np.asarray(Image.open(path).convert("RGB")).astype(np.float32))
+            cols, rows = self.isa.detect_tiles(im, self.isa.tile_background(im))
+            self.assertEqual((len(rows), len(cols)), (len(lay["rows"]), max(len(r) for r in lay["rows"])), lay["key"])
+
+    def test_cut_out_keeps_the_drawing_and_drops_the_tile_colour(self):
+        import numpy as np
+        bg = np.array([45.0, 48.0, 60.0])
+        tile = np.empty((60, 90, 3), np.float32)
+        tile[:] = bg
+        yy, xx = np.mgrid[:60, :90]
+        r2 = (xx - 45) ** 2 + (yy - 30) ** 2
+        tile[r2 <= 20 ** 2] = (200, 120, 60)             # the fill
+        tile[(r2 <= 20 ** 2) & (r2 > 17 ** 2)] = (20, 18, 16)   # a thin dark outline
+        cut = self.isa.cut_out(tile, bg)
+        pad = 4
+        alpha = cut[..., 3]
+        self.assertEqual(int(alpha[30 + pad, 45 + pad]), 255)                       # the middle is solid
+        self.assertEqual(int(alpha[0, 0]), 0)                                      # the tile colour is transparent
+        self.assertEqual(int(alpha[pad + 2, pad + 2]), 0)
+        self.assertEqual(cut[30 + pad, 45 + pad, :3].tolist(), [200, 120, 60])     # and keeps its exact colour
+        self.assertTrue((cut[..., :3][alpha == 0] == 0).all())                     # no stray colour under transparency
+        self.assertGreater(int(alpha[30 + pad, 45 + 18 + pad]), 200)               # the outline is part of the drawing
+
+    def test_fit_into_aligns_weapons_by_the_pommel_and_centres_shields(self):
+        import numpy as np
+        cut = np.zeros((20, 100, 4), np.uint8)
+        cut[..., :3] = (180, 40, 40)
+        cut[..., 3] = 255                                # a long thin weapon, 5:1
+        box = (30, 20, 330, 110)                         # the old art's box inside a 400 x 128 canvas
+        left, scale = self.isa.fit_into(cut, (400, 128), box, align="left")
+        self.assertEqual(left.size, (400, 128))
+        self.assertAlmostEqual(scale, 3.0)
+        bbox = left.getchannel("A").getbbox()
+        self.assertEqual(bbox[0], 30)                    # the pommel end stays where the old sprite's was
+        self.assertLessEqual(bbox[2], 330)               # and never leaves the old art's box
+        centred, _ = self.isa.fit_into(cut, (400, 128), box, align="center")
+        cb = centred.getchannel("A").getbbox()
+        self.assertAlmostEqual((cb[1] + cb[3]) / 2, 65, delta=1.5)
+        self.assertAlmostEqual((cb[0] + cb[2]) / 2, 180, delta=1.5)
+
+    def test_weapons_align_left_and_shields_and_bows_centre(self):
+        for item in self.items:
+            expected = "center" if item["kind"] in ("shield", "bow") else "left"
+            self.assertEqual(self.isa.align_for(item), expected, item["id"])
 
 
 if __name__ == "__main__":

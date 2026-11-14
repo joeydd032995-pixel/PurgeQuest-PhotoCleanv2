@@ -44,8 +44,26 @@ confirmed on 13 November 2026 that they are the CraftPix packs.
 
 ## Made for this app
 
-- The 11 store weapons and shields (`ios/PurgeQuest/Art/Gear/store/`) are drawn in code by `tools/modular_assets/store_gear.py`.
+- The 11 store weapons and shields (`ios/PurgeQuest/Art/Gear/store/`) were drawn in code by `tools/modular_assets/store_gear.py`
+  and are now replaced by the owner's updated art (next section); the code still draws the previous versions.
 - The fallback hero avatar (`MiniAvatar*`) is drawn in SwiftUI.
+
+## Updated weapon and shield art (asset pass v7)
+
+On 14 November 2026 the owner supplied updated art for all 99 held and store gear items (the 40 staves, 40 shields, 11
+store weapons and shields, and the 8 signature weapons) as phone screenshots of review sheets, and said the art is
+their own. The sprites at the same file names (`ios/PurgeQuest/Art/Gear/{staves,shields,store}/` and the eight
+`ios/PurgeQuest/Art/Races/*/v1/*_sword.png` / `forest_ranger_v1_bow.png`) were cut from those photos by
+`tools/modular_assets/import_sheet_art.py`; the photos are in `docs/modular/source_photos/` (see the README there).
+
+How the owner made the art is not recorded here. Two things stay open until they are settled:
+
+- **The CraftPix rows above still describe the files that were replaced.** The staves, shields and the hero packs' own
+  swords came from those packs. Keep the rows, and the pack list on the Credits screen
+  (`ThirdPartyCredits.swift`), until it is confirmed that nothing in the new art derives from them; if it is, drop
+  the staves and shields rows here and there together.
+- **The rule below on image generators applies to the new art's inputs too.** Uploading CraftPix art to an image
+  generator as a reference is what it forbids; this section records what the owner said, not that it was checked.
 
 ## Made by the owner, with Grok
 

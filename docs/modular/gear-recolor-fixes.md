@@ -1,3 +1,5 @@
+> **Status (asset pass v7).** The sprites in the images below are the v6 art. Pass v7 replaced all 99 gear sprites with the owner's updated art (`import_sheet_art.py`), so these sheets stay as the record of the PR #11 pass, not of what ships. The shipped masks are `chroma-cells-v5` on the v7 sprites; `authored-surfaces-v1` is kept as a tested reference on `tests/fixtures/gear_art_v6`.
+>
 > **Status (asset pass v6).** This page documents PR #11's gear pass (`authored-surfaces-v1`, `gear_materials.py`). The shipped
 > gear masks are now `chroma-cells-v5` (`gear_masks_chroma.py`), chosen for its look: they keep one material across its shading
 > and never touch line work, but they also recolour dark fill that this pass deliberately protects. Both algorithms stay in the

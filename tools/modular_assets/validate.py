@@ -192,7 +192,7 @@ def main() -> int:
                 protected = algo.protected_ink(source,
                     exterior=item["resourceName"] not in gear_materials.HALO_RESOURCES)
                 actual = algo.quality(source, material_masks, protected)
-                if not algo.quality_passes(actual):
+                if not algo.quality_passes(actual, item["resourceName"]):
                     errors.append(f"{iid}: material mask coverage/ink/alpha failure ({name}): {actual}")
         if not item["maskResources"]:
             errors.append(f"{iid}: no recolor masks")

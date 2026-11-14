@@ -56,29 +56,29 @@ Grip, hold, scale, rotation, layering and profile overrides are recorded per ite
 
 | ID | Name | Grip px | Masks | Titan canvas growth | Packs | Status |
 |---|---|---|---|---|---|---|
-| `weapon.valkyrie` | Valkyrie Blade | [22.42, 63.5] | primary | 1.76x | 27 | candidate |
-| `weapon.forest_ranger` | Elven Recurve | [111.5, 159.5] | primary, secondary | 1.03x | 2 | candidate |
-| `weapon.seer` | Seer's Edge | [37.98, 63.5] | primary | 1.70x | 27 | candidate |
-| `weapon.blood_alchemist` | Vampyri Cleaver | [68.94, 63.5] | primary, secondary | 1.57x | 27 | candidate |
-| `weapon.dark_oracle` | Scarred Fang | [18.62, 69.5] | primary, secondary | 1.77x | 27 | candidate |
-| `weapon.necromancer` | Shadowbrand | [48.3, 63.5] | primary | 1.66x | 27 | candidate |
-| `weapon.skeleton_crusader` | Undead Claymore | [27.18, 63.5] | primary | 1.74x | 27 | candidate |
-| `weapon.golem` | Vaultcracker | [59.48, 63.0] | primary | 1.61x | 27 | candidate |
+| `weapon.valkyrie` | Valkyrie Blade | [23.32, 62.5] | primary | 1.76x | 27 | candidate |
+| `weapon.forest_ranger` | Elven Recurve | [110.0, 159.5] | primary, secondary | 1.04x | 2 | candidate |
+| `weapon.seer` | Seer's Edge | [38.66, 62.5] | primary | 1.70x | 27 | candidate |
+| `weapon.blood_alchemist` | Vampyri Cleaver | [68.92, 63.0] | primary, secondary | 1.57x | 27 | candidate |
+| `weapon.dark_oracle` | Scarred Fang | [17.28, 68.5] | primary, secondary | 1.77x | 27 | candidate |
+| `weapon.necromancer` | Shadowbrand | [49.04, 63.5] | primary | 1.65x | 27 | candidate |
+| `weapon.skeleton_crusader` | Undead Claymore | [27.14, 63.0] | primary | 1.74x | 27 | candidate |
+| `weapon.golem` | Vaultcracker | [59.42, 64.5] | primary | 1.61x | 27 | candidate |
 
-**Elven Recurve (checked separately from swords):** supported only on `forest_ranger_v1`/`v2` (v3 is a sword pack with no Shooting animation). The bow art has no string; the renderer draws one from the recorded tip anchors {'bottom': [30.5, 299], 'top': [30.5, 20]} through the arrow nock while the arrow is drawn (nock to chord 97.85px mean over 3 frames).
+**Elven Recurve (checked separately from swords):** supported only on `forest_ranger_v1`/`v2` (v3 is a sword pack with no Shooting animation). The bow art has no string; the renderer draws one from the recorded tip anchors {'bottom': [32.0, 295], 'top': [31.0, 24]} through the arrow nock while the arrow is drawn (nock to chord 98.81px mean over 3 frames).
 
 ### Staves (40)
 
 | Set | I | II | III | IV | V | Masks (set I) | Max Titan growth |
 |---|---|---|---|---|---|---|---|
-| Ashen Bough | candidate | candidate | candidate | candidate | candidate | primary | 1.81x |
-| Verdant Coil | candidate | candidate | candidate | candidate | candidate | primary | 1.82x |
-| Tidecaller | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.79x |
-| Ember Scepter | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.78x |
-| Storm Spire | candidate | candidate | candidate | candidate | candidate | primary | 1.82x |
+| Ashen Bough | candidate | candidate | candidate | candidate | candidate | primary | 1.80x |
+| Verdant Coil | candidate | candidate | candidate | candidate | candidate | primary | 1.83x |
+| Tidecaller | candidate | candidate | candidate | candidate | candidate | primary | 1.79x |
+| Ember Scepter | candidate | candidate | candidate | candidate | candidate | primary | 1.78x |
+| Storm Spire | candidate | candidate | candidate | candidate | candidate | primary | 1.81x |
 | Gilded Crook | candidate | candidate | candidate | candidate | candidate | primary | 1.80x |
-| Bone Reliquary | candidate | candidate | candidate | candidate | candidate | primary, secondary, trim | 1.78x |
-| Voidspike | candidate | candidate | candidate | candidate | candidate | primary, secondary | 1.81x |
+| Bone Reliquary | candidate | candidate | candidate | candidate | candidate | primary | 1.78x |
+| Voidspike | candidate | candidate | candidate | candidate | candidate | primary | 1.81x |
 
 ### Shields (40)
 
@@ -103,15 +103,15 @@ The three headpieces (Starlit Cap, Shadow Hood, Dragoncrest Helm) were drawn and
 |---|---|---|---|---|---|
 | `weapon.shard` | Crystal Shard | sword | primary | 27 | candidate |
 | `weapon.reel` | Film Reel Blade | sword | primary | 27 | candidate |
-| `weapon.gem` | Gem Hammer | hammer | primary, secondary, trim | 27 | candidate |
-| `weapon.staff` | Archmage Staff | staff | primary, secondary | 27 | candidate |
-| `weapon.stormblade` | Storm Cleaver | sword | emissive, primary | 27 | candidate |
+| `weapon.gem` | Gem Hammer | hammer | leather, primary, secondary, trim | 27 | candidate |
+| `weapon.staff` | Archmage Staff | staff | primary, secondary, trim | 27 | candidate |
+| `weapon.stormblade` | Storm Cleaver | sword | primary, secondary | 27 | candidate |
 | `weapon.chevron` | Oathbreaker Greatsword | sword | primary | 27 | candidate |
-| `weapon.ruby` | Ruby Fang | sword | primary, secondary | 27 | candidate |
+| `weapon.ruby` | Ruby Fang | sword | primary, secondary, trim | 27 | candidate |
 | `weapon.arcane` | Arcane Edge | sword | primary, secondary | 27 | candidate |
-| `weapon.fireworkBlade` | Firework Blade | sword | primary, secondary | 27 | candidate |
+| `weapon.fireworkBlade` | Firework Blade | sword | primary, secondary, trim | 27 | candidate |
 | `shield.crux` | Azure Aegis | shield | primary, secondary | 27 | candidate |
-| `shield.templar` | Templar Bulwark | shield | primary, secondary | 27 | candidate |
+| `shield.templar` | Templar Bulwark | shield | primary, secondary, trim | 27 | candidate |
 
 ## Open gates (cannot be closed from an automated session)
 

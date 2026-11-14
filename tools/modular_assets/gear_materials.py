@@ -364,6 +364,6 @@ def quality(image, masks, protected):
     }
 
 
-def quality_passes(metrics):
+def quality_passes(metrics, resource=None):      # `resource` is accepted for parity with gear_masks_chroma and unused
     return (metrics['coverage'] >= .80 and metrics['protectedLeak'] == 0
             and metrics['alphaLeak'] <= .02 and metrics['overlap'] <= .02)
