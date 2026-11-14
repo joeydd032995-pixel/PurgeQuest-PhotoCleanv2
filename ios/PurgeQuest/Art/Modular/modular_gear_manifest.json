@@ -3,8 +3,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    22.42,
-    63.5
+    23.32,
+    62.5
    ],
    "group": "signature",
    "id": "weapon.valkyrie",
@@ -19,8 +19,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.55516,
-     0.01244
+     0.55835,
+     0.013
     ]
    },
    "resourceName": "valkyrie_v1_sword",
@@ -61,26 +61,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      15,
+      16,
       1,
-      386,
+      382,
       126
      ],
      "canvasGrowth": {
       "1x": [
-       1.017,
-       1.077
+       1.016,
+       1.075
       ],
       "titan": [
-       1.511,
-       1.759
+       1.51,
+       1.757
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.964392,
+      "coverage": 0.933617,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -91,7 +91,7 @@
   },
   {
    "gripPx": [
-    111.5,
+    110.0,
     159.5
    ],
    "group": "signature",
@@ -108,12 +108,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.45084,
-     0.08603
+     0.49981,
+     0.03426
     ],
     "secondary": [
-     0.30949,
-     0.02683
+     0.40459,
+     0.02781
     ]
    },
    "resourceName": "forest_ranger_v1_bow",
@@ -122,12 +122,12 @@
    "slot": "mainHand",
    "stringAnchors": {
     "bottom": [
-     30.5,
-     299
+     32.0,
+     295
     ],
     "top": [
-     30.5,
-     20
+     31.0,
+     24
     ]
    },
    "supportedPacks": [
@@ -139,10 +139,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      18,
-      20,
+      19,
+      24,
       136,
-      299
+      295
      ],
      "canvasGrowth": {
       "1x": [
@@ -150,28 +150,28 @@
        1.0
       ],
       "titan": [
-       1.035,
-       1.031
+       1.036,
+       1.032
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.951508,
+      "coverage": 0.946014,
       "overlap": 0.0,
       "protectedLeak": 0.0
      },
      "stringAlignment": {
       "forest_ranger_v1": {
        "frames": 3,
-       "maxNockToChordPx": 107.18,
-       "meanNockToChordPx": 97.85
+       "maxNockToChordPx": 108.17,
+       "meanNockToChordPx": 98.81
       },
       "forest_ranger_v2": {
        "frames": 3,
-       "maxNockToChordPx": 107.18,
-       "meanNockToChordPx": 97.85
+       "maxNockToChordPx": 108.17,
+       "meanNockToChordPx": 98.81
       }
      }
     },
@@ -182,8 +182,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    37.98,
-    63.5
+    38.66,
+    62.5
    ],
    "group": "signature",
    "id": "weapon.seer",
@@ -198,8 +198,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.50603,
-     0.09531
+     0.48394,
+     0.06418
     ]
    },
    "resourceName": "seer_v1_sword",
@@ -240,26 +240,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      31,
-      3,
-      380,
-      124
+      32,
+      14,
+      365,
+      113
      ],
      "canvasGrowth": {
       "1x": [
-       1.007,
-       1.063
+       1.006,
+       1.061
       ],
       "titan": [
        1.459,
-       1.697
+       1.696
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.964971,
+      "coverage": 0.965767,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -271,8 +271,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    68.94,
-    63.5
+    68.92,
+    63.0
    ],
    "group": "signature",
    "id": "weapon.blood_alchemist",
@@ -288,12 +288,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.63413,
-     0.0337
+     0.30492,
+     0.07328
     ],
     "secondary": [
-     0.60616,
-     0.17587
+     0.5089,
+     0.01926
     ]
    },
    "resourceName": "blood_alchemist_v1_sword",
@@ -335,25 +335,25 @@
     "automated": {
      "bbox": [
       64,
-      31,
-      311,
-      96
+      33,
+      310,
+      94
      ],
      "canvasGrowth": {
       "1x": [
        1.0,
-       1.035
+       1.034
       ],
       "titan": [
-       1.356,
-       1.572
+       1.357,
+       1.573
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.974765,
+      "coverage": 0.950152,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -365,8 +365,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    18.62,
-    69.5
+    17.28,
+    68.5
    ],
    "group": "signature",
    "id": "weapon.dark_oracle",
@@ -382,12 +382,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.46761,
-     0.01581
+     0.4846,
+     0.01305
     ],
     "secondary": [
-     0.56763,
-     0.08263
+     0.58032,
+     0.07398
     ]
    },
    "resourceName": "dark_oracle_v1_sword",
@@ -428,10 +428,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      11,
-      18,
-      392,
-      119
+      12,
+      35,
+      276,
+      96
      ],
      "canvasGrowth": {
       "1x": [
@@ -439,15 +439,15 @@
        1.08
       ],
       "titan": [
-       1.515,
-       1.766
+       1.521,
+       1.773
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.925173,
+      "coverage": 0.71438,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -459,7 +459,7 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    48.3,
+    49.04,
     63.5
    ],
    "group": "signature",
@@ -475,8 +475,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.3576,
-     0.01451
+     0.38516,
+     0.00803
     ]
    },
    "resourceName": "necromancer_v1_sword",
@@ -517,26 +517,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      42,
-      36,
-      357,
-      91
+      43,
+      37,
+      345,
+      90
      ],
      "canvasGrowth": {
       "1x": [
        1.0,
-       1.054
+       1.052
       ],
       "titan": [
-       1.425,
-       1.655
+       1.422,
+       1.652
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.913014,
+      "coverage": 0.843551,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -548,8 +548,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    27.18,
-    63.5
+    27.14,
+    63.0
    ],
    "group": "signature",
    "id": "weapon.skeleton_crusader",
@@ -564,8 +564,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.75609,
-     0.04905
+     0.67999,
+     0.02533
     ]
    },
    "resourceName": "skeleton_crusader_v1_sword",
@@ -607,25 +607,25 @@
     "automated": {
      "bbox": [
       20,
-      24,
-      379,
-      103
+      25,
+      377,
+      102
      ],
      "canvasGrowth": {
       "1x": [
-       1.014,
-       1.073
+       1.013,
+       1.072
       ],
       "titan": [
-       1.495,
-       1.74
+       1.496,
+       1.741
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.959953,
+      "coverage": 0.950756,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -637,8 +637,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    59.48,
-    63.0
+    59.42,
+    64.5
    ],
    "group": "signature",
    "id": "weapon.golem",
@@ -653,8 +653,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.75253,
-     0.03173
+     0.5314,
+     0.03229
     ]
    },
    "resourceName": "golem_v1_sword",
@@ -696,25 +696,25 @@
     "automated": {
      "bbox": [
       53,
-      1,
-      377,
-      103
+      2,
+      374,
+      102
      ],
      "canvasGrowth": {
       "1x": [
        1.0,
-       1.044
+       1.042
       ],
       "titan": [
-       1.388,
-       1.611
+       1.386,
+       1.609
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.963334,
+      "coverage": 0.858514,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -726,8 +726,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    19.32,
-    64.0
+    19.16,
+    63.0
    ],
    "group": "staff1",
    "id": "weapon.staff.1.1",
@@ -742,8 +742,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.4705,
-     0.0686
+     0.40415,
+     0.01982
     ]
    },
    "resourceName": "staff_1_1",
@@ -786,24 +786,24 @@
      "bbox": [
       13,
       1,
-      329,
-      126
+      321,
+      125
      ],
      "canvasGrowth": {
       "1x": [
-       1.019,
-       1.08
+       1.018,
+       1.079
       ],
       "titan": [
-       1.521,
-       1.771
+       1.523,
+       1.773
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.951934,
+      "coverage": 0.932277,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -815,7 +815,7 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    19.32,
+    19.16,
     64.0
    ],
    "group": "staff1",
@@ -831,8 +831,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.46837,
-     0.06823
+     0.38169,
+     0.0257
     ]
    },
    "resourceName": "staff_1_2",
@@ -875,24 +875,24 @@
      "bbox": [
       13,
       1,
-      329,
-      126
+      321,
+      125
      ],
      "canvasGrowth": {
       "1x": [
-       1.019,
-       1.08
+       1.017,
+       1.079
       ],
       "titan": [
        1.521,
-       1.771
+       1.772
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.934722,
+      "coverage": 0.904296,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -904,8 +904,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    19.48,
-    64.0
+    19.28,
+    62.5
    ],
    "group": "staff1",
    "id": "weapon.staff.1.3",
@@ -920,8 +920,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.49529,
-     0.09431
+     0.43063,
+     0.02258
     ]
    },
    "resourceName": "staff_1_3",
@@ -964,24 +964,24 @@
      "bbox": [
       13,
       0,
-      337,
+      327,
       127
      ],
      "canvasGrowth": {
       "1x": [
        1.018,
-       1.08
+       1.079
       ],
       "titan": [
-       1.52,
-       1.771
+       1.523,
+       1.774
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.922772,
+      "coverage": 0.92608,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -993,8 +993,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    14.96,
-    63.5
+    15.3,
+    75.5
    ],
    "group": "staff1",
    "id": "weapon.staff.1.4",
@@ -1010,12 +1010,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.47929,
-     0.08925
+     0.43189,
+     0.03204
     ],
     "secondary": [
-     0.37829,
-     0.09236
+     0.37676,
+     0.01391
     ]
    },
    "resourceName": "staff_1_4",
@@ -1056,26 +1056,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      8,
-      0,
-      356,
+      9,
+      11,
+      324,
       127
      ],
      "canvasGrowth": {
       "1x": [
-       1.022,
-       1.084
+       1.013,
+       1.081
       ],
       "titan": [
-       1.536,
-       1.79
+       1.516,
+       1.77
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.933733,
+      "coverage": 0.892963,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -1087,8 +1087,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    9.44,
-    63.5
+    8.26,
+    71.5
    ],
    "group": "staff1",
    "id": "weapon.staff.1.5",
@@ -1103,8 +1103,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.37704,
-     0.07342
+     0.36127,
+     0.05377
     ]
    },
    "resourceName": "staff_1_5",
@@ -1146,25 +1146,25 @@
     "automated": {
      "bbox": [
       2,
-      0,
-      374,
+      7,
+      315,
       127
      ],
      "canvasGrowth": {
       "1x": [
-       1.025,
-       1.089
+       1.02,
+       1.088
       ],
       "titan": [
-       1.555,
-       1.812
+       1.546,
+       1.805
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.909589,
+      "coverage": 0.760143,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -1176,8 +1176,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    13.18,
-    64.0
+    13.94,
+    63.0
    ],
    "group": "staff2",
    "id": "weapon.staff.2.1",
@@ -1192,8 +1192,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.58628,
-     0.01534
+     0.52235,
+     0.02651
     ]
    },
    "resourceName": "staff_2_1",
@@ -1234,26 +1234,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      7,
+      8,
       19,
-      316,
+      305,
       108
      ],
      "canvasGrowth": {
       "1x": [
-       1.022,
-       1.086
+       1.021,
+       1.084
       ],
       "titan": [
-       1.541,
-       1.796
+       1.54,
+       1.794
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.973555,
+      "coverage": 0.971384,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -1265,8 +1265,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    13.5,
-    64.0
+    12.66,
+    72.0
    ],
    "group": "staff2",
    "id": "weapon.staff.2.2",
@@ -1281,8 +1281,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.5752,
-     0.0502
+     0.53686,
+     0.05873
     ]
    },
    "resourceName": "staff_2_2",
@@ -1323,26 +1323,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      7,
+      8,
       14,
-      332,
+      241,
       113
      ],
      "canvasGrowth": {
       "1x": [
-       1.022,
-       1.085
+       1.016,
+       1.084
       ],
       "titan": [
-       1.54,
-       1.795
+       1.531,
+       1.786
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.972996,
+      "coverage": 0.900308,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -1354,8 +1354,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    13.62,
-    63.5
+    12.92,
+    60.15
    ],
    "group": "staff2",
    "id": "weapon.staff.2.3",
@@ -1364,19 +1364,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_2_3_mask_primary",
-    "secondary": "staff_2_3_mask_secondary"
+    "primary": "staff_2_3_mask_primary"
    },
    "name": "Verdant Coil III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.69248,
-     0.05558
-    ],
-    "secondary": [
-     0.41568,
-     0.03551
+     0.53256,
+     0.07092
     ]
    },
    "resourceName": "staff_2_3",
@@ -1417,26 +1412,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      7,
-      9,
-      338,
-      118
+      8,
+      14,
+      254,
+      114
      ],
      "canvasGrowth": {
       "1x": [
-       1.023,
+       1.024,
        1.085
       ],
       "titan": [
-       1.541,
-       1.795
+       1.548,
+       1.803
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.967576,
+      "coverage": 0.926033,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -1448,8 +1443,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    13.86,
-    63.5
+    13.48,
+    69.0
    ],
    "group": "staff2",
    "id": "weapon.staff.2.4",
@@ -1458,24 +1453,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_2_4_mask_primary",
-    "secondary": "staff_2_4_mask_secondary",
-    "trim": "staff_2_4_mask_trim"
+    "primary": "staff_2_4_mask_primary"
    },
    "name": "Verdant Coil IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.67618,
-     0.07781
-    ],
-    "secondary": [
-     0.30292,
-     0.04713
-    ],
-    "trim": [
-     0.38628,
-     0.04195
+     0.50771,
+     0.06285
     ]
    },
    "resourceName": "staff_2_4",
@@ -1516,26 +1501,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      7,
-      4,
-      350,
+      8,
+      6,
+      282,
       123
      ],
      "canvasGrowth": {
       "1x": [
-       1.022,
-       1.085
+       1.018,
+       1.083
       ],
       "titan": [
-       1.54,
-       1.794
+       1.532,
+       1.787
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.958036,
+      "coverage": 0.927373,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -1547,8 +1532,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    7.94,
-    63.5
+    4.8,
+    66.5
    ],
    "group": "staff2",
    "id": "weapon.staff.2.5",
@@ -1557,19 +1542,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_2_5_mask_primary",
-    "secondary": "staff_2_5_mask_secondary"
+    "primary": "staff_2_5_mask_primary"
    },
    "name": "Verdant Coil V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.66009,
-     0.08428
-    ],
-    "secondary": [
-     0.31145,
-     0.02831
+     0.49405,
+     0.05542
     ]
    },
    "resourceName": "staff_2_5",
@@ -1611,25 +1591,25 @@
     "automated": {
      "bbox": [
       0,
-      0,
-      397,
-      127
+      4,
+      240,
+      126
      ],
      "canvasGrowth": {
       "1x": [
-       1.026,
-       1.09
+       1.025,
+       1.091
       ],
       "titan": [
-       1.56,
-       1.818
+       1.565,
+       1.826
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.962141,
+      "coverage": 0.902088,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -1641,8 +1621,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    20.6,
-    63.5
+    21.1,
+    62.5
    ],
    "group": "staff3",
    "id": "weapon.staff.3.1",
@@ -1651,19 +1631,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_3_1_mask_primary",
-    "secondary": "staff_3_1_mask_secondary"
+    "primary": "staff_3_1_mask_primary"
    },
    "name": "Tidecaller I",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.55264,
-     0.09121
-    ],
-    "secondary": [
-     0.88017,
-     0.10715
+     0.54218,
+     0.02797
     ]
    },
    "resourceName": "staff_3_1",
@@ -1704,26 +1679,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      14,
+      15,
       22,
-      344,
+      320,
       105
      ],
      "canvasGrowth": {
       "1x": [
-       1.018,
-       1.079
+       1.017,
+       1.077
       ],
       "titan": [
        1.517,
-       1.767
+       1.766
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.964646,
+      "coverage": 0.962529,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -1735,8 +1710,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    20.8,
-    63.5
+    21.2,
+    62.5
    ],
    "group": "staff3",
    "id": "weapon.staff.3.2",
@@ -1745,19 +1720,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_3_2_mask_primary",
-    "secondary": "staff_3_2_mask_secondary"
+    "primary": "staff_3_2_mask_primary"
    },
    "name": "Tidecaller II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.56938,
-     0.10734
-    ],
-    "secondary": [
-     0.80156,
-     0.09511
+     0.54648,
+     0.02165
     ]
    },
    "resourceName": "staff_3_2",
@@ -1798,15 +1768,15 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      14,
+      15,
       22,
-      354,
+      325,
       105
      ],
      "canvasGrowth": {
       "1x": [
-       1.018,
-       1.079
+       1.017,
+       1.077
       ],
       "titan": [
        1.517,
@@ -1817,7 +1787,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.964806,
+      "coverage": 0.959382,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -1829,8 +1799,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    21.0,
-    63.5
+    21.38,
+    62.5
    ],
    "group": "staff3",
    "id": "weapon.staff.3.3",
@@ -1839,19 +1809,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_3_3_mask_primary",
-    "secondary": "staff_3_3_mask_secondary"
+    "primary": "staff_3_3_mask_primary"
    },
    "name": "Tidecaller III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.51792,
-     0.10432
-    ],
-    "secondary": [
-     0.73641,
-     0.13695
+     0.58371,
+     0.03415
     ]
    },
    "resourceName": "staff_3_3",
@@ -1892,15 +1857,15 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      14,
+      15,
       22,
-      364,
+      334,
       105
      ],
      "canvasGrowth": {
       "1x": [
-       1.018,
-       1.079
+       1.017,
+       1.077
       ],
       "titan": [
        1.516,
@@ -1911,7 +1876,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.965554,
+      "coverage": 0.959172,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -1923,7 +1888,7 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    17.28,
+    19.74,
     63.5
    ],
    "group": "staff3",
@@ -1933,24 +1898,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_3_4_mask_primary",
-    "secondary": "staff_3_4_mask_secondary",
-    "trim": "staff_3_4_mask_trim"
+    "primary": "staff_3_4_mask_primary"
    },
    "name": "Tidecaller IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.6134,
-     0.15985
-    ],
-    "secondary": [
-     0.67418,
-     0.12133
-    ],
-    "trim": [
-     0.39503,
-     0.02199
+     0.60765,
+     0.03766
     ]
    },
    "resourceName": "staff_3_4",
@@ -1991,26 +1946,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      10,
+      13,
       22,
-      374,
+      350,
       105
      ],
      "canvasGrowth": {
       "1x": [
-       1.02,
-       1.082
+       1.017,
+       1.078
       ],
       "titan": [
-       1.528,
-       1.78
+       1.52,
+       1.77
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.956629,
+      "coverage": 0.9665,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -2022,8 +1977,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    13.56,
-    63.5
+    14.38,
+    62.5
    ],
    "group": "staff3",
    "id": "weapon.staff.3.5",
@@ -2039,12 +1994,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.43196,
-     0.11936
+     0.50561,
+     0.08189
     ],
     "secondary": [
-     0.40264,
-     0.03162
+     0.47359,
+     0.01103
     ]
    },
    "resourceName": "staff_3_5",
@@ -2085,26 +2040,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      6,
+      7,
       18,
-      384,
+      376,
       109
      ],
      "canvasGrowth": {
       "1x": [
-       1.023,
-       1.085
+       1.021,
+       1.083
       ],
       "titan": [
-       1.541,
-       1.795
+       1.54,
+       1.793
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.921226,
+      "coverage": 0.936787,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -2116,8 +2071,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    17.98,
-    62.0
+    17.8,
+    63.0
    ],
    "group": "staff4",
    "id": "weapon.staff.4.1",
@@ -2126,19 +2081,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_4_1_mask_primary",
-    "secondary": "staff_4_1_mask_secondary"
+    "primary": "staff_4_1_mask_primary"
    },
    "name": "Ember Scepter I",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.4943,
-     0.00922
-    ],
-    "secondary": [
-     0.61063,
-     0.11794
+     0.44499,
+     0.00987
     ]
    },
    "resourceName": "staff_4_1",
@@ -2181,24 +2131,24 @@
      "bbox": [
       12,
       3,
-      311,
+      302,
       127
      ],
      "canvasGrowth": {
       "1x": [
-       1.021,
-       1.081
+       1.019,
+       1.08
       ],
       "titan": [
-       1.528,
-       1.78
+       1.527,
+       1.779
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.95563,
+      "coverage": 0.942673,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -2210,7 +2160,7 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    18.08,
+    17.8,
     62.0
    ],
    "group": "staff4",
@@ -2220,19 +2170,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_4_2_mask_primary",
-    "secondary": "staff_4_2_mask_secondary"
+    "primary": "staff_4_2_mask_primary"
    },
    "name": "Ember Scepter II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.41874,
-     0.02484
-    ],
-    "secondary": [
-     0.62355,
-     0.14852
+     0.38431,
+     0.03663
     ]
    },
    "resourceName": "staff_4_2",
@@ -2274,25 +2219,25 @@
     "automated": {
      "bbox": [
       12,
-      2,
-      316,
+      3,
+      302,
       127
      ],
      "canvasGrowth": {
       "1x": [
-       1.021,
-       1.081
+       1.02,
+       1.08
       ],
       "titan": [
-       1.528,
-       1.779
+       1.529,
+       1.78
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.934626,
+      "coverage": 0.83873,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -2304,8 +2249,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    18.42,
-    63.5
+    18.08,
+    64.0
    ],
    "group": "staff4",
    "id": "weapon.staff.4.3",
@@ -2314,19 +2259,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_4_3_mask_primary",
-    "secondary": "staff_4_3_mask_secondary"
+    "primary": "staff_4_3_mask_primary"
    },
    "name": "Ember Scepter III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.47851,
-     0.04351
-    ],
-    "secondary": [
-     0.65679,
-     0.12571
+     0.42313,
+     0.08251
     ]
    },
    "resourceName": "staff_4_3",
@@ -2369,13 +2309,13 @@
      "bbox": [
       12,
       3,
-      333,
+      316,
       127
      ],
      "canvasGrowth": {
       "1x": [
-       1.019,
-       1.081
+       1.018,
+       1.08
       ],
       "titan": [
        1.525,
@@ -2386,7 +2326,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.949989,
+      "coverage": 0.942803,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -2398,8 +2338,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    18.68,
-    63.5
+    18.54,
+    61.5
    ],
    "group": "staff4",
    "id": "weapon.staff.4.4",
@@ -2415,12 +2355,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.48475,
-     0.07171
+     0.40828,
+     0.07837
     ],
     "secondary": [
-     0.66206,
-     0.11776
+     0.54271,
+     0.07722
     ]
    },
    "resourceName": "staff_4_4",
@@ -2462,25 +2402,25 @@
     "automated": {
      "bbox": [
       12,
-      1,
-      346,
+      2,
+      339,
       127
      ],
      "canvasGrowth": {
       "1x": [
        1.019,
-       1.081
+       1.08
       ],
       "titan": [
-       1.524,
-       1.775
+       1.527,
+       1.778
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.943948,
+      "coverage": 0.938507,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -2492,8 +2432,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    19.52,
-    61.5
+    19.36,
+    64.5
    ],
    "group": "staff4",
    "id": "weapon.staff.4.5",
@@ -2502,19 +2442,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "emissive": "staff_4_5_mask_emissive",
     "primary": "staff_4_5_mask_primary"
    },
    "name": "Ember Scepter V",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.84495,
-     0.15449
-    ],
     "primary": [
-     0.49602,
-     0.09555
+     0.42311,
+     0.07862
     ]
    },
    "resourceName": "staff_4_5",
@@ -2557,24 +2492,24 @@
      "bbox": [
       12,
       0,
-      388,
+      380,
       127
      ],
      "canvasGrowth": {
       "1x": [
-       1.02,
-       1.08
+       1.017,
+       1.079
       ],
       "titan": [
-       1.524,
-       1.774
+       1.52,
+       1.77
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.948201,
+      "coverage": 0.947247,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -2586,8 +2521,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    24.1,
-    63.5
+    24.9,
+    64.0
    ],
    "group": "staff5",
    "id": "weapon.staff.5.1",
@@ -2602,8 +2537,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.46353,
-     0.06742
+     0.42165,
+     0.00736
     ]
    },
    "resourceName": "staff_5_1",
@@ -2644,26 +2579,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      18,
-      0,
-      323,
-      127
+      19,
+      1,
+      314,
+      126
      ],
      "canvasGrowth": {
       "1x": [
-       1.016,
-       1.076
+       1.014,
+       1.074
       ],
       "titan": [
-       1.506,
-       1.753
+       1.502,
+       1.749
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.948629,
+      "coverage": 0.888143,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -2675,8 +2610,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    24.3,
-    63.5
+    25.14,
+    62.5
    ],
    "group": "staff5",
    "id": "weapon.staff.5.2",
@@ -2685,19 +2620,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_5_2_mask_primary",
-    "secondary": "staff_5_2_mask_secondary"
+    "primary": "staff_5_2_mask_primary"
    },
    "name": "Storm Spire II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.44478,
-     0.06239
-    ],
-    "secondary": [
-     0.47415,
-     0.13356
+     0.41654,
+     0.00524
     ]
    },
    "resourceName": "staff_5_2",
@@ -2738,26 +2668,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      18,
+      19,
       0,
-      333,
+      326,
       127
      ],
      "canvasGrowth": {
       "1x": [
-       1.016,
-       1.076
+       1.015,
+       1.074
       ],
       "titan": [
-       1.505,
-       1.752
+       1.504,
+       1.75
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.944901,
+      "coverage": 0.881711,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -2769,8 +2699,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    24.46,
-    63.5
+    25.28,
+    63.0
    ],
    "group": "staff5",
    "id": "weapon.staff.5.3",
@@ -2779,24 +2709,19 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "emissive": "staff_5_3_mask_emissive",
     "primary": "staff_5_3_mask_primary",
     "secondary": "staff_5_3_mask_secondary"
    },
    "name": "Storm Spire III",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.78865,
-     0.163
-    ],
     "primary": [
-     0.54068,
-     0.10053
+     0.54609,
+     0.06619
     ],
     "secondary": [
-     0.50931,
-     0.14986
+     0.54013,
+     0.0516
     ]
    },
    "resourceName": "staff_5_3",
@@ -2837,26 +2762,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      18,
+      19,
       0,
-      341,
+      333,
       127
      ],
      "canvasGrowth": {
       "1x": [
-       1.016,
-       1.075
+       1.014,
+       1.073
       ],
       "titan": [
-       1.504,
-       1.751
+       1.502,
+       1.749
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.909771,
+      "coverage": 0.932149,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -2868,7 +2793,7 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    23.56,
+    23.32,
     63.5
    ],
    "group": "staff5",
@@ -2886,16 +2811,16 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.45161,
-     0.00776
+     0.46013,
+     0.01064
     ],
     "secondary": [
-     0.61734,
-     0.11518
+     0.51165,
+     0.05473
     ],
     "trim": [
-     0.4529,
-     0.13168
+     0.5085,
+     0.05265
     ]
    },
    "resourceName": "staff_5_4",
@@ -2938,24 +2863,24 @@
      "bbox": [
       17,
       0,
-      345,
+      333,
       127
      ],
      "canvasGrowth": {
       "1x": [
-       1.016,
-       1.076
+       1.015,
+       1.075
       ],
       "titan": [
-       1.507,
-       1.755
+       1.508,
+       1.756
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.940258,
+      "coverage": 0.929655,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -2967,8 +2892,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    7.68,
-    63.5
+    8.2,
+    64.5
    ],
    "group": "staff5",
    "id": "weapon.staff.5.5",
@@ -2978,23 +2903,18 @@
    "layer": "front",
    "maskResources": {
     "primary": "staff_5_5_mask_primary",
-    "secondary": "staff_5_5_mask_secondary",
-    "trim": "staff_5_5_mask_trim"
+    "secondary": "staff_5_5_mask_secondary"
    },
    "name": "Storm Spire V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.39842,
-     0.02248
+     0.43197,
+     0.0107
     ],
     "secondary": [
-     0.49995,
-     0.09113
-    ],
-    "trim": [
-     0.44245,
-     0.09962
+     0.43806,
+     0.06236
     ]
    },
    "resourceName": "staff_5_5",
@@ -3035,26 +2955,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
+      1,
       0,
-      0,
-      384,
+      361,
       127
      ],
      "canvasGrowth": {
       "1x": [
-       1.026,
-       1.091
+       1.024,
+       1.089
       ],
       "titan": [
-       1.56,
-       1.819
+       1.557,
+       1.815
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.942317,
+      "coverage": 0.902146,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -3066,8 +2986,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    18.74,
-    65.5
+    19.46,
+    66.0
    ],
    "group": "staff6",
    "id": "weapon.staff.6.1",
@@ -3082,8 +3002,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.42783,
-     0.01304
+     0.39394,
+     0.02856
     ]
    },
    "resourceName": "staff_6_1",
@@ -3124,26 +3044,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      13,
+      14,
       24,
-      300,
+      287,
       103
      ],
      "canvasGrowth": {
       "1x": [
-       1.018,
-       1.08
+       1.016,
+       1.078
       ],
       "titan": [
-       1.52,
-       1.771
+       1.517,
+       1.768
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.961738,
+      "coverage": 0.956455,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -3155,7 +3075,7 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    18.92,
+    19.56,
     65.5
    ],
    "group": "staff6",
@@ -3171,8 +3091,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.32627,
-     0.05563
+     0.29706,
+     0.03181
     ]
    },
    "resourceName": "staff_6_2",
@@ -3213,26 +3133,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      13,
-      7,
-      309,
-      103
+      14,
+      8,
+      292,
+      102
      ],
      "canvasGrowth": {
       "1x": [
-       1.018,
-       1.08
+       1.016,
+       1.078
       ],
       "titan": [
-       1.52,
-       1.771
+       1.518,
+       1.768
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.938557,
+      "coverage": 0.954311,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -3244,8 +3164,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    12.18,
-    66.5
+    12.04,
+    67.0
    ],
    "group": "staff6",
    "id": "weapon.staff.6.3",
@@ -3260,8 +3180,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.39999,
-     0.07799
+     0.45192,
+     0.05028
     ]
    },
    "resourceName": "staff_6_3",
@@ -3303,17 +3223,17 @@
     "automated": {
      "bbox": [
       6,
-      7,
-      315,
+      8,
+      308,
       103
      ],
      "canvasGrowth": {
       "1x": [
-       1.022,
-       1.086
+       1.02,
+       1.085
       ],
       "titan": [
-       1.541,
+       1.54,
        1.796
       ]
      },
@@ -3321,7 +3241,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.967369,
+      "coverage": 0.968718,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -3333,8 +3253,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    15.6,
-    65.5
+    15.1,
+    64.5
    ],
    "group": "staff6",
    "id": "weapon.staff.6.4",
@@ -3349,8 +3269,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.37801,
-     0.08939
+     0.46291,
+     0.05274
     ]
    },
    "resourceName": "staff_6_4",
@@ -3392,25 +3312,25 @@
     "automated": {
      "bbox": [
       9,
-      5,
-      339,
+      6,
+      314,
       103
      ],
      "canvasGrowth": {
       "1x": [
        1.02,
-       1.083
+       1.082
       ],
       "titan": [
-       1.531,
-       1.784
+       1.534,
+       1.787
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.965791,
+      "coverage": 0.964981,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -3422,8 +3342,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    16.12,
-    64.5
+    16.82,
+    65.5
    ],
    "group": "staff6",
    "id": "weapon.staff.6.5",
@@ -3432,19 +3352,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_6_5_mask_primary",
-    "secondary": "staff_6_5_mask_secondary"
+    "primary": "staff_6_5_mask_primary"
    },
    "name": "Gilded Crook V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.34974,
-     0.05552
-    ],
-    "secondary": [
-     0.59449,
-     0.08412
+     0.38478,
+     0.03734
     ]
    },
    "resourceName": "staff_6_5",
@@ -3485,26 +3400,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      9,
+      10,
       6,
-      365,
+      351,
       103
      ],
      "canvasGrowth": {
       "1x": [
-       1.02,
-       1.083
+       1.018,
+       1.081
       ],
       "titan": [
-       1.531,
-       1.783
+       1.527,
+       1.779
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.944614,
+      "coverage": 0.919671,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -3516,8 +3431,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    22.3,
-    64.5
+    22.22,
+    65.5
    ],
    "group": "staff7",
    "id": "weapon.staff.7.1",
@@ -3526,24 +3441,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_7_1_mask_primary",
-    "secondary": "staff_7_1_mask_secondary",
-    "trim": "staff_7_1_mask_trim"
+    "primary": "staff_7_1_mask_primary"
    },
    "name": "Bone Reliquary I",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.46544,
-     0.06767
-    ],
-    "secondary": [
-     0.66953,
-     0.07473
-    ],
-    "trim": [
-     0.90171,
-     0.02097
+     0.52924,
+     0.02973
     ]
    },
    "resourceName": "staff_7_1",
@@ -3586,24 +3491,24 @@
      "bbox": [
       16,
       18,
-      331,
+      327,
       109
      ],
      "canvasGrowth": {
       "1x": [
-       1.016,
-       1.077
+       1.015,
+       1.076
       ],
       "titan": [
-       1.51,
-       1.758
+       1.509,
+       1.757
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.970348,
+      "coverage": 0.965777,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -3615,8 +3520,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    22.74,
-    63.5
+    22.64,
+    62.0
    ],
    "group": "staff7",
    "id": "weapon.staff.7.2",
@@ -3625,24 +3530,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_7_2_mask_primary",
-    "secondary": "staff_7_2_mask_secondary",
-    "trim": "staff_7_2_mask_trim"
+    "primary": "staff_7_2_mask_primary"
    },
    "name": "Bone Reliquary II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.72636,
-     0.09651
-    ],
-    "secondary": [
-     0.51381,
-     0.07246
-    ],
-    "trim": [
-     0.59721,
-     0.00035
+     0.57626,
+     0.0376
     ]
    },
    "resourceName": "staff_7_2",
@@ -3684,25 +3579,25 @@
     "automated": {
      "bbox": [
       16,
-      13,
-      353,
-      114
+      14,
+      348,
+      113
      ],
      "canvasGrowth": {
       "1x": [
        1.017,
-       1.077
+       1.076
       ],
       "titan": [
-       1.51,
-       1.758
+       1.513,
+       1.761
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.971132,
+      "coverage": 0.969598,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -3714,7 +3609,7 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    23.1,
+    23.08,
     63.5
    ],
    "group": "staff7",
@@ -3724,24 +3619,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "emissive": "staff_7_3_mask_emissive",
-    "primary": "staff_7_3_mask_primary",
-    "secondary": "staff_7_3_mask_secondary"
+    "primary": "staff_7_3_mask_primary"
    },
    "name": "Bone Reliquary III",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.80415,
-     0.16688
-    ],
     "primary": [
-     0.76075,
-     0.12281
-    ],
-    "secondary": [
-     0.53748,
-     0.10116
+     0.59621,
+     0.04814
     ]
    },
    "resourceName": "staff_7_3",
@@ -3784,13 +3669,13 @@
      "bbox": [
       16,
       9,
-      371,
-      119
+      370,
+      118
      ],
      "canvasGrowth": {
       "1x": [
-       1.016,
-       1.077
+       1.015,
+       1.075
       ],
       "titan": [
        1.509,
@@ -3801,7 +3686,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.971802,
+      "coverage": 0.968427,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -3813,8 +3698,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    20.2,
-    63.5
+    20.02,
+    64.0
    ],
    "group": "staff7",
    "id": "weapon.staff.7.4",
@@ -3823,24 +3708,19 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "emissive": "staff_7_4_mask_emissive",
     "primary": "staff_7_4_mask_primary",
     "secondary": "staff_7_4_mask_secondary"
    },
    "name": "Bone Reliquary IV",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.77498,
-     0.17332
-    ],
     "primary": [
-     0.51323,
-     0.09831
+     0.65474,
+     0.0687
     ],
     "secondary": [
-     0.47,
-     0.00811
+     0.41466,
+     0.03332
     ]
    },
    "resourceName": "staff_7_4",
@@ -3883,16 +3763,16 @@
      "bbox": [
       13,
       4,
-      373,
+      364,
       123
      ],
      "canvasGrowth": {
       "1x": [
-       1.018,
-       1.079
+       1.017,
+       1.078
       ],
       "titan": [
-       1.519,
+       1.518,
        1.768
       ]
      },
@@ -3900,7 +3780,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.963815,
+      "coverage": 0.951141,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -3912,7 +3792,7 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    18.38,
+    18.14,
     63.5
    ],
    "group": "staff7",
@@ -3922,24 +3802,19 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "emissive": "staff_7_5_mask_emissive",
     "primary": "staff_7_5_mask_primary",
     "secondary": "staff_7_5_mask_secondary"
    },
    "name": "Bone Reliquary V",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.77776,
-     0.19905
-    ],
     "primary": [
-     0.40001,
-     0.07683
+     0.63796,
+     0.10227
     ],
     "secondary": [
-     0.39774,
-     0.02234
+     0.39436,
+     0.02768
     ]
    },
    "resourceName": "staff_7_5",
@@ -3982,24 +3857,24 @@
      "bbox": [
       11,
       0,
-      380,
+      368,
       127
      ],
      "canvasGrowth": {
       "1x": [
-       1.019,
-       1.081
+       1.018,
+       1.08
       ],
       "titan": [
-       1.525,
-       1.776
+       1.526,
+       1.777
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.956967,
+      "coverage": 0.951123,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -4011,8 +3886,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    21.38,
-    65.5
+    22.36,
+    68.0
    ],
    "group": "staff8",
    "id": "weapon.staff.8.1",
@@ -4021,19 +3896,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_8_1_mask_primary",
-    "secondary": "staff_8_1_mask_secondary"
+    "primary": "staff_8_1_mask_primary"
    },
    "name": "Voidspike I",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.7515,
-     0.02578
-    ],
-    "secondary": [
-     0.48555,
-     0.07118
+     0.58104,
+     0.01688
     ]
    },
    "resourceName": "staff_8_1",
@@ -4074,26 +3944,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      15,
+      16,
       4,
       334,
-      123
+      122
      ],
      "canvasGrowth": {
       "1x": [
-       1.016,
-       1.078
+       1.013,
+       1.075
       ],
       "titan": [
-       1.512,
-       1.761
+       1.504,
+       1.753
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.96981,
+      "coverage": 0.964067,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -4105,8 +3975,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    21.6,
-    60.0
+    22.58,
+    61.5
    ],
    "group": "staff8",
    "id": "weapon.staff.8.2",
@@ -4115,19 +3985,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_8_2_mask_primary",
-    "secondary": "staff_8_2_mask_secondary"
+    "primary": "staff_8_2_mask_primary"
    },
    "name": "Voidspike II",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.76617,
-     0.05262
-    ],
-    "secondary": [
-     0.46139,
-     0.06514
+     0.59828,
+     0.01738
     ]
    },
    "resourceName": "staff_8_2",
@@ -4168,26 +4033,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      15,
-      2,
+      16,
+      3,
       345,
-      125
+      123
      ],
      "canvasGrowth": {
       "1x": [
-       1.02,
-       1.078
+       1.017,
+       1.076
       ],
       "titan": [
-       1.519,
-       1.768
+       1.514,
+       1.762
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.969768,
+      "coverage": 0.956657,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -4199,8 +4064,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    21.66,
-    63.0
+    22.52,
+    61.5
    ],
    "group": "staff8",
    "id": "weapon.staff.8.3",
@@ -4209,19 +4074,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_8_3_mask_primary",
-    "secondary": "staff_8_3_mask_secondary"
+    "primary": "staff_8_3_mask_primary"
    },
    "name": "Voidspike III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.81589,
-     0.06379
-    ],
-    "secondary": [
-     0.53313,
-     0.10081
+     0.6283,
+     0.02536
     ]
    },
    "resourceName": "staff_8_3",
@@ -4262,26 +4122,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      15,
+      16,
       1,
-      348,
-      126
+      342,
+      125
      ],
      "canvasGrowth": {
       "1x": [
-       1.018,
-       1.078
+       1.017,
+       1.076
       ],
       "titan": [
-       1.515,
-       1.763
+       1.514,
+       1.762
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.973101,
+      "coverage": 0.962426,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -4293,7 +4153,7 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    21.88,
+    22.74,
     63.5
    ],
    "group": "staff8",
@@ -4310,12 +4170,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.83631,
-     0.09195
+     0.73247,
+     0.05404
     ],
     "secondary": [
-     0.52248,
-     0.09992
+     0.40615,
+     0.06043
     ]
    },
    "resourceName": "staff_8_4",
@@ -4356,26 +4216,26 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      15,
-      0,
-      359,
+      16,
+      1,
+      353,
       126
      ],
      "canvasGrowth": {
       "1x": [
-       1.017,
-       1.078
+       1.015,
+       1.076
       ],
       "titan": [
-       1.513,
-       1.762
+       1.51,
+       1.758
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.969601,
+      "coverage": 0.966895,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -4387,8 +4247,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    9.76,
-    63.5
+    9.72,
+    60.5
    ],
    "group": "staff8",
    "id": "weapon.staff.8.5",
@@ -4404,12 +4264,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.83388,
-     0.11361
+     0.70405,
+     0.06329
     ],
     "secondary": [
-     0.41593,
-     0.08163
+     0.38575,
+     0.06066
     ]
    },
    "resourceName": "staff_8_5",
@@ -4452,24 +4312,24 @@
      "bbox": [
       2,
       0,
-      390,
+      388,
       127
      ],
      "canvasGrowth": {
       "1x": [
-       1.025,
-       1.089
+       1.026,
+       1.088
       ],
       "titan": [
-       1.554,
-       1.81
+       1.558,
+       1.815
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.955983,
+      "coverage": 0.959985,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -4481,7 +4341,7 @@
   {
    "gripPx": [
     79.5,
-    79.5
+    79.0
    ],
    "group": "shield1",
    "id": "shield.set.1.1",
@@ -4496,8 +4356,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.39127,
-     0.04116
+     0.3849,
+     0.03076
     ]
    },
    "resourceName": "shield_1_1",
@@ -4538,10 +4398,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      15,
-      12,
-      144,
-      147
+      16,
+      16,
+      143,
+      142
      ],
      "canvasGrowth": {
       "1x": [
@@ -4557,7 +4417,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.916128,
+      "coverage": 0.877527,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -4568,8 +4428,8 @@
   },
   {
    "gripPx": [
-    79.0,
-    79.5
+    80.0,
+    80.0
    ],
    "group": "shield1",
    "id": "shield.set.1.2",
@@ -4584,8 +4444,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.42755,
-     0.03714
+     0.39492,
+     0.02968
     ]
    },
    "resourceName": "shield_1_2",
@@ -4626,10 +4486,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      12,
-      9,
+      14,
+      14,
       146,
-      150
+      146
      ],
      "canvasGrowth": {
       "1x": [
@@ -4645,7 +4505,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.963175,
+      "coverage": 0.935827,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -4656,8 +4516,8 @@
   },
   {
    "gripPx": [
-    79.0,
-    79.5
+    79.5,
+    79.0
    ],
    "group": "shield1",
    "id": "shield.set.1.3",
@@ -4666,19 +4526,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_1_3_mask_primary",
-    "secondary": "shield_1_3_mask_secondary"
+    "primary": "shield_1_3_mask_primary"
    },
    "name": "Oaken Ward III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.39448,
-     0.05003
-    ],
-    "secondary": [
-     0.66562,
-     0.00869
+     0.44802,
+     0.02352
     ]
    },
    "resourceName": "shield_1_3",
@@ -4719,10 +4574,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
+      13,
       12,
-      9,
       146,
-      150
+      146
      ],
      "canvasGrowth": {
       "1x": [
@@ -4738,7 +4593,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.891385,
+      "coverage": 0.900757,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -4749,8 +4604,8 @@
   },
   {
    "gripPx": [
-    79.0,
-    79.5
+    80.0,
+    80.0
    ],
    "group": "shield1",
    "id": "shield.set.1.4",
@@ -4759,19 +4614,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_1_4_mask_primary",
-    "secondary": "shield_1_4_mask_secondary"
+    "primary": "shield_1_4_mask_primary"
    },
    "name": "Oaken Ward IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.71946,
-     0.00722
-    ],
-    "secondary": [
-     0.38846,
-     0.04994
+     0.50351,
+     0.02486
     ]
    },
    "resourceName": "shield_1_4",
@@ -4812,10 +4662,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      7,
-      5,
-      151,
-      154
+      10,
+      8,
+      150,
+      152
      ],
      "canvasGrowth": {
       "1x": [
@@ -4831,7 +4681,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.886207,
+      "coverage": 0.870805,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -4842,8 +4692,8 @@
   },
   {
    "gripPx": [
-    79.5,
-    79.5
+    80.0,
+    79.0
    ],
    "group": "shield1",
    "id": "shield.set.1.5",
@@ -4858,8 +4708,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.54069,
-     0.01437
+     0.47635,
+     0.0216
     ]
    },
    "resourceName": "shield_1_5",
@@ -4900,10 +4750,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
+      8,
       6,
-      2,
-      153,
-      157
+      152,
+      152
      ],
      "canvasGrowth": {
       "1x": [
@@ -4919,7 +4769,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.919184,
+      "coverage": 0.908951,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -4931,7 +4781,7 @@
   {
    "gripPx": [
     79.5,
-    79.5
+    80.0
    ],
    "group": "shield2",
    "id": "shield.set.2.1",
@@ -4946,8 +4796,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.35124,
-     0.04461
+     0.3593,
+     0.03343
     ]
    },
    "resourceName": "shield_2_1",
@@ -4988,10 +4838,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      14,
-      14,
-      145,
-      145
+      16,
+      20,
+      143,
+      140
      ],
      "canvasGrowth": {
       "1x": [
@@ -5007,7 +4857,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.899632,
+      "coverage": 0.658918,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -5018,8 +4868,8 @@
   },
   {
    "gripPx": [
-    79.0,
-    79.5
+    79.5,
+    79.0
    ],
    "group": "shield2",
    "id": "shield.set.2.2",
@@ -5034,8 +4884,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.36549,
-     0.04695
+     0.3727,
+     0.03519
     ]
    },
    "resourceName": "shield_2_2",
@@ -5076,10 +4926,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      14,
       15,
+      20,
       144,
-      144
+      138
      ],
      "canvasGrowth": {
       "1x": [
@@ -5095,7 +4945,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.857343,
+      "coverage": 0.644046,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -5116,19 +4966,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_2_3_mask_primary",
-    "secondary": "shield_2_3_mask_secondary"
+    "primary": "shield_2_3_mask_primary"
    },
    "name": "Templar Aegis III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.6625,
-     0.0059
-    ],
-    "secondary": [
-     0.3577,
-     0.04565
+     0.5135,
+     0.01822
     ]
    },
    "resourceName": "shield_2_3",
@@ -5170,9 +5015,9 @@
     "automated": {
      "bbox": [
       10,
-      10,
+      14,
       149,
-      149
+      145
      ],
      "canvasGrowth": {
       "1x": [
@@ -5188,7 +5033,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.885742,
+      "coverage": 0.860498,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -5200,7 +5045,7 @@
   {
    "gripPx": [
     79.5,
-    79.5
+    80.0
    ],
    "group": "shield2",
    "id": "shield.set.2.4",
@@ -5215,8 +5060,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.58038,
-     0.00594
+     0.48173,
+     0.01246
     ]
    },
    "resourceName": "shield_2_4",
@@ -5258,9 +5103,9 @@
     "automated": {
      "bbox": [
       10,
-      5,
+      12,
       149,
-      154
+      148
      ],
      "canvasGrowth": {
       "1x": [
@@ -5276,7 +5121,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.935776,
+      "coverage": 0.880414,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -5288,7 +5133,7 @@
   {
    "gripPx": [
     79.5,
-    79.5
+    79.0
    ],
    "group": "shield2",
    "id": "shield.set.2.5",
@@ -5303,8 +5148,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.51208,
-     0.01334
+     0.48287,
+     0.01115
     ]
    },
    "resourceName": "shield_2_5",
@@ -5345,10 +5190,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      2,
-      2,
-      157,
-      157
+      3,
+      8,
+      156,
+      150
      ],
      "canvasGrowth": {
       "1x": [
@@ -5364,7 +5209,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.96162,
+      "coverage": 0.925912,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -5375,8 +5220,8 @@
   },
   {
    "gripPx": [
-    79.5,
-    79.5
+    79.0,
+    80.0
    ],
    "group": "shield3",
    "id": "shield.set.3.1",
@@ -5391,8 +5236,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.42557,
-     0.0185
+     0.38268,
+     0.02223
     ]
    },
    "resourceName": "shield_3_1",
@@ -5433,10 +5278,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      27,
-      8,
-      132,
-      151
+      28,
+      14,
+      130,
+      146
      ],
      "canvasGrowth": {
       "1x": [
@@ -5452,7 +5297,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.869652,
+      "coverage": 0.811821,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -5463,8 +5308,8 @@
   },
   {
    "gripPx": [
-    79.5,
-    79.5
+    79.0,
+    80.0
    ],
    "group": "shield3",
    "id": "shield.set.3.2",
@@ -5479,8 +5324,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.44211,
-     0.03247
+     0.3998,
+     0.02469
     ]
    },
    "resourceName": "shield_3_2",
@@ -5521,10 +5366,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      27,
-      6,
-      132,
-      153
+      28,
+      12,
+      130,
+      148
      ],
      "canvasGrowth": {
       "1x": [
@@ -5540,7 +5385,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.932097,
+      "coverage": 0.888768,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -5567,8 +5412,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.54468,
-     0.02609
+     0.47777,
+     0.02755
     ]
    },
    "resourceName": "shield_3_3",
@@ -5609,10 +5454,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      25,
-      4,
-      134,
-      155
+      26,
+      6,
+      133,
+      153
      ],
      "canvasGrowth": {
       "1x": [
@@ -5628,7 +5473,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.929609,
+      "coverage": 0.926068,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -5655,8 +5500,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.62379,
-     0.01739
+     0.54854,
+     0.0255
     ]
    },
    "resourceName": "shield_3_4",
@@ -5697,10 +5542,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      24,
-      3,
-      135,
-      156
+      25,
+      7,
+      134,
+      152
      ],
      "canvasGrowth": {
       "1x": [
@@ -5716,7 +5561,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.959554,
+      "coverage": 0.951041,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -5737,19 +5582,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_3_5_mask_primary",
-    "secondary": "shield_3_5_mask_secondary"
+    "primary": "shield_3_5_mask_primary"
    },
    "name": "Scaled Bulwark V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.65332,
-     0.0697
-    ],
-    "secondary": [
-     0.82289,
-     0.02795
+     0.59434,
+     0.03721
     ]
    },
    "resourceName": "shield_3_5",
@@ -5791,9 +5631,9 @@
     "automated": {
      "bbox": [
       24,
-      2,
+      5,
       135,
-      157
+      154
      ],
      "canvasGrowth": {
       "1x": [
@@ -5809,7 +5649,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.971673,
+      "coverage": 0.968219,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -5821,7 +5661,7 @@
   {
    "gripPx": [
     79.5,
-    79.5
+    80.0
    ],
    "group": "shield4",
    "id": "shield.set.4.1",
@@ -5836,8 +5676,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.43378,
-     0.05808
+     0.38483,
+     0.02866
     ]
    },
    "resourceName": "shield_4_1",
@@ -5878,10 +5718,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      25,
-      7,
-      134,
-      152
+      27,
+      14,
+      132,
+      146
      ],
      "canvasGrowth": {
       "1x": [
@@ -5897,7 +5737,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.89631,
+      "coverage": 0.900975,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -5909,7 +5749,7 @@
   {
    "gripPx": [
     79.5,
-    79.5
+    80.0
    ],
    "group": "shield4",
    "id": "shield.set.4.2",
@@ -5924,8 +5764,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.44601,
-     0.04373
+     0.42092,
+     0.00485
     ]
    },
    "resourceName": "shield_4_2",
@@ -5967,9 +5807,9 @@
     "automated": {
      "bbox": [
       28,
-      7,
+      12,
       131,
-      152
+      148
      ],
      "canvasGrowth": {
       "1x": [
@@ -5985,7 +5825,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.954997,
+      "coverage": 0.916668,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -5997,7 +5837,7 @@
   {
    "gripPx": [
     79.5,
-    79.5
+    80.0
    ],
    "group": "shield4",
    "id": "shield.set.4.3",
@@ -6006,19 +5846,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_4_3_mask_primary",
-    "secondary": "shield_4_3_mask_secondary"
+    "primary": "shield_4_3_mask_primary"
    },
    "name": "Runic Disc III",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.44508,
-     0.04664
-    ],
-    "secondary": [
-     0.67738,
-     0.00488
+     0.47145,
+     0.01855
     ]
    },
    "resourceName": "shield_4_3",
@@ -6060,9 +5895,9 @@
     "automated": {
      "bbox": [
       26,
-      4,
+      10,
       133,
-      155
+      150
      ],
      "canvasGrowth": {
       "1x": [
@@ -6078,7 +5913,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.918002,
+      "coverage": 0.910577,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -6089,8 +5924,8 @@
   },
   {
    "gripPx": [
-    79.5,
-    79.5
+    79.0,
+    79.0
    ],
    "group": "shield4",
    "id": "shield.set.4.4",
@@ -6105,8 +5940,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.51691,
-     0.01451
+     0.47803,
+     0.00348
     ]
    },
    "resourceName": "shield_4_4",
@@ -6147,10 +5982,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      25,
-      2,
-      134,
-      157
+      26,
+      9,
+      132,
+      149
      ],
      "canvasGrowth": {
       "1x": [
@@ -6166,7 +6001,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.933138,
+      "coverage": 0.921069,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -6177,8 +6012,8 @@
   },
   {
    "gripPx": [
-    79.5,
-    79.5
+    80.0,
+    81.0
    ],
    "group": "shield4",
    "id": "shield.set.4.5",
@@ -6187,19 +6022,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_4_5_mask_primary",
-    "secondary": "shield_4_5_mask_secondary"
+    "primary": "shield_4_5_mask_primary"
    },
    "name": "Runic Disc V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.62508,
-     0.00736
-    ],
-    "secondary": [
-     0.44529,
-     0.04791
+     0.49906,
+     0.01293
     ]
    },
    "resourceName": "shield_4_5",
@@ -6240,10 +6070,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      24,
-      1,
-      135,
-      158
+      26,
+      6,
+      134,
+      156
      ],
      "canvasGrowth": {
       "1x": [
@@ -6259,7 +6089,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.961635,
+      "coverage": 0.946647,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -6270,8 +6100,8 @@
   },
   {
    "gripPx": [
-    79.0,
-    79.5
+    79.5,
+    80.0
    ],
    "group": "shield5",
    "id": "shield.set.5.1",
@@ -6286,8 +6116,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.44497,
-     0.01361
+     0.41633,
+     0.00673
     ]
    },
    "resourceName": "shield_5_1",
@@ -6328,10 +6158,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
+      15,
       14,
-      11,
       144,
-      148
+      146
      ],
      "canvasGrowth": {
       "1x": [
@@ -6347,7 +6177,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.863506,
+      "coverage": 0.870055,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -6359,7 +6189,7 @@
   {
    "gripPx": [
     79.5,
-    79.5
+    80.0
    ],
    "group": "shield5",
    "id": "shield.set.5.2",
@@ -6374,8 +6204,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.6232,
-     0.0097
+     0.55006,
+     0.0046
     ]
    },
    "resourceName": "shield_5_2",
@@ -6416,10 +6246,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
+      13,
       12,
-      8,
-      147,
-      151
+      146,
+      148
      ],
      "canvasGrowth": {
       "1x": [
@@ -6435,7 +6265,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.865878,
+      "coverage": 0.870879,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -6446,7 +6276,7 @@
   },
   {
    "gripPx": [
-    79.5,
+    80.0,
     79.5
    ],
    "group": "shield5",
@@ -6462,8 +6292,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.54169,
-     0.01332
+     0.51256,
+     0.00681
     ]
    },
    "resourceName": "shield_5_3",
@@ -6504,10 +6334,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
+      14,
       12,
-      8,
-      147,
-      151
+      146,
+      147
      ],
      "canvasGrowth": {
       "1x": [
@@ -6523,7 +6353,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.926588,
+      "coverage": 0.847975,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -6534,8 +6364,8 @@
   },
   {
    "gripPx": [
-    79.0,
-    79.5
+    79.5,
+    79.0
    ],
    "group": "shield5",
    "id": "shield.set.5.4",
@@ -6550,8 +6380,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.64632,
-     0.00709
+     0.54817,
+     0.00648
     ]
    },
    "resourceName": "shield_5_4",
@@ -6592,10 +6422,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      9,
-      5,
+      10,
+      8,
       149,
-      154
+      150
      ],
      "canvasGrowth": {
       "1x": [
@@ -6611,7 +6441,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.957669,
+      "coverage": 0.946237,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -6632,19 +6462,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_5_5_mask_primary",
-    "secondary": "shield_5_5_mask_secondary"
+    "primary": "shield_5_5_mask_primary"
    },
    "name": "Valkyrie Wing V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.40585,
-     0.00566
-    ],
-    "secondary": [
-     0.40384,
-     0.04577
+     0.51706,
+     0.00535
     ]
    },
    "resourceName": "shield_5_5",
@@ -6685,10 +6510,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
+      8,
       7,
-      2,
-      152,
-      157
+      151,
+      152
      ],
      "canvasGrowth": {
       "1x": [
@@ -6704,7 +6529,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.971982,
+      "coverage": 0.908606,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -6716,7 +6541,7 @@
   {
    "gripPx": [
     79.5,
-    79.5
+    80.0
    ],
    "group": "shield6",
    "id": "shield.set.6.1",
@@ -6731,8 +6556,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.41067,
-     0.04285
+     0.38561,
+     0.02935
     ]
    },
    "resourceName": "shield_6_1",
@@ -6774,9 +6599,9 @@
     "automated": {
      "bbox": [
       28,
-      7,
+      14,
       131,
-      152
+      146
      ],
      "canvasGrowth": {
       "1x": [
@@ -6792,7 +6617,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.852918,
+      "coverage": 0.826929,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -6819,8 +6644,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.47469,
-     0.05837
+     0.40839,
+     0.03427
     ]
    },
    "resourceName": "shield_6_2",
@@ -6861,10 +6686,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      27,
-      4,
-      132,
-      155
+      28,
+      11,
+      131,
+      148
      ],
      "canvasGrowth": {
       "1x": [
@@ -6880,7 +6705,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.944775,
+      "coverage": 0.926772,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -6908,12 +6733,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.4625,
-     0.05686
+     0.4002,
+     0.03646
     ],
     "secondary": [
-     0.67488,
-     0.00145
+     0.57998,
+     0.00495
     ]
    },
    "resourceName": "shield_6_3",
@@ -6955,9 +6780,9 @@
     "automated": {
      "bbox": [
       27,
-      4,
+      8,
       132,
-      155
+      151
      ],
      "canvasGrowth": {
       "1x": [
@@ -6973,7 +6798,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.941233,
+      "coverage": 0.934984,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -6985,7 +6810,7 @@
   {
    "gripPx": [
     79.5,
-    79.5
+    80.0
    ],
    "group": "shield6",
    "id": "shield.set.6.4",
@@ -6994,19 +6819,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_6_4_mask_primary",
-    "secondary": "shield_6_4_mask_secondary"
+    "primary": "shield_6_4_mask_primary"
    },
    "name": "Iron Moon IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.60192,
-     0.05025
-    ],
-    "secondary": [
-     0.69688,
-     0.00146
+     0.52473,
+     0.02447
     ]
    },
    "resourceName": "shield_6_4",
@@ -7048,9 +6868,9 @@
     "automated": {
      "bbox": [
       25,
-      2,
+      8,
       134,
-      157
+      152
      ],
      "canvasGrowth": {
       "1x": [
@@ -7066,7 +6886,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.949945,
+      "coverage": 0.934821,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -7093,8 +6913,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.68549,
-     0.03336
+     0.5948,
+     0.0301
     ]
    },
    "resourceName": "shield_6_5",
@@ -7136,9 +6956,9 @@
     "automated": {
      "bbox": [
       27,
-      1,
+      9,
       132,
-      158
+      150
      ],
      "canvasGrowth": {
       "1x": [
@@ -7154,7 +6974,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.974517,
+      "coverage": 0.971418,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -7166,7 +6986,7 @@
   {
    "gripPx": [
     79.5,
-    79.5
+    79.0
    ],
    "group": "shield7",
    "id": "shield.set.7.1",
@@ -7181,8 +7001,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.39641,
-     0.06405
+     0.36661,
+     0.03619
     ]
    },
    "resourceName": "shield_7_1",
@@ -7223,10 +7043,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      16,
-      10,
-      143,
-      149
+      17,
+      14,
+      142,
+      144
      ],
      "canvasGrowth": {
       "1x": [
@@ -7242,7 +7062,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.870377,
+      "coverage": 0.869985,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -7254,7 +7074,7 @@
   {
    "gripPx": [
     79.5,
-    79.5
+    79.0
    ],
    "group": "shield7",
    "id": "shield.set.7.2",
@@ -7269,8 +7089,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.42655,
-     0.04386
+     0.37619,
+     0.02496
     ]
    },
    "resourceName": "shield_7_2",
@@ -7312,9 +7132,9 @@
     "automated": {
      "bbox": [
       20,
-      9,
+      14,
       139,
-      150
+      144
      ],
      "canvasGrowth": {
       "1x": [
@@ -7330,7 +7150,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.867216,
+      "coverage": 0.897121,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -7342,7 +7162,7 @@
   {
    "gripPx": [
     79.5,
-    79.5
+    79.0
    ],
    "group": "shield7",
    "id": "shield.set.7.3",
@@ -7357,8 +7177,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.55856,
-     0.0231
+     0.52208,
+     0.00497
     ]
    },
    "resourceName": "shield_7_3",
@@ -7400,9 +7220,9 @@
     "automated": {
      "bbox": [
       24,
-      6,
+      10,
       135,
-      153
+      148
      ],
      "canvasGrowth": {
       "1x": [
@@ -7418,7 +7238,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.872888,
+      "coverage": 0.841089,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -7439,19 +7259,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_7_4_mask_primary",
-    "secondary": "shield_7_4_mask_secondary"
+    "primary": "shield_7_4_mask_primary"
    },
    "name": "Bone Paragon IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.5758,
-     0.03068
-    ],
-    "secondary": [
-     0.64228,
-     0.08117
+     0.48432,
+     0.03176
     ]
    },
    "resourceName": "shield_7_4",
@@ -7492,10 +7307,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      22,
-      4,
-      137,
-      155
+      23,
+      9,
+      136,
+      150
      ],
      "canvasGrowth": {
       "1x": [
@@ -7511,7 +7326,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.851409,
+      "coverage": 0.833914,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -7523,7 +7338,7 @@
   {
    "gripPx": [
     79.5,
-    79.5
+    79.0
    ],
    "group": "shield7",
    "id": "shield.set.7.5",
@@ -7532,19 +7347,14 @@
    "kind": "shield",
    "layer": "front",
    "maskResources": {
-    "primary": "shield_7_5_mask_primary",
-    "secondary": "shield_7_5_mask_secondary"
+    "primary": "shield_7_5_mask_primary"
    },
    "name": "Bone Paragon V",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.83821,
-     0.10403
-    ],
-    "secondary": [
-     0.30325,
-     0.00479
+     0.65585,
+     0.06368
     ]
    },
    "resourceName": "shield_7_5",
@@ -7586,9 +7396,9 @@
     "automated": {
      "bbox": [
       20,
-      1,
+      6,
       139,
-      158
+      152
      ],
      "canvasGrowth": {
       "1x": [
@@ -7604,7 +7414,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.88875,
+      "coverage": 0.829577,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -7616,7 +7426,7 @@
   {
    "gripPx": [
     79.5,
-    79.5
+    80.0
    ],
    "group": "shield8",
    "id": "shield.set.8.1",
@@ -7631,8 +7441,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.45834,
-     0.0233
+     0.3928,
+     0.01573
     ]
    },
    "resourceName": "shield_8_1",
@@ -7674,9 +7484,9 @@
     "automated": {
      "bbox": [
       28,
-      7,
+      12,
       131,
-      152
+      148
      ],
      "canvasGrowth": {
       "1x": [
@@ -7692,7 +7502,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.858996,
+      "coverage": 0.911762,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -7719,8 +7529,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.49202,
-     0.01998
+     0.43679,
+     0.01598
     ]
    },
    "resourceName": "shield_8_2",
@@ -7761,10 +7571,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      26,
-      4,
-      133,
-      155
+      27,
+      9,
+      132,
+      150
      ],
      "canvasGrowth": {
       "1x": [
@@ -7780,7 +7590,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.919516,
+      "coverage": 0.935072,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -7791,7 +7601,7 @@
   },
   {
    "gripPx": [
-    79.5,
+    80.0,
     79.5
    ],
    "group": "shield8",
@@ -7807,8 +7617,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.56232,
-     0.0216
+     0.48698,
+     0.01928
     ]
    },
    "resourceName": "shield_8_3",
@@ -7849,7 +7659,7 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      21,
+      22,
       4,
       138,
       155
@@ -7868,7 +7678,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.909632,
+      "coverage": 0.912716,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -7895,8 +7705,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.56734,
-     0.00896
+     0.55132,
+     0.00435
     ]
    },
    "resourceName": "shield_8_4",
@@ -7937,10 +7747,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      19,
-      2,
-      140,
-      157
+      20,
+      6,
+      139,
+      153
      ],
      "canvasGrowth": {
       "1x": [
@@ -7956,7 +7766,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.930512,
+      "coverage": 0.828563,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -7983,8 +7793,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.7109,
-     0.0162
+     0.59731,
+     0.00938
     ]
    },
    "resourceName": "shield_8_5",
@@ -8025,10 +7835,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
-      18,
-      2,
-      141,
-      157
+      19,
+      5,
+      140,
+      154
      ],
      "canvasGrowth": {
       "1x": [
@@ -8044,7 +7854,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.926454,
+      "coverage": 0.9186,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -8056,8 +7866,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    9.06,
-    64.0
+    8.74,
+    65.5
    ],
    "group": "store",
    "id": "weapon.shard",
@@ -8072,8 +7882,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.79847,
-     0.06575
+     0.77574,
+     0.05421
     ]
    },
    "resourceName": "store_weapon_shard",
@@ -8116,24 +7926,24 @@
      "bbox": [
       2,
       29,
-      355,
-      99
+      339,
+      98
      ],
      "canvasGrowth": {
       "1x": [
-       1.025,
-       1.089
+       1.023,
+       1.088
       ],
       "titan": [
-       1.555,
-       1.813
+       1.554,
+       1.812
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.980988,
+      "coverage": 0.981859,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -8145,7 +7955,7 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    8.78,
+    8.32,
     63.5
    ],
    "group": "store",
@@ -8161,8 +7971,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.7759,
-     0.01875
+     0.76366,
+     0.01175
     ]
    },
    "resourceName": "store_weapon_reel",
@@ -8205,24 +8015,24 @@
      "bbox": [
       1,
       23,
-      390,
-      105
+      367,
+      104
      ],
      "canvasGrowth": {
       "1x": [
-       1.026,
-       1.09
+       1.025,
+       1.089
       ],
       "titan": [
-       1.557,
-       1.814
+       1.558,
+       1.816
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.97776,
+      "coverage": 0.954382,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -8234,8 +8044,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    8.84,
-    64.0
+    8.66,
+    66.0
    ],
    "group": "store",
    "id": "weapon.gem",
@@ -8244,6 +8054,7 @@
    "kind": "hammer",
    "layer": "front",
    "maskResources": {
+    "leather": "store_weapon_gem_mask_leather",
     "primary": "store_weapon_gem_mask_primary",
     "secondary": "store_weapon_gem_mask_secondary",
     "trim": "store_weapon_gem_mask_trim"
@@ -8251,17 +8062,21 @@
    "name": "Gem Hammer",
    "profileOverrides": {},
    "regionTone": {
+    "leather": [
+     0.69574,
+     0.07941
+    ],
     "primary": [
-     0.6877,
-     0.03019
+     0.59408,
+     0.01044
     ],
     "secondary": [
-     0.47771,
-     0.06483
+     0.53531,
+     0.05987
     ],
     "trim": [
-     0.75168,
-     0.11621
+     0.59313,
+     0.03751
     ]
    },
    "resourceName": "store_weapon_gem",
@@ -8304,25 +8119,25 @@
      "bbox": [
       1,
       9,
-      393,
-      119
+      384,
+      118
      ],
      "canvasGrowth": {
       "1x": [
-       1.025,
-       1.089
+       1.023,
+       1.088
       ],
       "titan": [
-       1.556,
-       1.813
+       1.553,
+       1.811
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
-      "alphaLeak": 0.0,
-      "coverage": 0.973504,
-      "overlap": 0.0,
+      "alphaLeak": 0.003922,
+      "coverage": 0.980783,
+      "overlap": 0.003922,
       "protectedLeak": 0.0
      }
     },
@@ -8333,8 +8148,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    7.68,
-    64.0
+    7.34,
+    63.5
    ],
    "group": "store",
    "id": "weapon.staff",
@@ -8344,18 +8159,23 @@
    "layer": "front",
    "maskResources": {
     "primary": "store_weapon_staff_mask_primary",
-    "secondary": "store_weapon_staff_mask_secondary"
+    "secondary": "store_weapon_staff_mask_secondary",
+    "trim": "store_weapon_staff_mask_trim"
    },
    "name": "Archmage Staff",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.53471,
-     0.07635
+     0.46749,
+     0.04479
     ],
     "secondary": [
-     0.70152,
-     0.1101
+     0.66151,
+     0.07696
+    ],
+    "trim": [
+     0.65727,
+     0.0577
     ]
    },
    "resourceName": "store_weapon_staff",
@@ -8398,24 +8218,24 @@
      "bbox": [
       0,
       25,
-      384,
-      103
+      367,
+      102
      ],
      "canvasGrowth": {
       "1x": [
-       1.026,
-       1.091
+       1.025,
+       1.09
       ],
       "titan": [
-       1.56,
-       1.818
+       1.562,
+       1.82
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.946433,
+      "coverage": 0.965127,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -8427,8 +8247,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    9.66,
-    64.0
+    9.5,
+    62.5
    ],
    "group": "store",
    "id": "weapon.stormblade",
@@ -8437,19 +8257,19 @@
    "kind": "sword",
    "layer": "front",
    "maskResources": {
-    "emissive": "store_weapon_stormblade_mask_emissive",
-    "primary": "store_weapon_stormblade_mask_primary"
+    "primary": "store_weapon_stormblade_mask_primary",
+    "secondary": "store_weapon_stormblade_mask_secondary"
    },
    "name": "Storm Cleaver",
    "profileOverrides": {},
    "regionTone": {
-    "emissive": [
-     0.84905,
-     0.1416
-    ],
     "primary": [
-     0.82937,
-     0.02563
+     0.66151,
+     0.01357
+    ],
+    "secondary": [
+     0.78793,
+     0.09244
     ]
    },
    "resourceName": "store_weapon_stormblade",
@@ -8492,24 +8312,24 @@
      "bbox": [
       2,
       25,
-      385,
-      105
+      377,
+      104
      ],
      "canvasGrowth": {
       "1x": [
        1.025,
-       1.089
+       1.088
       ],
       "titan": [
-       1.553,
-       1.81
+       1.556,
+       1.813
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.987646,
+      "coverage": 0.98688,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -8521,8 +8341,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    9.9,
-    64.0
+    9.78,
+    63.5
    ],
    "group": "store",
    "id": "weapon.chevron",
@@ -8537,8 +8357,8 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.77395,
-     0.0238
+     0.67126,
+     0.01705
     ]
    },
    "resourceName": "store_weapon_chevron",
@@ -8581,24 +8401,24 @@
      "bbox": [
       2,
       9,
-      397,
-      119
+      391,
+      118
      ],
      "canvasGrowth": {
       "1x": [
-       1.025,
-       1.089
+       1.024,
+       1.087
       ],
       "titan": [
-       1.552,
-       1.809
+       1.553,
+       1.81
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.969617,
+      "coverage": 0.963872,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -8610,8 +8430,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    8.52,
-    64.0
+    8.12,
+    65.0
    ],
    "group": "store",
    "id": "weapon.ruby",
@@ -8621,18 +8441,23 @@
    "layer": "front",
    "maskResources": {
     "primary": "store_weapon_ruby_mask_primary",
-    "secondary": "store_weapon_ruby_mask_secondary"
+    "secondary": "store_weapon_ruby_mask_secondary",
+    "trim": "store_weapon_ruby_mask_trim"
    },
    "name": "Ruby Fang",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.61348,
-     0.17068
+     0.46323,
+     0.11625
     ],
     "secondary": [
-     0.63751,
-     0.09936
+     0.65944,
+     0.07497
+    ],
+    "trim": [
+     0.30718,
+     0.04363
     ]
    },
    "resourceName": "store_weapon_ruby",
@@ -8674,14 +8499,14 @@
     "automated": {
      "bbox": [
       1,
-      21,
-      377,
-      107
+      23,
+      357,
+      106
      ],
      "canvasGrowth": {
       "1x": [
-       1.025,
-       1.09
+       1.024,
+       1.089
       ],
       "titan": [
        1.557,
@@ -8692,7 +8517,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.975579,
+      "coverage": 0.97051,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -8704,8 +8529,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    9.86,
-    64.0
+    9.48,
+    63.0
    ],
    "group": "store",
    "id": "weapon.arcane",
@@ -8721,12 +8546,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.74347,
-     0.10323
+     0.69121,
+     0.06763
     ],
     "secondary": [
-     0.73282,
-     0.11129
+     0.60538,
+     0.05988
     ]
    },
    "resourceName": "store_weapon_arcane",
@@ -8769,24 +8594,24 @@
      "bbox": [
       2,
       21,
-      395,
-      107
+      376,
+      106
      ],
      "canvasGrowth": {
       "1x": [
-       1.025,
-       1.089
+       1.024,
+       1.088
       ],
       "titan": [
-       1.552,
-       1.809
+       1.555,
+       1.812
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.970622,
+      "coverage": 0.969547,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -8798,8 +8623,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    9.78,
-    64.0
+    9.56,
+    63.5
    ],
    "group": "store",
    "id": "weapon.fireworkBlade",
@@ -8809,18 +8634,23 @@
    "layer": "front",
    "maskResources": {
     "primary": "store_weapon_fireworkBlade_mask_primary",
-    "secondary": "store_weapon_fireworkBlade_mask_secondary"
+    "secondary": "store_weapon_fireworkBlade_mask_secondary",
+    "trim": "store_weapon_fireworkBlade_mask_trim"
    },
    "name": "Firework Blade",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.88183,
-     0.01899
+     0.79964,
+     0.01332
     ],
     "secondary": [
-     0.71978,
-     0.13496
+     0.64877,
+     0.07401
+    ],
+    "trim": [
+     0.72885,
+     0.06391
     ]
    },
    "resourceName": "store_weapon_fireworkBlade",
@@ -8863,24 +8693,24 @@
      "bbox": [
       2,
       27,
-      391,
-      101
+      380,
+      100
      ],
      "canvasGrowth": {
       "1x": [
-       1.025,
-       1.089
+       1.024,
+       1.088
       ],
       "titan": [
-       1.553,
-       1.81
+       1.554,
+       1.811
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.968669,
+      "coverage": 0.970309,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -8892,7 +8722,7 @@
   {
    "gripPx": [
     80.0,
-    83.0
+    82.5
    ],
    "group": "store",
    "id": "shield.crux",
@@ -8908,12 +8738,12 @@
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.64201,
-     0.08572
+     0.56907,
+     0.0547
     ],
     "secondary": [
-     0.80371,
-     0.13127
+     0.73113,
+     0.0865
     ]
    },
    "resourceName": "store_shield_crux",
@@ -8954,10 +8784,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
+      16,
       15,
-      15,
-      145,
-      151
+      144,
+      150
      ],
      "canvasGrowth": {
       "1x": [
@@ -8973,7 +8803,7 @@
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.989869,
+      "coverage": 0.989738,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
@@ -8984,8 +8814,8 @@
   },
   {
    "gripPx": [
-    80.0,
-    83.0
+    79.5,
+    82.5
    ],
    "group": "store",
    "id": "shield.templar",
@@ -8995,18 +8825,23 @@
    "layer": "front",
    "maskResources": {
     "primary": "store_shield_templar_mask_primary",
-    "secondary": "store_shield_templar_mask_secondary"
+    "secondary": "store_shield_templar_mask_secondary",
+    "trim": "store_shield_templar_mask_trim"
    },
    "name": "Templar Bulwark",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.83704,
-     0.02296
+     0.80161,
+     0.01477
     ],
     "secondary": [
-     0.53706,
-     0.17082
+     0.45401,
+     0.1137
+    ],
+    "trim": [
+     0.73621,
+     0.07507
     ]
    },
    "resourceName": "store_shield_templar",
@@ -9047,10 +8882,10 @@
     "approvedProfiles": [],
     "automated": {
      "bbox": [
+      16,
       15,
-      15,
-      145,
-      151
+      143,
+      150
      ],
      "canvasGrowth": {
       "1x": [
@@ -9065,9 +8900,9 @@
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
-      "alphaLeak": 0.0,
-      "coverage": 0.989869,
-      "overlap": 0.0,
+      "alphaLeak": 0.003922,
+      "coverage": 0.989713,
+      "overlap": 0.003922,
       "protectedLeak": 0.0
      }
     },
@@ -9090,8 +8925,8 @@
    "weaponAnchor": "sword",
    "weaponHand": "left_hand",
    "weaponHold": [
-    86.5,
-    61.3
+    86.4,
+    60.8
    ],
    "weaponPivotPx": [
     2.2,
@@ -9153,8 +8988,8 @@
    "weaponAnchor": "sword",
    "weaponHand": "left_hand",
    "weaponHold": [
-    46.9,
-    67.3
+    36.2,
+    66.3
    ],
    "weaponPivotPx": [
     2.2,
@@ -9220,7 +9055,7 @@
    "weaponAnchor": "bow",
    "weaponHand": "left_hand",
    "weaponHold": [
-    111.5,
+    110.0,
     159.5
    ],
    "weaponPivotPx": [
@@ -9287,8 +9122,8 @@
    "weaponAnchor": "sword",
    "weaponHand": "left_hand",
    "weaponHold": [
-    83.2,
-    60.8
+    82.9,
+    62.3
    ],
    "weaponPivotPx": [
     2.2,
@@ -9350,7 +9185,7 @@
    "weaponAnchor": "sword",
    "weaponHand": "left_hand",
    "weaponHold": [
-    71.3,
+    71.0,
     61.3
    ],
    "weaponPivotPx": [
@@ -9413,8 +9248,8 @@
    "weaponAnchor": "sword",
    "weaponHand": "left_hand",
    "weaponHold": [
-    63.7,
-    61.3
+    63.1,
+    60.3
    ],
    "weaponPivotPx": [
     2.2,
@@ -9476,8 +9311,8 @@
    "weaponAnchor": "sword",
    "weaponHand": "left_hand",
    "weaponHold": [
-    55.9,
-    63.5
+    55.7,
+    63.0
    ],
    "weaponPivotPx": [
     0.0,
@@ -9602,8 +9437,8 @@
    "weaponAnchor": "sword",
    "weaponHand": "left_hand",
    "weaponHold": [
-    52.1,
-    63.5
+    52.6,
+    62.5
    ],
    "weaponPivotPx": [
     0.0,

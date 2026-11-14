@@ -6,6 +6,9 @@ swords so the standard anchor/grip model applies). Shields are 160x160.
 
 Catalog IDs, prices and unlock rules live in GameDataService and are untouched; this file
 only supplies art + the resource mapping (store_gear_spec.json).
+
+Asset pass v7: the shipped store sprites are now the owner's updated art, cut from photos by import_sheet_art.py. These
+drawings remain the pass v6 art and the source of the spec; `store_gear.py --sprites` redraws them over the shipped files.
 """
 from __future__ import annotations
 
@@ -247,14 +250,18 @@ ITEMS = [
 ]
 
 def main() -> None:
+    """Write store_gear_spec.json. With --sprites also draw the 11 sprites over the shipped ones: since asset pass v7
+    those are the owner's art (import_sheet_art.py), so this is no longer done by default."""
+    write_sprites = "--sprites" in sys.argv
     OUT.mkdir(parents=True, exist_ok=True)
     spec = []
     for item_id, name, kind, resource, fn in ITEMS:
         img = fn()
-        img.save(OUT / f"{resource}.png", optimize=True)
+        if write_sprites:
+            img.save(OUT / f"{resource}.png", optimize=True)
         spec.append({"id": item_id, "name": name, "kind": kind, "resource": resource, "imageSize": list(img.size)})
     SPEC.write_text(json.dumps({"schemaVersion": 1, "items": spec}, indent=1) + "\n")
-    print(f"wrote {len(spec)} store sprites to {OUT}")
+    print(f"wrote the spec for {len(spec)} store items" + (f" and their sprites to {OUT}" if write_sprites else " (sprites untouched; --sprites draws them)"))
 
 
 if __name__ == "__main__":

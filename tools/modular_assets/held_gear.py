@@ -339,7 +339,7 @@ def analyze(algorithm: str = gear_algorithms.DEFAULT_ALGORITHM) -> dict:
                                       "bottom": [round(float(np.nonzero(a_[bbox[3]])[0].mean()), 1), bbox[3]]}
             checks["stringAlignment"] = {pid: bow_string_alignment(pid.rsplit("_v", 1)[0], int(pid.rsplit("_v", 1)[1]), img) for pid in packs}
         ok = (checks["gripOnItem"] and max(growth["titan"]) <= 1.9 and bool(masks)
-              and algo.quality_passes(checks["materialMasks"]))
+              and algo.quality_passes(checks["materialMasks"], it["resource"]))
         out_items.append({
             "id": it["id"], "name": it["name"], "kind": kind, "slot": it["slot"], "resourceName": it["resource"],
             "group": it["group"], "imageWidth": img.size[0], "imageHeight": img.size[1],
@@ -445,7 +445,7 @@ def update_material_masks(algorithm: str = gear_algorithms.DEFAULT_ALGORITHM) ->
             image = loaded.convert("RGBA")
         masks, protected = algo.masks_for(entry["resourceName"], image)
         metrics = algo.quality(image, masks, protected)
-        if not masks or not algo.quality_passes(metrics):
+        if not masks or not algo.quality_passes(metrics, entry["resourceName"]):
             raise ValueError(f"Incomplete material masks for {entry['id']}: {metrics}")
         layer = Layer(entry["resourceName"], "armor", entry["slot"], image, masks)
         pool_tones([layer])

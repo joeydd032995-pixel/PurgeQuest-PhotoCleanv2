@@ -1,21 +1,9 @@
 {
  "setVersion": 7,
- "currentLabel": "v6",
+ "currentLabel": "v7",
  "wip": false,
- "head": "c7b836c",
+ "head": "376d703",
  "sets": [
-  {
-   "label": "v1",
-   "name": "First separated anatomy/armor layers, masks, held-gear fits, store sprites",
-   "commits": [
-    "e4e6944"
-   ],
-   "commit": "e4e694497f61eab8a38d6e12bb908a2d3b6c103c",
-   "short": "e4e6944",
-   "date": "2026-10-30",
-   "version": 1,
-   "filesChanged": 1409
-  },
   {
    "label": "v2",
    "name": "Held-gear fit, Titan 2x, masked recolor, verified-only planner gate",
@@ -25,8 +13,8 @@
    "commit": "ad7b6cd8fd0e0c030164a8e26ccf921df585954f",
    "short": "ad7b6cd",
    "date": "2026-10-30",
-   "version": 2,
-   "filesChanged": 2
+   "version": 1,
+   "filesChanged": 1409
   },
   {
    "label": "v3",
@@ -37,7 +25,7 @@
    "commit": "fe0fefcc0d6045eda79a079206cdca362a290bd1",
    "short": "fe0fefc",
    "date": "2026-10-30",
-   "version": 3,
+   "version": 2,
    "filesChanged": 15
   },
   {
@@ -49,7 +37,7 @@
    "commit": "a0f7b847afd18f9b788124ad5770694c9b43563d",
    "short": "a0f7b84",
    "date": "2026-10-30",
-   "version": 4,
+   "version": 3,
    "filesChanged": 1154
   },
   {
@@ -63,7 +51,7 @@
    "commit": "951dc1ac3a930fede3ae6bd225b8aed3be9dc58c",
    "short": "951dc1a",
    "date": "2026-10-31",
-   "version": 5,
+   "version": 4,
    "filesChanged": 350
   },
   {
@@ -75,24 +63,41 @@
    "commit": "0cbec13f5a7113b25d05186c5a5078a8e113e77a",
    "short": "0cbec13",
    "date": "2026-10-31",
-   "version": 6,
+   "version": 5,
    "filesChanged": 687
   },
   {
    "label": "v6",
-   "name": "Landed: v5 gear masks (all 99 gear items) with PR #11's characters and tooling; each gear item records which algorithm made its masks",
-   "commits": [],
-   "commit": "",
-   "short": "",
-   "date": "",
+   "name": "v5 gear masks (all 99 gear items) with PR #11's characters and tooling; each gear item records which algorithm made its masks (the set before the v7 art swap)",
+   "commits": [
+    "bced0c7",
+    "47155d4",
+    "5a4b411",
+    "766a98f"
+   ],
+   "commit": "766a98fc81b45c9914ac8f97218f98a14fc39de5",
+   "short": "766a98f",
+   "date": "2026-11-06",
+   "version": 6,
+   "filesChanged": 25
+  },
+  {
+   "label": "v7",
+   "name": "Updated weapon and shield art from the owner: all 99 gear sprites replaced (import_sheet_art.py, docs/modular/source_photos), masks regenerated with chroma-cells-v5",
+   "commits": [
+    "376d703"
+   ],
+   "commit": "376d70346b6c5a0155f63aa017e1240e42fd35a2",
+   "short": "376d703",
+   "date": "2026-11-14",
    "version": 7,
-   "filesChanged": 0
+   "filesChanged": 179
   }
  ],
  "counts": {
-  "parts": 465,
+  "parts": 468,
   "gear": 99,
-  "candidate": 564,
+  "candidate": 567,
   "verified": 0
  },
  "parts": [
@@ -111,7 +116,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "73a04ea0"
   },
@@ -130,12 +135,10 @@
    "flags": [
     "right cheek guard stays near-black; right-cheek blush recolours cream while the left stays pink"
    ],
-   "notes": [
-    "regions merged vs the previous set (no longer separate): secondary"
-   ],
+   "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "8da41700"
   },
@@ -159,7 +162,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "b5621feb"
   },
@@ -185,7 +188,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "c1e6a3fe"
   },
@@ -209,7 +212,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "1398471a"
   },
@@ -234,7 +237,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "7b61af45"
   },
@@ -258,7 +261,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "2e7aaf21"
   },
@@ -283,7 +286,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "0cd3442e"
   },
@@ -307,7 +310,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "55ac1f46"
   },
@@ -331,7 +334,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "d48e4f26"
   },
@@ -355,7 +358,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "d8bf4338"
   },
@@ -379,7 +382,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "bf1a0145"
   },
@@ -404,7 +407,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "14a68544"
   },
@@ -429,7 +432,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "08eedcf4"
   },
@@ -454,7 +457,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "45793c06"
   },
@@ -479,7 +482,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "5bf41c80"
   },
@@ -570,7 +573,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "be6f6748"
   },
@@ -593,7 +596,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "893f5ba1"
   },
@@ -617,7 +620,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "62ddc637"
   },
@@ -643,7 +646,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "29285f76"
   },
@@ -667,7 +670,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "2f9f200f"
   },
@@ -692,7 +695,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "07a6a88d"
   },
@@ -716,7 +719,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "121de4d0"
   },
@@ -741,7 +744,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "55ced920"
   },
@@ -765,7 +768,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "4747e4e3"
   },
@@ -789,7 +792,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "ab671428"
   },
@@ -814,7 +817,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "20977b1e"
   },
@@ -836,12 +839,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: brute, skeletal, slender",
-    "regions merged vs the previous set (no longer separate): secondary"
+    "body fit unsupported for: brute, skeletal, slender"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e496e084"
   },
@@ -866,7 +868,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "6100e4f6"
   },
@@ -888,12 +890,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: brute, skeletal, slender",
-    "regions merged vs the previous set (no longer separate): secondary"
+    "body fit unsupported for: brute, skeletal, slender"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "cf1de0c2"
   },
@@ -919,7 +920,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "a67ffdc9"
   },
@@ -986,7 +987,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "1f0c211f"
   },
@@ -1009,7 +1010,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "14bf043b"
   },
@@ -1033,7 +1034,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "6d751550"
   },
@@ -1059,7 +1060,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "0de54e00"
   },
@@ -1083,7 +1084,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "9ad53b14"
   },
@@ -1109,7 +1110,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "08dfbfc4"
   },
@@ -1133,7 +1134,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "8a7bace9"
   },
@@ -1159,7 +1160,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "b0071f4b"
   },
@@ -1183,7 +1184,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "7eba2333"
   },
@@ -1207,7 +1208,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "456c5db1"
   },
@@ -1231,7 +1232,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "a760613e"
   },
@@ -1255,7 +1256,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "0e00f393"
   },
@@ -1280,7 +1281,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "7934e3fe"
   },
@@ -1305,7 +1306,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "24369f6b"
   },
@@ -1330,7 +1331,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "3bb92906"
   },
@@ -1355,7 +1356,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "9897e7cc"
   },
@@ -1381,7 +1382,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "0564fc3d"
   },
@@ -1407,7 +1408,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "f12b75a1"
   },
@@ -1433,7 +1434,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "5956e176"
   },
@@ -1454,7 +1455,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "a1c850fe"
   },
@@ -1474,12 +1475,10 @@
     "brute"
    ],
    "flags": [],
-   "notes": [
-    "regions merged vs the previous set (no longer separate): secondary"
-   ],
+   "notes": [],
    "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "95c111e3"
   },
@@ -1500,7 +1499,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "cfd70d23"
   },
@@ -1523,7 +1522,7 @@
    "notes": [],
    "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "71d0826e"
   },
@@ -1549,7 +1548,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "b5984fc5"
   },
@@ -1571,12 +1570,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, standard",
-    "regions merged vs the previous set (no longer separate): secondary"
+    "body fit unsupported for: athletic, brute, standard"
    ],
    "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "65b86112"
   },
@@ -1602,7 +1600,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "fb891a60"
   },
@@ -1624,12 +1622,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, standard",
-    "regions merged vs the previous set (no longer separate): secondary"
+    "body fit unsupported for: athletic, brute, standard"
    ],
    "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "d340e589"
   },
@@ -1655,7 +1652,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "c4311378"
   },
@@ -1681,7 +1678,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "df2ba161"
   },
@@ -1706,7 +1703,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "a7075367"
   },
@@ -1727,12 +1724,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, skeletal",
-    "regions merged vs the previous set (no longer separate): secondary"
+    "body fit unsupported for: athletic, brute, skeletal"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "973a8664"
   },
@@ -1757,7 +1753,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "39969dad"
   },
@@ -1778,12 +1774,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, skeletal",
-    "regions merged vs the previous set (no longer separate): secondary"
+    "body fit unsupported for: athletic, brute, skeletal"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "90820042"
   },
@@ -1809,7 +1804,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "51a86642"
   },
@@ -1835,7 +1830,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "c0065072"
   },
@@ -1861,7 +1856,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "fa8c171b"
   },
@@ -1882,7 +1877,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "6e8c487e"
   },
@@ -1905,7 +1900,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "7d7b0623"
   },
@@ -1926,7 +1921,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "c2170a31"
   },
@@ -1949,7 +1944,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "344a0b3b"
   },
@@ -1975,7 +1970,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "52c97846"
   },
@@ -1997,12 +1992,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, standard",
-    "regions merged vs the previous set (no longer separate): secondary"
+    "body fit unsupported for: athletic, brute, standard"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "8cee53f3"
   },
@@ -2028,7 +2022,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "7f0b074f"
   },
@@ -2050,12 +2044,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, standard",
-    "regions merged vs the previous set (no longer separate): secondary"
+    "body fit unsupported for: athletic, brute, standard"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "429141f7"
   },
@@ -2081,7 +2074,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "fe97ca53"
   },
@@ -2107,7 +2100,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "4a848ceb"
   },
@@ -2132,7 +2125,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "4ebc84d8"
   },
@@ -2158,7 +2151,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "c225d9b7"
   },
@@ -2183,7 +2176,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "7d3e1804"
   },
@@ -2209,7 +2202,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "76074175"
   },
@@ -2235,7 +2228,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "88e6a5f8"
   },
@@ -2304,7 +2297,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "bf534a71"
   },
@@ -2326,7 +2319,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "56c8efdb"
   },
@@ -2347,7 +2340,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "77b65a78"
   },
@@ -2370,7 +2363,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "3cf6092c"
   },
@@ -2396,7 +2389,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "325e9d4b"
   },
@@ -2417,12 +2410,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, standard",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, standard"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "fea710b0"
   },
@@ -2448,7 +2440,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "873318a2"
   },
@@ -2474,7 +2466,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "1f238d57"
   },
@@ -2500,7 +2492,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "f687130a"
   },
@@ -2522,12 +2514,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, skeletal, standard",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "7a3ee88e"
   },
@@ -2553,7 +2544,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "26084ef5"
   },
@@ -2575,12 +2566,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, skeletal, standard",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "fb4a7ef9"
   },
@@ -2605,7 +2595,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e32308ed"
   },
@@ -2627,12 +2617,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, skeletal",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, skeletal"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "ddf4340b"
   },
@@ -2657,7 +2646,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "264f54cf"
   },
@@ -2679,12 +2668,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, skeletal",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, skeletal"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "17fe1169"
   },
@@ -2710,7 +2698,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "901c95d7"
   },
@@ -2736,7 +2724,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "9e7a4838"
   },
@@ -2762,7 +2750,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "0f79c829"
   },
@@ -2783,7 +2771,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "7a055d3c"
   },
@@ -2805,7 +2793,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e5839b8b"
   },
@@ -2824,11 +2812,33 @@
    ],
    "flags": [],
    "notes": [],
-   "revision": 2,
+   "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 4,
-   "lastChangedLabel": "v4",
-   "hash": "b51979c3"
+   "lastChangedIn": 6,
+   "lastChangedLabel": "v6",
+   "hash": "1f0d5cbe"
+  },
+  {
+   "id": "seer_v1.body.armor",
+   "pack": "seer_v1",
+   "part": "body",
+   "kind": "armor",
+   "slot": "chestArmor",
+   "status": "candidate",
+   "regions": [
+    "primary",
+    "trim"
+   ],
+   "unsupportedProfiles": [
+    "brute"
+   ],
+   "flags": [],
+   "notes": [],
+   "revision": 1,
+   "createdIn": 6,
+   "lastChangedIn": 6,
+   "lastChangedLabel": "v6",
+   "hash": "f73afe09"
   },
   {
    "id": "seer_v1.left_arm.anatomy",
@@ -2850,11 +2860,37 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 2,
+   "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 4,
-   "lastChangedLabel": "v4",
-   "hash": "46836191"
+   "lastChangedIn": 6,
+   "lastChangedLabel": "v6",
+   "hash": "51bbc582"
+  },
+  {
+   "id": "seer_v1.left_arm.armor",
+   "pack": "seer_v1",
+   "part": "left_arm",
+   "kind": "armor",
+   "slot": "leftShoulder",
+   "status": "candidate",
+   "regions": [
+    "primary",
+    "trim"
+   ],
+   "unsupportedProfiles": [
+    "athletic",
+    "brute",
+    "standard"
+   ],
+   "flags": [],
+   "notes": [
+    "body fit unsupported for: athletic, brute, standard"
+   ],
+   "revision": 1,
+   "createdIn": 6,
+   "lastChangedIn": 6,
+   "lastChangedLabel": "v6",
+   "hash": "44166619"
   },
   {
    "id": "seer_v1.right_arm.anatomy",
@@ -2876,11 +2912,37 @@
    "notes": [
     "body fit unsupported for: athletic, brute, skeletal, standard"
    ],
-   "revision": 2,
+   "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 4,
-   "lastChangedLabel": "v4",
-   "hash": "f10d6cf7"
+   "lastChangedIn": 6,
+   "lastChangedLabel": "v6",
+   "hash": "ff55fb6b"
+  },
+  {
+   "id": "seer_v1.right_arm.armor",
+   "pack": "seer_v1",
+   "part": "right_arm",
+   "kind": "armor",
+   "slot": "rightShoulder",
+   "status": "candidate",
+   "regions": [
+    "primary",
+    "trim"
+   ],
+   "unsupportedProfiles": [
+    "athletic",
+    "brute",
+    "standard"
+   ],
+   "flags": [],
+   "notes": [
+    "body fit unsupported for: athletic, brute, standard"
+   ],
+   "revision": 1,
+   "createdIn": 6,
+   "lastChangedIn": 6,
+   "lastChangedLabel": "v6",
+   "hash": "16028e3f"
   },
   {
    "id": "seer_v1.left_hand.anatomy",
@@ -2904,7 +2966,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "224c0436"
   },
@@ -2930,7 +2992,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "6e58e4fa"
   },
@@ -2955,7 +3017,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "f66d7700"
   },
@@ -2977,14 +3039,13 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, skeletal",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, skeletal"
    ],
-   "revision": 2,
+   "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 4,
-   "lastChangedLabel": "v4",
-   "hash": "10ed2f84"
+   "lastChangedIn": 6,
+   "lastChangedLabel": "v6",
+   "hash": "f833d012"
   },
   {
    "id": "seer_v1.right_leg.anatomy",
@@ -3007,7 +3068,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "ac5b6878"
   },
@@ -3029,14 +3090,13 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, skeletal",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, skeletal"
    ],
-   "revision": 2,
+   "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 4,
-   "lastChangedLabel": "v4",
-   "hash": "11317f33"
+   "lastChangedIn": 6,
+   "lastChangedLabel": "v6",
+   "hash": "ad8ca4a6"
   },
   {
    "id": "seer_v1.face_01.face",
@@ -3127,7 +3187,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "519b9a4d"
   },
@@ -3150,7 +3210,7 @@
    "notes": [],
    "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "a42db82a"
   },
@@ -3171,7 +3231,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "c0d96f16"
   },
@@ -3194,7 +3254,7 @@
    "notes": [],
    "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "a8682dc7"
   },
@@ -3220,7 +3280,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "eb328bc6"
   },
@@ -3245,7 +3305,7 @@
    ],
    "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "beff5514"
   },
@@ -3271,7 +3331,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "d3422295"
   },
@@ -3296,7 +3356,7 @@
    ],
    "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "a41e6709"
   },
@@ -3322,7 +3382,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "aed1cd81"
   },
@@ -3348,7 +3408,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "ebce14cf"
   },
@@ -3373,7 +3433,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "3bdc826e"
   },
@@ -3394,12 +3454,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, skeletal",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, skeletal"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "432d931a"
   },
@@ -3424,7 +3483,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "7be2ce0b"
   },
@@ -3445,12 +3504,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, skeletal",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, skeletal"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "da1c3758"
   },
@@ -3476,7 +3534,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "61b18dae"
   },
@@ -3545,7 +3603,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "c7bdabd3"
   },
@@ -3557,8 +3615,8 @@
    "slot": "helmet",
    "status": "candidate",
    "regions": [
-    "primary",
-    "trim"
+    "hair",
+    "skin"
    ],
    "unsupportedProfiles": [
     "brute"
@@ -3567,9 +3625,9 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
-   "lastChangedLabel": "v4",
-   "hash": "65d68f78"
+   "lastChangedIn": 6,
+   "lastChangedLabel": "v6",
+   "hash": "f457335f"
   },
   {
    "id": "seer_v3.body.anatomy",
@@ -3588,7 +3646,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "6b867b8d"
   },
@@ -3611,7 +3669,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "4d987fde"
   },
@@ -3637,7 +3695,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "fd05cc7d"
   },
@@ -3663,7 +3721,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "be58a44c"
   },
@@ -3689,7 +3747,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "2205d2e7"
   },
@@ -3715,7 +3773,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "62a18a78"
   },
@@ -3741,7 +3799,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "6646c8ca"
   },
@@ -3767,7 +3825,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "c929bdd9"
   },
@@ -3793,7 +3851,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "ccfbf6ab"
   },
@@ -3819,7 +3877,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "5b3c62f5"
   },
@@ -3844,7 +3902,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "86c8b0c7"
   },
@@ -3870,7 +3928,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "11b75855"
   },
@@ -3895,7 +3953,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "0e9d106f"
   },
@@ -3921,7 +3979,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "c8b5f332"
   },
@@ -3947,7 +4005,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "160f463f"
   },
@@ -4014,7 +4072,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "cee387c0"
   },
@@ -4038,7 +4096,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "1c155438"
   },
@@ -4065,7 +4123,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "a268dca7"
   },
@@ -4089,7 +4147,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "1e922834"
   },
@@ -4114,7 +4172,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "0fea34e8"
   },
@@ -4138,7 +4196,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "a1f2290e"
   },
@@ -4163,7 +4221,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "0f6566e7"
   },
@@ -4187,7 +4245,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "a88ffcd3"
   },
@@ -4211,7 +4269,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "2cc4a9d4"
   },
@@ -4235,7 +4293,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "a02bbeab"
   },
@@ -4259,7 +4317,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "d8509376"
   },
@@ -4284,7 +4342,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e6dbdabc"
   },
@@ -4309,7 +4367,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "a0288cd5"
   },
@@ -4334,7 +4392,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "fb5781b8"
   },
@@ -4359,7 +4417,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "f8718a1c"
   },
@@ -4450,7 +4508,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "a92a7b28"
   },
@@ -4471,7 +4529,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "c5f8b484"
   },
@@ -4495,7 +4553,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "5ba69e5c"
   },
@@ -4521,7 +4579,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "f0f28c5c"
   },
@@ -4545,7 +4603,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "92d9ffc4"
   },
@@ -4571,7 +4629,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "65131dbe"
   },
@@ -4595,7 +4653,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "237e288d"
   },
@@ -4621,7 +4679,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "8916b53f"
   },
@@ -4645,7 +4703,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "79914edf"
   },
@@ -4669,7 +4727,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "0c89f9f5"
   },
@@ -4693,7 +4751,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "c4f54b09"
   },
@@ -4718,7 +4776,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "60dce447"
   },
@@ -4743,7 +4801,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "b7a955fd"
   },
@@ -4769,7 +4827,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "428f8542"
   },
@@ -4794,7 +4852,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "d2fa78dc"
   },
@@ -4820,7 +4878,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "706f2057"
   },
@@ -4846,7 +4904,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "777793c0"
   },
@@ -4913,7 +4971,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "90a3b9ab"
   },
@@ -4932,7 +4990,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "d55ec96c"
   },
@@ -4956,7 +5014,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "66b96c8a"
   },
@@ -4976,12 +5034,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: brute, skeletal",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: brute, skeletal"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "caac03f4"
   },
@@ -5005,7 +5062,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "7ad4d8a2"
   },
@@ -5032,7 +5089,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "7483b5c5"
   },
@@ -5056,7 +5113,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "c41b10f2"
   },
@@ -5083,7 +5140,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e1433ae8"
   },
@@ -5107,7 +5164,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "ad40f4df"
   },
@@ -5131,7 +5188,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "0a503f08"
   },
@@ -5155,7 +5212,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "4d65c9e7"
   },
@@ -5179,7 +5236,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "1b2895b6"
   },
@@ -5204,7 +5261,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "0bf56c16"
   },
@@ -5225,12 +5282,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: brute, skeletal, slender",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: brute, skeletal, slender"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "2f8b3144"
   },
@@ -5255,7 +5311,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "8fe5dd5a"
   },
@@ -5276,12 +5332,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: brute, skeletal, slender",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: brute, skeletal, slender"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "47f46640"
   },
@@ -5372,7 +5427,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "61fdbfa6"
   },
@@ -5391,7 +5446,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "2c1a2386"
   },
@@ -5412,7 +5467,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "55d4f7b8"
   },
@@ -5433,7 +5488,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "196cc8bb"
   },
@@ -5457,7 +5512,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "28a0140f"
   },
@@ -5478,7 +5533,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "7a114358"
   },
@@ -5502,7 +5557,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "efd5a4aa"
   },
@@ -5523,7 +5578,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "b9511d15"
   },
@@ -5547,7 +5602,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "9dd34a6e"
   },
@@ -5571,7 +5626,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "1a9ac69a"
   },
@@ -5595,7 +5650,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "57d3a089"
   },
@@ -5619,7 +5674,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "daf59b48"
   },
@@ -5643,7 +5698,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "cf9f499f"
   },
@@ -5667,7 +5722,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "d89c29a2"
   },
@@ -5693,7 +5748,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "af553f63"
   },
@@ -5760,7 +5815,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "4919a29d"
   },
@@ -5779,7 +5834,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "370aab65"
   },
@@ -5800,7 +5855,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "f679f61b"
   },
@@ -5822,7 +5877,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "7a475299"
   },
@@ -5846,7 +5901,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "8256e05a"
   },
@@ -5868,7 +5923,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "6573cc98"
   },
@@ -5892,7 +5947,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "1bf7742d"
   },
@@ -5914,7 +5969,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e762c1fa"
   },
@@ -5938,7 +5993,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "b9da256b"
   },
@@ -5962,7 +6017,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "46450775"
   },
@@ -5986,7 +6041,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "075ad912"
   },
@@ -6011,7 +6066,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "db03fc87"
   },
@@ -6035,7 +6090,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "cf6ffc7a"
   },
@@ -6060,7 +6115,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e6e70d8e"
   },
@@ -6151,7 +6206,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "fd99681e"
   },
@@ -6168,12 +6223,10 @@
    ],
    "unsupportedProfiles": [],
    "flags": [],
-   "notes": [
-    "regions merged vs the previous set (no longer separate): secondary"
-   ],
+   "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "118701ed"
   },
@@ -6194,7 +6247,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "905d7a6c"
   },
@@ -6217,7 +6270,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "d0da4632"
   },
@@ -6241,7 +6294,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "eb6f7a3c"
   },
@@ -6261,12 +6314,10 @@
    "flags": [
     "mask coverage 0.84: parts of the art are not recolourable"
    ],
-   "notes": [
-    "regions merged vs the previous set (no longer separate): primary, secondary"
-   ],
+   "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "d4d0d401"
   },
@@ -6290,7 +6341,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "8577fffe"
   },
@@ -6310,12 +6361,10 @@
    "flags": [
     "mask coverage 0.90: parts of the art are not recolourable"
    ],
-   "notes": [
-    "regions merged vs the previous set (no longer separate): primary, secondary"
-   ],
+   "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "08af99fe"
   },
@@ -6339,7 +6388,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "88c61d63"
   },
@@ -6363,7 +6412,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "6a19cb9f"
   },
@@ -6384,12 +6433,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: brute, skeletal",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: brute, skeletal"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "c08298a0"
   },
@@ -6413,7 +6461,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "8c33e52d"
   },
@@ -6434,12 +6482,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: brute, skeletal",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: brute, skeletal"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "56bf09a2"
   },
@@ -6463,7 +6510,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "bf8bdd16"
   },
@@ -6484,12 +6531,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: brute, skeletal",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: brute, skeletal"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "4a42bb34"
   },
@@ -6515,7 +6561,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "4d26b4d2"
   },
@@ -6584,7 +6630,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "82366d58"
   },
@@ -6603,12 +6649,10 @@
     "brute"
    ],
    "flags": [],
-   "notes": [
-    "regions merged vs the previous set (no longer separate): primary"
-   ],
+   "notes": [],
    "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "b41661e6"
   },
@@ -6629,7 +6673,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "4e523be0"
   },
@@ -6652,7 +6696,7 @@
    "notes": [],
    "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "daae58fc"
   },
@@ -6678,7 +6722,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "c65929ee"
   },
@@ -6700,12 +6744,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, standard",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, standard"
    ],
    "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "4fe0082a"
   },
@@ -6731,7 +6774,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e3391b06"
   },
@@ -6753,12 +6796,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, standard",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, standard"
    ],
    "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "9681b79c"
   },
@@ -6784,7 +6826,7 @@
    ],
    "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "600e2655"
   },
@@ -6810,7 +6852,7 @@
    ],
    "revision": 3,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "c3a2a730"
   },
@@ -6835,7 +6877,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "a6a3f479"
   },
@@ -6856,12 +6898,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, skeletal",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, skeletal"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "817e096d"
   },
@@ -6886,7 +6927,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "adf9e407"
   },
@@ -6907,12 +6948,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, skeletal",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, skeletal"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 5,
+   "lastChangedIn": 4,
    "lastChangedLabel": "v4.1",
    "hash": "78100369"
   },
@@ -6938,7 +6978,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "ca301195"
   },
@@ -7007,7 +7047,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "2bd2f564"
   },
@@ -7027,12 +7067,10 @@
     "brute"
    ],
    "flags": [],
-   "notes": [
-    "regions merged vs the previous set (no longer separate): secondary"
-   ],
+   "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "6517cf33"
   },
@@ -7053,7 +7091,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "942ae154"
   },
@@ -7077,7 +7115,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "52045632"
   },
@@ -7103,7 +7141,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "5cc33c8f"
   },
@@ -7125,12 +7163,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, standard",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, standard"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "1c02302b"
   },
@@ -7156,7 +7193,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "f41b62b7"
   },
@@ -7178,12 +7215,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, standard",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, standard"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "dad032f3"
   },
@@ -7209,7 +7245,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "3a85a315"
   },
@@ -7235,7 +7271,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "586ddbd1"
   },
@@ -7260,7 +7296,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e1014961"
   },
@@ -7281,12 +7317,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, skeletal",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, skeletal"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "6479a722"
   },
@@ -7311,7 +7346,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "75787fa4"
   },
@@ -7332,12 +7367,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, skeletal",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, skeletal"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "67008b3d"
   },
@@ -7430,7 +7464,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "b46eba56"
   },
@@ -7448,12 +7482,10 @@
     "brute"
    ],
    "flags": [],
-   "notes": [
-    "regions merged vs the previous set (no longer separate): secondary"
-   ],
+   "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "598e49e2"
   },
@@ -7474,7 +7506,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "99e18af2"
   },
@@ -7492,12 +7524,10 @@
     "brute"
    ],
    "flags": [],
-   "notes": [
-    "regions merged vs the previous set (no longer separate): secondary"
-   ],
+   "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e20e8ad5"
   },
@@ -7523,7 +7553,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "928fd80f"
   },
@@ -7544,12 +7574,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, standard",
-    "regions merged vs the previous set (no longer separate): secondary"
+    "body fit unsupported for: athletic, brute, standard"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "b42f54bc"
   },
@@ -7575,7 +7604,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "5c1fa0e6"
   },
@@ -7596,12 +7625,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, standard",
-    "regions merged vs the previous set (no longer separate): secondary"
+    "body fit unsupported for: athletic, brute, standard"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "801eccf0"
   },
@@ -7627,7 +7655,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e7b5c2e5"
   },
@@ -7653,7 +7681,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "95ec1b1e"
   },
@@ -7678,7 +7706,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "07e6dcd9"
   },
@@ -7703,7 +7731,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "a9e8f783"
   },
@@ -7728,7 +7756,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "563a687e"
   },
@@ -7753,7 +7781,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "7b48d1de"
   },
@@ -7846,7 +7874,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "9453bde5"
   },
@@ -7869,7 +7897,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "f419bab9"
   },
@@ -7894,7 +7922,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "51bc7e27"
   },
@@ -7922,7 +7950,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "05677fea"
   },
@@ -7948,7 +7976,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "68901218"
   },
@@ -7973,7 +8001,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "f2d65ec7"
   },
@@ -7999,7 +8027,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e57db5bf"
   },
@@ -8024,7 +8052,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "172d7ad7"
   },
@@ -8050,7 +8078,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "90673ca7"
   },
@@ -8076,7 +8104,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "f1242969"
   },
@@ -8102,7 +8130,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "3331229c"
   },
@@ -8128,7 +8156,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "d0a0cd8f"
   },
@@ -8154,7 +8182,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "11f0c0b7"
   },
@@ -8181,7 +8209,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "33dad73e"
   },
@@ -8207,7 +8235,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "4f58721a"
   },
@@ -8234,7 +8262,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "b99f8696"
   },
@@ -8327,7 +8355,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "f2a36902"
   },
@@ -8352,7 +8380,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "ade61549"
   },
@@ -8378,7 +8406,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e5e503ed"
   },
@@ -8404,7 +8432,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "1d660a66"
   },
@@ -8428,7 +8456,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "747b65fb"
   },
@@ -8454,7 +8482,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "1777dba1"
   },
@@ -8479,7 +8507,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "59292e8b"
   },
@@ -8505,7 +8533,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "837f6736"
   },
@@ -8531,7 +8559,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "3d9aefce"
   },
@@ -8557,7 +8585,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "6cb1c832"
   },
@@ -8583,7 +8611,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "bb933faa"
   },
@@ -8609,7 +8637,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "fe79c4a8"
   },
@@ -8635,7 +8663,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "dc09f95c"
   },
@@ -8661,7 +8689,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "fe2b1a24"
   },
@@ -8687,7 +8715,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "a6ab6b15"
   },
@@ -8780,7 +8808,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "15d40d1d"
   },
@@ -8805,7 +8833,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "4d03ef6a"
   },
@@ -8832,7 +8860,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "45299ff9"
   },
@@ -8858,7 +8886,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "35014893"
   },
@@ -8882,7 +8910,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "729489d4"
   },
@@ -8908,7 +8936,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "2c9fd50c"
   },
@@ -8932,7 +8960,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "4455c68f"
   },
@@ -8958,7 +8986,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "420478f4"
   },
@@ -8984,7 +9012,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "40bc78e2"
   },
@@ -9010,7 +9038,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "3f3570dd"
   },
@@ -9036,7 +9064,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "32eddc74"
   },
@@ -9062,7 +9090,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e5cd2923"
   },
@@ -9089,7 +9117,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e6485a46"
   },
@@ -9115,7 +9143,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "18040d78"
   },
@@ -9142,7 +9170,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "f2d6d802"
   },
@@ -9235,7 +9263,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "ead569f6"
   },
@@ -9260,7 +9288,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "2e6bd61d"
   },
@@ -9282,12 +9310,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, standard",
-    "regions merged vs the previous set (no longer separate): secondary"
+    "body fit unsupported for: athletic, brute, standard"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "6df3e7da"
   },
@@ -9313,7 +9340,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "c0114395"
   },
@@ -9339,7 +9366,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e1694c82"
   },
@@ -9360,12 +9387,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute",
-    "regions merged vs the previous set (no longer separate): secondary"
+    "body fit unsupported for: athletic, brute"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "65589c1d"
   },
@@ -9391,7 +9417,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "ba7427ae"
   },
@@ -9417,7 +9443,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "cc0409e5"
   },
@@ -9443,7 +9469,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "7c95ee36"
   },
@@ -9469,7 +9495,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "f83ffcee"
   },
@@ -9562,7 +9588,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "30b959e4"
   },
@@ -9584,7 +9610,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "8cba7bac"
   },
@@ -9609,7 +9635,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "83024b05"
   },
@@ -9635,7 +9661,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e87a8eda"
   },
@@ -9661,7 +9687,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "42d0f0ac"
   },
@@ -9685,7 +9711,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "a9ec77bf"
   },
@@ -9711,7 +9737,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "527631fd"
   },
@@ -9735,7 +9761,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "b35eb9c1"
   },
@@ -9761,7 +9787,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "38adab02"
   },
@@ -9787,7 +9813,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "33155ce0"
   },
@@ -9813,7 +9839,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "f9030545"
   },
@@ -9839,7 +9865,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "f6eb0009"
   },
@@ -9865,7 +9891,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "5efd59b9"
   },
@@ -9891,7 +9917,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "c7253134"
   },
@@ -9917,7 +9943,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "35af71e8"
   },
@@ -9943,7 +9969,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e3ff921f"
   },
@@ -10036,7 +10062,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "05147377"
   },
@@ -10058,7 +10084,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "8a1a7be4"
   },
@@ -10083,7 +10109,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "df12bd1a"
   },
@@ -10105,12 +10131,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, brute, standard",
-    "regions merged vs the previous set (no longer separate): primary"
+    "body fit unsupported for: athletic, brute, standard"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "d338ed35"
   },
@@ -10136,7 +10161,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "16d526fd"
   },
@@ -10162,7 +10187,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "9550d0af"
   },
@@ -10187,7 +10212,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "8d22c838"
   },
@@ -10213,7 +10238,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "7258d532"
   },
@@ -10239,7 +10264,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "539d56d9"
   },
@@ -10265,7 +10290,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "b224a2e0"
   },
@@ -10291,7 +10316,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "15bf8736"
   },
@@ -10386,7 +10411,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "91d97ba8"
   },
@@ -10414,7 +10439,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "1ca15240"
   },
@@ -10439,7 +10464,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "3893a88e"
   },
@@ -10466,7 +10491,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "89b0e63f"
   },
@@ -10491,7 +10516,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "93e220e8"
   },
@@ -10519,7 +10544,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "6c779ca4"
   },
@@ -10544,7 +10569,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "3f0aab20"
   },
@@ -10569,7 +10594,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "25a1a7dd"
   },
@@ -10594,7 +10619,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e104fcff"
   },
@@ -10619,7 +10644,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "2e5b199c"
   },
@@ -10646,7 +10671,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "565bcf53"
   },
@@ -10672,7 +10697,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "42350365"
   },
@@ -10743,7 +10768,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "4fbb1671"
   },
@@ -10771,7 +10796,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "768f2607"
   },
@@ -10794,12 +10819,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, skeletal, slender, standard",
-    "regions merged vs the previous set (no longer separate): secondary"
+    "body fit unsupported for: athletic, skeletal, slender, standard"
    ],
    "revision": 1,
-   "createdIn": 4,
-   "lastChangedIn": 4,
+   "createdIn": 3,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "9c98d611"
   },
@@ -10824,7 +10848,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "522cb73f"
   },
@@ -10849,8 +10873,8 @@
     "body fit unsupported for: athletic, skeletal, slender, standard"
    ],
    "revision": 1,
-   "createdIn": 4,
-   "lastChangedIn": 4,
+   "createdIn": 3,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "b23e8271"
   },
@@ -10875,7 +10899,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "277e0dfe"
   },
@@ -10900,8 +10924,8 @@
     "body fit unsupported for: athletic, skeletal, slender, standard"
    ],
    "revision": 1,
-   "createdIn": 4,
-   "lastChangedIn": 4,
+   "createdIn": 3,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "5a00258f"
   },
@@ -10926,7 +10950,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "85d92ea7"
   },
@@ -10950,8 +10974,8 @@
     "body fit unsupported for: skeletal, slender, standard"
    ],
    "revision": 1,
-   "createdIn": 4,
-   "lastChangedIn": 4,
+   "createdIn": 3,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "ddc4c1fd"
   },
@@ -10976,7 +11000,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "102eebcf"
   },
@@ -10998,12 +11022,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: skeletal, slender, standard",
-    "regions merged vs the previous set (no longer separate): secondary"
+    "body fit unsupported for: skeletal, slender, standard"
    ],
    "revision": 1,
-   "createdIn": 4,
-   "lastChangedIn": 4,
+   "createdIn": 3,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "be5f5825"
   },
@@ -11028,7 +11051,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "14ac98d5"
   },
@@ -11052,8 +11075,8 @@
     "body fit unsupported for: skeletal, slender, standard"
    ],
    "revision": 1,
-   "createdIn": 4,
-   "lastChangedIn": 4,
+   "createdIn": 3,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "5b5eab2c"
   },
@@ -11078,7 +11101,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "75ca6e5c"
   },
@@ -11102,8 +11125,8 @@
     "body fit unsupported for: skeletal, slender, standard"
    ],
    "revision": 1,
-   "createdIn": 4,
-   "lastChangedIn": 4,
+   "createdIn": 3,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "3267d34f"
   },
@@ -11129,7 +11152,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "826ae44d"
   },
@@ -11155,7 +11178,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "93cf6149"
   },
@@ -11181,7 +11204,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "dd56cc01"
   },
@@ -11204,7 +11227,7 @@
    "notes": [],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "880c33f4"
   },
@@ -11232,7 +11255,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "af5c08b6"
   },
@@ -11256,12 +11279,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: athletic, skeletal, slender, standard",
-    "regions merged vs the previous set (no longer separate): trim"
+    "body fit unsupported for: athletic, skeletal, slender, standard"
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "dbcec947"
   },
@@ -11286,7 +11308,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "d706bf3a"
   },
@@ -11311,7 +11333,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "8978169a"
   },
@@ -11336,7 +11358,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "a65672e3"
   },
@@ -11358,12 +11380,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: skeletal, slender, standard",
-    "regions merged vs the previous set (no longer separate): secondary"
+    "body fit unsupported for: skeletal, slender, standard"
    ],
    "revision": 1,
-   "createdIn": 4,
-   "lastChangedIn": 4,
+   "createdIn": 3,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "40097338"
   },
@@ -11388,7 +11409,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "17afd6cc"
   },
@@ -11410,12 +11431,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: skeletal, slender, standard",
-    "regions merged vs the previous set (no longer separate): trim"
+    "body fit unsupported for: skeletal, slender, standard"
    ],
    "revision": 1,
-   "createdIn": 4,
-   "lastChangedIn": 4,
+   "createdIn": 3,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "3dc012ed"
   },
@@ -11440,7 +11460,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "1a97329c"
   },
@@ -11462,12 +11482,11 @@
    ],
    "flags": [],
    "notes": [
-    "body fit unsupported for: skeletal, slender, standard",
-    "regions merged vs the previous set (no longer separate): secondary"
+    "body fit unsupported for: skeletal, slender, standard"
    ],
    "revision": 1,
-   "createdIn": 4,
-   "lastChangedIn": 4,
+   "createdIn": 3,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "e3f5d4e5"
   },
@@ -11492,7 +11511,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "5592e1b3"
   },
@@ -11518,7 +11537,7 @@
    ],
    "revision": 2,
    "createdIn": 1,
-   "lastChangedIn": 4,
+   "lastChangedIn": 3,
    "lastChangedLabel": "v4",
    "hash": "12880c90"
   },
@@ -11583,14 +11602,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.935,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "5df832cd"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "5bc5895d"
   },
   {
    "id": "weapon.forest_ranger",
@@ -11604,16 +11623,14 @@
    ],
    "supportedPacks": 2,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.794,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.79: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "6883c60c"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "c4cc6383"
   },
   {
    "id": "weapon.seer",
@@ -11626,16 +11643,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.665,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.67: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "d9344a43"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "1f2816bf"
   },
   {
    "id": "weapon.blood_alchemist",
@@ -11649,14 +11664,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.948,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "f4fededd"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "c4a7f48e"
   },
   {
    "id": "weapon.dark_oracle",
@@ -11670,16 +11685,16 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.423,
+   "authoredCoverage": null,
    "flags": [
-    "leaves 58% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
+    "mostly line work: mask coverage 0.71 (documented floor 0.60); only part of the sprite recolours"
    ],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "23a960c6"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "a65ba722"
   },
   {
    "id": "weapon.necromancer",
@@ -11692,16 +11707,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.755,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.75: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "9bc11798"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "0def2dc1"
   },
   {
    "id": "weapon.skeleton_crusader",
@@ -11714,14 +11727,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.896,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "64ef1f3f"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "6dfd2ac5"
   },
   {
    "id": "weapon.golem",
@@ -11734,14 +11747,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.925,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "5ea13d3f"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "b26edeb0"
   },
   {
    "id": "weapon.staff.1.1",
@@ -11754,14 +11767,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.83,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "b72ec1ef"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "413664fe"
   },
   {
    "id": "weapon.staff.1.2",
@@ -11774,16 +11787,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.776,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.78: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "13b2cf14"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "f0ff0419"
   },
   {
    "id": "weapon.staff.1.3",
@@ -11796,16 +11807,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.748,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.75: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "3b964ac4"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "266507e3"
   },
   {
    "id": "weapon.staff.1.4",
@@ -11819,16 +11828,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.785,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.79: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "c5b26d64"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "05741305"
   },
   {
    "id": "weapon.staff.1.5",
@@ -11841,16 +11848,16 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.715,
-   "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.72: some very dark fill stays dark"
+   "authoredCoverage": null,
+   "flags": [
+    "mostly line work: mask coverage 0.76 (documented floor 0.60); only part of the sprite recolours"
    ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "773f83f7"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "b25bd22d"
   },
   {
    "id": "weapon.staff.2.1",
@@ -11863,14 +11870,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.93,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "604fad67"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "ddd79963"
   },
   {
    "id": "weapon.staff.2.2",
@@ -11883,14 +11890,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.923,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "abb7526d"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "7b968062"
   },
   {
    "id": "weapon.staff.2.3",
@@ -11899,19 +11906,20 @@
    "group": "staff2",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.927,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [],
-   "revision": 3,
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary"
+   ],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "0f2ab70d"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "6c06b246"
   },
   {
    "id": "weapon.staff.2.4",
@@ -11920,23 +11928,20 @@
    "group": "staff2",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary",
-    "trim"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.907,
-   "flags": [
-    "tiny region 'trim' (3.7% of the painted area): check for a stray patch",
-    "3+ colour regions: check that one material was not split"
+   "authoredCoverage": null,
+   "flags": [],
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary, trim"
    ],
-   "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "7b170d03"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "f0a66bd9"
   },
   {
    "id": "weapon.staff.2.5",
@@ -11945,19 +11950,20 @@
    "group": "staff2",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.884,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [],
-   "revision": 3,
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary"
+   ],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "e3f76e79"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "72b31735"
   },
   {
    "id": "weapon.staff.3.1",
@@ -11966,19 +11972,20 @@
    "group": "staff3",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.946,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [],
-   "revision": 3,
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary"
+   ],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "c0c14a1b"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "1a1e1f9d"
   },
   {
    "id": "weapon.staff.3.2",
@@ -11987,21 +11994,20 @@
    "group": "staff3",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.94,
-   "flags": [
-    "tiny region 'secondary' (1.4% of the painted area): check for a stray patch"
+   "authoredCoverage": null,
+   "flags": [],
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "0520753b"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "58674d69"
   },
   {
    "id": "weapon.staff.3.3",
@@ -12010,19 +12016,20 @@
    "group": "staff3",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.94,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [],
-   "revision": 3,
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary"
+   ],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "e007d915"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "bdfc6834"
   },
   {
    "id": "weapon.staff.3.4",
@@ -12031,23 +12038,20 @@
    "group": "staff3",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary",
-    "trim"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.929,
-   "flags": [
-    "tiny region 'trim' (3.9% of the painted area): check for a stray patch",
-    "3+ colour regions: check that one material was not split"
+   "authoredCoverage": null,
+   "flags": [],
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary, trim"
    ],
-   "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "ed01d635"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "f6d600d4"
   },
   {
    "id": "weapon.staff.3.5",
@@ -12061,14 +12065,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.864,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "d1c8a9cc"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "b5b9becb"
   },
   {
    "id": "weapon.staff.4.1",
@@ -12077,19 +12081,20 @@
    "group": "staff4",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.85,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [],
-   "revision": 3,
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary"
+   ],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "b2bf9f9f"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "795584ce"
   },
   {
    "id": "weapon.staff.4.2",
@@ -12098,21 +12103,20 @@
    "group": "staff4",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.737,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [
-    "authored-surfaces coverage 0.74: some very dark fill stays dark"
+    "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "7a36708f"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "a1b813c4"
   },
   {
    "id": "weapon.staff.4.3",
@@ -12121,19 +12125,20 @@
    "group": "staff4",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.816,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [],
-   "revision": 3,
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary"
+   ],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "48095a7c"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "dc52a7ec"
   },
   {
    "id": "weapon.staff.4.4",
@@ -12147,16 +12152,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.792,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.79: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "44c6ec07"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "8fa887b2"
   },
   {
    "id": "weapon.staff.4.5",
@@ -12165,19 +12168,20 @@
    "group": "staff4",
    "status": "candidate",
    "regions": [
-    "emissive",
     "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.813,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [],
-   "revision": 3,
+   "notes": [
+    "regions merged vs the previous set (no longer separate): emissive"
+   ],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "41c57f58"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "0487bf2a"
   },
   {
    "id": "weapon.staff.5.1",
@@ -12190,14 +12194,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.817,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "151e3810"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "92adbd7e"
   },
   {
    "id": "weapon.staff.5.2",
@@ -12206,21 +12210,20 @@
    "group": "staff5",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.774,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [
-    "authored-surfaces coverage 0.77: some very dark fill stays dark"
+    "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "a4168df2"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "4ccce22b"
   },
   {
    "id": "weapon.staff.5.3",
@@ -12229,22 +12232,21 @@
    "group": "staff5",
    "status": "candidate",
    "regions": [
-    "emissive",
     "primary",
     "secondary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.85,
-   "flags": [
-    "3+ colour regions: check that one material was not split"
+   "authoredCoverage": null,
+   "flags": [],
+   "notes": [
+    "regions merged vs the previous set (no longer separate): emissive"
    ],
-   "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "39663783"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "b6edfcc0"
   },
   {
    "id": "weapon.staff.5.4",
@@ -12259,18 +12261,16 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.793,
+   "authoredCoverage": null,
    "flags": [
     "3+ colour regions: check that one material was not split"
    ],
-   "notes": [
-    "authored-surfaces coverage 0.79: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "74cffb71"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "5642d9f0"
   },
   {
    "id": "weapon.staff.5.5",
@@ -12280,23 +12280,20 @@
    "status": "candidate",
    "regions": [
     "primary",
-    "secondary",
-    "trim"
+    "secondary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.797,
-   "flags": [
-    "3+ colour regions: check that one material was not split"
-   ],
+   "authoredCoverage": null,
+   "flags": [],
    "notes": [
-    "authored-surfaces coverage 0.80: some very dark fill stays dark"
+    "regions merged vs the previous set (no longer separate): trim"
    ],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "69154b59"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "ff5c0a79"
   },
   {
    "id": "weapon.staff.6.1",
@@ -12309,14 +12306,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.843,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "52a56d7a"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "944e0cf8"
   },
   {
    "id": "weapon.staff.6.2",
@@ -12329,16 +12326,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.553,
-   "flags": [
-    "leaves 45% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
-   ],
+   "authoredCoverage": null,
+   "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "c5da8c53"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "3adae1f2"
   },
   {
    "id": "weapon.staff.6.3",
@@ -12351,14 +12346,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.886,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "5937c645"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "1a031ad8"
   },
   {
    "id": "weapon.staff.6.4",
@@ -12371,14 +12366,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.875,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "85240352"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "2d330414"
   },
   {
    "id": "weapon.staff.6.5",
@@ -12387,21 +12382,20 @@
    "group": "staff6",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.701,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [
-    "authored-surfaces coverage 0.70: some very dark fill stays dark"
+    "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "8feb0d28"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "d21632ed"
   },
   {
    "id": "weapon.staff.7.1",
@@ -12410,22 +12404,20 @@
    "group": "staff7",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary",
-    "trim"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.927,
-   "flags": [
-    "3+ colour regions: check that one material was not split"
+   "authoredCoverage": null,
+   "flags": [],
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary, trim"
    ],
-   "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "8c0fbca9"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "a48c01d6"
   },
   {
    "id": "weapon.staff.7.2",
@@ -12434,22 +12426,20 @@
    "group": "staff7",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary",
-    "trim"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.943,
-   "flags": [
-    "3+ colour regions: check that one material was not split"
+   "authoredCoverage": null,
+   "flags": [],
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary, trim"
    ],
-   "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "163cc34e"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "fc61aa10"
   },
   {
    "id": "weapon.staff.7.3",
@@ -12458,22 +12448,20 @@
    "group": "staff7",
    "status": "candidate",
    "regions": [
-    "emissive",
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.944,
-   "flags": [
-    "3+ colour regions: check that one material was not split"
+   "authoredCoverage": null,
+   "flags": [],
+   "notes": [
+    "regions merged vs the previous set (no longer separate): emissive, secondary"
    ],
-   "notes": [],
-   "revision": 3,
-   "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "8b4b2857"
+   "revision": 2,
+   "createdIn": 5,
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "697de7d9"
   },
   {
    "id": "weapon.staff.7.4",
@@ -12482,22 +12470,21 @@
    "group": "staff7",
    "status": "candidate",
    "regions": [
-    "emissive",
     "primary",
     "secondary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.904,
-   "flags": [
-    "3+ colour regions: check that one material was not split"
+   "authoredCoverage": null,
+   "flags": [],
+   "notes": [
+    "regions merged vs the previous set (no longer separate): emissive"
    ],
-   "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "234aef04"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "41ae7d10"
   },
   {
    "id": "weapon.staff.7.5",
@@ -12506,22 +12493,21 @@
    "group": "staff7",
    "status": "candidate",
    "regions": [
-    "emissive",
     "primary",
     "secondary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.886,
-   "flags": [
-    "3+ colour regions: check that one material was not split"
+   "authoredCoverage": null,
+   "flags": [],
+   "notes": [
+    "regions merged vs the previous set (no longer separate): emissive"
    ],
-   "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "0414ef2e"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "0395a4c3"
   },
   {
    "id": "weapon.staff.8.1",
@@ -12530,19 +12516,20 @@
    "group": "staff8",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.921,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [],
-   "revision": 3,
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary"
+   ],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "ad81fea3"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "0e6d4268"
   },
   {
    "id": "weapon.staff.8.2",
@@ -12551,19 +12538,20 @@
    "group": "staff8",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.925,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [],
-   "revision": 3,
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary"
+   ],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "b2cc122e"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "bc9f3e0a"
   },
   {
    "id": "weapon.staff.8.3",
@@ -12572,19 +12560,20 @@
    "group": "staff8",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.946,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [],
-   "revision": 3,
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary"
+   ],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "3eb257a0"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "716f0d2b"
   },
   {
    "id": "weapon.staff.8.4",
@@ -12598,14 +12587,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.937,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "213f415e"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "0f38eda8"
   },
   {
    "id": "weapon.staff.8.5",
@@ -12619,14 +12608,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.908,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "43c63526"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "b74ef7cc"
   },
   {
    "id": "shield.set.1.1",
@@ -12639,16 +12628,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.605,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.61: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "61f80f3e"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "639b6f09"
   },
   {
    "id": "shield.set.1.2",
@@ -12661,14 +12648,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.858,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "9684a7bf"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "f8e44e32"
   },
   {
    "id": "shield.set.1.3",
@@ -12677,21 +12664,20 @@
    "group": "shield1",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.615,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [
-    "authored-surfaces coverage 0.61: some very dark fill stays dark"
+    "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "4e034f6c"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "9c18faaf"
   },
   {
    "id": "shield.set.1.4",
@@ -12700,21 +12686,20 @@
    "group": "shield1",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.71,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [
-    "authored-surfaces coverage 0.71: some very dark fill stays dark"
+    "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "d26a42c2"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "e9548b7b"
   },
   {
    "id": "shield.set.1.5",
@@ -12727,16 +12712,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.781,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.78: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "6c8966a8"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "e6af7dc0"
   },
   {
    "id": "shield.set.2.1",
@@ -12749,16 +12732,16 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.602,
-   "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.60: some very dark fill stays dark"
+   "authoredCoverage": null,
+   "flags": [
+    "mostly line work: mask coverage 0.66 (documented floor 0.60); only part of the sprite recolours"
    ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "73ec6fda"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "7c2bd6d0"
   },
   {
    "id": "shield.set.2.2",
@@ -12771,16 +12754,16 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.508,
+   "authoredCoverage": null,
    "flags": [
-    "leaves 49% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
+    "mostly line work: mask coverage 0.64 (documented floor 0.60); only part of the sprite recolours"
    ],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "996a0a82"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "ef0710c6"
   },
   {
    "id": "shield.set.2.3",
@@ -12789,21 +12772,20 @@
    "group": "shield2",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.694,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [
-    "authored-surfaces coverage 0.69: some very dark fill stays dark"
+    "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "225d68b4"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "58870da6"
   },
   {
    "id": "shield.set.2.4",
@@ -12816,16 +12798,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.72,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.72: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "ad897422"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "8f40df2c"
   },
   {
    "id": "shield.set.2.5",
@@ -12838,14 +12818,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.828,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "3d8bdcbd"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "902b3ff2"
   },
   {
    "id": "shield.set.3.1",
@@ -12858,16 +12838,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.523,
-   "flags": [
-    "leaves 48% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
-   ],
+   "authoredCoverage": null,
+   "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "77da87a9"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "5270e22d"
   },
   {
    "id": "shield.set.3.2",
@@ -12880,14 +12858,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.805,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "f9df0640"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "0b09900a"
   },
   {
    "id": "shield.set.3.3",
@@ -12900,14 +12878,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.826,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "3096b927"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "1ba195f8"
   },
   {
    "id": "shield.set.3.4",
@@ -12920,14 +12898,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.898,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "d10c913d"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "943e59e1"
   },
   {
    "id": "shield.set.3.5",
@@ -12936,19 +12914,20 @@
    "group": "shield3",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.929,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [],
-   "revision": 3,
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary"
+   ],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "d56700cb"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "e3c5a941"
   },
   {
    "id": "shield.set.4.1",
@@ -12961,16 +12940,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.616,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.62: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "4c549a53"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "4b24f743"
   },
   {
    "id": "shield.set.4.2",
@@ -12983,14 +12960,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.855,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "bb8511c0"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "6734d140"
   },
   {
    "id": "shield.set.4.3",
@@ -12999,19 +12976,20 @@
    "group": "shield4",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.822,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [],
-   "revision": 3,
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary"
+   ],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "9bbb237e"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "6a0af409"
   },
   {
    "id": "shield.set.4.4",
@@ -13024,16 +13002,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.74,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.74: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "82816b93"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "0452b80b"
   },
   {
    "id": "shield.set.4.5",
@@ -13042,19 +13018,20 @@
    "group": "shield4",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.909,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [],
-   "revision": 3,
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary"
+   ],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "976dc1ce"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "11de3bf4"
   },
   {
    "id": "shield.set.5.1",
@@ -13067,16 +13044,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.537,
-   "flags": [
-    "leaves 46% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
-   ],
+   "authoredCoverage": null,
+   "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "5934d93b"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "3e336119"
   },
   {
    "id": "shield.set.5.2",
@@ -13089,16 +13064,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.685,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.69: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "6ddcae83"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "48d9166e"
   },
   {
    "id": "shield.set.5.3",
@@ -13111,16 +13084,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.744,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.74: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "c66c3d44"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "c7320a59"
   },
   {
    "id": "shield.set.5.4",
@@ -13133,14 +13104,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.893,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "f2240ea6"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "166ccb37"
   },
   {
    "id": "shield.set.5.5",
@@ -13149,19 +13120,20 @@
    "group": "shield5",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.898,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [],
-   "revision": 3,
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary"
+   ],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "e6bc3f1c"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "855f447b"
   },
   {
    "id": "shield.set.6.1",
@@ -13174,16 +13146,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.545,
-   "flags": [
-    "leaves 46% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
-   ],
+   "authoredCoverage": null,
+   "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "1a51829a"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "c31e06fd"
   },
   {
    "id": "shield.set.6.2",
@@ -13196,14 +13166,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.847,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "8b8c9a2d"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "5de75f98"
   },
   {
    "id": "shield.set.6.3",
@@ -13217,14 +13187,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.821,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "9a055a17"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "825dac64"
   },
   {
    "id": "shield.set.6.4",
@@ -13233,19 +13203,20 @@
    "group": "shield6",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.888,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [],
-   "revision": 3,
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary"
+   ],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "b2af9945"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "8bdfbcbf"
   },
   {
    "id": "shield.set.6.5",
@@ -13258,14 +13229,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.945,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "fc11a19e"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "5f51ac6d"
   },
   {
    "id": "shield.set.7.1",
@@ -13278,16 +13249,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.537,
-   "flags": [
-    "leaves 46% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
-   ],
+   "authoredCoverage": null,
+   "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "43b072e1"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "19fe647d"
   },
   {
    "id": "shield.set.7.2",
@@ -13300,16 +13269,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.546,
-   "flags": [
-    "leaves 45% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
-   ],
+   "authoredCoverage": null,
+   "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "772d4237"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "c2772271"
   },
   {
    "id": "shield.set.7.3",
@@ -13322,16 +13289,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.678,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.68: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "508c99d9"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "f5eacf05"
   },
   {
    "id": "shield.set.7.4",
@@ -13340,21 +13305,20 @@
    "group": "shield7",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.448,
-   "flags": [
-    "leaves 55% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
+   "authoredCoverage": null,
+   "flags": [],
+   "notes": [
+    "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "f923599f"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "85313867"
   },
   {
    "id": "shield.set.7.5",
@@ -13363,23 +13327,20 @@
    "group": "shield7",
    "status": "candidate",
    "regions": [
-    "primary",
-    "secondary"
+    "primary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.659,
-   "flags": [
-    "a small separate region inside the dark centre emblem"
-   ],
+   "authoredCoverage": null,
+   "flags": [],
    "notes": [
-    "authored-surfaces coverage 0.66: some very dark fill stays dark"
+    "regions merged vs the previous set (no longer separate): secondary"
    ],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "b4b28601"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "25b98843"
   },
   {
    "id": "shield.set.8.1",
@@ -13392,16 +13353,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.522,
-   "flags": [
-    "leaves 48% of the area authored-surfaces would recolour untouched (very dark fill near the outline colour)"
-   ],
+   "authoredCoverage": null,
+   "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "d0a28c7e"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "e201a29d"
   },
   {
    "id": "shield.set.8.2",
@@ -13414,14 +13373,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.813,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "c171f578"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "21806d70"
   },
   {
    "id": "shield.set.8.3",
@@ -13434,18 +13393,16 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.685,
+   "authoredCoverage": null,
    "flags": [
     "inner emblem stays dark (close to the outline colour)"
    ],
-   "notes": [
-    "authored-surfaces coverage 0.69: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "36a336b7"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "2d150e92"
   },
   {
    "id": "shield.set.8.4",
@@ -13458,18 +13415,16 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.737,
+   "authoredCoverage": null,
    "flags": [
     "inner emblem stays dark (close to the outline colour)"
    ],
-   "notes": [
-    "authored-surfaces coverage 0.74: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "36ee45b1"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "03e09230"
   },
   {
    "id": "shield.set.8.5",
@@ -13482,14 +13437,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.847,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "f3c8f08e"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "6b275fdb"
   },
   {
    "id": "weapon.shard",
@@ -13502,14 +13457,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.859,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "214383b3"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "259daebe"
   },
   {
    "id": "weapon.reel",
@@ -13522,16 +13477,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.794,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.79: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "26e40eed"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "f06f43ff"
   },
   {
    "id": "weapon.gem",
@@ -13540,22 +13493,23 @@
    "group": "store",
    "status": "candidate",
    "regions": [
+    "leather",
     "primary",
     "secondary",
     "trim"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.852,
+   "authoredCoverage": null,
    "flags": [
     "3+ colour regions: check that one material was not split"
    ],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "2494c14e"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "5ac18fb3"
   },
   {
    "id": "weapon.staff",
@@ -13565,20 +13519,21 @@
    "status": "candidate",
    "regions": [
     "primary",
-    "secondary"
+    "secondary",
+    "trim"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.752,
-   "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.75: some very dark fill stays dark"
+   "authoredCoverage": null,
+   "flags": [
+    "3+ colour regions: check that one material was not split"
    ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "f619ea62"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "9e5d4a89"
   },
   {
    "id": "weapon.stormblade",
@@ -13587,19 +13542,21 @@
    "group": "store",
    "status": "candidate",
    "regions": [
-    "emissive",
-    "primary"
+    "primary",
+    "secondary"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.893,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [],
-   "revision": 3,
+   "notes": [
+    "regions merged vs the previous set (no longer separate): emissive"
+   ],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "53e9367a"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "d33c6618"
   },
   {
    "id": "weapon.chevron",
@@ -13612,16 +13569,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.786,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.79: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "eed5d7a7"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "f04b27dc"
   },
   {
    "id": "weapon.ruby",
@@ -13631,18 +13586,22 @@
    "status": "candidate",
    "regions": [
     "primary",
-    "secondary"
+    "secondary",
+    "trim"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.803,
-   "flags": [],
+   "authoredCoverage": null,
+   "flags": [
+    "tiny region 'trim' (1.4% of the painted area): check for a stray patch",
+    "3+ colour regions: check that one material was not split"
+   ],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "968b55ac"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "58e29c7d"
   },
   {
    "id": "weapon.arcane",
@@ -13656,16 +13615,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.783,
+   "authoredCoverage": null,
    "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.78: some very dark fill stays dark"
-   ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "ebc77a5a"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "6696064e"
   },
   {
    "id": "weapon.fireworkBlade",
@@ -13675,20 +13632,21 @@
    "status": "candidate",
    "regions": [
     "primary",
-    "secondary"
+    "secondary",
+    "trim"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.771,
-   "flags": [],
-   "notes": [
-    "authored-surfaces coverage 0.77: some very dark fill stays dark"
+   "authoredCoverage": null,
+   "flags": [
+    "3+ colour regions: check that one material was not split"
    ],
-   "revision": 3,
+   "notes": [],
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "b2b4d8d8"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "dd031e90"
   },
   {
    "id": "shield.crux",
@@ -13702,14 +13660,14 @@
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.921,
+   "authoredCoverage": null,
    "flags": [],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "6c0fe15b"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "8f82a340"
   },
   {
    "id": "shield.templar",
@@ -13719,18 +13677,21 @@
    "status": "candidate",
    "regions": [
     "primary",
-    "secondary"
+    "secondary",
+    "trim"
    ],
    "supportedPacks": 27,
    "maskAlgorithm": "chroma-cells-v5",
-   "authoredCoverage": 0.919,
-   "flags": [],
+   "authoredCoverage": null,
+   "flags": [
+    "3+ colour regions: check that one material was not split"
+   ],
    "notes": [],
-   "revision": 3,
+   "revision": 4,
    "createdIn": 1,
-   "lastChangedIn": 6,
-   "lastChangedLabel": "v5",
-   "hash": "0d5e9f91"
+   "lastChangedIn": 7,
+   "lastChangedLabel": "v7",
+   "hash": "14962c19"
   }
  ]
 }
