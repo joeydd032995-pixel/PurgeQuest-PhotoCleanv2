@@ -118,6 +118,8 @@ My reading, not a measurement: the SUS target of 80 is a judgment on the whole e
 
 **Also in 1.2 (found reviewing the Phase 0 tour):** the assessment's combat-card spec (10.2) says "no reward preview appears anywhere on the card", but the card's strip still shows "+33 XP · +0 on confirm" under the photo, beside the Keep and Delete buttons, which the principle "A reward never shares a surface with a safeguard" forbids. Remove the XP and gem preview from `SwipeMediaCard`'s `bottomMetaBar` and its `rewardXP` and `rewardGems` inputs. The duplicate card's per-copy preview (`DuplicateGroupCard`'s `previewReward`) needs the owner's call: it is the one place a reward preview helps pick a copy.
 
+**Hazard from 1.1 (the Room note and the coach mark):** 1.1 puts a one-line "Room: 20 items." note (`GlossaryTip`) above the card stack on the very first card, and it leaves as soon as that card is decided. The coach mark lands on the same card. Showing both at once crowds the 44 pt "Got it" target, the two arrows and the Delete and Keep row on a small phone, and when the note leaves, the card jumps up by about 56 pt. Decide in 1.2 which one wins the first card (the coach mark is the stronger teacher; the Room note can wait for the second card, or fold into the coach mark's text), and measure the card and both buttons on the tour in Light and Dark with the larger text sizes.
+
 **Acceptance:** keep or delete, tap Undo within five seconds, and the card returns with combo, perfect-room state and persistence exactly as before; after five seconds, or one step back, there is nothing to undo; the coach mark appears on the very first card only and never again.
 
 ### 1.5 Onboarding rebuild: 3 screens, deferred look, coached first room

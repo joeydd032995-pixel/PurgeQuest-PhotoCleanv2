@@ -2,7 +2,7 @@
 
 **A native iOS dungeon-crawler RPG that turns Camera Roll cleanup into combat.**
 
-Photos and videos in your library appear as monsters. Swipe left to slay (delete) or right to spare. Nothing is ever permanently destroyed by the app: every "kill" moves the item to Photos' **Recently Deleted**, where it stays recoverable for 30 days, and nothing moves until you confirm the room.
+Photos and videos in your library appear as monsters. Swipe left to delete or right to keep. Nothing is ever permanently destroyed by the app: every deletion moves the item to Photos' **Recently Deleted**, where it stays recoverable for 30 days, and nothing moves until you confirm the room.
 
 - **Platform:** iOS 18.0+, iPhone only, portrait
 - **Language:** Swift (language mode 5, built with the Swift 6.2 toolchain), about 27,000 lines across 151 files, tests included
@@ -35,7 +35,7 @@ Photos and videos in your library appear as monsters. Swipe left to slay (delete
 - Your Camera Roll is split into **dungeon dives**: 5 rooms per session, 20 items per room (`ViewModels/CombatViewModel.swift`).
 - **Rooms lean toward clutter, without going predictable.** A dive loads the 150 oldest unseen items. Before each room is dealt it counts what is left in four buckets: blurry photos, screenshots, videos over 100 MB or 2 minutes, and photos three or more years old. It then fills 30–50% of the room from the largest bucket and the rest at random. A bucket with nothing left means a pure random room (`Services/RoomTargeting.swift`). The dashboard's **Focused Dive** menu (Blur / Screenshots / Large Video / Old) names a bucket instead and fills rooms from it first; it applies to that one dive, and "Enter the Dungeon" stays the mixed default. A focus can only lean on what the dive's 150 items hold, and hand-picked hunts are dealt exactly as chosen.
 - **A date range narrows every dive.** The dashboard's **Dates** row sets one standing range on the photos' capture dates: **Only** a range, or **Exclude** one (all dates is the default). A range is a first and a last day, counted as whole days in your time zone, and either end can be left open ("Oct 12 onward", "through Mar 3"). It is saved, so it survives a relaunch, and the row names it for as long as it is on. It applies to Enter the Dungeon and every Focused Dive, and it narrows the fetch itself, so the 150 oldest unseen items are the oldest *inside* the range; the dashboard's opportunity figure and next-dive theme follow it too. Hand-picked hunts ignore it, and a photo with no capture date sits out while a range is on. The rule is `Services/DateScope.swift`; `PhotoLibraryService` filters with it and then checks every fetched asset against it again, so an excluded range is never dealt even if PhotoKit's predicate misbehaves.
-- Each item is classified into one of **36 monsters in six families** (below) and rendered as a swipeable combat card (`Views/Combat/SwipeMediaCard.swift`): swipe left to slay (queue for deletion), right to spare. Duplicates are dealt as one group card with a suggested keeper (`Views/Combat/DuplicateGroupCard.swift`).
+- Each item is classified into one of **36 monsters in six families** (below) and rendered as a swipeable combat card (`Views/Combat/SwipeMediaCard.swift`): swipe left to delete (queue for deletion), right to keep. Duplicates are dealt as one group card with a suggested keeper (`Views/Combat/DuplicateGroupCard.swift`).
 - A **combo multiplier** builds as you slay: it rises 0.1 for each item in a row, from ×1.0 to ×2.0 (reached at ten). Keeping an item costs nothing: no HP, no penalty. It takes 12% off the multiplier rather than ending it, so one careful keep never erases a streak.
 - Before anything is deleted, a **Room Summary** screen lists every queued item and requires explicit confirmation (`Views/Combat/RoomSummaryView.swift`). Individual items can be flipped from delete to spare right up until that point. Photos then shows its own delete prompt; rewards are booked only after that succeeds.
 
@@ -123,7 +123,7 @@ What this does **not** show:
 ### Other features
 - **Apple Intelligence flavor text** (iOS 26+): the system's on-device model writes a one-line taunt per monster, with fixed strings when it is unavailable (`Services/FoundationFlavorService.swift`).
 - **7-day deletion log** in Settings, with a button that opens Photos.
-- **Spared-item memory**: re-entering the dungeon skips items you already spared; resettable in Settings.
+- **Kept-photo memory**: re-entering the dungeon skips photos you already kept; resettable in Settings ("Show kept photos again").
 - **Muted, looping video previews** on combat cards from a single pooled player (`Services/VideoPreviewService.swift`).
 - **Haptics** for delete, spare and combo, respecting Reduce Motion.
 - **Hero Card** in Settings, a view-only summary of the hero. It has no share or save button on purpose: the hero art is CraftPix's, and its license does not let an app export the art.
@@ -259,7 +259,7 @@ Full steps, the StoreKit configuration and the device test pass are in [`ios/REA
 | UI tests: Forge draft/save/cancel, onboarding after a reset, a Light/Dark screenshot tour (artifact `ui-snapshots`) | `ios/PurgeQuestUITests/` | `ios.yml` |
 | Build and static analysis | | `.github/workflows/objective-c-xcode.yml` |
 | Screenshots of every screen, Light and Dark, with a synthetic photo library in the simulator (artifact `ui-snapshots-tour`; not a merge gate) | `tools/ci/make_library_fixtures.py` | `.github/workflows/ui-snapshots.yml`, on pull requests that touch the app |
-| **Linux harness**: the pure-Foundation sources and their suites, no Xcode or simulator. 352 tests in 26 suites, including the date range, the classifier, the audit that every monster named by a quest or event can be summoned, capture rules, rule precedence, video frame signals, the scan's bounded-concurrency and deadline helpers, what the app may say about photo access, the dive's keep and combo rules and room count, and the wording of its numbers | `tools/swift_harness/run.sh` | `.github/workflows/modular-assets.yml` |
+| **Linux harness**: the pure-Foundation sources and their suites, no Xcode or simulator. 369 tests in 27 suites, including the date range, the classifier, the audit that every monster named by a quest or event can be summoned, capture rules, rule precedence, video frame signals, the scan's bounded-concurrency and deadline helpers, what the app may say about photo access, the dive's keep and combo rules and room count, the wording of its numbers, the glossary of game words, and the plain wording of the quests | `tools/swift_harness/run.sh` | `.github/workflows/modular-assets.yml` |
 | Asset checks: manifests, masks, fits, the approval gate (content-pinned), catalog drift, generated docs up to date. 72 tests | `tools/modular_assets/` | `modular-assets.yml` |
 | Repository contracts: offline, no dependencies, recoverable deletion, StoreKit IDs, App Group and snapshot agreement, privacy manifests, versions | `tools/ci/repo_guard.py` | `.github/workflows/repo-guard.yml` |
 | Detection benchmark on real photographs (not in CI) | `tools/detection_bench/` | by hand |
