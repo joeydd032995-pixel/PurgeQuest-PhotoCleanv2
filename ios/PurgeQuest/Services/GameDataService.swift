@@ -217,7 +217,7 @@ enum GameDataService {
             Achievement(id: "scene.cut",           title: "Scene Cut",            subtitle: "Delete your first video.",           iconName: "scissors",             goal: 1),
             Achievement(id: "duplicate.slayer",   title: "Duplicate Slayer",     subtitle: "Slay 50 Duplicate Dragons.",          iconName: "square.on.square",     goal: 50),
             Achievement(id: "video.vault",        title: "Video Vault Vanquisher", subtitle: "Delete 100 videos total.",         iconName: "film.stack.fill",      goal: 100),
-            Achievement(id: "great.purge",        title: "The Great Purge",      subtitle: "Free 1 GB of storage.",               iconName: "internaldrive.fill",   goal: 1024),
+            Achievement(id: "great.purge",        title: "The Great Purge",      subtitle: "Move 1 GB to Recently Deleted.",       iconName: "internaldrive.fill",   goal: 1024),
             Achievement(id: "long.take.term",     title: "Longest Take Terminated", subtitle: "Delete a video over 10 minutes.",  iconName: "video.badge.checkmark", goal: 1),
             Achievement(id: "combo.king",         title: "Combo King",            subtitle: "Reach a 20-deletion streak.",        iconName: "bolt.fill",            goal: 20),
             Achievement(id: "ancient.archivist",  title: "Ancient Archivist",     subtitle: "Delete 25 photos older than 5 yrs.", iconName: "hourglass",            goal: 25),

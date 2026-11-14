@@ -156,7 +156,7 @@ struct ShopView: View {
     }
 
     private var itemGrid: some View {
-        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .top, spacing: 12) {
             ForEach(filtered) { item in
                 goalTile(for: item)
             }
@@ -581,7 +581,7 @@ private struct CosmeticTile: View {
     }
 
     private var shortfallLabel: some View {
-        Text("+\(gemShortfall) gems")
+        Text(Wording.moreGems(gemShortfall))
             .font(.caption2.weight(.bold).monospacedDigit())
             .foregroundStyle(Color.questAmber)
             .accessibilityLabel("You need \(gemShortfall) more gems")

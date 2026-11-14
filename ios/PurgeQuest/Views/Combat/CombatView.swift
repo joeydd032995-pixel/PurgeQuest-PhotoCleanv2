@@ -265,13 +265,13 @@ struct CombatView: View {
             VStack(spacing: 8) {
                 summaryRow(label: "Photos purged", value: "\(combat.sessionPhotosDeleted)", tint: .questAmber)
                 summaryRow(label: "Videos purged", value: "\(combat.sessionVideosDeleted)", tint: .videoSapphire)
-                summaryRow(label: "Storage freed", value: ByteCountFormatter.string(fromByteCount: combat.sessionBytesFreed, countStyle: .file), tint: .gemEmerald)
+                summaryRow(label: "Moved to Recently Deleted", value: ByteCountFormatter.string(fromByteCount: combat.sessionBytesFreed, countStyle: .file), tint: .gemEmerald)
                 summaryRow(label: "XP earned", value: "+\(combat.sessionXP)", tint: .questAmber)
                 summaryRow(label: "Gems earned", value: "+\(combat.sessionGems)", tint: .gemEmerald)
                 if combat.diveBonusXP > 0 || combat.diveBonusGems > 0 {
                     summaryRow(label: "Dive bonus", value: "+\(combat.diveBonusXP) XP · +\(combat.diveBonusGems) gems", tint: .xpViolet)
                 }
-                summaryRow(label: "Peak combo", value: "\(combat.peakCombo)×", tint: .combatCrimson)
+                summaryRow(label: "Peak combo", value: Wording.inARow(combat.peakCombo), tint: .combatCrimson)
             }
             .padding()
             .background(RoundedRectangle(cornerRadius: 12).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.dungeonAsh, lineWidth: 1)))
@@ -331,7 +331,7 @@ struct CombatView: View {
             VStack(spacing: 8) {
                 summaryRow(label: "Photos purged", value: "\(combat.sessionPhotosDeleted)", tint: .questAmber)
                 summaryRow(label: "Videos purged", value: "\(combat.sessionVideosDeleted)", tint: .videoSapphire)
-                summaryRow(label: "Storage freed", value: ByteCountFormatter.string(fromByteCount: combat.sessionBytesFreed, countStyle: .file), tint: .gemEmerald)
+                summaryRow(label: "Moved to Recently Deleted", value: ByteCountFormatter.string(fromByteCount: combat.sessionBytesFreed, countStyle: .file), tint: .gemEmerald)
                 summaryRow(label: "XP secured", value: "+\(combat.sessionXP)", tint: .questAmber)
                 summaryRow(label: "Gems secured", value: "+\(combat.sessionGems)", tint: .gemEmerald)
             }

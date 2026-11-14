@@ -188,9 +188,9 @@ struct SwipeMediaCard: View {
     private var eliteBadge: some View {
         HStack(spacing: 3) {
             Image(systemName: "crown.fill")
-                .font(.system(size: 9, weight: .black))
+                .font(.caption2.weight(.black))
             Text("ELITE")
-                .font(.system(size: 10, weight: .black))
+                .font(.caption2.weight(.black))
                 .tracking(0.6)
         }
         .padding(.horizontal, 8).padding(.vertical, 5)
@@ -205,9 +205,9 @@ struct SwipeMediaCard: View {
     private var shadeBadge: some View {
         HStack(spacing: 3) {
             Image(systemName: "moon.zzz.fill")
-                .font(.system(size: 9, weight: .black))
+                .font(.caption2.weight(.black))
             Text("SHADE")
-                .font(.system(size: 10, weight: .black))
+                .font(.caption2.weight(.black))
                 .tracking(0.6)
         }
         .padding(.horizontal, 8).padding(.vertical, 5)
@@ -221,9 +221,9 @@ struct SwipeMediaCard: View {
     private var liveBadge: some View {
         HStack(spacing: 3) {
             Image(systemName: "livephoto")
-                .font(.system(size: 9, weight: .black))
+                .font(.caption2.weight(.black))
             Text("LIVE")
-                .font(.system(size: 10, weight: .black))
+                .font(.caption2.weight(.black))
                 .tracking(0.6)
         }
         .padding(.horizontal, 8).padding(.vertical, 5)

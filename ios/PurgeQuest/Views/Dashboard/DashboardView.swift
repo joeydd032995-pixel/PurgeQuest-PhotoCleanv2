@@ -150,7 +150,8 @@ struct DashboardView: View {
                     title: "Actually reclaimed",
                     value: reclaimValue,
                     caption: "Confirmed reduction in device storage, measured separately.",
-                    tint: .gemEmerald
+                    tint: .gemEmerald,
+                    isPlaceholder: reclaimValue == Self.noReading
                 )
             }
             .padding(14)
@@ -177,7 +178,9 @@ struct DashboardView: View {
     }
 
     /// One labeled storage measurement inside the overview card.
-    private func measurementRow(title: String, value: String, caption: String, tint: Color) -> some View {
+    /// `isPlaceholder` marks a value that is not a measurement: it is drawn in the dimmest text tier, so
+    /// the absence of a reading does not read as the most important thing in the row.
+    private func measurementRow(title: String, value: String, caption: String, tint: Color, isPlaceholder: Bool = false) -> some View {
         HStack(alignment: .center, spacing: 12) {
             VStack(alignment: .leading, spacing: 3) {
                 HStack(spacing: 6) {
@@ -194,10 +197,11 @@ struct DashboardView: View {
             Spacer(minLength: 8)
             Text(value)
                 .font(.title3.weight(.bold).monospacedDigit())
-                .foregroundStyle(.textPrimary)
+                .foregroundStyle(isPlaceholder ? Color.textTertiary : Color.textPrimary)
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
                 .layoutPriority(1)
+                .accessibilityLabel(isPlaceholder ? "Not measured yet" : value)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 9)
@@ -208,11 +212,14 @@ struct DashboardView: View {
         Rectangle().fill(Color.dungeonAsh.opacity(0.4)).frame(height: 1)
     }
 
+    /// Shown instead of a number when nothing has been measured. It is a dash, not words.
+    private static let noReading = "\u{2014}"
+
     /// The measured number only shows once a verification cleared the noise
-    /// threshold; until then the honest answer is "not yet verified".
+    /// threshold; until then there is no number to show, and the row says so with a dash.
     private var reclaimValue: String {
-        guard reclaim.isMeasurable else { return "No reading yet" }
-        return reclaim.verifiedBytes > 0 ? formattedBytes(reclaim.verifiedBytes) : "Not yet verified"
+        guard reclaim.isMeasurable else { return Self.noReading }
+        return reclaim.verifiedBytes > 0 ? formattedBytes(reclaim.verifiedBytes) : Self.noReading
     }
 
     /// Recomputes the measurements that do not depend on the date range: what is pending in Recently

@@ -75,7 +75,7 @@ struct OnboardingView: View {
             EmblemView()
                 .frame(maxWidth: 220)
             VStack(spacing: 12) {
-                Text("Your library is a dungeon.\nPhotos and videos hide as monsters.\nClear the depths and reclaim your storage.")
+                Text("Your library is a dungeon.\nPhotos and videos hide as monsters.\nSwipe to decide. Deleted photos wait 30 days in Recently Deleted.")
                     .font(.headline)
                     .foregroundStyle(.textSecondary)
                     .multilineTextAlignment(.center)

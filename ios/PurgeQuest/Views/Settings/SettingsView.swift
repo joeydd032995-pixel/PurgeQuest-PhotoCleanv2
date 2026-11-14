@@ -45,8 +45,9 @@ struct SettingsView: View {
         return ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 Text("Settings")
-                    .font(.title.weight(.bold))
+                    .font(.dungeonScreenTitle)
                     .foregroundStyle(.textPrimary)
+                    .accessibilityAddTraits(.isHeader)
 
                 section(title: "Appearance") {
                     Text("Mode")
@@ -91,9 +92,9 @@ struct SettingsView: View {
                 section(title: "Lifetime Stats") {
                     statRow(label: "Photos purged",  value: "\(hero?.totalPhotosPurged ?? 0)", icon: "photo.fill", tint: .questAmber)
                     statRow(label: "Videos purged",  value: "\(hero?.totalVideosPurged ?? 0)", icon: "video.fill", tint: .videoSapphire)
-                    statRow(label: "Total freed",    value: formattedFreed,                   icon: "internaldrive.fill", tint: .gemEmerald)
-                    statRow(label: "Highest combo",  value: "\(hero?.highestCombo ?? 0)×",    icon: "bolt.fill", tint: .combatCrimson)
-                    statRow(label: "Longest streak", value: "\(hero?.streakDays ?? 0) days",   icon: "flame.fill", tint: .questAmberDeep)
+                    statRow(label: "Total moved",    value: formattedFreed,                   icon: "internaldrive.fill", tint: .gemEmerald)
+                    statRow(label: "Highest combo",  value: Wording.inARow(hero?.highestCombo ?? 0), icon: "bolt.fill", tint: .combatCrimson)
+                    statRow(label: "Longest streak", value: Wording.days(hero?.streakDays ?? 0), icon: "flame.fill", tint: .questAmberDeep)
                 }
 
                 section(title: "Recently Deleted (last 7 days)") {
@@ -282,10 +283,10 @@ private struct HeroCardArtwork: View {
             Text(hero.name).font(.dungeonTitle).foregroundStyle(.textPrimary)
             Text("\(hero.race.displayName) · \(hero.heroClass.displayName) · LV \(hero.level)").font(.headline).foregroundStyle(.textSecondary)
             HStack(spacing: 10) {
-                StatTile(icon: "internaldrive.fill", label: "Total freed",
+                StatTile(icon: "internaldrive.fill", label: "Total moved",
                          value: hero.totalMBFreed >= 1024 ? String(format: "%.1f GB", hero.totalMBFreed / 1024) : String(format: "%.0f MB", hero.totalMBFreed),
                          tint: .gemEmerald)
-                StatTile(icon: "bolt.fill", label: "Peak combo", value: "\(hero.highestCombo)×", tint: .combatCrimson)
+                StatTile(icon: "bolt.fill", label: "Peak combo", value: Wording.inARow(hero.highestCombo), tint: .combatCrimson)
             }
             HStack(spacing: 10) {
                 StatTile(icon: "photo.fill", label: "Photos", value: "\(hero.totalPhotosPurged)", tint: .questAmber)
