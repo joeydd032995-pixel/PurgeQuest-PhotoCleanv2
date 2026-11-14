@@ -68,10 +68,12 @@ struct CombatView: View {
             shake()
         }
         // On `body`, not `fightingView`: that view is removed when the last card of a room is decided.
-        .onChange(of: combat.topItem?.id) { _, _ in
-            // The card the note was shown over has been decided, so the word has been seen: it is not repeated.
-            if let shown = tipTerm { markExplained(shown) }
-            tipTerm = nextGlossaryTip()
+        // That also means this sees a room's first card arrive (nil to an id), at an unspecified moment
+        // beside `fightingView`'s own `onAppear`. Only a card that was showing and is now decided counts as
+        // "the word was seen", so the order of the two cannot mark a note explained before anyone read it.
+        .onChange(of: combat.topItem?.id) { old, new in
+            if old != nil, let shown = tipTerm { markExplained(shown) }
+            tipTerm = new == nil ? nil : nextGlossaryTip()
         }
     }
 
