@@ -69,7 +69,7 @@ struct KeepingIsFreeTests {
         withExtendedLifetime(store.container) {}
     }
 
-    @Test func keepingEndsTheComboAndNothingElse() throws {
+    @Test func keepingEndsTheStreakAndTakesAPieceOfTheMultiplier() throws {
         let store = try makeStore()
         let hero = Hero()
         store.context.insert(hero)
@@ -81,32 +81,56 @@ struct KeepingIsFreeTests {
         combat.decideDelete(items[0], hero: hero)
         combat.decideDelete(items[1], hero: hero)
         #expect(combat.combo == 2)
+        #expect(combat.comboMultiplier.tenths == 12, "each deletion adds a tenth")
 
         combat.decideSpare(items[2], hero: hero, context: store.context)
 
         #expect(combat.combo == 0, "a keep ends the streak")
+        #expect(combat.comboMultiplier.tenths == 11, "and takes 12% of the multiplier, to the nearest tenth, instead of ending it")
         #expect(combat.heroCurrentHP == combat.heroMaxHP, "and costs no HP")
         withExtendedLifetime(store.container) {}
     }
 
     // MARK: The combo
 
-    @Test func theComboPaysDoubleFromTheFifthDeletionAndNeverTriple() throws {
+    @Test func theComboRisesATenthPerDeletionAndStopsAtDouble() throws {
         let store = try makeStore()
         let hero = Hero()
         store.context.insert(hero)
         let combat = CombatViewModel()
         let item = heavyHitters(1)[0]
 
-        // comboStep 0 is the first deletion of a streak (combo 1), so comboStep 4 is the fifth.
+        // comboStep 0 is the first deletion of a streak (×1.1), so comboStep 9 is the tenth (×2.0).
         func reward(deletion number: Int) -> (xp: Int, gems: Int) {
             combat.previewReward(for: item, comboStep: number - 1, hero: hero)
         }
 
-        #expect(reward(deletion: 4).xp < reward(deletion: 5).xp, "the fifth deletion should pay more than the fourth")
-        #expect(reward(deletion: 5).xp == reward(deletion: 10).xp, "the tenth used to pay triple; it pays what the fifth does")
-        #expect(reward(deletion: 5).xp == reward(deletion: 41).xp)
-        #expect(reward(deletion: 5).gems == reward(deletion: 10).gems)
+        #expect(reward(deletion: 1).xp < reward(deletion: 5).xp, "a longer streak pays more")
+        #expect(reward(deletion: 5).xp < reward(deletion: 10).xp)
+        #expect(reward(deletion: 10).xp == reward(deletion: 11).xp, "×2.0 is the top; it used to reach ×3")
+        #expect(reward(deletion: 10).xp == reward(deletion: 41).xp)
+        #expect(reward(deletion: 10).gems == reward(deletion: 41).gems)
+        withExtendedLifetime(store.container) {}
+    }
+
+    @Test func deletionsBuildTheMultiplierAndAKeepTakesOnlyAPieceOfIt() throws {
+        let store = try makeStore()
+        let hero = Hero()
+        store.context.insert(hero)
+        let combat = CombatViewModel()
+        let items = heavyHitters(12)
+        combat.currentRoomItems = items
+        combat.phase = .fighting
+
+        for item in items.prefix(10) { combat.decideDelete(item, hero: hero) }
+        #expect(combat.comboMultiplier.tenths == 20, "ten deletions reach ×2.0")
+
+        combat.decideSpare(items[10], hero: hero, context: store.context)
+        #expect(combat.comboMultiplier.tenths == 18, "a keep takes 12%, not everything")
+        #expect(combat.combo == 0, "the streak itself still ends")
+
+        combat.decideDelete(items[11], hero: hero)
+        #expect(combat.comboMultiplier.tenths == 19, "and the next deletion builds on what is left")
         withExtendedLifetime(store.container) {}
     }
 }

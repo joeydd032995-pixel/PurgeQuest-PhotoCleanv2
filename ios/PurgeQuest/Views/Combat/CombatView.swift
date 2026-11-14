@@ -159,6 +159,7 @@ struct CombatView: View {
                 heroHP: combat.heroCurrentHP,
                 heroMaxHP: combat.heroMaxHP,
                 combo: combat.combo,
+                comboMultiplier: combat.comboMultiplier,
                 progress: combat.progress,
                 onExit: { requestExit() }
             )
