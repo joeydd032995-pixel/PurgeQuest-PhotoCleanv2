@@ -27,6 +27,8 @@ struct DashboardView: View {
     /// Shown when the picker returned choices that carry no asset identifiers —
     /// the signature of missing photo-library access.
     @State private var showAccessHint = false
+    /// Which game words have been explained; "dive" is explained once, under the Enter button.
+    @State private var glossary = GlossaryStore.load()
     /// The date range sheet (see DatesSheet).
     @State private var showDatesSheet = false
 
@@ -44,6 +46,9 @@ struct DashboardView: View {
                 libraryOverview
                 heroStrip
                 enterDungeonButton
+                if glossary.nextTip(among: [.dive]) != nil {
+                    GlossaryTip(term: .dive) { markDiveExplained() }
+                }
                 HStack(spacing: 10) {
                     focusedDiveMenu
                     pickedHuntPicker
@@ -354,6 +359,7 @@ struct DashboardView: View {
 
     private var enterDungeonButton: some View {
         Button {
+            markDiveExplained()
             HapticsService.shared.medium()
             appState.diveFocus = nil   // the default dive is always mixed, whatever an earlier dive left behind
             appState.combatRequested = true
@@ -365,6 +371,13 @@ struct DashboardView: View {
         }
         .buttonStyle(.gold(fullWidth: true))
         .accessibilityLabel("Enter the dungeon and start a cleanup session")
+    }
+
+    /// Starting a dive means the player has met the word, so it is explained once and never again.
+    private func markDiveExplained() {
+        guard glossary.nextTip(among: [.dive]) != nil else { return }
+        glossary.markSeen(.dive)
+        GlossaryStore.save(glossary)
     }
 
     /// Optional: lean this dive toward one kind of clutter. "Enter the Dungeon" above stays the mixed

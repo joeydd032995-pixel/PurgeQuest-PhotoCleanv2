@@ -100,6 +100,7 @@ enum GameDataService {
         defaults.removeObject(forKey: "pq.hasOnboarded")
         clearOnboardingChoices(from: defaults)
         DateScopeStore.clear(in: defaults)
+        GlossaryStore.clear(in: defaults)
     }
 
     // MARK: - Cosmetics

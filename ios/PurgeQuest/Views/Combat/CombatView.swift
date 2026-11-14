@@ -17,6 +17,9 @@ struct CombatView: View {
     @State private var shakeOffset: CGFloat = 0
     @State private var fxTrigger: Int = 0
     @State private var confirmingExit = false
+    /// Which game words have been explained, and the one being explained over the card on top right now.
+    @State private var glossary = GlossaryStore.load()
+    @State private var tipTerm: Glossary.Term? = nil
 
     var body: some View {
         ZStack {
@@ -166,6 +169,14 @@ struct CombatView: View {
             .padding(.horizontal, 14)
             .padding(.top, combat.roomNumber == 1 ? 0 : 8)
 
+            if let term = tipTerm {
+                GlossaryTip(term: term) {
+                    markExplained(term)
+                    tipTerm = nextGlossaryTip()
+                }
+                .padding(.horizontal, 14)
+            }
+
             ZStack {
                 if let next = combat.nextItem {
                     SwipeMediaCard(item: next, isFront: false, onDelete: {}, onSpare: {})
@@ -232,6 +243,29 @@ struct CombatView: View {
                 .padding(.bottom, 14)
             }
         }
+        .onAppear { tipTerm = nextGlossaryTip() }
+        .onChange(of: combat.topItem?.id) { _, _ in
+            // The card the note was shown over has been decided, so the word has been seen: it is not repeated.
+            if let shown = tipTerm { markExplained(shown) }
+            tipTerm = nextGlossaryTip()
+        }
+    }
+
+    // MARK: Game words, explained once
+
+    /// The one word to explain over the card on top, if any: the room first, then an Elite or a Shade.
+    private func nextGlossaryTip() -> Glossary.Term? {
+        var visible: [Glossary.Term] = [.room]
+        if let top = combat.topItem {
+            if top.monsterType.isElite { visible.append(.elite) }
+            if combat.isShade(top) { visible.append(.shade) }
+        }
+        return glossary.nextTip(among: visible)
+    }
+
+    private func markExplained(_ term: Glossary.Term) {
+        glossary.markSeen(term)
+        GlossaryStore.save(glossary)
     }
 
     /// Dive-start banner naming the auto-detected dungeon theme.
