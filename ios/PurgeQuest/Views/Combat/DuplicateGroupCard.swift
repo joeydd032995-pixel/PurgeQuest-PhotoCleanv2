@@ -90,7 +90,7 @@ struct DuplicateGroupCard: View {
 
     private var rarityChip: some View {
         Text(group.monsterType.rarity.displayName)
-            .font(.system(size: 10, weight: .black).monospaced())
+            .font(.caption2.weight(.black).monospaced())
             .tracking(0.6)
             .padding(.horizontal, 8).padding(.vertical, 5)
             .background(RoundedRectangle(cornerRadius: 6).fill(Color.dungeonVoid.opacity(0.7)))
@@ -211,9 +211,9 @@ struct DuplicateGroupCard: View {
     private func decisionBadge(willDelete: Bool) -> some View {
         HStack(spacing: 4) {
             Image(systemName: willDelete ? "xmark" : "shield.fill")
-                .font(.system(size: 9, weight: .black))
+                .font(.caption2.weight(.black))
             Text(willDelete ? "SLAY" : "KEEP")
-                .font(.system(size: 10, weight: .black))
+                .font(.caption2.weight(.black))
                 .tracking(0.6)
         }
         .padding(.horizontal, 8).padding(.vertical, 5)

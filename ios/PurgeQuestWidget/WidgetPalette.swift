@@ -22,7 +22,7 @@ nonisolated enum WidgetPalette {
     static let surface       = WidgetPair(light: 0xFBFAF4, dark: 0x2A2927)
     static let hairline      = WidgetPair(light: 0xD9D4C0, dark: 0x45433F)
     static let textPrimary   = WidgetPair(light: 0x1B1B17, dark: 0xF2EFE9)
-    static let textSecondary = WidgetPair(light: 0x5A574A, dark: 0xB0ACA3)
+    static let textSecondary = WidgetPair(light: 0x5A574A, dark: 0xBCB8B0)
 
     // Accents shared by both app palettes: ThemePalette.amber, .sapphire, .crimson, .emerald
     static let amber    = WidgetPair(light: 0x8A6210, dark: 0xE3B341)

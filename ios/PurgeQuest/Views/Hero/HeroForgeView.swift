@@ -179,7 +179,7 @@ struct HeroForgeView: View {
             Button("Anatomy only") { resolveRaceChange(.anatomyOnly) }
             Button("Cancel", role: .cancel) { resolveRaceChange(.cancel) }
         } message: {
-            Text("Whole look takes the new ancestry's designed look. Anatomy only keeps your face, colours and dyes.")
+            Text("Whole look takes the new ancestry's designed look. Anatomy only keeps your face, colors and dyes.")
         }
         .alert(
             "Couldn't save your hero",
@@ -273,7 +273,7 @@ struct HeroForgeView: View {
             .pickerStyle(.segmented)
             .frame(maxWidth: 300)
             .accessibilityLabel("Preview size")
-            Text("Gear and colours here are a draft until you tap Save Hero. Buy gear in the Armory.")
+            Text("Gear and colors here are a draft until you tap Save Hero. Buy gear in the Armory.")
                 .font(.caption2)
                 .foregroundStyle(.textTertiary)
         }

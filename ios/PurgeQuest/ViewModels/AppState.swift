@@ -62,6 +62,11 @@ final class AppState {
         phase = .main
     }
 
+    /// What the app may do with the photo library, in the terms the screens need (see PhotoAccess).
+    var photoAccess: PhotoAccess { PhotoAccess(status: photoAuthStatus) }
+
+    /// Asks for access if it has never been asked for, which shows the system prompt, and otherwise
+    /// just reads it. Call this only from a control the player pressed, after being told why.
     @MainActor
     func refreshPhotoAuth() async {
         let svc = PhotoLibraryService.shared
@@ -71,5 +76,21 @@ final class AppState {
         } else {
             photoAuthStatus = current
         }
+    }
+
+    /// Reads the current photo authorization and never shows the prompt. Call it at launch and when the
+    /// app returns to the foreground: the player may have changed the setting while away. A screenshot
+    /// tour holds its own forced status, which this must not overwrite.
+    @MainActor
+    func syncPhotoAuth() {
+        guard !UITestSupport.isTour else { return }
+        photoAuthStatus = PhotoLibraryService.shared.authorizationStatus
+    }
+}
+
+extension PhotoAccess {
+    /// The access a `PHAuthorizationStatus` stands for.
+    init(status: PHAuthorizationStatus) {
+        self.init(rawStatus: status.rawValue)
     }
 }

@@ -1,0 +1,54 @@
+//
+//  WordingTests.swift
+//  PurgeQuestTests
+//
+//  The phrases screens build from a number (Wording.swift): right at 0, 1 and many. Foundation only,
+//  so these run in Xcode and in the Linux harness.
+//
+
+import Testing
+import Foundation
+@testable import PurgeQuest
+
+struct WordingTests {
+
+    @Test func daysAreSingularExactlyAtOne() {
+        #expect(Wording.days(0) == "0 days")
+        #expect(Wording.days(1) == "1 day")
+        #expect(Wording.days(2) == "2 days")
+        #expect(Wording.days(365) == "365 days")
+    }
+
+    @Test func aShortfallSaysMoreAndNeverLooksLikeAGain() {
+        #expect(Wording.moreGems(1) == "1 more gem")
+        #expect(Wording.moreGems(150) == "150 more gems")
+        for count in [1, 2, 150, 9_999] {
+            #expect(!Wording.moreGems(count).contains("+"), "a shortfall must not read as a gain")
+        }
+    }
+
+    @Test func aStreakOfDeletionsIsACountNeverAMultiplier() {
+        #expect(Wording.inARow(0) == "None yet")
+        #expect(Wording.inARow(1) == "1 in a row")
+        #expect(Wording.inARow(20) == "20 in a row")
+        for count in [0, 1, 5, 20, 100] {
+            let text = Wording.inARow(count)
+            #expect(!text.contains("×") && !text.contains("x"), "\"\(text)\" reads as a multiplier")
+        }
+    }
+
+    // MARK: Room Summary
+
+    @Test func theCommitButtonSaysHowManyAndWhere() {
+        #expect(Wording.moveToRecentlyDeleted(12) == "Move 12 to Recently Deleted")
+        #expect(Wording.moveToRecentlyDeleted(1) == "Move 1 to Recently Deleted")
+        #expect(Wording.recoverableNote(size: "48 MB") == "48 MB · recoverable for 30 days")
+    }
+
+    @Test func theRoomVerdictCountsMarkedAndKept() {
+        #expect(Wording.roomVerdict(marked: 12, kept: 8) == "12 marked, 8 kept")
+        #expect(Wording.roomVerdict(marked: 20, kept: 0) == "20 marked")
+        #expect(Wording.roomVerdict(marked: 0, kept: 20) == "Nothing marked, 20 kept")
+        #expect(Wording.roomVerdict(marked: 0, kept: 0) == "Nothing marked")
+    }
+}

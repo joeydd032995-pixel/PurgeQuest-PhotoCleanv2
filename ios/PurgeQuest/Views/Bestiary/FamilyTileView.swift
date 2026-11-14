@@ -67,9 +67,11 @@ struct FamilyTileView: View {
 
     private var countPill: some View {
         let shape = RoundedRectangle(cornerRadius: 8, style: .continuous)
+        // Primary text, not the family hue: the hue on its own 14% tint measured 3.5:1 to 4.3:1 in 16 of the
+        // 24 family, palette and appearance combinations. The family reads from the icon, border and tint.
         return Text("\(discovered) / \(total) found")
             .font(.caption.weight(.semibold).monospacedDigit())
-            .foregroundStyle(accent)
+            .foregroundStyle(Color.textPrimary)
             .padding(.horizontal, 10)
             .padding(.vertical, 5)
             .background(shape.fill(accent.opacity(0.14)))

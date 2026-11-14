@@ -129,6 +129,16 @@ extension Color {
     static let goldBevel         = Color(ThemePalette.Gold.bevel)
     /// Mid-plate gold, for small fills (badges, chips) that need the brand gold.
     static let goldFill          = Color(ThemePalette.Gold.plateStops[2].color)
+
+    // Text on the glass strip over a photograph. The strip is one dark glass in every palette and
+    // appearance (a photo can be white), so these are fixed colors rather than pairs. Light-mode
+    // accents drawn there measured 2.2:1; these clear 4.5:1 over a white photo.
+    static let onGlass           = Color(ThemePalette.Glass.text)
+    static let onGlassMuted      = Color(ThemePalette.Glass.textSecondary)
+    static let brassOnGlass      = Color(ThemePalette.Glass.brass)
+    static let patinaOnGlass     = Color(ThemePalette.Glass.patina)
+    /// The tint laid over the blur behind that text.
+    static let glassFill         = Color(ThemePalette.Glass.fill).opacity(ThemePalette.Glass.fillOpacity)
 }
 
 extension ShapeStyle where Self == Color {
@@ -153,6 +163,10 @@ extension ShapeStyle where Self == Color {
     static var onAccent: Color          { .onAccent }
     static var goldTitle: Color         { .goldTitle }
     static var goldInk: Color           { .goldInk }
+    static var onGlass: Color           { .onGlass }
+    static var onGlassMuted: Color      { .onGlassMuted }
+    static var brassOnGlass: Color      { .brassOnGlass }
+    static var patinaOnGlass: Color     { .patinaOnGlass }
 }
 
 // Barely-tonal fills only. Harsh glow gradients are gone; these read as flat

@@ -11,56 +11,63 @@ struct RoomSummaryView: View {
     let hero: Hero
     let quests: [Quest]
     let onContinue: () -> Void
+    let onExit: () -> Void
 
     @Environment(\.modelContext) private var modelContext
-    @State private var confirming: Bool = false
+
+    private var markedCount: Int { combat.markedCount }
+    private var keptCount: Int { combat.pendingDecisions.count - combat.markedCount }
+    private var isLastRoom: Bool { combat.progress.room >= combat.progress.totalRooms }
 
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                Text("Room Cleared")
-                    .font(.dungeonTitle)
-                    .foregroundStyle(.questAmber)
-                    .padding(.top, 20)
-
+                header
                 lootSummary
-
                 pendingGrid
-
                 questProgressPanel
-
-                actionButtons
             }
             .padding(.horizontal, 16)
-            .padding(.bottom, 24)
+            .padding(.top, 8)
+            .padding(.bottom, 16)
         }
         .background(DungeonBackgroundView())
+        // The commit is pinned: on a 20-item room it used to sit about a screen and a third down the page.
+        .safeAreaInset(edge: .bottom, spacing: 0) { commitBar }
+    }
+
+    /// "Room 2" over "12 marked, 8 kept". It used to say "Room Cleared" before anything was cleared.
+    private var header: some View {
+        HStack(alignment: .center, spacing: 12) {
+            Button(action: onExit) {
+                Image(systemName: "xmark")
+                    .font(.callout.weight(.bold))
+                    .frame(width: 44, height: 44)
+                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.dungeonStone))
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
+                    .foregroundStyle(.textPrimary)
+            }
+            .disabled(combat.phase == .purging)
+            .accessibilityLabel("Exit dungeon")
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Room \(combat.roomNumber)")
+                    .font(.dungeonScreenTitle)
+                    .foregroundStyle(.textPrimary)
+                    .accessibilityAddTraits(.isHeader)
+                Text(Wording.roomVerdict(marked: markedCount, kept: keptCount))
+                    .font(.subheadline)
+                    .foregroundStyle(.textSecondary)
+            }
+            Spacer(minLength: 0)
+        }
     }
 
     private var lootSummary: some View {
-        let mb = Double(combat.pendingDeleteByteTotal) / 1_048_576.0
-        let label: String = mb >= 1024 ? String(format: "%.2f GB", mb / 1024.0) : String(format: "%.0f MB", mb)
-        return VStack(spacing: 10) {
-            HStack(spacing: 10) {
-                StatTile(icon: "internaldrive.fill", label: "To free", value: label, tint: .gemEmerald)
-                StatTile(icon: "arrow.up.forward", label: "XP", value: "+\(estimatedXP)", tint: .questAmber)
-                StatTile(icon: "diamond.fill", label: "Gems", value: "+\(estimatedGems)", tint: .gemEmerald)
-            }
-            HStack(spacing: 10) {
-                StatTile(icon: "photo.fill", label: "Photos to purge", value: "\(combat.pendingPhotoCount)", tint: .questAmber)
-                StatTile(icon: "video.fill", label: "Videos to purge", value: "\(combat.pendingVideoCount)", tint: .videoSapphire)
-            }
-            if combat.peakCombo > 0 {
-                HStack {
-                    Image(systemName: "bolt.fill").foregroundStyle(.questAmber)
-                    Text("Peak combo: \(combat.peakCombo)×")
-                        .font(.callout.weight(.semibold).monospacedDigit())
-                        .foregroundStyle(.textPrimary)
-                    Spacer()
-                }
-                .padding(12)
-                .background(RoundedRectangle(cornerRadius: 10).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1)))
-            }
+        HStack(spacing: 10) {
+            StatTile(icon: "internaldrive.fill", label: "To move", value: ByteCountFormatter.string(fromByteCount: combat.pendingDeleteByteTotal, countStyle: .file), tint: .videoSapphire)
+            StatTile(icon: "arrow.up.forward", label: "XP", value: "+\(estimatedXP)", tint: .questAmber)
+            StatTile(icon: "diamond.fill", label: "Gems", value: "+\(estimatedGems)", tint: .gemEmerald)
         }
     }
 
@@ -75,11 +82,11 @@ struct RoomSummaryView: View {
     private var pendingGrid: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("Review purge list")
+                Text("Review this room")
                     .font(.headline)
                     .foregroundStyle(.textPrimary)
                 Spacer()
-                Text("Tap to toggle")
+                Text("Tap a card to switch")
                     .font(.caption)
                     .foregroundStyle(.textSecondary)
             }
@@ -97,7 +104,7 @@ struct RoomSummaryView: View {
     /// Live quest math for THIS purge: each active quest's projected count
     /// after the marked items are deleted, simulated with the same rules the
     /// ViewModel applies on confirm (`GameDataService.updateQuests`). Quests
-    /// only advance at "Confirm Purge" — this makes that visible.
+    /// only advance when the room is moved to Recently Deleted: this makes that visible.
     private var questDeltas: [UUID: Int] {
         var result: [UUID: Int] = [:]
         for decision in combat.pendingDecisions where decision.willDelete && decision.awardsProgress {
@@ -132,7 +139,7 @@ struct RoomSummaryView: View {
                     .font(.headline)
                     .foregroundStyle(.textPrimary)
                 Spacer()
-                Text("after this purge")
+                Text("after this room")
                     .font(.caption)
                     .foregroundStyle(.textSecondary)
             }
@@ -164,55 +171,58 @@ struct RoomSummaryView: View {
         .background(RoundedRectangle(cornerRadius: 10).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1)))
     }
 
-    private var actionButtons: some View {
-        VStack(spacing: 10) {
-            if combat.pendingPhotoCount + combat.pendingVideoCount == 0 {
-                Text("No items selected for purge.")
-                    .font(.callout)
-                    .foregroundStyle(.textSecondary)
-            }
-            if combat.pendingDeleteByteTotal > 100_000_000, combat.pendingVideoCount > 0 {
-                Label("Large videos will move to Recently Deleted (recoverable for 30 days).", systemImage: "exclamationmark.triangle.fill")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.questAmber)
-                    .padding(10)
-                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.questAmber.opacity(0.12)).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.questAmber.opacity(0.4), lineWidth: 1)))
-            }
-            Button {
-                confirming = true
-            } label: {
-                HStack {
-                    if combat.phase == .purging { ProgressView().tint(.white) }
-                    Text("Confirm Purge")
-                        .font(.dungeonHeader)
+    /// The pinned bar. One destructive button that says how many and where, then a quiet way to keep the
+    /// room. It goes straight to Photos' own delete dialog: the in-app "Move N items?" alert in front of it
+    /// is gone, so the player confirms once in the system's words, not twice.
+    private var commitBar: some View {
+        VStack(spacing: 6) {
+            if markedCount > 0 {
+                Button(action: commit) {
+                    VStack(spacing: 2) {
+                        HStack(spacing: 8) {
+                            if combat.phase == .purging { ProgressView().tint(.white) }
+                            Text(Wording.moveToRecentlyDeleted(markedCount))
+                                .font(.headline.weight(.bold))
+                        }
+                        Text(Wording.recoverableNote(size: ByteCountFormatter.string(fromByteCount: combat.pendingDeleteByteTotal, countStyle: .file)))
+                            .font(.subheadline.weight(.bold))
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(Color.combatCrimson)
+                    .foregroundStyle(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.combatCrimsonDeep, lineWidth: 1))
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
-                .background(Color.combatCrimson)
-                .foregroundStyle(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.combatCrimsonDeep, lineWidth: 1))
-            }
-            .disabled(combat.pendingPhotoCount + combat.pendingVideoCount == 0 || combat.phase == .purging)
+                .disabled(combat.phase == .purging)
+                .accessibilityHint("Photos asks you to confirm. You can restore them for 30 days.")
 
-            Button {
-                onContinue()
-            } label: {
-                Text("Skip room, keep all items")
-                    .font(.callout)
-                    .foregroundStyle(.textSecondary)
-            }
-        }
-        .alert("Move \(combat.pendingPhotoCount + combat.pendingVideoCount) items to Recently Deleted?", isPresented: $confirming) {
-            Button("Cancel", role: .cancel) {}
-            Button("Purge", role: .destructive) {
-                Task {
-                    await combat.confirmRoom(hero: hero, context: modelContext, quests: quests)
+                Button(action: onContinue) {
+                    Text(isLastRoom ? "Keep all, finish dive" : "Keep all, skip room")
+                        .font(.callout)
+                        .foregroundStyle(.textSecondary)
+                        .frame(maxWidth: .infinity, minHeight: 44)
                 }
+                .disabled(combat.phase == .purging)
+            } else {
+                Button(action: onContinue) {
+                    Text(isLastRoom ? "Finish dive" : "Next room")
+                }
+                .buttonStyle(.gold(fullWidth: true))
             }
-        } message: {
-            Text("Items can be recovered from the Photos app for 30 days.")
         }
+        .padding(.horizontal, 16)
+        .padding(.top, 12)
+        .padding(.bottom, 8)
+        .background {
+            Color.dungeonStone
+                .overlay(alignment: .top) { Rectangle().fill(Color.dungeonAsh).frame(height: 1) }
+                .ignoresSafeArea(edges: .bottom)
+        }
+    }
+
+    private func commit() {
+        Task { await combat.confirmRoom(hero: hero, context: modelContext, quests: quests) }
     }
 }
 
@@ -268,15 +278,6 @@ private struct DecisionTile: View {
                 } else {
                     VStack(spacing: 3) {
                         Spacer()
-                        if decision.xpReward > 0 || decision.gemReward > 0 {
-                            Text("+\(decision.xpReward) XP · +\(decision.gemReward)")
-                                .font(.system(size: 9, weight: .black).monospacedDigit())
-                                .padding(.horizontal, 5).padding(.vertical, 2)
-                                .background(RoundedRectangle(cornerRadius: 4).fill(.black.opacity(0.65)))
-                                .foregroundStyle(.questAmber)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.7)
-                        }
                         Image(systemName: "trash.fill")
                             .font(.caption.weight(.bold))
                             .padding(4)
@@ -287,5 +288,8 @@ private struct DecisionTile: View {
             }
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(decision.item.kind == .video ? "Video" : "Photo")
+        .accessibilityValue(decision.willDelete ? "Marked to move to Recently Deleted" : "Kept")
+        .accessibilityHint("Switches between marked and kept")
     }
 }

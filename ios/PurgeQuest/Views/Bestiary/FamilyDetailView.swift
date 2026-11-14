@@ -101,7 +101,7 @@ private struct MonsterEntryCard: View {
                         .foregroundStyle(.textPrimary)
                     HStack(spacing: 6) {
                         Text(type.rarity.displayName)
-                            .font(.system(size: 10, weight: .black).monospaced())
+                            .font(.caption2.weight(.black).monospaced())
                             .tracking(0.6)
                             .padding(.horizontal, 7).padding(.vertical, 3)
                             .background(RoundedRectangle(cornerRadius: 5).fill(type.rarity.frameColor.opacity(0.18)))
@@ -200,7 +200,7 @@ private struct MonsterEntryCard: View {
                 Spacer()
             }
             HStack(spacing: 8) {
-                Label(ByteCountFormatter.string(fromByteCount: stats.bytesReclaimed, countStyle: .file) + " reclaimed", systemImage: "internaldrive.fill")
+                Label(ByteCountFormatter.string(fromByteCount: stats.bytesReclaimed, countStyle: .file) + " moved", systemImage: "internaldrive.fill")
                     .font(.caption2.weight(.bold))
                     .foregroundStyle(.gemEmerald)
                 Text("·")
@@ -218,7 +218,7 @@ private struct MonsterEntryCard: View {
                 .font(.subheadline.weight(.black).monospacedDigit())
                 .foregroundStyle(tint)
             Text(label)
-                .font(.system(size: 9, weight: .bold))
+                .font(.caption2.weight(.bold))
                 .tracking(0.5)
                 .foregroundStyle(.textTertiary)
         }

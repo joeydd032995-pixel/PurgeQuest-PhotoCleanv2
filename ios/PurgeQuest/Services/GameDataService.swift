@@ -210,25 +210,47 @@ enum GameDataService {
 
     // MARK: - Achievements
 
-    static func seedAchievementsIfNeeded(in context: ModelContext) {
-        let descriptor = FetchDescriptor<Achievement>()
-        if let existing = try? context.fetch(descriptor), !existing.isEmpty { return }
-
-        let seeds: [Achievement] = [
+    /// The trophies as fresh, unsaved models: the one list of what exists and what each says.
+    static func achievementSeeds() -> [Achievement] {
+        [
             Achievement(id: "first.blood",         title: "First Blood",          subtitle: "Delete your first photo.",           iconName: "drop.fill",            goal: 1),
             Achievement(id: "scene.cut",           title: "Scene Cut",            subtitle: "Delete your first video.",           iconName: "scissors",             goal: 1),
             Achievement(id: "duplicate.slayer",   title: "Duplicate Slayer",     subtitle: "Slay 50 Duplicate Dragons.",          iconName: "square.on.square",     goal: 50),
             Achievement(id: "video.vault",        title: "Video Vault Vanquisher", subtitle: "Delete 100 videos total.",         iconName: "film.stack.fill",      goal: 100),
-            Achievement(id: "great.purge",        title: "The Great Purge",      subtitle: "Free 1 GB of storage.",               iconName: "internaldrive.fill",   goal: 1024),
+            Achievement(id: "great.purge",        title: "The Great Purge",      subtitle: "Move 1 GB to Recently Deleted.",       iconName: "internaldrive.fill",   goal: 1024),
             Achievement(id: "long.take.term",     title: "Longest Take Terminated", subtitle: "Delete a video over 10 minutes.",  iconName: "video.badge.checkmark", goal: 1),
-            Achievement(id: "combo.king",         title: "Combo King",            subtitle: "Reach a 20× combo.",                 iconName: "bolt.fill",            goal: 20),
+            Achievement(id: "combo.king",         title: "Combo King",            subtitle: "Reach a 20-deletion streak.",        iconName: "bolt.fill",            goal: 20),
             Achievement(id: "ancient.archivist",  title: "Ancient Archivist",     subtitle: "Delete 25 photos older than 5 yrs.", iconName: "hourglass",            goal: 25),
             Achievement(id: "streak.warrior",     title: "Streak Warrior",        subtitle: "Maintain a 7-day streak.",           iconName: "flame.fill",           goal: 7),
-            Achievement(id: "perfect.room",       title: "Perfect Room",          subtitle: "Clear a room without taking damage.", iconName: "checkmark.seal.fill", goal: 1),
+            Achievement(id: "perfect.room",       title: "Perfect Room",          subtitle: "Clear a room without keeping a single item.", iconName: "checkmark.seal.fill", goal: 1),
             Achievement(id: "video.speedrun",     title: "Video Speedrun",        subtitle: "Delete 20 videos in one room.",      iconName: "hare.fill",            goal: 1)
         ]
-        for a in seeds { context.insert(a) }
+    }
+
+    /// Seeds the trophies once. A store that already has them only gets their wording brought up to
+    /// date, so a fix to what a trophy says reaches players who installed before it.
+    static func seedAchievementsIfNeeded(in context: ModelContext) {
+        let descriptor = FetchDescriptor<Achievement>()
+        if let existing = try? context.fetch(descriptor), !existing.isEmpty {
+            refreshAchievementText(existing, in: context)
+            return
+        }
+        for achievement in achievementSeeds() { context.insert(achievement) }
         try? context.save()
+    }
+
+    /// Copies each trophy's title, subtitle and icon from the catalog onto the stored one. Progress,
+    /// goals and unlocks belong to the player and are never touched.
+    static func refreshAchievementText(_ stored: [Achievement], in context: ModelContext) {
+        let catalog = Dictionary(achievementSeeds().map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        var changed = false
+        for achievement in stored {
+            guard let current = catalog[achievement.id] else { continue }
+            if achievement.title != current.title { achievement.title = current.title; changed = true }
+            if achievement.subtitle != current.subtitle { achievement.subtitle = current.subtitle; changed = true }
+            if achievement.iconName != current.iconName { achievement.iconName = current.iconName; changed = true }
+        }
+        if changed { try? context.save() }
     }
 
     /// Recomputes every stat-driven achievement from lifetime hero stats and the

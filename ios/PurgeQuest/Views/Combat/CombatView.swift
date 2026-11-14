@@ -16,6 +16,7 @@ struct CombatView: View {
     @State private var combat = CombatViewModel()
     @State private var shakeOffset: CGFloat = 0
     @State private var fxTrigger: Int = 0
+    @State private var confirmingExit = false
 
     var body: some View {
         ZStack {
@@ -35,8 +36,23 @@ struct CombatView: View {
                 .ignoresSafeArea()
         }
         .navigationBarBackButtonHidden(true)
+        // A dive is full screen: the tab bar would sit over the card's buttons and invite a tab change
+        // in the middle of a room. Leaving the dive brings it back.
+        .toolbar(.hidden, for: .tabBar)
+        .confirmationDialog("Leave this dive?", isPresented: $confirmingExit, titleVisibility: .visible) {
+            Button("Leave dive", role: .destructive) { exit() }
+            Button("Keep going", role: .cancel) {}
+        } message: {
+            Text("Nothing has been moved yet. The \(combat.markedCount) items you marked will be forgotten.")
+        }
         .task {
             guard let hero = heroes.first else { return }
+            // A dive can only deal with what the library shows. Without access it would find nothing and
+            // report "All clear", so say what is wrong instead. (A hand-picked hunt reports its own.)
+            if appState.pickedAssetIDs.isEmpty, !appState.photoAccess.canReview {
+                combat.phase = .error(appState.photoAccess.message)
+                return
+            }
             // A hand-picked hunt (Photos picker on the dashboard) takes priority
             // over the automatic library sweep.
             if !appState.pickedAssetIDs.isEmpty {
@@ -65,9 +81,13 @@ struct CombatView: View {
             fightingView
         case .roomSummary, .purging:
             if let hero = heroes.first {
-                RoomSummaryView(combat: combat, hero: hero, quests: quests) {
-                    Task { await combat.skipRoom(hero: hero, context: modelContext, quests: quests) }
-                }
+                RoomSummaryView(
+                    combat: combat,
+                    hero: hero,
+                    quests: quests,
+                    onContinue: { Task { await combat.skipRoom(hero: hero, context: modelContext, quests: quests) } },
+                    onExit: { requestExit() }
+                )
             }
         case .sessionComplete:
             sessionCompleteView
@@ -83,6 +103,12 @@ struct CombatView: View {
             ProgressView().tint(.questAmber).scaleEffect(1.4)
             Text("Summoning monsters from your library…")
                 .font(.callout).foregroundStyle(.textSecondary)
+            // The tab bar is hidden during a dive, so a scan that stalls needs its own way out.
+            Button("Cancel") { exit() }
+                .font(.callout.weight(.semibold))
+                .foregroundStyle(.textSecondary)
+                .frame(minHeight: 44)
+                .padding(.top, 6)
         }
     }
 
@@ -90,20 +116,26 @@ struct CombatView: View {
     /// offer the way out. Without one the screen is what it always was.
     private var emptyView: some View {
         let scope = appState.dateScope
+        let access = appState.photoAccess
         return VStack(spacing: 16) {
             Image(systemName: "checkmark.seal")
                 .font(.system(size: 64)).foregroundStyle(.gemEmerald)
-            Text(scope.isActive ? "Nothing left in these dates" : "All clear")
+            Text(scope.isActive ? "Nothing left in these dates" : access.emptyDiveTitle)
                 .font(.dungeonTitle).foregroundStyle(.textPrimary)
                 .multilineTextAlignment(.center)
             Text(scope.isActive
                  ? "\(scope.summary()) has nothing left to review.\nChange the dates from the Library."
-                 : "Your library has nothing to review right now.\nReturn another day.")
+                 : access.emptyDiveMessage)
                 .font(.callout).foregroundStyle(.textSecondary).multilineTextAlignment(.center)
             Button("Back to Library") {
                 exit()
             }
             .buttonStyle(.gold)
+            if access == .limited {
+                Button("Manage photo access") { SystemSettings.open() }
+                    .font(.callout.weight(.semibold))
+                    .foregroundStyle(.textSecondary)
+            }
             if scope.isActive {
                 Button("Show all dates") {
                     appState.setDateScope(.all)
@@ -127,12 +159,8 @@ struct CombatView: View {
                 heroHP: combat.heroCurrentHP,
                 heroMaxHP: combat.heroMaxHP,
                 combo: combat.combo,
-                roomNumber: combat.roomNumber,
-                totalRooms: CombatViewModel.totalRoomsPerSession,
-                remaining: combat.roomRemaining,
-                marked: combat.markedCount,
-                themeName: combat.theme.displayName,
-                onExit: { exit() }
+                progress: combat.progress,
+                onExit: { requestExit() }
             )
             .padding(.horizontal, 14)
             .padding(.top, combat.roomNumber == 1 ? 0 : 8)
@@ -190,14 +218,14 @@ struct CombatView: View {
                     .accessibilityHint("Mark this item for deletion")
 
                     Button { if let top = combat.topItem, let hero = heroes.first { combat.decideSpare(top, hero: hero, context: modelContext) } } label: {
-                        Label("SPARE", systemImage: "shield.fill")
+                        Label("KEEP", systemImage: "shield.fill")
                             .font(.headline.weight(.heavy))
                             .frame(maxWidth: .infinity).padding(.vertical, 14)
                             .background(RoundedRectangle(cornerRadius: 10).fill(Color.dungeonStoneLight))
                             .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
                             .foregroundStyle(.textPrimary)
                     }
-                    .accessibilityHint("Spare this item, take damage")
+                    .accessibilityHint("Keep this item. It stays in your library.")
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 14)
@@ -253,13 +281,13 @@ struct CombatView: View {
             VStack(spacing: 8) {
                 summaryRow(label: "Photos purged", value: "\(combat.sessionPhotosDeleted)", tint: .questAmber)
                 summaryRow(label: "Videos purged", value: "\(combat.sessionVideosDeleted)", tint: .videoSapphire)
-                summaryRow(label: "Storage freed", value: ByteCountFormatter.string(fromByteCount: combat.sessionBytesFreed, countStyle: .file), tint: .gemEmerald)
+                summaryRow(label: "Moved to Recently Deleted", value: ByteCountFormatter.string(fromByteCount: combat.sessionBytesFreed, countStyle: .file), tint: .gemEmerald)
                 summaryRow(label: "XP earned", value: "+\(combat.sessionXP)", tint: .questAmber)
                 summaryRow(label: "Gems earned", value: "+\(combat.sessionGems)", tint: .gemEmerald)
                 if combat.diveBonusXP > 0 || combat.diveBonusGems > 0 {
                     summaryRow(label: "Dive bonus", value: "+\(combat.diveBonusXP) XP · +\(combat.diveBonusGems) gems", tint: .xpViolet)
                 }
-                summaryRow(label: "Peak combo", value: "\(combat.peakCombo)×", tint: .combatCrimson)
+                summaryRow(label: "Peak combo", value: Wording.inARow(combat.peakCombo), tint: .combatCrimson)
             }
             .padding()
             .background(RoundedRectangle(cornerRadius: 12).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.dungeonAsh, lineWidth: 1)))
@@ -319,7 +347,7 @@ struct CombatView: View {
             VStack(spacing: 8) {
                 summaryRow(label: "Photos purged", value: "\(combat.sessionPhotosDeleted)", tint: .questAmber)
                 summaryRow(label: "Videos purged", value: "\(combat.sessionVideosDeleted)", tint: .videoSapphire)
-                summaryRow(label: "Storage freed", value: ByteCountFormatter.string(fromByteCount: combat.sessionBytesFreed, countStyle: .file), tint: .gemEmerald)
+                summaryRow(label: "Moved to Recently Deleted", value: ByteCountFormatter.string(fromByteCount: combat.sessionBytesFreed, countStyle: .file), tint: .gemEmerald)
                 summaryRow(label: "XP secured", value: "+\(combat.sessionXP)", tint: .questAmber)
                 summaryRow(label: "Gems secured", value: "+\(combat.sessionGems)", tint: .gemEmerald)
             }
@@ -373,15 +401,35 @@ struct CombatView: View {
     }
 
     private func errorView(_ msg: String) -> some View {
-        VStack(spacing: 16) {
-            Image(systemName: "exclamationmark.triangle.fill")
+        let access = appState.photoAccess
+        let blockedByAccess = !access.canReview
+        return VStack(spacing: 16) {
+            Image(systemName: blockedByAccess ? "lock.fill" : "exclamationmark.triangle.fill")
                 .font(.system(size: 48)).foregroundStyle(.combatCrimson)
-            Text("Something went wrong").font(.dungeonHeader).foregroundStyle(.textPrimary)
+            Text(blockedByAccess ? access.title : "Something went wrong").font(.dungeonHeader).foregroundStyle(.textPrimary)
             Text(msg).font(.callout).foregroundStyle(.textSecondary).multilineTextAlignment(.center).padding(.horizontal, 24)
+            if blockedByAccess, let action = access.actionTitle {
+                Button(action) { fixAccess(access) }
+                    .buttonStyle(.gold)
+            }
             Button("Back to Library") { exit() }
                 .padding(.vertical, 12).padding(.horizontal, 22)
                 .background(RoundedRectangle(cornerRadius: 10).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1)))
                 .foregroundStyle(.textPrimary)
+        }
+    }
+
+    /// The error screen's button for a closed library: ask if access was never asked for (and leave the
+    /// dive if it is granted, so the Library can start a fresh one), otherwise Settings is the only place
+    /// to change it.
+    private func fixAccess(_ access: PhotoAccess) {
+        if access == .notAsked {
+            Task {
+                await appState.refreshPhotoAuth()
+                if appState.photoAccess.canReview { exit() }
+            }
+        } else {
+            SystemSettings.open()
         }
     }
 
@@ -392,6 +440,16 @@ struct CombatView: View {
             withAnimation(.linear(duration: 0.05)) { shakeOffset = 8 }
             try? await Task.sleep(for: .milliseconds(60))
             withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) { shakeOffset = 0 }
+        }
+    }
+
+    /// Leaving drops the cards marked in this room (nothing has been moved yet), so ask first, but only
+    /// when there is something to lose.
+    private func requestExit() {
+        if combat.markedCount > 0 {
+            confirmingExit = true
+        } else {
+            exit()
         }
     }
 

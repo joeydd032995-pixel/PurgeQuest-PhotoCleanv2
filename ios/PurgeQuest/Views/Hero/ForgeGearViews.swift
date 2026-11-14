@@ -126,9 +126,9 @@ struct ForgeColorSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             group(title: "Gear colors", regions: gearRegions, set: $gearMaterials,
-                  emptyNote: "Equip a weapon or shield in Gear to colour it.")
+                  emptyNote: "Equip a weapon or shield in Gear to color it.")
             if bodyColorsActive {
-                group(title: "Body colors", regions: bodyRegions, set: $bodyMaterials, emptyNote: "This look has no colourable body regions.")
+                group(title: "Body colors", regions: bodyRegions, set: $bodyMaterials, emptyNote: "This look has no body regions to color.")
             } else {
                 Text("Body colors unlock when this look's art has been approved. Until then, the Skin, Hair and Armor Dye swatches recolor your hero.")
                     .font(.caption2)
@@ -166,7 +166,7 @@ struct ForgeColorSection: View {
                     }
                     .font(.caption.weight(.bold))
                     .disabled(MaterialPalette.selection(set.wrappedValue, region) == nil)
-                    .accessibilityLabel("Reset \(MaterialPalette.displayName(region)) colour")
+                    .accessibilityLabel("Reset \(MaterialPalette.displayName(region)) color")
                 }
                 .padding(.horizontal, 12)
                 .frame(minHeight: 46)

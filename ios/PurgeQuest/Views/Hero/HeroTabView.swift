@@ -170,8 +170,8 @@ struct HeroTabView: View {
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
                 StatTile(icon: "photo.fill", label: "Photos purged", value: "\(hero.totalPhotosPurged)", tint: .questAmber)
                 StatTile(icon: "video.fill", label: "Videos purged", value: "\(hero.totalVideosPurged)", tint: .videoSapphire)
-                StatTile(icon: "internaldrive.fill", label: "Total freed", value: formattedFreed(hero.totalMBFreed), tint: .gemEmerald)
-                StatTile(icon: "bolt.fill", label: "Peak combo", value: "\(hero.highestCombo)×", tint: .combatCrimson)
+                StatTile(icon: "internaldrive.fill", label: "Total moved", value: formattedFreed(hero.totalMBFreed), tint: .gemEmerald)
+                StatTile(icon: "bolt.fill", label: "Peak combo", value: Wording.inARow(hero.highestCombo), tint: .combatCrimson)
             }
         }
     }
