@@ -20,16 +20,16 @@ source and not otherwise verified.
 | In-app purchase products | Six products; the local StoreKit file and the code agree on IDs and kinds | `repo_guard.py` (10) |
 | Widget and app agree | Same App Group in both entitlements and both targets, same snapshot key and fields, same version | `repo_guard.py` (11, 13) |
 | Restore purchases | The Armory tab has a Restore button (`StoreKitService.restore`) | read from `ShopView.swift` |
+| LICENSE | Proprietary notice; the copyright line names Joseph Dabrowski | read from `LICENSE` |
 | Art licenses | Every third-party pack and its terms are recorded in `docs/CREDITS.md`; the Credits screen in Settings lists them and shows the Cinzel license; the app cannot share or save the art | `repo_guard.py` (16) for the license text; the rest read from `CREDITS.md` and `SettingsView.swift` |
 
 ## Blocks submission: only the owner can close these
 
 1. **Signing.** `DEVELOPMENT_TEAM` is blank. Set the team, register `com.purgequest.app` and `com.purgequest.app.purgequestwidget`, and provision the App Group `group.com.purgequest.app` for both.
 2. **App Store Connect products.** Create the six in-app purchases with exactly the IDs in `StoreKitService.ProductID`, with prices and review screenshots. They exist today only in the local StoreKit file.
-3. **Privacy policy URL.** Required for every app. `PRIVACY.md` lists what it has to say.
+3. **Privacy policy URL.** The policy is written: [`../privacy/PRIVACY_POLICY.md`](../privacy/PRIVACY_POLICY.md). What is left is to publish it at a public web address (the repository is going private, so not from this repository) and enter that URL in App Store Connect. Re-read it against the app before submitting.
 4. **A device pass.** Nothing in this repository has been run on an iPhone by the sessions that wrote it. Work through "Device test pass" in `ios/README-SETUP.md`, including iPad compatibility mode (Apple reviews iPhone-only apps on iPad too).
-5. **LICENSE.** The copyright line names "the PurgeQuest authors". Put the legal owner there.
-6. **Make the repository private before launch.** The owner decided on 13 November 2026 to keep it public until then. It holds the third-party art files (`docs/CREDITS.md`), and the licenses are clearest when they are not publicly downloadable. Private repositories get limited free CI minutes, and macOS minutes count extra, so check Settings > Billing first and consider dropping the duplicate `tour` job in `ui-snapshots.yml` (the same tour runs inside `ios.yml`).
+5. **Make the repository private before launch.** The owner decided on 13 November 2026 to keep it public until then. It holds the third-party art files (`docs/CREDITS.md`), and the licenses are clearest when they are not publicly downloadable. Private repositories get limited free CI minutes, and macOS minutes count extra, so check Settings > Billing first and consider dropping the duplicate `tour` job in `ui-snapshots.yml` (the same tour runs inside `ios.yml`).
 
 ## Decide before submitting
 
@@ -38,6 +38,7 @@ source and not otherwise verified.
 | Live Activities | `CombatLiveActivityService` requests an activity, but the widget extension declares no `ActivityConfiguration` and the app has no `NSSupportsLiveActivities` key, so nothing ever appears. The request fails quietly. | Ship 1.0 without it and do not mention Dynamic Island in the listing (the state the code is in), or build the widget-side UI and test it on a device first. |
 | `photos-redirect://` | Settings opens the Photos app with this URL scheme. It is not a documented API, and the button is labelled "Open Photos · Recently Deleted" though the scheme only opens Photos. | Keep and accept a small review risk; or relabel to "Open Photos"; or remove the button and leave the instruction text. |
 | StoreKit file in the bundle | `Configuration.storekit` sits in the app's synchronized folder, so Xcode may copy it into the shipped app. It is inert there. | Check the archived `.app`; if present, exclude it from the target's membership. |
+| Armor in the Armory and on the hero | Helms, chest pieces, legs and hands (the classic helm/chest items, the free Iron Helm and Purge Plate, and the 32 race armor pieces) are hidden everywhere in 1.0: not sold in the Armory, no tag around the hero, no row under Equipped Gear, no helm or armor on the vector figure, and no effect on the plaque tier (`CosmeticType.hiddenFromShop` / `hiddenFromHero`). The hero sprite draws only held gear, so these would never appear on it. They stay in the catalog and in saves, so nothing is lost. Weapons and shields are unaffected; skins, pets, FX and the Titan Blade upgrade are still shown. | Bring them back once layered armor can be drawn on the hero (needs the modular packs approved and a renderer change). |
 | Modular characters | 0 of 27 art packs are approved, so every hero renders through the legacy renderer. That is a complete, shippable state. | Ship as is, or approve wave 1 first (`docs/modular/REVIEW.md`). |
 | Minimum Xcode | The sources need Swift 6.2 (`@concurrent`). | Build the release with Xcode 26 or later. |
 | Grok-made icons | The app icon, the emblem and the six Bestiary icons were made with Grok (xAI). By the owner's summary of xAI's terms (`docs/CREDITS.md`), the owner owns the output and may use it commercially, but xAI gives no IP indemnification and trains on what is submitted. | Skim xAI's own terms once for those lines; never upload third-party art to Grok; keep any watermark or provenance metadata. |
@@ -45,6 +46,6 @@ source and not otherwise verified.
 ## Listing facts
 
 - **Category:** Utilities or Games. The app deletes photos as its function and is a game in presentation; pick the one the screenshots support.
-- **Age rating:** cartoon/fantasy violence, infrequent or mild. No user-generated content, no web access, no gambling. Purchases buy named items or a fixed number of gems; nothing bought is random.
+- **Age rating:** the owner chose 13+ to be safe. The content would likely qualify for a lower tier (cartoon/fantasy violence, infrequent or mild; no user-generated content, no web access, no gambling), so answer the App Store Connect questionnaire truthfully and, if it computes a lower rating, use the age-rating override to set 13+. Purchases buy named items or a fixed number of gems; nothing bought is random.
 - **Device support:** iPhone, portrait, iOS 18.0 or later.
 - **On-device generated text:** on iOS 26 with Apple Intelligence available, a one-line taunt per monster comes from the system's on-device model (`FoundationFlavorService`); otherwise fixed strings are used. Nothing is sent anywhere.

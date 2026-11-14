@@ -29,6 +29,8 @@ No tracking domains and no collected data types are declared, because there are 
 
 ## What the privacy policy has to say
 
+The policy itself is [`../privacy/PRIVACY_POLICY.md`](../privacy/PRIVACY_POLICY.md); the list below is what it must keep covering.
+
 A policy URL is required even for an app that collects nothing. It can be one short page that states, truthfully:
 
 1. The app does not collect, transmit or share any personal data, and has no accounts.

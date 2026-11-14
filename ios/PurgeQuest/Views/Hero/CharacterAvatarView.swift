@@ -18,14 +18,18 @@ struct CharacterAvatarView: View {
     /// Draft appearance override for live editor previews.
     var appearance: HeroAppearance? = nil
 
+    /// What is worn and shown. Helm, chest, legs and hands items are not drawn or tagged in 1.0
+    /// (`CosmeticType.hiddenFromHero`), and they do not set the plaque's tier either.
+    private var shown: [CosmeticItem] { equipped.filter { $0.type.isShownOnHero } }
+
     private var identity: HeroAppearance { appearance ?? hero.appearance }
 
     /// Tier derived from the most valuable equipped item; drives the plaque
     /// accent so the backdrop celebrates progression.
     private var tier: GearTier {
         HeroAppearance.gearTier(
-            maxEquippedPrice: equipped.map(\.priceGems).max() ?? 0,
-            hasPremium: equipped.contains { $0.isPremium }
+            maxEquippedPrice: shown.map(\.priceGems).max() ?? 0,
+            hasPremium: shown.contains { $0.isPremium }
         )
     }
 
@@ -37,12 +41,12 @@ struct CharacterAvatarView: View {
             // The hero's own height is set here, not the canvas's: the figure stands 0.56 of the
             // portrait tall with its feet on the frame's bottom edge, which is the ground line the
             // pet below is placed on.
-            HeroSpriteView(hero: hero, appearance: appearance, equipped: equipped, size: size * 0.56, framing: .body)
+            HeroSpriteView(hero: hero, appearance: appearance, equipped: shown, size: size * 0.56, framing: .body)
                 .frame(width: size * 0.62, height: size * 0.72, alignment: .bottom)
                 .overlay(alignment: .bottom) { petCompanion }
 
             ForEach(AvatarBadgeLayout.slots, id: \.type) { slot in
-                if let item = equipped.first(where: { $0.type == slot.type }) {
+                if let item = shown.first(where: { $0.type == slot.type }) {
                     badge(item, tint: badgeTint(for: slot.type))
                         .offset(x: size * slot.x, y: size * slot.y)
                 }
@@ -59,10 +63,10 @@ struct CharacterAvatarView: View {
     /// matches this sprite's `size * 0.8`, and the 0.04 offset plants the pet
     /// on the sprite's ground line, which sits just below the layout frame.
     @ViewBuilder private var petCompanion: some View {
-        if equipped.contains(where: { $0.type == .pet }) {
+        if shown.contains(where: { $0.type == .pet }) {
             MiniAvatarView(
                 hero: hero,
-                equipped: equipped,
+                equipped: shown,
                 size: size * 0.8 * 200 / 132,
                 appearance: appearance,
                 showsFigure: false
@@ -162,7 +166,7 @@ struct CharacterAvatarView: View {
 
     private var accessibilitySummary: String {
         let worn = CosmeticType.allCases.compactMap { type -> String? in
-            equipped.first { $0.type == type }?.name
+            shown.first { $0.type == type }?.name
         }
         let gear = worn.isEmpty ? "default gear" : worn.joined(separator: ", ")
         return "Hero \(hero.name), \(gear), \(tier.displayName) plaque backdrop"
@@ -184,16 +188,13 @@ nonisolated enum AvatarBadgeLayout {
     /// Side of one square tag, in points.
     static let tagSide: Double = 32
 
+    /// No tags for head, armor, legs or hands: those items are hidden in 1.0 (`CosmeticType.hiddenFromHero`).
     static let slots: [AvatarBadgeSlot] = [
-        AvatarBadgeSlot(type: .head,   x:  0.00, y: -0.52),
         AvatarBadgeSlot(type: .skin,   x: -0.52, y: -0.22),
         AvatarBadgeSlot(type: .effect, x:  0.52, y: -0.22),
         AvatarBadgeSlot(type: .shield, x: -0.52, y:  0.10),
-        AvatarBadgeSlot(type: .armor,  x:  0.52, y:  0.10),
         AvatarBadgeSlot(type: .pet,    x: -0.48, y:  0.42),
-        AvatarBadgeSlot(type: .weapon, x:  0.48, y:  0.42),
-        AvatarBadgeSlot(type: .legs,   x: -0.17, y:  0.56),
-        AvatarBadgeSlot(type: .hands,  x:  0.17, y:  0.56)
+        AvatarBadgeSlot(type: .weapon, x:  0.48, y:  0.42)
     ]
 
     /// Slots that have a tag; `.upgrade` (the Titan Blade) is a property of the weapon, not something worn.

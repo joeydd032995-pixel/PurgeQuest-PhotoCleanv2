@@ -2,7 +2,7 @@
 //  AvatarBadgeLayoutTests.swift
 //  PurgeQuestTests
 //
-//  The equipment tags around the hero. Armor, Shield, Legs and Hands used to have no tag at all, so
+//  The equipment tags around the hero. Head, armor, legs and hands are hidden in 1.0, so they have none. Armor, Shield, Legs and Hands used to have no tag at all, so
 //  an equipped chestplate or shield showed nowhere on the Hero tab. Every worn slot now has one, and
 //  the layout is checked for overlap at every size the avatar is drawn at.
 //
@@ -15,7 +15,7 @@ import Foundation
 struct AvatarBadgeLayoutTests {
 
     @Test func everyWornSlotHasExactlyOneTag() {
-        let worn = Set(CosmeticType.allCases).subtracting([.upgrade])
+        let worn = Set(CosmeticType.allCases).subtracting([.upgrade]).subtracting(CosmeticType.hiddenFromHero)
         #expect(Set(AvatarBadgeLayout.taggedTypes) == worn)
         #expect(AvatarBadgeLayout.taggedTypes.count == worn.count, "a slot is listed twice")
     }

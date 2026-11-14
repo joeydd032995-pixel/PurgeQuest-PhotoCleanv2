@@ -55,7 +55,7 @@ struct MiniAvatarView: View {
     var isKnight: Bool { hero.archetype == .knight }
 
     func item(_ type: CosmeticType) -> CosmeticItem? {
-        equipped.first { $0.type == type }
+        type.isShownOnHero ? equipped.first { $0.type == type } : nil
     }
 
     // MARK: - Palette
@@ -206,7 +206,7 @@ struct MiniAvatarView: View {
     }
 
     var accessibilitySummary: String {
-        let worn = CosmeticType.allCases.compactMap { slot -> String? in
+        let worn = CosmeticType.allCases.filter(\.isShownOnHero).compactMap { slot -> String? in
             item(slot)?.name
         }
         if worn.isEmpty { return "Hero figure, default gear" }
