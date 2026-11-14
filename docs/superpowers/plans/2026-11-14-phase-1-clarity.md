@@ -80,6 +80,8 @@ My reading, not a measurement: the SUS target of 80 is a judgment on the whole e
 
 ### 1.1 Glossary and microcopy
 
+**Expanded in full, with validated code:** `docs/superpowers/plans/2026-11-14-phase-1-1-glossary-and-plain-words.md`.
+
 **Goal:** Every game term carries a plain gloss at first sight, and the words in Appendix B are used everywhere.
 
 **Files**
@@ -92,7 +94,7 @@ My reading, not a measurement: the SUS target of 80 is a judgment on the whole e
 
 **Scope notes**
 - Appendix B renames "Focused Dive / Hunt Chosen" to "Choose what to clean / Pick items": that belongs to 1.4 (they become one sheet). "Palette" stays until Phase 2 (D2).
-- S-16 ("Scan wait has no progress") has confidence R, meaning reasoned, not verified. The first task of the expanded plan reproduces it on the tour before changing anything; "Scanning your library… (with a count)" is built only if the wait is real.
+- S-16 ("Scan wait has no progress") is only partly fixed: the wait says how many items it is reading, which is true and cheap. A real progress bar needs callbacks through classification and is not built (expanded plan, decision 4).
 
 **Acceptance:** no "spared" left in user-visible text; every term in the glossary is explained at first encounter and never again; quests read in plain words ("Delete 3 videos longer than 2 minutes"); harness suites cover each phrase at 0, 1 and many.
 
@@ -113,6 +115,8 @@ My reading, not a measurement: the SUS target of 80 is a judgment on the whole e
 - Produces (proposed): `struct DecisionHistory { mutating func record(_ entry: Entry); mutating func undoLast(now: Date) -> Entry?; func canUndo(now: Date) -> Bool }`, with `Entry` holding the item id, whether it was a delete, the previous `combo`, `peakCombo`, `perfectRoom`, `hero.highestCombo`, the previous `ComboMultiplier` (see "Decisions"), and `recordedAt`. Pure, so the five-second window and the "one step only" rule are harness-tested with an injected `now`.
 
 **Spec (assessment 10.2, verbatim):** "Undo: Glass pill above the buttons for 5 s after any decision; rewinds one step." "Coach mark: First card only: two arrows with labels, dismissed by the first swipe or tap." "Decisions: Keep (`surface`, `patina` shield) and Delete (`ember-fill`, `on-ember`), equal width, 56 pt." Keep and Delete are also VoiceOver actions.
+
+**Also in 1.2 (found reviewing the Phase 0 tour):** the assessment's combat-card spec (10.2) says "no reward preview appears anywhere on the card", but the card's strip still shows "+33 XP · +0 on confirm" under the photo, beside the Keep and Delete buttons, which the principle "A reward never shares a surface with a safeguard" forbids. Remove the XP and gem preview from `SwipeMediaCard`'s `bottomMetaBar` and its `rewardXP` and `rewardGems` inputs. The duplicate card's per-copy preview (`DuplicateGroupCard`'s `previewReward`) needs the owner's call: it is the one place a reward preview helps pick a copy.
 
 **Acceptance:** keep or delete, tap Undo within five seconds, and the card returns with combo, perfect-room state and persistence exactly as before; after five seconds, or one step back, there is nothing to undo; the coach mark appears on the very first card only and never again.
 
@@ -232,6 +236,7 @@ My reading, not a measurement: the SUS target of 80 is a judgment on the whole e
 | S-03 time to value | 1.5 |
 | S-05 nine blocks | 1.4 |
 | S-08 no undo, Delete outweighs Keep | 1.2 |
+| S-06 the card's content (the reward preview left over from Phase 0) | 1.2 |
 | S-09 jargon without a gloss | 1.1, 1.4 |
 | S-10 six tabs and duplicated data | 1.3, 1.6 |
 | S-11 empty states | 1.3, 1.6 |
@@ -243,7 +248,7 @@ My reading, not a measurement: the SUS target of 80 is a judgment on the whole e
 
 ## Decisions
 
-1. **Sequencing and launch: open.** Does 1.0 ship with Phase 0 only, with slice A, or with all of Phase 1? The comparison above is the input. The assessment says: "If the launch date is fixed, ship Phase 0, test on TestFlight, then Phase 1. If it can move two weeks, add Phase 1 before submission." Slice A is about 1.5 weeks at the spec's sizes, all of Phase 1 about 3.5.
+1. **Sequencing and launch: decided, slice A (14 November 2026).** 1.0 ships with Phase 0 plus slice A (1.1, 1.2, 1.5); slice B (1.3, 1.6, 1.4, 1.7) follows as the first update. Slice A is about 1.5 weeks at the spec's sizes. Sub-plan 1.1 is expanded in full in `docs/superpowers/plans/2026-11-14-phase-1-1-glossary-and-plain-words.md`; 1.2 and 1.5 are expanded just before they run.
 2. **First room with photo access denied: decided.** Three bundled sample cards, then the permission screen returns (see 1.5).
 3. **Combo rule: decided, built in its own PR (not Phase 1).**
    - The multiplier is a value in tenths from x1.0 to x2.0: a deletion adds 0.1 (the tenth deletion reaches x2.0); a keep takes 12%, rounded to the nearest tenth, never below x1.0 (x2.0 becomes x1.8, x1.5 becomes x1.3, x3.3 would have become x2.9). The first deletion earns the multiplier after its own step, as the old rule did.
