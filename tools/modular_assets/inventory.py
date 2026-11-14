@@ -41,7 +41,6 @@ DOCS = REPO / "docs" / "modular"
 KNOWN_ISSUES = [
     (r"^golem_v\d\.(head|body)\.anatomy$", "anatomy-only stone: recolours through the single skin region, with no primary/secondary/trim"),
     (r"^valkyrie_v\d\.head\.headgear", "right cheek guard stays near-black; right-cheek blush recolours cream while the left stays pink"),
-    (r"^Bone Paragon V$", "a small separate region inside the dark centre emblem"),
     (r"^Verdigris Sigil (III|IV)$", "inner emblem stays dark (close to the outline colour)"),
 ]
 LOUD = {"primary": (0.86, 0.14, 0.14), "secondary": (0.14, 0.70, 0.26), "trim": (0.20, 0.36, 0.95),
@@ -178,11 +177,19 @@ def region_flags(masks: Dict[str, np.ndarray]) -> List[str]:
     return flags
 
 
+GEAR_ART_V6 = HERE / "tests" / "fixtures" / "gear_art_v6"
+
+
 def authored_coverage(index: Dict[str, Path], g: dict) -> Optional[float]:
     """How much of the area authored-surfaces-v1 would recolour these masks cover (its own coverage metric). Low means the
-    masks leave a lot of dark fill, close to the outline colour, untouched."""
+    masks leave a lot of dark fill, close to the outline colour, untouched. Only meaningful on the sprite its polygons and
+    ink palette were drawn for, the v6 art kept in tests/fixtures/gear_art_v6; on any other sprite (pass v7 replaced all
+    99) the number says nothing, so it is not computed."""
     try:
         import gear_materials
+        fixture = GEAR_ART_V6 / f"{g['resourceName']}.png"
+        if not fixture.exists() or fixture.read_bytes() != index[g["resourceName"]].read_bytes():
+            return None
         img = Image.open(index[g["resourceName"]]).convert("RGBA")
         masks = {r: Image.open(index[n]).convert("L") for r, n in g.get("maskResources", {}).items() if n in index}
         prot = gear_materials.protected_ink(img, exterior=g["resourceName"] not in gear_materials.HALO_RESOURCES)
@@ -251,6 +258,12 @@ def collect() -> dict:
                              "(very dark fill near the outline colour)")
             elif authored is not None and authored < 0.80:
                 notes.append(f"authored-surfaces coverage {authored:.2f}: some very dark fill stays dark")
+        recorded = g["verification"]["automated"].get("materialMasks", {})
+        if algorithm == "chroma-cells-v5" and recorded.get("coverage") is not None:
+            import gear_masks_chroma as chroma
+            if recorded["coverage"] < chroma.COVERAGE_MIN:
+                flags.append(f"mostly line work: mask coverage {recorded['coverage']:.2f} (documented floor "
+                             f"{chroma.coverage_floor(g['resourceName']):.2f}); only part of the sprite recolours")
         if g["verification"]["status"] != "candidate":
             flags.append(f"status {g['verification']['status']} (automated checks did not all pass)")
         gone = old_gear.get(g["id"], set()) - set(g.get("maskResources", {}))
