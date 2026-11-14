@@ -156,7 +156,9 @@ struct ShopView: View {
     }
 
     private var itemGrid: some View {
-        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .top, spacing: 12) {
+        // Each column's cells align their tile to the top, so a tile with a one-line subtitle and its
+        // neighbor with a two-line one share a top edge instead of centering on each other.
+        LazyVGrid(columns: [GridItem(.flexible(), alignment: .top), GridItem(.flexible(), alignment: .top)], spacing: 12) {
             ForEach(filtered) { item in
                 goalTile(for: item)
             }
