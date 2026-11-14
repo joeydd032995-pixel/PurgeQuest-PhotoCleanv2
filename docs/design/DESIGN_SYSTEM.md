@@ -3,6 +3,10 @@
 How the app is meant to look, and the shared pieces that make it so. Colors and their contrast are
 defined and tested in `ios/PurgeQuest/Models/ThemePalette.swift`; this file is about composition.
 
+A first-time-user review on 14 November 2026 measured where the code departs from these rules and
+proposes the next version of the system (roles, scales, components, a roadmap):
+[`UI_ASSESSMENT.md`](UI_ASSESSMENT.md).
+
 ## Direction
 
 A torchlit vault. A charcoal (or parchment) canvas, engraved Cinzel capitals for titles, and the

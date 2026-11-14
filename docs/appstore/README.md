@@ -4,6 +4,7 @@ What a submission of PurgeQuest 1.0.0 needs, what the repository already guarant
 owner can do. Each claim below names where it is enforced; if no check is named, it was read from the
 source and not otherwise verified.
 
+- [`LAUNCH_CHECKLIST.md`](LAUNCH_CHECKLIST.md): the 1.0 launch checklist, ordered by who does what. It includes every item below and what the 14 November review found missing.
 - [`REVIEW_NOTES.md`](REVIEW_NOTES.md): text for the App Review notes field, and how a reviewer can exercise the app.
 - [`PRIVACY.md`](PRIVACY.md): the answers for the privacy nutrition label, and what a privacy policy must say.
 - [`SCREENSHOTS.md`](SCREENSHOTS.md): the screenshot set and how to capture it.
