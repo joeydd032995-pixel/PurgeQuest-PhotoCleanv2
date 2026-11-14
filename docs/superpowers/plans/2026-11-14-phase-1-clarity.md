@@ -22,7 +22,7 @@ Every sub-plan's requirements implicitly include this section.
 
 **Decisions already made (assessment section 1, recorded 14 November 2026)**
 
-- D1: "Keeping is free: no HP loss. Combo rewards are lesser." In code: `DiveRules.keepingCostsHP = false`; the combo multiplier is x1 for the first four deletions and x2 from the fifth, never more (`DiveRules.deletionsPerComboStep` 5, `DiveRules.maxComboMultiplier` 2). The old damage, defeat and Rally code stays parked behind the flag, not deleted.
+- D1: "Keeping is free: no HP loss. Combo rewards are lesser." In code: `DiveRules.keepingCostsHP = false`; the combo multiplier is x1 for the first four deletions and x2 from the fifth, never more (`DiveRules.deletionsPerComboStep` 5, `DiveRules.maxComboMultiplier` 2). **Approved change, 14 November 2026, built in its own PR and not part of Phase 1:** the multiplier rises 0.1 per deletion from x1.0, is capped at x2.0 (reached at the tenth deletion), and keeping takes 12% of it, rounded to the nearest tenth and never below x1.0. Until that PR merges, `main` still has the rule above. The old damage, defeat and Rally code stays parked behind the flag, not deleted.
 - D3 (Phase 1): "Five tabs with Codex: Dungeon, Hero, Codex (Bestiary and Trophies), Armory, Settings. No More list."
 - D2, D4, D5, D6 are **not Phase 1**: the Classic palette and the Palette switch stay (so Settings keeps Mode **and** Palette until Phase 2), gems stay green, no new hue, the app icon is untouched.
 - Perfect Room keeps its logic (a room with no keeps) for 1.0, decided by the owner.
@@ -65,6 +65,19 @@ Every sub-plan's requirements implicitly include this section.
 
 **Recommended order: slice A, then slice B.** Slice A (1.1, 1.2, 1.5) is the first-session experience: S-03 is an S0 finding, and the roadmap itself says "the first-session experience is what App Store reviews will describe". It needs nothing from the structural work: the coached first room launches from the existing Dungeon button. Slice B (1.3, 1.6, 1.4, 1.7) is structure; 1.6 builds the shared hero-stage component before 1.4's Dungeon home consumes it.
 
+## Slice A compared with all of Phase 1
+
+| | Slice A (1.1, 1.2, 1.5) | Slice B (1.3, 1.6, 1.4, 1.7) | All of Phase 1 |
+|---|---|---|---|
+| Effort at the spec's sizes (estimates) | about 7 days (M + M + L), roughly 1.5 weeks | about 10 days (L + M + L + S), roughly 2 weeks | about 17 days, roughly 3.5 weeks |
+| Findings closed | S-03 (S0, the last open S0), S-08 (S1), the glossary half of S-09, S-15, S-16 if it reproduces | S-05 (S1, the other open S1), S-10, S-11, S-12, S-14, the renames half of S-09 | all of them |
+| What a new user sees | three screens; a coached first card in three taps; a five-second undo; Keep and Delete equal; terms explained when first met; the look picker after the first room | five tabs and no More; a Codex; one home screen with one next action; a full-size hero; empty screens that say what to do | both |
+| What stays as it is | the nine-block Library home, six tabs with a "More" list, Dates, Focused Dive and Hunt Chosen on the surface, empty Bestiary and Trophies | today's six-page onboarding (nine taps to the first card) and the undo-less card | nothing on the Phase 1 list |
+| Assessment section 12 validation | covers task 1 ("first card, under 60 seconds, nobody stuck at permission") and the "What is an Elite?" probe; tasks 2 and 3 and the other three probes already hold after Phase 0 | does not move any of the pass criteria | all of them |
+| Main risk | first-run state and the reset test (1.5 is the riskiest sub-plan), contained: it launches from the existing Dungeon button | navigation: tab names, the tour, and an IA merge that could hide the shop | both |
+
+My reading, not a measurement: the SUS target of 80 is a judgment on the whole experience, so slice A alone may not reach it, but slice A is what the five-person test's pass criteria depend on. That is why the plan recommends slice A before anything in slice B.
+
 ### 1.1 Glossary and microcopy
 
 **Goal:** Every game term carries a plain gloss at first sight, and the words in Appendix B are used everywhere.
@@ -97,7 +110,7 @@ Every sub-plan's requirements implicitly include this section.
 - Test (CI only, it needs SwiftData): `ios/PurgeQuestTests/UndoDecisionTests.swift`: keep, then undo, leaves no `SparedMediaRecord`; delete, then undo, restores the combo and `hero.highestCombo`.
 
 **Interfaces**
-- Produces (proposed): `struct DecisionHistory { mutating func record(_ entry: Entry); mutating func undoLast(now: Date) -> Entry?; func canUndo(now: Date) -> Bool }`, with `Entry` holding the item id, whether it was a delete, the previous `combo`, `peakCombo`, `perfectRoom`, `hero.highestCombo`, and `recordedAt`. Pure, so the five-second window and the "one step only" rule are harness-tested with an injected `now`.
+- Produces (proposed): `struct DecisionHistory { mutating func record(_ entry: Entry); mutating func undoLast(now: Date) -> Entry?; func canUndo(now: Date) -> Bool }`, with `Entry` holding the item id, whether it was a delete, the previous `combo`, `peakCombo`, `perfectRoom`, `hero.highestCombo`, the previous `ComboMultiplier` (see "Decisions"), and `recordedAt`. Pure, so the five-second window and the "one step only" rule are harness-tested with an injected `now`.
 
 **Spec (assessment 10.2, verbatim):** "Undo: Glass pill above the buttons for 5 s after any decision; rewinds one step." "Coach mark: First card only: two arrows with labels, dismissed by the first swipe or tap." "Decisions: Keep (`surface`, `patina` shield) and Delete (`ember-fill`, `on-ember`), equal width, 56 pt." Keep and Delete are also VoiceOver actions.
 
@@ -116,7 +129,7 @@ Every sub-plan's requirements implicitly include this section.
 
 **Spec (assessment 8.2, verbatim):** "Three screens (Promise, Permission, First room), then straight into a coached first room. Race, class and look arrive as 'Level up your look' after the first Room Summary. The permission screen can never trap the user. 9 taps become 3." Validation pass (section 12): "Install, open, get to the first card. Pass: under 60 seconds, no help, nobody stuck at permission."
 
-**Open design question (owner):** what is the first room when photo access is denied? See "Decisions needed", item 2.
+**Decided (owner, 14 November 2026): the first room when photo access is denied.** Three bundled sample cards teach the gesture without touching the library, then the permission screen returns. This needs three original sample images in the app bundle; they are made for the app, not stock photos, with their provenance recorded in `docs/CREDITS.md`. A user who grants access goes straight to their own first card.
 
 **Risk:** this is the highest-risk sub-plan: it changes first-run state, the reset flow and the tour's navigation in one move. The expanded plan splits it into two PRs if needed: 1.5a cuts the screens and defers the look; 1.5b adds the coached first room and "Level up your look".
 
@@ -197,8 +210,8 @@ Every sub-plan's requirements implicitly include this section.
 | UI-test churn: onboarding, the tab names and the tour are coupled to navigation | The sub-plan that changes an identifier updates its tests in the same task; budget two CI cycles per sub-plan |
 | SwiftUI cannot be compiled locally | Push early, read `build-and-analyze` first; keep SwiftUI thin and the rules pure |
 | The IA merge hides the shop | Armory stays a tab; the gem chip opens it; compare App Store Connect sales across the release |
-| First run with denied access has no first room | Owner decision 2; the permission screen can never trap the user |
-| The combo formula may change | Undo restores snapshots, so it does not depend on the formula |
+| First run with denied access has no first room | Decided: three bundled sample cards (three original images, provenance in `docs/CREDITS.md`); the permission screen can never trap the user |
+| The combo rule is changing (approved, own PR) | Undo restores snapshots, including the multiplier, so it does not depend on the formula |
 | The roadmap's 2 weeks is optimistic | The bottom-up sum is about 3.5 weeks; slice A ships the first-session experience first |
 | No in-app analytics | The assessment's validation plan (section 12) is the measurement; its baseline run belongs on the Phase 0 build **before** Phase 1 ships |
 
@@ -228,8 +241,11 @@ Every sub-plan's requirements implicitly include this section.
 | S-16 scan wait (confidence R) | 1.1 |
 | S-13 Armory state signals (remainder) | Phase 2, see 1.3 |
 
-## Decisions needed from the owner
+## Decisions
 
-1. **Sequencing and launch.** The assessment says: "If the launch date is fixed, ship Phase 0, test on TestFlight, then Phase 1. If it can move two weeks, add Phase 1 before submission." Phase 0 is on `main`. This plan assumes slice A is built next either way; the decision is whether 1.0 ships with Phase 0 only, with slice A, or with all of Phase 1 (the bottom-up estimate is about 3.5 weeks, not 2).
-2. **First room with photo access denied (1.5).** Options: (a) three bundled sample cards teach the gesture without touching the library, then the permission screen returns; (b) skip the first room and land on the Dungeon with the access Notice. Recommendation: (a), so the first minute works for the people most worried about permission.
-3. **Combo rule.** Your request: keeping should cost a small percentage of the combo instead of resetting it, with an example of 3.3x to 2.9x. That conflicts with the D1 cap of x2. Proposal: a continuous multiplier rising 0.1 per deletion, capped at x2.0, with keeping taking 12% (never below x1.0). It is a separate small change to `DiveRules`, not part of Phase 1, and nothing in this plan depends on it.
+1. **Sequencing and launch: open.** Does 1.0 ship with Phase 0 only, with slice A, or with all of Phase 1? The comparison above is the input. The assessment says: "If the launch date is fixed, ship Phase 0, test on TestFlight, then Phase 1. If it can move two weeks, add Phase 1 before submission." Slice A is about 1.5 weeks at the spec's sizes, all of Phase 1 about 3.5.
+2. **First room with photo access denied: decided.** Three bundled sample cards, then the permission screen returns (see 1.5).
+3. **Combo rule: decided, built in its own PR (not Phase 1).**
+   - The multiplier is a value in tenths from x1.0 to x2.0: a deletion adds 0.1 (the tenth deletion reaches x2.0); a keep takes 12%, rounded to the nearest tenth, never below x1.0 (x2.0 becomes x1.8, x1.5 becomes x1.3, x3.3 would have become x2.9). The first deletion earns the multiplier after its own step, as the old rule did.
+   - A tenths integer, not a `Double`, so the cap is exactly x2.0 and no drift builds up over a long dive. It is a small pure type in `DiveRules.swift`, covered by the Linux harness.
+   - **Defaults I chose, say if you disagree:** the *streak* (consecutive deletions) is a separate count that still resets on a keep, so "20 in a row", Combo King ("Reach a 20-deletion streak") and the peak-combo stats mean what they say; the HUD badge shows the multiplier ("×1.8"); rewards round to the nearest whole XP or gem, which at x1.0 and x2.0 is exactly the old result.
