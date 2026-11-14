@@ -66,6 +66,11 @@ struct DashboardView: View {
         }
         .scrollIndicators(.hidden)
         .background(DungeonBackgroundView())
+        // Any dive that starts (the Enter button, a focused dive, a hand-picked hunt) means the player has
+        // met the word "dive", so it is explained once, in this one place.
+        .onChange(of: appState.combatRequested) { _, requested in
+            if requested { markDiveExplained() }
+        }
         .task {
             libraryStats = PhotoLibraryService.shared.fetchLibraryStats()
             updateStreak()
@@ -359,7 +364,6 @@ struct DashboardView: View {
 
     private var enterDungeonButton: some View {
         Button {
-            markDiveExplained()
             HapticsService.shared.medium()
             appState.diveFocus = nil   // the default dive is always mixed, whatever an earlier dive left behind
             appState.combatRequested = true

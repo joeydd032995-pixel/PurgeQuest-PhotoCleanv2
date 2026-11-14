@@ -24,11 +24,14 @@ struct GlossaryTip: View {
                 .font(.caption)
                 .foregroundStyle(.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            Button("Got it", action: onDismiss)
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.textSecondary)
-                .frame(minWidth: 44, minHeight: 44)
-                .accessibilityLabel("Got it, hide this note about \(Glossary.name(term))")
+            Button(action: onDismiss) {
+                Text("Got it")
+                    .frame(minWidth: 44, minHeight: 44)
+                    .contentShape(Rectangle())
+            }
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(.textSecondary)
+            .accessibilityLabel("Got it, hide this note about \(Glossary.name(term))")
         }
         .padding(.leading, 12)
         .padding(.trailing, 4)

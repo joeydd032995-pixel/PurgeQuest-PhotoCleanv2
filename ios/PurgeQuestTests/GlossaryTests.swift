@@ -116,12 +116,22 @@ struct GlossaryTests {
         let defaults = try #require(UserDefaults(suiteName: suite))
         defer { defaults.removePersistentDomain(forName: suite) }
 
-        // A dive explained two words and saved them.
+        // The Library loaded its copy before any dive: nothing explained yet.
+        let stale = GlossaryStore.load(from: defaults)
+        #expect(stale.seen.isEmpty)
+
+        // A dive then explained two words and saved them.
         GlossaryStore.markSeen(.room, in: defaults)
         GlossaryStore.markSeen(.elite, in: defaults)
-        // The Library, still holding an older copy, now explains "dive": the saved words must survive.
+
+        // Explaining "dive" reads the store first, so the dive's words survive.
         let saved = GlossaryStore.markSeen(.dive, in: defaults)
         #expect(saved.seen == [.room, .elite, .dive])
         #expect(GlossaryStore.load(from: defaults) == saved)
+
+        // What saving the Library's stale copy would have stored instead: the dive's words are gone.
+        var oldWay = stale
+        oldWay.markSeen(.dive)
+        #expect(oldWay.seen == [.dive], "saving a stale copy would have forgotten the dive's words")
     }
 }
