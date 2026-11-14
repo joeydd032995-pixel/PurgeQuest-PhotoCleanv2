@@ -15,6 +15,7 @@ struct CombatHUD: View {
     let heroHP: Int
     let heroMaxHP: Int
     let combo: Int
+    let comboMultiplier: ComboMultiplier
     let progress: DiveProgress
     let onExit: () -> Void
 
@@ -72,14 +73,17 @@ struct CombatHUD: View {
     }
 
     private var comboBadge: some View {
-        let multiplier = DiveRules.comboMultiplier(forCombo: combo)
-        let tint: Color = combo >= 20 ? .combatCrimson : (combo >= 10 ? .questAmber : .textSecondary)
+        // The badge shows what rewards are multiplied by, because that is what a keep now takes 12% of; the
+        // streak is read out by VoiceOver and counted in the stats. Plain at ×1.0, brighter as it rises, brass at the top.
+        let tint: Color = comboMultiplier.tenths >= ComboMultiplier.capTenths
+            ? .questAmber
+            : (comboMultiplier.tenths > ComboMultiplier.floorTenths ? .textPrimary : .textSecondary)
         return VStack(spacing: 1) {
-            Text("\(combo)")
+            Text(comboMultiplier.display)
                 .font(.title3.weight(.black).monospacedDigit())
                 .foregroundStyle(tint)
-                .contentTransition(.numericText(value: Double(combo)))
-            Text(multiplier > 1 ? "COMBO ×\(multiplier)" : "COMBO")
+                .contentTransition(.numericText(value: comboMultiplier.value))
+            Text("COMBO")
                 .font(.caption2.weight(.bold))
                 .foregroundStyle(.textSecondary)
                 .lineLimit(1)
@@ -93,7 +97,9 @@ struct CombatHUD: View {
                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(tint.opacity(0.5), lineWidth: 1))
         )
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(multiplier > 1 ? "Combo \(combo), rewards times \(multiplier)" : "Combo \(combo)")
+        .accessibilityLabel(combo > 0
+            ? "Combo, rewards times \(comboMultiplier.plain), \(combo) in a row"
+            : "Combo, rewards times \(comboMultiplier.plain)")
     }
 }
 

@@ -31,7 +31,7 @@ Three root causes sit under the 29 findings:
 
 | # | Decision | Chosen | What it means |
 |---|---|---|---|
-| D1 | What happens when you keep a photo (S-01) | **Keeping is free: no HP loss. Combo rewards are lesser.** | Phase 0.2: spare damage, defeat and the 100-gem Rally are switched off behind a flag (the code stays). The combo bonus cap drops from ×3 to ×2. Keeping still resets the combo, as today (one line to change if you would rather it left the combo alone). Perfect Room keeps its logic (a room with no keeps) and only its text changes, because "without taking damage" is now meaningless. Say so if you would rather retire that bonus. |
+| D1 | What happens when you keep a photo (S-01) | **Keeping is free: no HP loss. Combo rewards are lesser.** | Phase 0.2: spare damage, defeat and the 100-gem Rally are switched off behind a flag (the code stays). The combo bonus cap drops from ×3 to ×2. Keeping still resets the combo, as today (one line to change if you would rather it left the combo alone). Perfect Room keeps its logic (a room with no keeps) and only its text changes, because "without taking damage" is now meaningless. Say so if you would rather retire that bonus. **Update, 14 November 2026 (owner):** keeping no longer ends the combo. The multiplier rises 0.1 per deletion from ×1.0 to ×2.0 (reached at the tenth) and a keep takes 12% of it, to the nearest tenth, never below ×1.0; the streak count still resets on a keep, so "20 in a row" and Combo King are unchanged. |
 | D2 | Default look | **Verdigris Vault (Dark) and Parchment (Light) only** | Phase 2: retire the Classic charcoal palette and the Palette switch. |
 | D3 | Tab structure | **Five tabs with Codex** | Phase 1: Dungeon, Hero, Codex (Bestiary and Trophies), Armory, Settings. No More list. |
 | D4 | Gem colour | **Ice blue** | Phase 2: green is reserved for keeping and measured results. |
@@ -414,7 +414,7 @@ Tokens are named, never raw values. "Edit" files are the likely touch points.
 | Undo | Glass pill above the buttons for 5 s after any decision; rewinds one step |
 | Coach mark | First card only: two arrows with labels, dismissed by the first swipe or tap |
 
-**Interactions.** Drag right commits Keep, left Delete, at 110 pt (existing). Stamps tint `patina` or `ember` up to 45%. Keeping never changes HP or time (D1). It still ends the combo, whose bonus is now small. **Edge cases.** Video: duration chip top-right on glass; a Live Photo chip; shade (already purged) shows a neutral chip "Already deleted once". **Accessibility.** Keep and Delete are VoiceOver actions plus the adjustable action. Exit has a label and a confirm only if marked items exist.
+**Interactions.** Drag right commits Keep, left Delete, at 110 pt (existing). Stamps tint `patina` or `ember` up to 45%. Keeping never changes HP or time (D1). A keep takes 12% of the combo multiplier instead of ending it (the streak count still resets). **Edge cases.** Video: duration chip top-right on glass; a Live Photo chip; shade (already purged) shows a neutral chip "Already deleted once". **Accessibility.** Keep and Delete are VoiceOver actions plus the adjustable action. Exit has a label and a confirm only if marked items exist.
 
 ### 10.3 Room Summary
 

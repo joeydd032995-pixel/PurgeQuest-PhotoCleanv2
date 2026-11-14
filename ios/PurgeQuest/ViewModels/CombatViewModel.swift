@@ -76,6 +76,9 @@ final class CombatViewModel {
     var heroMaxHP: Int = 100
     var combo: Int = 0
     var peakCombo: Int = 0
+    /// What rewards are multiplied by right now: ×1.0 to ×2.0, up a tenth per deletion, and a keep takes 12% of
+    /// it. `combo` above is the streak (deletions in a row), which still ends on a keep.
+    var comboMultiplier = ComboMultiplier()
 
     // Session totals
     var sessionPhotosDeleted: Int = 0
@@ -252,6 +255,7 @@ final class CombatViewModel {
         // A new dive always starts clean: combo back to 1× and no leftover
         // pending bonuses from a previous run.
         combo = 0
+        comboMultiplier = ComboMultiplier()
         pendingBonusXP = 0
         pendingBonusGems = 0
         lostBonusXP = 0
@@ -373,11 +377,12 @@ final class CombatViewModel {
         combo += 1
         peakCombo = max(peakCombo, combo)
         hero.highestCombo = max(hero.highestCombo, peakCombo)
+        comboMultiplier.afterDeletion()
 
         // Capture the full reward now, while this combo is live. It rides along on the
         // decision so it survives any toggles in the room summary and is banked verbatim
         // when the room is confirmed.
-        let earned = reward(for: item, hero: hero, combo: combo)
+        let earned = reward(for: item, hero: hero, multiplier: comboMultiplier)
         pendingDecisions.append(
             PendingDecision(item: item, willDelete: true, xpReward: earned.xp, gemReward: earned.gems)
         )
@@ -394,20 +399,18 @@ final class CombatViewModel {
         advance()
     }
 
-    /// XP + gems for slaying one monster at the given combo, with class perks and the active
-    /// seasonal event folded in. The combo multiplier is 1× until the fifth deletion in a row and
-    /// 2× from then on (`DiveRules.comboMultiplier`; D1 lowered the top from 3×).
-    private func reward(for item: MediaItem, hero: Hero, combo: Int) -> (xp: Int, gems: Int) {
-        let multiplier = DiveRules.comboMultiplier(forCombo: combo)
-
-        var xp = item.monsterType.xpReward * multiplier
+    /// XP + gems for slaying one monster at the given combo multiplier, with class perks and the active
+    /// seasonal event folded in. The multiplier runs from ×1.0 to ×2.0 (`ComboMultiplier`; D1 lowered the
+    /// top from ×3), and at either end it pays exactly the base or double it.
+    private func reward(for item: MediaItem, hero: Hero, multiplier: ComboMultiplier) -> (xp: Int, gems: Int) {
+        var xp = multiplier.scaled(item.monsterType.xpReward)
         let classBonus = hero.heroClass.xpMultiplier(photo: item.kind == .photo, monsterType: item.monsterType)
         if classBonus > 1.0 { xp = Int(Double(xp) * classBonus) }
         let seasonalBonus = SeasonalEventService.shared.xpMultiplier(for: item.monsterType)
         if seasonalBonus > 1.0 { xp = Int(Double(xp) * seasonalBonus) }
 
         let mb = Double(item.estimatedBytes) / 1_048_576.0
-        var gems = Int(mb.rounded()) * multiplier
+        var gems = multiplier.scaled(Int(mb.rounded()))
         let gemBonus = hero.heroClass.gemMultiplier
         if gemBonus > 1.0 { gems = Int(Double(gems) * gemBonus) }
 
@@ -419,13 +422,15 @@ final class CombatViewModel {
     /// for the reward chip on the cards. Shades pay nothing.
     func previewReward(for item: MediaItem, comboStep: Int = 0, hero: Hero) -> (xp: Int, gems: Int) {
         guard !rewardedIDs.contains(item.id) else { return (0, 0) }
-        return reward(for: item, hero: hero, combo: combo + 1 + comboStep)
+        return reward(for: item, hero: hero, multiplier: comboMultiplier.afterDeletions(comboStep + 1))
     }
 
-    /// Keeps a photo. D1: that is free. It ends the combo and ends the room's Perfect Room bonus, and
-    /// it takes no HP unless `DiveRules.keepingCostsHP` is turned back on.
+    /// Keeps a photo. D1: that is free. It ends the streak, takes 12% of the combo multiplier (it no longer
+    /// ends it) and ends the room's Perfect Room bonus, and it takes no HP unless
+    /// `DiveRules.keepingCostsHP` is turned back on.
     func decideSpare(_ item: MediaItem, hero: Hero, context: ModelContext) {
         combo = 0
+        comboMultiplier.afterKeep()
         perfectRoom = false
         let dmg = DiveRules.damageForKeeping(item.monsterType)
         if dmg > 0 {
@@ -479,7 +484,8 @@ final class CombatViewModel {
                 combo += 1
                 peakCombo = max(peakCombo, combo)
                 hero.highestCombo = max(hero.highestCombo, peakCombo)
-                let earned = reward(for: member, hero: hero, combo: combo)
+                comboMultiplier.afterDeletion()
+                let earned = reward(for: member, hero: hero, multiplier: comboMultiplier)
                 pendingDecisions.append(
                     PendingDecision(item: member, willDelete: true, xpReward: earned.xp, gemReward: earned.gems)
                 )
@@ -496,6 +502,8 @@ final class CombatViewModel {
             if combo > 0 && combo % 5 == 0 { HapticsService.shared.comboBurst() }
         }
         if spares > 0 {
+            // As before, a copy kept inside a duplicate group does not touch the combo; only a single-card
+            // keep (`decideSpare`) does.
             perfectRoom = false
             // A duplicate group is one encounter: one hit, however many copies were kept (D1: no hit).
             let dmg = DiveRules.damageForKeeping(group.monsterType)
@@ -542,6 +550,7 @@ final class CombatViewModel {
             session.pendingGems = 0
         }
         combo = 0
+        comboMultiplier = ComboMultiplier()
         HapticsService.shared.warning()
         finalizeSession()
         CombatLiveActivityService.shared.end()
@@ -779,6 +788,7 @@ final class CombatViewModel {
     func continueDeeper(hero: Hero) {
         roomNumber = 1
         combo = 0
+        comboMultiplier = ComboMultiplier()
         perfectRoom = true
         heroCurrentHP = heroMaxHP
         hero.currentHP = heroMaxHP

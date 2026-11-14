@@ -37,36 +37,94 @@ struct DiveRulesTests {
 
     // MARK: The combo is lesser
 
-    @Test func theComboStepsUpEveryFiveDeletionsAndStopsAtDouble() {
-        let expected: [(combo: Int, multiplier: Int)] = [
-            (0, 1), (1, 1), (4, 1),   // the first four pay base
-            (5, 2), (6, 2), (9, 2),   // the fifth steps up
-            (10, 2), (15, 2), (99, 2) // and it stays there; it used to reach 3 at ten
-        ]
-        for (combo, multiplier) in expected {
-            #expect(DiveRules.comboMultiplier(forCombo: combo) == multiplier, "combo \(combo)")
+    @Test func aRunStartsAtPlainRewards() {
+        let combo = ComboMultiplier()
+        #expect(combo.tenths == 10)
+        #expect(combo.value == 1.0)
+        #expect(combo.display == "×1.0")
+    }
+
+    @Test func everyDeletionAddsATenthAndTheTenthReachesDouble() {
+        var combo = ComboMultiplier()
+        for deletion in 1...10 {
+            combo.afterDeletion()
+            #expect(combo.tenths == 10 + deletion, "deletion \(deletion)")
         }
+        #expect(combo.value == 2.0, "the tenth deletion reaches ×2.0")
     }
 
     @Test func noStreakEverPaysMoreThanDouble() {
-        #expect(DiveRules.maxComboMultiplier == 2)
-        for combo in 0...500 {
-            let multiplier = DiveRules.comboMultiplier(forCombo: combo)
-            #expect((1...DiveRules.maxComboMultiplier).contains(multiplier), "combo \(combo) pays ×\(multiplier)")
+        // D1: it used to reach ×3.
+        var combo = ComboMultiplier()
+        for deletion in 1...500 {
+            combo.afterDeletion()
+            #expect(combo.tenths <= ComboMultiplier.capTenths, "deletion \(deletion) pays ×\(combo.value)")
+        }
+        #expect(ComboMultiplier.capTenths == 20)
+        #expect(combo.display == "×2.0")
+    }
+
+    @Test func aKeepTakesTwelvePercentRoundedToTheNearestTenth() {
+        // (before, after) in tenths: ×2.0 becomes ×1.8, ×1.5 becomes ×1.3, and so on.
+        let expected: [(before: Int, after: Int)] = [
+            (20, 18), (19, 17), (18, 16), (17, 15), (16, 14), (15, 13),
+            (14, 12), (13, 11), (12, 11), (11, 10), (10, 10)
+        ]
+        for (before, after) in expected {
+            var combo = ComboMultiplier(tenths: before)
+            combo.afterKeep()
+            #expect(combo.tenths == after, "×\(Double(before) / 10) after a keep")
         }
     }
 
-    @Test func aLongerStreakNeverPaysLess() {
-        var previous = 0
-        for combo in 0...200 {
-            let multiplier = DiveRules.comboMultiplier(forCombo: combo)
-            #expect(multiplier >= previous, "combo \(combo) pays less than combo \(combo - 1)")
-            previous = multiplier
+    @Test func aKeepNeverRaisesAndNeverGoesBelowPlainRewards() {
+        for tenths in ComboMultiplier.floorTenths...ComboMultiplier.capTenths {
+            var combo = ComboMultiplier(tenths: tenths)
+            combo.afterKeep()
+            #expect(combo.tenths <= tenths, "a keep raised ×\(Double(tenths) / 10)")
+            #expect(combo.tenths >= ComboMultiplier.floorTenths, "a keep took ×\(Double(tenths) / 10) below ×1.0")
         }
+        var combo = ComboMultiplier(tenths: ComboMultiplier.capTenths)
+        for _ in 1...100 { combo.afterKeep() }
+        #expect(combo.tenths == ComboMultiplier.floorTenths, "keeping over and over bottoms out at ×1.0")
     }
 
-    @Test func aStreakThatIsNotOneIsWorthNothingExtra() {
-        #expect(DiveRules.comboMultiplier(forCombo: -1) == 1)
-        #expect(DiveRules.comboMultiplier(forCombo: -50) == 1)
+    @Test func oneKeepDoesNotEraseTheStreakThatBuiltTheCombo() {
+        // The point of the rule: a careful keep costs a little, not everything.
+        var combo = ComboMultiplier()
+        for _ in 1...10 { combo.afterDeletion() }
+        combo.afterKeep()
+        #expect(combo.tenths == 18)
+        combo.afterDeletion()
+        #expect(combo.tenths == 19)
+    }
+
+    @Test func aScaledRewardIsExactlyTheOldOneAtTheEnds() {
+        // ×1.0 pays base and ×2.0 pays double, as before; in between it rounds to the nearest whole number.
+        #expect(ComboMultiplier(tenths: 10).scaled(78) == 78)
+        #expect(ComboMultiplier(tenths: 20).scaled(78) == 156)
+        #expect(ComboMultiplier(tenths: 15).scaled(3) == 5, "4.5 rounds up")
+        #expect(ComboMultiplier(tenths: 12).scaled(3) == 4, "3.6 rounds to 4")
+        #expect(ComboMultiplier(tenths: 14).scaled(0) == 0)
+    }
+
+    @Test func aPreviewLooksAheadWithoutMovingTheRealCombo() {
+        let combo = ComboMultiplier()
+        #expect(combo.afterDeletions(3).tenths == 13)
+        #expect(combo.afterDeletions(0).tenths == 10)
+        #expect(combo.afterDeletions(99).tenths == ComboMultiplier.capTenths)
+        #expect(combo.tenths == 10, "looking ahead must not move the real combo")
+    }
+
+    @Test func aValueOutsideTheRangeIsClamped() {
+        #expect(ComboMultiplier(tenths: 5).tenths == 10)
+        #expect(ComboMultiplier(tenths: 99).tenths == 20)
+        #expect(ComboMultiplier(tenths: -3).tenths == 10)
+    }
+
+    @Test func itIsShownWithATimesSignAndSpokenWithout() {
+        #expect(ComboMultiplier(tenths: 18).display == "×1.8")
+        #expect(ComboMultiplier(tenths: 18).plain == "1.8")
+        #expect(ComboMultiplier(tenths: 20).plain == "2.0")
     }
 }

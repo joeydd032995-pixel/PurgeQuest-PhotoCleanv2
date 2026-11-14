@@ -11,6 +11,10 @@
 //  no HP, so being careful with your own photos is never punished. With that pressure gone the combo
 //  has less to prove, so it pays less: it tops out at ×2, where it used to reach ×3.
 //
+//  The combo rule (owner, 14 November 2026): the multiplier rises a tenth per deletion from ×1.0 to
+//  ×2.0, and keeping a photo takes 12% of it instead of ending it. A careful keep costs a little; it no
+//  longer erases the streak that built the bonus.
+//
 
 import Foundation
 
@@ -27,18 +31,64 @@ enum DiveRules {
     static func damageForKeeping(_ monster: MonsterType, costsHP: Bool = DiveRules.keepingCostsHP) -> Int {
         costsHP ? monster.attackDamage : 0
     }
+}
 
-    // MARK: Combo
+/// How much a reward is multiplied by the run of deletions behind it.
+///
+/// Kept in tenths, not as a `Double`, so the cap is exactly ×2.0, ten deletions reach it exactly, and
+/// nothing drifts over a long dive. The streak itself (how many deletions in a row) is a separate count
+/// in CombatViewModel that still ends on a keep, so "20 in a row" and Combo King mean what they say.
+struct ComboMultiplier: Equatable, Sendable {
 
-    /// Every this many deletions in a row, the streak steps up one multiplier.
-    static let deletionsPerComboStep = 5
+    /// ×1.0: plain rewards. A run starts here and a keep never takes it lower.
+    static let floorTenths = 10
 
-    /// The most a streak can multiply a reward. D1 lowered it from 3.
-    static let maxComboMultiplier = 2
+    /// ×2.0. D1 lowered the top from ×3.
+    static let capTenths = 20
 
-    /// The multiplier a deletion earns when it makes the streak `combo` long: ×1 for the first four,
-    /// ×2 from the fifth, never more than `maxComboMultiplier`, and ×1 for a streak that is not one.
-    static func comboMultiplier(forCombo combo: Int) -> Int {
-        max(1, min(combo / deletionsPerComboStep + 1, maxComboMultiplier))
+    /// A deletion adds a tenth, so ten of them take ×1.0 to ×2.0.
+    static let gainPerDeletionTenths = 1
+
+    /// What a keep leaves of the multiplier, as a percentage: it takes 12%.
+    static let keptPercentAfterAKeep = 88
+
+    /// The multiplier in tenths: 10 is ×1.0, 18 is ×1.8, 20 is ×2.0.
+    private(set) var tenths: Int
+
+    /// Out-of-range values are clamped into ×1.0 to ×2.0.
+    init(tenths: Int = ComboMultiplier.floorTenths) {
+        self.tenths = min(max(tenths, Self.floorTenths), Self.capTenths)
     }
+
+    var value: Double { Double(tenths) / 10 }
+
+    /// A deletion that earns a reward. A shade (a photo deleted before) earns nothing and does not call this.
+    mutating func afterDeletion() {
+        tenths = min(Self.capTenths, tenths + Self.gainPerDeletionTenths)
+    }
+
+    /// Keeping a photo takes 12% of the multiplier, to the nearest tenth, never below ×1.0.
+    mutating func afterKeep() {
+        let kept = (tenths * Self.keptPercentAfterAKeep + 50) / 100
+        tenths = max(Self.floorTenths, kept)
+    }
+
+    /// What the multiplier would be after this many more deletions, without moving the real one. The
+    /// reward chips on the cards look ahead with this.
+    func afterDeletions(_ count: Int) -> ComboMultiplier {
+        let steps = min(max(count, 0), Self.capTenths)
+        return ComboMultiplier(tenths: tenths + steps * Self.gainPerDeletionTenths)
+    }
+
+    /// A whole reward (XP or gems) multiplied, to the nearest whole number with halves rounding up. At ×1.0
+    /// and ×2.0 it is exactly the base and double the base, as before.
+    func scaled(_ amount: Int) -> Int {
+        (amount * tenths + 5) / 10
+    }
+
+    /// "1.8": what VoiceOver says after "rewards times".
+    var plain: String { "\(tenths / 10).\(tenths % 10)" }
+
+    /// "×1.8": always one decimal, because it only ever moves in tenths.
+    var display: String { "×" + plain }
 }
