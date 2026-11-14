@@ -51,4 +51,13 @@ struct WordingTests {
         #expect(Wording.roomVerdict(marked: 0, kept: 20) == "Nothing marked, 20 kept")
         #expect(Wording.roomVerdict(marked: 0, kept: 0) == "Nothing marked")
     }
+
+    // MARK: The scan wait
+
+    @Test func theScanWaitCountsWhatItIsReading() {
+        #expect(Wording.scanning(count: 0) == "Scanning your library…")
+        #expect(Wording.scanning(count: -4) == "Scanning your library…")
+        #expect(Wording.scanning(count: 1) == "Scanning 1 item…")
+        #expect(Wording.scanning(count: 150) == "Scanning 150 items…")
+    }
 }

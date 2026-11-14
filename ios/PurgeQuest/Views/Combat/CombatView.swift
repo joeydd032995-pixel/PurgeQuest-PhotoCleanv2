@@ -101,7 +101,7 @@ struct CombatView: View {
     private var loadingView: some View {
         VStack(spacing: 18) {
             ProgressView().tint(.questAmber).scaleEffect(1.4)
-            Text("Summoning monsters from your library…")
+            Text(Wording.scanning(count: combat.scanCount))
                 .font(.callout).foregroundStyle(.textSecondary)
             // The tab bar is hidden during a dive, so a scan that stalls needs its own way out.
             Button("Cancel") { exit() }
