@@ -27,16 +27,16 @@ Three root causes sit under the 29 findings:
 
 **What is already good** (and must survive): the brass plate is the clearest hierarchy device in the app; the swipe stamps are the best micro-interaction; the Bestiary is the one screen that looks art-directed; the storage ledger's honesty and "Old photos are memories, not junk" are the right voice; the CI screenshot tour is a real design-review loop. Section 5.4 lists them.
 
-### Decisions only the owner can make
+### Decisions (recorded 14 November 2026)
 
-| # | Decision | Recommendation | If you disagree |
+| # | Decision | Chosen | What it means |
 |---|---|---|---|
-| D1 | What happens when you keep a photo (S-01) | Keeping is free. Remove spare damage, defeat and the 100-gem Rally from 1.0 (hide behind a flag, do not delete code). | Keep HP but drain it only by time pressure, never by a decision; or keep it and say so on onboarding page 1 (not recommended) |
-| D2 | Default look | **Verdigris Vault** (Dark) and **Parchment** (Light) become the only themes. Retire the Classic charcoal and the Palette switch at the top of Settings. | Keep Classic as a second option under Appearance, lower in Settings |
-| D3 | Tab structure | Five tabs, no More: Dungeon, Hero, Codex (Bestiary + Trophies), Armory, Settings. | Keep Bestiary and Trophies separate and fold Trophies under Hero |
-| D4 | Gem colour | Gems are **ice** (cool diamond). Green is reserved for keeping and measured results. | Keep emerald gems and make Keep neutral ivory with a shield |
-| D5 | Glitchborn hue | Orchid, a new hue. It breaks DESIGN_SYSTEM.md rule 9 ("no purple"), so amend that rule. | A neutral static grey |
-| D6 | App icon | Redraw from the brass emblem on verdigris-black so icon, splash and UI are one identity. | Keep the lava painting and bring ember into the UI as the destructive hue |
+| D1 | What happens when you keep a photo (S-01) | **Keeping is free: no HP loss. Combo rewards are lesser.** | Phase 0.2: spare damage, defeat and the 100-gem Rally are switched off behind a flag (the code stays). The combo bonus cap drops from ×3 to ×2. Keeping still resets the combo, as today (one line to change if you would rather it left the combo alone). Perfect Room keeps its logic (a room with no keeps) and only its text changes, because "without taking damage" is now meaningless. Say so if you would rather retire that bonus. |
+| D2 | Default look | **Verdigris Vault (Dark) and Parchment (Light) only** | Phase 2: retire the Classic charcoal palette and the Palette switch. |
+| D3 | Tab structure | **Five tabs with Codex** | Phase 1: Dungeon, Hero, Codex (Bestiary and Trophies), Armory, Settings. No More list. |
+| D4 | Gem colour | **Ice blue** | Phase 2: green is reserved for keeping and measured results. |
+| D5 | Glitchborn hue | **Orchid** | Phase 2: rule 9 of `DESIGN_SYSTEM.md` ("no purple") is amended when the palette lands, not before. |
+| D6 | App icon | **Redraw from the emblem** | Phase 3. Needs the owner's art direction; the provenance notes in `docs/CREDITS.md` apply to the new art too. |
 
 ## 2. The first-time user
 
@@ -324,7 +324,7 @@ The gem chip in every header opens the Armory. With no analytics, an IA change t
 - **Codex.** A first-run banner ("Clear your first room and the Bestiary starts to fill"). Family tiles keep their art; hues change per 7.3.
 - **Armory.** Themed segmented filter; aligned grid; state labels (Owned, Equipped, Next goal, "150 more gems"); full-opacity names on locked items.
 - **Settings.** Cleanup, Recently Deleted with Open Photos, Appearance (Mode only), Purchases, Privacy and About (policy link, support, credits, version), then Reset. No stats.
-- **Defeat** disappears with D1; if it stays, it says what happened plainly and never sells.
+- **Defeat** is unreachable under D1 (the code stays behind a flag); if it ever returns, it says what happened plainly and never sells.
 
 ### 8.3 Component patterns
 
@@ -414,7 +414,7 @@ Tokens are named, never raw values. "Edit" files are the likely touch points.
 | Undo | Glass pill above the buttons for 5 s after any decision; rewinds one step |
 | Coach mark | First card only: two arrows with labels, dismissed by the first swipe or tap |
 
-**Interactions.** Drag right commits Keep, left Delete, at 110 pt (existing). Stamps tint `patina` or `ember` up to 45%. Keeping never changes HP, combo or time (D1). **Edge cases.** Video: duration chip top-right on glass; a Live Photo chip; shade (already purged) shows a neutral chip "Already deleted once". **Accessibility.** Keep and Delete are VoiceOver actions plus the adjustable action. Exit has a label and a confirm only if marked items exist.
+**Interactions.** Drag right commits Keep, left Delete, at 110 pt (existing). Stamps tint `patina` or `ember` up to 45%. Keeping never changes HP or time (D1). It still ends the combo, whose bonus is now small. **Edge cases.** Video: duration chip top-right on glass; a Live Photo chip; shade (already purged) shows a neutral chip "Already deleted once". **Accessibility.** Keep and Delete are VoiceOver actions plus the adjustable action. Exit has a label and a confirm only if marked items exist.
 
 ### 10.3 Room Summary
 
@@ -433,7 +433,7 @@ Effort: S ≤ ½ day, M 1 to 2 days, L 3 to 5 days, for one engineer using the C
 | # | Item | Fixes | Effort | Acceptance |
 |---|---|---|---|---|
 | 0.1 | Access handling: Open Settings action, foreground re-check, no swipe past the gate, and a real authorization check before every dive and in the Library (a `Notice`, never "All clear") | S-02 | M | Deny, then allow in Settings, return: the flow continues unaided; revoke access later: the Library shows the Notice, not "All reviewed" |
-| 0.2 | Decision D1: remove spare damage, defeat and Rally behind a flag; rename "Perfect Room" | S-01 | M | A user can spare 20 of 20 and finish the dive; tests updated |
+| 0.2 | D1 (decided): spare damage, defeat and Rally off behind a flag; combo cap ×3 to ×2; the HP bar leaves the HUD while HP cannot change; Perfect Room text corrected | S-01 | M | A user can spare 20 of 20 and finish the dive; the combo rule is a tested pure function |
 | 0.3 | `*-on-glass` constants on the card's meta strip | A-02 | S | Measured 4.5:1 or better in Light and Dark over a white photo |
 | 0.4 | Raise `textTertiary` and pill text to 4.5:1; raise the tests to match | A-02 | S to M | `ThemePaletteTests` asserts 4.5 for every text role on every ground |
 | 0.5 | Copy and defect sweep: "1 day", "+150 gems" to "150 more gems", Trophies and Settings titles, truncation, tab-bar and status-bar bleed, two plates on permission, fixed fonts under 12 pt, spelling | S-04, S-12, S-13, A-05, A-09 | M | Screenshot tour shows none of them |
@@ -447,11 +447,11 @@ Onboarding rebuild (3 screens, deferred character creation, coached first room).
 
 ### Phase 2: the system (1.2, about 2 to 3 weeks)
 
-`PQTokens.swift` (colour, type, space, radius, elevation, motion). Swap to Verdigris Vault and Parchment (D2). Build `Button`, `Panel`, `Chip`, `Stat`, `Notice`, `EmptyState`, `Row`, themed segmented control and toggle. Migrate screen by screen using the 7.9 map. **Add lint to `repo_guard.py`:** no `.system(size:)` under 12 pt or outside icon glyphs; no corner-radius literal outside the tokens; no `.opacity(0.` literal outside token files; padding and spacing literals only from the scale; no raw `.white`/`.black` outside tokens; family ΔE at least 17; every text role at least 4.5:1 on all four grounds in both themes.
+`PQTokens.swift` (colour, type, space, radius, elevation, motion). Swap to Verdigris Vault and Parchment (D2, decided); gems become ice (D4) and Glitchborn orchid (D5). Build `Button`, `Panel`, `Chip`, `Stat`, `Notice`, `EmptyState`, `Row`, themed segmented control and toggle. Migrate screen by screen using the 7.9 map. **Add lint to `repo_guard.py`:** no `.system(size:)` under 12 pt or outside icon glyphs; no corner-radius literal outside the tokens; no `.opacity(0.` literal outside token files; padding and spacing literals only from the scale; no raw `.white`/`.black` outside tokens; family ΔE at least 17; every text role at least 4.5:1 on all four grounds in both themes.
 
 ### Phase 3: elevation (ongoing)
 
-Bespoke line-art for quest, theme and empty states. Choreograph Room Cleared, level-up, discovery and unlock. Redraw the app icon (D6). Polish Parchment. Re-shoot the App Store screenshots from the new screens (the launch checklist's six shots).
+Bespoke line-art for quest, theme and empty states. Choreograph Room Cleared, level-up, discovery and unlock. Redraw the app icon from the emblem (D6, decided). Polish Parchment. Re-shoot the App Store screenshots from the new screens (the launch checklist's six shots).
 
 **Sequencing.** If the launch date is fixed, ship Phase 0, test on TestFlight, then Phase 1. If it can move two weeks, add Phase 1 before submission: the first-session experience is what App Store reviews will describe.
 
