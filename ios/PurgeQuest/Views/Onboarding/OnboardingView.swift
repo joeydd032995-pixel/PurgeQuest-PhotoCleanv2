@@ -51,6 +51,13 @@ struct OnboardingView: View {
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .animation(.easeInOut, value: pageIndex)
+                // The pager can be swiped as well as stepped with Continue. Swiping must not get past the
+                // permission page while the app cannot see the library.
+                .onChange(of: pageIndex) { _, page in
+                    if page > Self.permissionPageIndex && !permissionGranted {
+                        withAnimation { pageIndex = Self.permissionPageIndex }
+                    }
+                }
 
                 bottomBar
                     .padding(.horizontal, 20)
@@ -79,24 +86,36 @@ struct OnboardingView: View {
     }
 
     private var permissionPage: some View {
-        VStack(spacing: 22) {
+        let access = appState.photoAccess
+        return VStack(spacing: 22) {
             Spacer()
             Image(systemName: "photo.on.rectangle.angled")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 84, height: 84)
                 .foregroundStyle(.questAmber)
-            Text("Unlock the Dungeon")
+            Text("Allow photo access")
                 .font(.dungeonHeader)
                 .foregroundStyle(.textPrimary)
-            Text("PurgeQuest needs full photo library access to review your photos and videos. Items you choose to delete are moved to **Recently Deleted** in Photos. You can restore them for 30 days.")
+            Text("PurgeQuest reads your photo library to find clutter. Items you choose to delete are moved to **Recently Deleted** in Photos. You can restore them for 30 days.")
                 .font(.callout)
                 .foregroundStyle(.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 24)
 
-            statusChip
+            statusChip(access)
+            permissionAction(access)
+            Spacer()
+        }
+    }
 
+    /// What the player can do about the current access. When it is open there is nothing to do here and
+    /// Continue, in the bottom bar, is the one plate. Otherwise this is the one plate, so the page never
+    /// shows two.
+    @ViewBuilder
+    private func permissionAction(_ access: PhotoAccess) -> some View {
+        switch access {
+        case .notAsked:
             Button {
                 Task {
                     requestingPermission = true
@@ -106,27 +125,51 @@ struct OnboardingView: View {
             } label: {
                 HStack {
                     if requestingPermission { ProgressView() }
-                    Text(appState.photoAuthStatus == .notDetermined ? "Grant Photo Library Access" : "Update Permissions")
+                    Text("Allow photo access")
                 }
             }
             .buttonStyle(.gold(fullWidth: true))
             .padding(.horizontal, 24)
             .disabled(requestingPermission)
-            Spacer()
+        case .denied:
+            VStack(spacing: 10) {
+                Button("Open Settings") { SystemSettings.open() }
+                    .buttonStyle(.gold(fullWidth: true))
+                Text("Turn on Photos for PurgeQuest, then come back. This page updates by itself.")
+                    .font(.caption)
+                    .foregroundStyle(.textSecondary)
+                    .multilineTextAlignment(.center)
+            }
+            .padding(.horizontal, 24)
+        case .restricted:
+            Text(access.message)
+                .font(.caption)
+                .foregroundStyle(.textSecondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 24)
+        case .limited:
+            Button("Allow more photos") { SystemSettings.open() }
+                .buttonStyle(.plain)
+                .font(.callout.weight(.semibold))
+                .foregroundStyle(.textPrimary)
+                .padding(.horizontal, 20)
+                .frame(minHeight: 44)
+                .background(DungeonPanelBackground())
+        case .full:
+            EmptyView()
         }
     }
 
-    private var statusChip: some View {
-        let (text, symbol, tint): (String, String, Color) = {
-            switch appState.photoAuthStatus {
-            case .authorized: return ("Full access", "checkmark.circle.fill", .gemEmerald)
-            case .limited: return ("Limited access. Some items won't appear", "exclamationmark.triangle.fill", .questAmber)
-            case .denied, .restricted: return ("Access denied. Open Settings to enable", "xmark.circle.fill", .combatCrimson)
-            case .notDetermined: return ("Awaiting permission", "circle.dashed", .textSecondary)
-            @unknown default: return ("Unknown", "questionmark.circle", .textSecondary)
+    private func statusChip(_ access: PhotoAccess) -> some View {
+        let (symbol, tint): (String, Color) = {
+            switch access {
+            case .full: return ("checkmark.circle.fill", .gemEmerald)
+            case .limited: return ("exclamationmark.triangle.fill", .questAmber)
+            case .denied, .restricted: return ("xmark.circle.fill", .combatCrimson)
+            case .notAsked: return ("circle.dashed", .textSecondary)
             }
         }()
-        return Label(text, systemImage: symbol)
+        return Label(access.chipText, systemImage: symbol)
             .font(.footnote.weight(.semibold))
             .padding(.horizontal, 14)
             .padding(.vertical, 8)
@@ -447,19 +490,29 @@ struct OnboardingView: View {
                 }
             }
             Spacer()
-            Button {
-                advance()
-            } label: {
-                Text(pageIndex == totalPages - 1 ? "Enter the Dungeon" : "Continue")
+            // While the library is closed, the permission page's own button is the one plate on screen.
+            if !continueBlockedByPermission {
+                Button {
+                    advance()
+                } label: {
+                    Text(pageIndex == totalPages - 1 ? "Enter the Dungeon" : "Continue")
+                }
+                .buttonStyle(.gold)
             }
-            .buttonStyle(.gold)
-            .disabled(continueBlockedByPermission)
         }
+        // Keeps the page from jumping when Continue appears and disappears.
+        .frame(minHeight: 52)
     }
+
+    /// The index of the permission page in the pager.
+    private static let permissionPageIndex = 1
+
+    /// Whether the app may open the library (full or limited access).
+    private var permissionGranted: Bool { appState.photoAccess.canReview }
 
     /// The permission page cannot be passed until photo access is granted (full or limited).
     private var continueBlockedByPermission: Bool {
-        pageIndex == 1 && appState.photoAuthStatus != .authorized && appState.photoAuthStatus != .limited
+        pageIndex == Self.permissionPageIndex && !permissionGranted
     }
 
     private func advance() {

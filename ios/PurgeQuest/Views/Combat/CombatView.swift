@@ -37,6 +37,12 @@ struct CombatView: View {
         .navigationBarBackButtonHidden(true)
         .task {
             guard let hero = heroes.first else { return }
+            // A dive can only deal with what the library shows. Without access it would find nothing and
+            // report "All clear", so say what is wrong instead. (A hand-picked hunt reports its own.)
+            if appState.pickedAssetIDs.isEmpty, !appState.photoAccess.canReview {
+                combat.phase = .error(appState.photoAccess.message)
+                return
+            }
             // A hand-picked hunt (Photos picker on the dashboard) takes priority
             // over the automatic library sweep.
             if !appState.pickedAssetIDs.isEmpty {
@@ -90,20 +96,26 @@ struct CombatView: View {
     /// offer the way out. Without one the screen is what it always was.
     private var emptyView: some View {
         let scope = appState.dateScope
+        let access = appState.photoAccess
         return VStack(spacing: 16) {
             Image(systemName: "checkmark.seal")
                 .font(.system(size: 64)).foregroundStyle(.gemEmerald)
-            Text(scope.isActive ? "Nothing left in these dates" : "All clear")
+            Text(scope.isActive ? "Nothing left in these dates" : access.emptyDiveTitle)
                 .font(.dungeonTitle).foregroundStyle(.textPrimary)
                 .multilineTextAlignment(.center)
             Text(scope.isActive
                  ? "\(scope.summary()) has nothing left to review.\nChange the dates from the Library."
-                 : "Your library has nothing to review right now.\nReturn another day.")
+                 : access.emptyDiveMessage)
                 .font(.callout).foregroundStyle(.textSecondary).multilineTextAlignment(.center)
             Button("Back to Library") {
                 exit()
             }
             .buttonStyle(.gold)
+            if access == .limited {
+                Button("Manage photo access") { SystemSettings.open() }
+                    .font(.callout.weight(.semibold))
+                    .foregroundStyle(.textSecondary)
+            }
             if scope.isActive {
                 Button("Show all dates") {
                     appState.setDateScope(.all)
@@ -373,15 +385,35 @@ struct CombatView: View {
     }
 
     private func errorView(_ msg: String) -> some View {
-        VStack(spacing: 16) {
-            Image(systemName: "exclamationmark.triangle.fill")
+        let access = appState.photoAccess
+        let blockedByAccess = !access.canReview
+        return VStack(spacing: 16) {
+            Image(systemName: blockedByAccess ? "lock.fill" : "exclamationmark.triangle.fill")
                 .font(.system(size: 48)).foregroundStyle(.combatCrimson)
-            Text("Something went wrong").font(.dungeonHeader).foregroundStyle(.textPrimary)
+            Text(blockedByAccess ? access.title : "Something went wrong").font(.dungeonHeader).foregroundStyle(.textPrimary)
             Text(msg).font(.callout).foregroundStyle(.textSecondary).multilineTextAlignment(.center).padding(.horizontal, 24)
+            if blockedByAccess, let action = access.actionTitle {
+                Button(action) { fixAccess(access) }
+                    .buttonStyle(.gold)
+            }
             Button("Back to Library") { exit() }
                 .padding(.vertical, 12).padding(.horizontal, 22)
                 .background(RoundedRectangle(cornerRadius: 10).fill(Color.dungeonStone).overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1)))
                 .foregroundStyle(.textPrimary)
+        }
+    }
+
+    /// The error screen's button for a closed library: ask if access was never asked for (and leave the
+    /// dive if it is granted, so the Library can start a fresh one), otherwise Settings is the only place
+    /// to change it.
+    private func fixAccess(_ access: PhotoAccess) {
+        if access == .notAsked {
+            Task {
+                await appState.refreshPhotoAuth()
+                if appState.photoAccess.canReview { exit() }
+            }
+        } else {
+            SystemSettings.open()
         }
     }
 

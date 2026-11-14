@@ -10,6 +10,7 @@ import Photos
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AppState.self) private var appState
+    @Environment(\.scenePhase) private var scenePhase
 
     /// Classic or Verdigris, chosen in Settings.
     @AppStorage(ColorTheme.storageKey) private var colorThemeRaw = ColorTheme.classic.rawValue
@@ -31,6 +32,10 @@ struct ContentView: View {
             phaseContent
         }
         .task { await bootstrap() }
+        // The player may have changed photo access in Settings while the app was in the background.
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active { appState.syncPhotoAuth() }
+        }
     }
 
     @ViewBuilder
@@ -115,8 +120,9 @@ struct ContentView: View {
             return
         }
 
-        // Determine phase
-        await appState.refreshPhotoAuth()
+        // Determine phase. Only read the photo status here: the system prompt belongs on the permission
+        // page, after the player has been told why, and never over the splash screen.
+        appState.syncPhotoAuth()
         try? await Task.sleep(for: .milliseconds(450))
         withAnimation(.easeInOut(duration: 0.4)) {
             appState.phase = appState.hasOnboarded ? .main : .onboarding
