@@ -212,9 +212,11 @@ struct DuplicateGroupCard: View {
         HStack(spacing: 4) {
             Image(systemName: willDelete ? "xmark" : "shield.fill")
                 .font(.caption2.weight(.black))
-            Text(willDelete ? "SLAY" : "KEEP")
+            Text(willDelete ? "DELETE" : "KEEP")
                 .font(.caption2.weight(.black))
                 .tracking(0.6)
+                .lineLimit(1)
+                .fixedSize()
         }
         .padding(.horizontal, 8).padding(.vertical, 5)
         .background(RoundedRectangle(cornerRadius: 6).fill(willDelete ? Color.combatCrimson : Color.gemEmeraldDeep))

@@ -94,7 +94,7 @@ struct GameContentTests {
 
     @Test func aQuestSubtitleStatesItsOwnTarget() {
         for quest in QuestCatalog.daily {
-            #expect(quest.subtitle.contains("\(quest.targetCount)"),
+            #expect(quest.subtitle.hasPrefix("Delete \(quest.targetCount) ") || quest.subtitle.hasPrefix("Move \(quest.targetCount) "),
                     "\(quest.title) says a different number than \(quest.targetCount)")
         }
     }

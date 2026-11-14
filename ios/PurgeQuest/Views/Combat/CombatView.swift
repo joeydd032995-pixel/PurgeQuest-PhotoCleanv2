@@ -67,6 +67,12 @@ struct CombatView: View {
         .onChange(of: combat.screenShakeTrigger) { _, _ in
             shake()
         }
+        // On `body`, not `fightingView`: that view is removed when the last card of a room is decided.
+        .onChange(of: combat.topItem?.id) { _, _ in
+            // The card the note was shown over has been decided, so the word has been seen: it is not repeated.
+            if let shown = tipTerm { markExplained(shown) }
+            tipTerm = nextGlossaryTip()
+        }
     }
 
     private var dungeonIntensity: Double {
@@ -244,11 +250,6 @@ struct CombatView: View {
             }
         }
         .onAppear { tipTerm = nextGlossaryTip() }
-        .onChange(of: combat.topItem?.id) { _, _ in
-            // The card the note was shown over has been decided, so the word has been seen: it is not repeated.
-            if let shown = tipTerm { markExplained(shown) }
-            tipTerm = nextGlossaryTip()
-        }
     }
 
     // MARK: Game words, explained once

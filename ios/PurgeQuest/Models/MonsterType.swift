@@ -320,7 +320,7 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .ancientArchive:      return "A memory awaits judgment. Look before you let go."
         case .corruptedCodec:      return "Could not be fully loaded. Confirm it's replaceable first."
         case .cloneChimera:        return "An edited copy may be the only version with your changes."
-        case .livePhotoLycan:      return "Slaying the photo also removes its paired motion."
+        case .livePhotoLycan:      return "Deleting the photo also removes its paired motion."
         case .albumEcho:           return "One echo may be the copy you actually kept."
         case .duplicateDragon, .hoardHydra, .burstHydra, .perfectPairWyrmling:
             return "Keep the best copy — the star is only a suggestion."

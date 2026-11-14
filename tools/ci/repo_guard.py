@@ -380,9 +380,15 @@ STRING_LITERAL = re.compile(r'"(?:[^"\\\n]|\\.)*"')
 INTERPOLATION = re.compile(r"\\\((?:[^()]|\([^()]*\))*\)")
 SPARE_WORD = re.compile(r"\bspar(?:e|ed|es|ing)\b", re.I)
 for f in swift_files("PurgeQuest", "PurgeQuestWidget"):
-    for literal in STRING_LITERAL.findall(strip_comments(f.read_text())):
-        if SPARE_WORD.search(INTERPOLATION.sub("", literal)):
-            failures.append(f"visible wording: {f.relative_to(ROOT)} says \"spare\" to the player in {literal[:60]}")
+    source = f.read_text()
+    for literal in STRING_LITERAL.findall(strip_comments(source)):
+        visible = INTERPOLATION.sub("", literal)
+        m = SPARE_WORD.search(visible)
+        if m:
+            at = source.find(literal)
+            line = source.count("\n", 0, at) + 1 if at >= 0 else "?"
+            window = visible[max(0, m.start() - 30):m.end() + 30]
+            failures.append(f"visible wording: {f.relative_to(ROOT)}:{line} says \"{m.group(0)}\" to the player in ...{window}...")
 
 if failures:
     print("repo_guard FAILED:")

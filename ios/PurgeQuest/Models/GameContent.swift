@@ -37,7 +37,7 @@ enum QuestCatalog {
                       kind: .photoSlay, monsterType: .duplicateDragon, targetCount: 5, rewardXP: 160, rewardGems: 80),
         QuestTemplate(title: "Video Vampire Purge", subtitle: "Delete 6 Video Vampires: videos draining 100 MB or more.",
                       kind: .videoSlay, monsterType: .videoVampire, targetCount: 6, rewardXP: 200, rewardGems: 100),
-        QuestTemplate(title: "Long-Take Leviathan", subtitle: "Delete 3 LongTake Leviathans: recordings over two minutes.",
+        QuestTemplate(title: "LongTake Leviathan", subtitle: "Delete 3 LongTake Leviathans: recordings over two minutes.",
                       kind: .videoSlay, monsterType: .longTakeLeviathan, targetCount: 3, rewardXP: 240, rewardGems: 140),
         QuestTemplate(title: "Storage Liberation", subtitle: "Move 500 MB to Recently Deleted in one session.",
                       kind: .mbFreed, monsterType: nil, targetCount: 500, rewardXP: 180, rewardGems: 120),
