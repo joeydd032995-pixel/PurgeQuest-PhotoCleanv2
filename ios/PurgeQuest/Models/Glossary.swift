@@ -102,6 +102,16 @@ nonisolated enum GlossaryStore {
         defaults.set(ledger.storedValue, forKey: key)
     }
 
+    /// Marks one word explained and saves it, reading the stored ledger first so a word another screen
+    /// saved since this one loaded is never lost. Returns the ledger as saved.
+    @discardableResult
+    static func markSeen(_ term: Glossary.Term, in defaults: UserDefaults = .standard) -> GlossaryLedger {
+        var ledger = load(from: defaults)
+        ledger.markSeen(term)
+        save(ledger, to: defaults)
+        return ledger
+    }
+
     static func clear(in defaults: UserDefaults = .standard) {
         defaults.removeObject(forKey: key)
     }

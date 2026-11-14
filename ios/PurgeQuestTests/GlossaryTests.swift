@@ -110,4 +110,18 @@ struct GlossaryTests {
         GlossaryStore.clear(in: defaults)
         #expect(GlossaryStore.load(from: defaults) == GlossaryLedger(), "Reset all data starts the words over")
     }
+
+    @Test func markingOneWordKeepsTheWordsAnotherScreenSaved() throws {
+        let suite = "GlossaryTests-\(UUID().uuidString)"
+        let defaults = try #require(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+
+        // A dive explained two words and saved them.
+        GlossaryStore.markSeen(.room, in: defaults)
+        GlossaryStore.markSeen(.elite, in: defaults)
+        // The Library, still holding an older copy, now explains "dive": the saved words must survive.
+        let saved = GlossaryStore.markSeen(.dive, in: defaults)
+        #expect(saved.seen == [.room, .elite, .dive])
+        #expect(GlossaryStore.load(from: defaults) == saved)
+    }
 }

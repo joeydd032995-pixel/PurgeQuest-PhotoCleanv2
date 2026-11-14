@@ -376,8 +376,7 @@ struct DashboardView: View {
     /// Starting a dive means the player has met the word, so it is explained once and never again.
     private func markDiveExplained() {
         guard glossary.nextTip(among: [.dive]) != nil else { return }
-        glossary.markSeen(.dive)
-        GlossaryStore.save(glossary)
+        glossary = GlossaryStore.markSeen(.dive)
     }
 
     /// Optional: lean this dive toward one kind of clutter. "Enter the Dungeon" above stays the mixed

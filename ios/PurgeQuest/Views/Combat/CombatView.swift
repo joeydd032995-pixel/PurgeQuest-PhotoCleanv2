@@ -264,8 +264,7 @@ struct CombatView: View {
     }
 
     private func markExplained(_ term: Glossary.Term) {
-        glossary.markSeen(term)
-        GlossaryStore.save(glossary)
+        glossary = GlossaryStore.markSeen(term)
     }
 
     /// Dive-start banner naming the auto-detected dungeon theme.
