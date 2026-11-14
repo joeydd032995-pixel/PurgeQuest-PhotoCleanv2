@@ -209,7 +209,7 @@ struct CombatView: View {
                             .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
                             .foregroundStyle(.textPrimary)
                     }
-                    .accessibilityHint("Spare this item, take damage")
+                    .accessibilityHint("Keep this item. It stays in your library.")
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 14)

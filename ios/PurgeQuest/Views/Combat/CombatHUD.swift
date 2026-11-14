@@ -32,7 +32,11 @@ struct CombatHUD: View {
                 .accessibilityLabel("Exit dungeon")
 
                 VStack(alignment: .leading, spacing: 6) {
-                    HPBarView(current: heroHP, max: heroMaxHP, label: "HERO")
+                    // D1: keeping costs no HP, so the bar would sit full for the whole dive and say nothing.
+                    // It returns only if the rule that makes HP matter does.
+                    if DiveRules.keepingCostsHP {
+                        HPBarView(current: heroHP, max: heroMaxHP, label: "HERO")
+                    }
                     HStack {
                         Text("Room \(roomNumber)/\(totalRooms)")
                             .font(.caption.weight(.bold))
@@ -68,7 +72,7 @@ struct CombatHUD: View {
     }
 
     private var comboBadge: some View {
-        let multiplier = max(1, min(combo / 5 + 1, 3))
+        let multiplier = DiveRules.comboMultiplier(forCombo: combo)
         let tint: Color = combo >= 20 ? .combatCrimson : (combo >= 10 ? .questAmber : .textSecondary)
         return VStack(spacing: 2) {
             Text("\(combo)x")
