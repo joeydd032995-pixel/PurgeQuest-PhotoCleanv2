@@ -441,6 +441,8 @@ Effort: S ≤ ½ day, M 1 to 2 days, L 3 to 5 days, for one engineer using the C
 | 0.7 | Room Summary: pinned commit with count, remove the in-app alert, retitle | S-07 | M | Commit visible without scrolling at 20 items |
 | 0.8 | Storage wording (from the launch checklist) | S-04 | S | No "freed" for bytes in Recently Deleted |
 
+**Status, 14 November 2026.** Items 0.1 to 0.8 are built in PR #39, one commit each, and wait on its CI and a device pass. What differs from the table: 0.4 lifts the neutral text tiers to 4.5:1 and fixes the Bestiary pills, but the accent roles (Dark crimson is 3.4:1 to 3.9:1) and the other accent-on-tint pills wait for the Phase 2 role values; 0.5 fades scrolled content at the status bar and the floating tab bar with a masked copy of the canvas (`BarScrims`), which only the CI screenshots can confirm, and one fixed size under 12 pt remains (the Forge swatch lock caption); 0.6 adds a Cancel to the loading screen and a confirm on exit, because hiding the tab bar removed the only other way out. Perfect Room still pays only for a room with no keeps, which under D1 rewards deleting everything: a decision for you.
+
 ### Phase 1: clarity (1.1, about 2 weeks)
 
 Onboarding rebuild (3 screens, deferred character creation, coached first room). Undo. Dungeon home restructure and the Choose-what-to-clean sheet. Codex merge, first-run banners and empty states. Glossary microcopy (Appendix B). Hero stage at full size. Add Room Summary, the duplicate card and the More list (if kept) to the screenshot tour.

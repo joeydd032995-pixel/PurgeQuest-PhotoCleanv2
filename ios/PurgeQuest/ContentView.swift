@@ -65,6 +65,7 @@ struct ContentView: View {
         return TabView(selection: $appState.selectedTab) {
             NavigationStack {
                 DashboardView()
+                    .barScrims()
                     .navigationDestination(isPresented: Binding(
                         get: { appState.combatRequested },
                         set: { appState.combatRequested = $0 }
@@ -76,27 +77,27 @@ struct ContentView: View {
             .tabItem { Label("Library", systemImage: "photo.stack") }
             .tag(MainTab.dashboard)
 
-            NavigationStack { HeroTabView() }
+            NavigationStack { HeroTabView().barScrims() }
                 .id(theme)
                 .tabItem { Label("Hero", systemImage: "figure.fencing") }
                 .tag(MainTab.hero)
 
-            NavigationStack { BestiaryView() }
+            NavigationStack { BestiaryView().barScrims() }
                 .id(theme)
                 .tabItem { Label("Bestiary", systemImage: "book.closed.fill") }
                 .tag(MainTab.bestiary)
 
-            NavigationStack { ShopView() }
+            NavigationStack { ShopView().barScrims() }
                 .id(theme)
                 .tabItem { Label("Armory", systemImage: "shield.lefthalf.filled") }
                 .tag(MainTab.shop)
 
-            NavigationStack { AchievementsView() }
+            NavigationStack { AchievementsView().barScrims() }
                 .id(theme)
                 .tabItem { Label("Trophies", systemImage: "trophy") }
                 .tag(MainTab.achievements)
 
-            NavigationStack { SettingsView() }
+            NavigationStack { SettingsView().barScrims() }
                 .id(theme)
                 .tabItem { Label("Settings", systemImage: "gearshape") }
                 .tag(MainTab.settings)
