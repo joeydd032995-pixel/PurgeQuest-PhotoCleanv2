@@ -10,6 +10,7 @@ import Photos
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AppState.self) private var appState
+    @Environment(\.scenePhase) private var scenePhase
 
     /// Classic or Verdigris, chosen in Settings.
     @AppStorage(ColorTheme.storageKey) private var colorThemeRaw = ColorTheme.classic.rawValue
@@ -31,6 +32,10 @@ struct ContentView: View {
             phaseContent
         }
         .task { await bootstrap() }
+        // The player may have changed photo access in Settings while the app was in the background.
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active { appState.syncPhotoAuth() }
+        }
     }
 
     @ViewBuilder
@@ -60,6 +65,7 @@ struct ContentView: View {
         return TabView(selection: $appState.selectedTab) {
             NavigationStack {
                 DashboardView()
+                    .barScrims()
                     .navigationDestination(isPresented: Binding(
                         get: { appState.combatRequested },
                         set: { appState.combatRequested = $0 }
@@ -71,27 +77,27 @@ struct ContentView: View {
             .tabItem { Label("Library", systemImage: "photo.stack") }
             .tag(MainTab.dashboard)
 
-            NavigationStack { HeroTabView() }
+            NavigationStack { HeroTabView().barScrims() }
                 .id(theme)
                 .tabItem { Label("Hero", systemImage: "figure.fencing") }
                 .tag(MainTab.hero)
 
-            NavigationStack { BestiaryView() }
+            NavigationStack { BestiaryView().barScrims() }
                 .id(theme)
                 .tabItem { Label("Bestiary", systemImage: "book.closed.fill") }
                 .tag(MainTab.bestiary)
 
-            NavigationStack { ShopView() }
+            NavigationStack { ShopView().barScrims() }
                 .id(theme)
                 .tabItem { Label("Armory", systemImage: "shield.lefthalf.filled") }
                 .tag(MainTab.shop)
 
-            NavigationStack { AchievementsView() }
+            NavigationStack { AchievementsView().barScrims() }
                 .id(theme)
                 .tabItem { Label("Trophies", systemImage: "trophy") }
                 .tag(MainTab.achievements)
 
-            NavigationStack { SettingsView() }
+            NavigationStack { SettingsView().barScrims() }
                 .id(theme)
                 .tabItem { Label("Settings", systemImage: "gearshape") }
                 .tag(MainTab.settings)
@@ -115,8 +121,9 @@ struct ContentView: View {
             return
         }
 
-        // Determine phase
-        await appState.refreshPhotoAuth()
+        // Determine phase. Only read the photo status here: the system prompt belongs on the permission
+        // page, after the player has been told why, and never over the splash screen.
+        appState.syncPhotoAuth()
         try? await Task.sleep(for: .milliseconds(450))
         withAnimation(.easeInOut(duration: 0.4)) {
             appState.phase = appState.hasOnboarded ? .main : .onboarding

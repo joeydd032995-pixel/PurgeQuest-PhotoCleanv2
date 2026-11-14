@@ -83,6 +83,8 @@ final class CombatViewModel {
     var sessionBytesFreed: Int64 = 0
     var sessionXP: Int = 0
     var sessionGems: Int = 0
+    /// True while nothing in the current room has been kept. A room that ends this way earns the
+    /// pending Perfect Room bonus. (Keeping costs no HP, but it still forfeits this bonus.)
     var perfectRoom: Bool = true
 
     // FX flags
@@ -334,6 +336,19 @@ final class CombatViewModel {
         max(0, currentRoomItems.count - currentRoomIndex)
     }
 
+    /// Where the player is in the dive, for the HUD. The room count is the real one: a library of 45
+    /// items is three rooms, not five.
+    var progress: DiveProgress {
+        DiveProgress(
+            room: roomNumber,
+            dealtRoomSize: currentRoomItems.count,
+            remaining: roomRemaining,
+            undealt: max(0, allItems.count - queueIndex),
+            itemsPerRoom: Self.roomSize,
+            maxRooms: Self.totalRoomsPerSession
+        )
+    }
+
     /// True when this asset paid rewards on a past purge. It still appears in
     /// hand-picked hunts, but as a shade: deletable, never rewarding.
     func isShade(_ item: MediaItem) -> Bool {
@@ -380,9 +395,10 @@ final class CombatViewModel {
     }
 
     /// XP + gems for slaying one monster at the given combo, with class perks and the active
-    /// seasonal event folded in. Combo multiplier ramps 1× → 2× (combo 5) → 3× (combo 10+).
+    /// seasonal event folded in. The combo multiplier is 1× until the fifth deletion in a row and
+    /// 2× from then on (`DiveRules.comboMultiplier`; D1 lowered the top from 3×).
     private func reward(for item: MediaItem, hero: Hero, combo: Int) -> (xp: Int, gems: Int) {
-        let multiplier = max(1, min(combo / 5 + 1, 3))
+        let multiplier = DiveRules.comboMultiplier(forCombo: combo)
 
         var xp = item.monsterType.xpReward * multiplier
         let classBonus = hero.heroClass.xpMultiplier(photo: item.kind == .photo, monsterType: item.monsterType)
@@ -406,23 +422,28 @@ final class CombatViewModel {
         return reward(for: item, hero: hero, combo: combo + 1 + comboStep)
     }
 
+    /// Keeps a photo. D1: that is free. It ends the combo and ends the room's Perfect Room bonus, and
+    /// it takes no HP unless `DiveRules.keepingCostsHP` is turned back on.
     func decideSpare(_ item: MediaItem, hero: Hero, context: ModelContext) {
         combo = 0
         perfectRoom = false
-        let dmg = item.monsterType.attackDamage
-        heroCurrentHP = max(0, heroCurrentHP - dmg)
-        hero.currentHP = heroCurrentHP
+        let dmg = DiveRules.damageForKeeping(item.monsterType)
+        if dmg > 0 {
+            heroCurrentHP = max(0, heroCurrentHP - dmg)
+            hero.currentHP = heroCurrentHP
+        }
         pendingDecisions.append(PendingDecision(item: item, willDelete: false))
         // Persist the spare so this monster is skipped on every future dive.
         context.insert(SparedMediaRecord(assetIdentifier: item.id, monsterType: item.monsterType))
         try? context.save()
         spareFlashTrigger &+= 1
-        screenShakeTrigger &+= 1
+        if dmg > 0 { screenShakeTrigger &+= 1 }
         if heroCurrentHP <= 0 {
             enterDefeat(context: context)
             return
         }
-        HapticsService.shared.medium()
+        // Keeping is a calm choice, so it feels as light as deleting. It used to thump like a hit.
+        HapticsService.shared.light()
         pushLiveActivityUpdate()
         advance()
     }
@@ -476,10 +497,14 @@ final class CombatViewModel {
         }
         if spares > 0 {
             perfectRoom = false
-            heroCurrentHP = max(0, heroCurrentHP - group.monsterType.attackDamage)
-            hero.currentHP = heroCurrentHP
+            // A duplicate group is one encounter: one hit, however many copies were kept (D1: no hit).
+            let dmg = DiveRules.damageForKeeping(group.monsterType)
+            if dmg > 0 {
+                heroCurrentHP = max(0, heroCurrentHP - dmg)
+                hero.currentHP = heroCurrentHP
+                screenShakeTrigger &+= 1
+            }
             spareFlashTrigger &+= 1
-            screenShakeTrigger &+= 1
         }
         try? context.save()
         pushLiveActivityUpdate()
@@ -492,6 +517,8 @@ final class CombatViewModel {
 
     /// HP hit zero: the run ends here. The defeat screen offers a paid rally
     /// (full heal, resume the room) or a retreat back to the Library.
+    /// D1: nothing takes HP any more, so this is only reached if `DiveRules.keepingCostsHP` is turned
+    /// back on. The path is kept, not deleted, until the owner decides it is gone for good.
     private func enterDefeat(context: ModelContext) {
         phase = .defeated
         // SALVAGE RULES — what the hero keeps vs loses on HP drain:

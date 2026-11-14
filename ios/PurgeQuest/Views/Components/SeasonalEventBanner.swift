@@ -23,17 +23,19 @@ struct SeasonalEventBanner: View {
                 )
 
             VStack(alignment: .leading, spacing: 4) {
-                HStack(spacing: 6) {
-                    Text("LIMITED EVENT")
-                        .font(.dungeonCaption)
-                        .tracking(0.8)
-                        .padding(.horizontal, 6).padding(.vertical, 2)
-                        .background(RoundedRectangle(cornerRadius: 4).fill(event.primary.opacity(0.18)))
-                        .foregroundStyle(event.primary)
-                    Text(event.name)
-                        .font(.headline.weight(.bold))
-                        .foregroundStyle(.textPrimary)
-                }
+                // On its own line: beside the title it squeezed both into two-line wraps next to the art.
+                // Primary text on the event tint, not the event hue, which measured under 4.5:1 there.
+                Text("LIMITED EVENT")
+                    .font(.dungeonCaption)
+                    .tracking(0.8)
+                    .lineLimit(1)
+                    .padding(.horizontal, 6).padding(.vertical, 2)
+                    .background(RoundedRectangle(cornerRadius: 4).fill(event.primary.opacity(0.18)))
+                    .foregroundStyle(.textPrimary)
+                Text(event.name)
+                    .font(.headline.weight(.bold))
+                    .foregroundStyle(.textPrimary)
+                    .lineLimit(2)
                 Text(event.tagline)
                     .font(.caption)
                     .foregroundStyle(.textSecondary)

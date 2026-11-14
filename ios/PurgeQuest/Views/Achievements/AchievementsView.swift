@@ -32,7 +32,6 @@ struct AchievementsView: View {
         }
         .scrollIndicators(.hidden)
         .background(DungeonBackgroundView())
-        .navigationTitle("Trophies")
     }
 
     private var header: some View {
@@ -40,9 +39,10 @@ struct AchievementsView: View {
         let total = achievements.count
         return HStack {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Hall of Trophies")
-                    .font(.dungeonTitle)
+                Text("Trophies")
+                    .font(.dungeonScreenTitle)
                     .foregroundStyle(.textPrimary)
+                    .accessibilityAddTraits(.isHeader)
                 Text("\(unlocked) of \(total) unlocked")
                     .font(.subheadline)
                     .foregroundStyle(.textSecondary)
