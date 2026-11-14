@@ -69,7 +69,7 @@ final class SeasonalEventService {
         SeasonalEvent(
             id: "newyear",
             name: "Resolution Purge",
-            tagline: "Slay Ancient Archives for +75% XP. Out with the old.",
+            tagline: "Delete Ancient Archives (captures from years past) for +75% XP. Out with the old.",
             symbol: "bell.fill",
             tone: .newYear,
             primary: Color(red: 0.79, green: 0.64, blue: 0.15),

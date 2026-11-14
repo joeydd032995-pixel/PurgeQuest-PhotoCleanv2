@@ -215,7 +215,7 @@ enum GameDataService {
         [
             Achievement(id: "first.blood",         title: "First Blood",          subtitle: "Delete your first photo.",           iconName: "drop.fill",            goal: 1),
             Achievement(id: "scene.cut",           title: "Scene Cut",            subtitle: "Delete your first video.",           iconName: "scissors",             goal: 1),
-            Achievement(id: "duplicate.slayer",   title: "Duplicate Slayer",     subtitle: "Slay 50 Duplicate Dragons.",          iconName: "square.on.square",     goal: 50),
+            Achievement(id: "duplicate.slayer",   title: "Duplicate Slayer",     subtitle: "Delete 50 duplicates.",          iconName: "square.on.square",     goal: 50),
             Achievement(id: "video.vault",        title: "Video Vault Vanquisher", subtitle: "Delete 100 videos total.",         iconName: "film.stack.fill",      goal: 100),
             Achievement(id: "great.purge",        title: "The Great Purge",      subtitle: "Move 1 GB to Recently Deleted.",       iconName: "internaldrive.fill",   goal: 1024),
             Achievement(id: "long.take.term",     title: "Longest Take Terminated", subtitle: "Delete a video over 10 minutes.",  iconName: "video.badge.checkmark", goal: 1),

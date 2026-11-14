@@ -30,7 +30,7 @@ nonisolated struct PurgeQuestWidgetSnapshot: Codable, Hashable {
         streakDays: 5,
         totalMBFreed: 3640,
         questTitle: "Video Vampire Purge",
-        questSubtitle: "Banish 6 Video Vampires.",
+        questSubtitle: "Delete 6 Video Vampires: videos draining 100 MB or more.",
         questCurrent: 4,
         questTarget: 6,
         questIsVideo: true,

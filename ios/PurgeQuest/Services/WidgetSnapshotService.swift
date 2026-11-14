@@ -37,7 +37,7 @@ nonisolated struct PurgeQuestWidgetSnapshot: Codable, Hashable {
         streakDays: 3,
         totalMBFreed: 1842,
         questTitle: "Blur Beast Hunter",
-        questSubtitle: "Slay 8 blurry photo monsters.",
+        questSubtitle: "Delete 8 Blur Beasts: out-of-focus photos.",
         questCurrent: 3,
         questTarget: 8,
         questIsVideo: false,
