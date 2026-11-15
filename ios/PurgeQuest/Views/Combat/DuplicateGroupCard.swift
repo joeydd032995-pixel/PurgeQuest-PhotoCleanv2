@@ -302,7 +302,7 @@ struct DuplicateGroupCard: View {
             let r = markedReward
             HStack(spacing: 8) {
                 Image(systemName: "bolt.fill")
-                Text("Purge reward: +\(r.xp) XP · +\(r.gems) gems")
+                Text("Reward for deleting: +\(r.xp) XP · +\(r.gems) gems")
                     .font(.caption.weight(.bold).monospacedDigit())
                 Spacer()
             }
@@ -321,7 +321,7 @@ struct DuplicateGroupCard: View {
             onConfirm(decisions)
         } label: {
             Label(
-                slayCount > 0 ? "Confirm — purge \(slayCount) cop\(slayCount == 1 ? "y" : "ies")" : "Confirm — keep all copies",
+                slayCount > 0 ? "Confirm — delete \(slayCount) cop\(slayCount == 1 ? "y" : "ies")" : "Confirm — keep all copies",
                 systemImage: "checkmark.seal.fill"
             )
             .font(.headline.weight(.heavy))

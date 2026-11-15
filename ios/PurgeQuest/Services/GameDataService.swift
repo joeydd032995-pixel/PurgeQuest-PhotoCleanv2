@@ -156,7 +156,7 @@ enum GameDataService {
         let base: [CosmeticItem] = [
         CosmeticItem(id: "skin.iron",      name: "Iron Vestments",     subtitle: "Default armor. Sturdy and bold.",      type: .skin,   iconName: "shield.lefthalf.filled", priceGems: 0,    isUnlocked: true),
         CosmeticItem(id: "skin.embers",    name: "Ember Cloak",        subtitle: "Heat-treated weave. Pairs with ember headgear.", type: .skin, iconName: "flame.fill",             priceGems: 250),
-        CosmeticItem(id: "skin.archivist", name: "Archivist Robes",    subtitle: "Catalog-grade cloth for methodical purges.", type: .skin, iconName: "books.vertical.fill",    priceGems: 400),
+        CosmeticItem(id: "skin.archivist", name: "Archivist Robes",    subtitle: "Catalog-grade cloth for methodical cleanups.", type: .skin, iconName: "books.vertical.fill",    priceGems: 400),
         CosmeticItem(id: "skin.warden",    name: "Warden Guise",       subtitle: "Heavy plate built for deep vault runs.", type: .skin,   iconName: "person.crop.rectangle.stack.fill", priceGems: 550),
         CosmeticItem(id: "head.iron",      name: "Iron Helm",          subtitle: "Standard issue. Battle-scarred plating.", type: .head,  iconName: "crown.fill",             priceGems: 0,    isUnlocked: true),
         CosmeticItem(id: "head.starhat",   name: "Starlit Cap",        subtitle: "Enchanted brim. Survey-grade focus.",  type: .head,   iconName: "graduationcap.fill",     priceGems: 300),
@@ -166,7 +166,7 @@ enum GameDataService {
         CosmeticItem(id: "armor.arcanist", name: "Arcanist Robes",     subtitle: "Mana-woven layers with verdigris trim.", type: .armor,  iconName: "moon.stars.fill",        priceGems: 450),
         CosmeticItem(id: "armor.dragonhide", name: "Dragonhide Cloak", subtitle: "Reinforced seams. Tailored from elite kills.", type: .armor, iconName: "lizard.fill",         priceGems: 800),
         CosmeticItem(id: "weapon.shard",   name: "Crystal Shard",      subtitle: "Standard issue. Sharp and dependable.", type: .weapon, iconName: "rhombus.fill",           priceGems: 0,    isUnlocked: true),
-        CosmeticItem(id: "weapon.reel",    name: "Film Reel Blade",    subtitle: "Video-themed edge for media purges.",  type: .weapon, iconName: "film.fill",              priceGems: 600,  isVideoThemed: true),
+        CosmeticItem(id: "weapon.reel",    name: "Film Reel Blade",    subtitle: "Video-themed edge for media cleanups.",  type: .weapon, iconName: "film.fill",              priceGems: 600,  isVideoThemed: true),
         CosmeticItem(id: "weapon.gem",     name: "Gem Hammer",         subtitle: "+10% gems on critical hits.",          type: .weapon, iconName: "hammer.fill",            priceGems: 800),
         CosmeticItem(id: "weapon.staff",   name: "Archmage Staff",     subtitle: "Channels deletion magic at range.",    type: .weapon, iconName: "wand.and.stars",         priceGems: 500),
         CosmeticItem(id: "weapon.stormblade", name: "Storm Cleaver",   subtitle: "Conductive edge for fast clears.",      type: .weapon, iconName: "bolt.fill",              priceGems: 700),

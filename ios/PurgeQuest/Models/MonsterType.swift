@@ -330,7 +330,7 @@ enum MonsterType: String, CaseIterable, Codable, Sendable {
         case .thumbGoblin:         return "Tiny files are already cheap to keep."
         case .panoramaColossus:    return "Wide scenes are rare — weigh the space against the view."
         case .fourKKraken, .gigabyteGorgon, .memoryHogMinotaur:
-            return "Huge loot for the bravest purge. Confirm it plays nowhere else."
+            return "Huge loot for the boldest deletion. Confirm it plays nowhere else."
         case .longTakeLeviathan:   return "Skim the whole take before cutting."
         case .videoVampire:        return "Large, but perhaps a keeper. Judge frame by frame."
         case .shakyGhost:          return "Shaky now, but the only angle you have?"

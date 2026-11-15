@@ -90,8 +90,8 @@ struct SettingsView: View {
                 }
 
                 section(title: "Lifetime Stats") {
-                    statRow(label: "Photos purged",  value: "\(hero?.totalPhotosPurged ?? 0)", icon: "photo.fill", tint: .questAmber)
-                    statRow(label: "Videos purged",  value: "\(hero?.totalVideosPurged ?? 0)", icon: "video.fill", tint: .videoSapphire)
+                    statRow(label: "Photos deleted",  value: "\(hero?.totalPhotosPurged ?? 0)", icon: "photo.fill", tint: .questAmber)
+                    statRow(label: "Videos deleted",  value: "\(hero?.totalVideosPurged ?? 0)", icon: "video.fill", tint: .videoSapphire)
                     statRow(label: "Total moved",    value: formattedFreed,                   icon: "internaldrive.fill", tint: .gemEmerald)
                     statRow(label: "Highest combo",  value: Wording.inARow(hero?.highestCombo ?? 0), icon: "bolt.fill", tint: .combatCrimson)
                     statRow(label: "Longest streak", value: Wording.days(hero?.streakDays ?? 0), icon: "flame.fill", tint: .questAmberDeep)
@@ -99,7 +99,7 @@ struct SettingsView: View {
 
                 section(title: "Recently Deleted (last 7 days)") {
                     if deletions.isEmpty {
-                        Text("No items in your purge log.")
+                        Text("Nothing deleted in the last 7 days.")
                             .font(.callout).foregroundStyle(.textSecondary)
                     } else {
                         ForEach(deletions.prefix(20)) { rec in

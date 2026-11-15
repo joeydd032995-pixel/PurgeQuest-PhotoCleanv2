@@ -316,8 +316,8 @@ struct CombatView: View {
                 .font(.dungeonTitle)
                 .foregroundStyle(.textPrimary)
             VStack(spacing: 8) {
-                summaryRow(label: "Photos purged", value: "\(combat.sessionPhotosDeleted)", tint: .questAmber)
-                summaryRow(label: "Videos purged", value: "\(combat.sessionVideosDeleted)", tint: .videoSapphire)
+                summaryRow(label: "Photos deleted", value: "\(combat.sessionPhotosDeleted)", tint: .questAmber)
+                summaryRow(label: "Videos deleted", value: "\(combat.sessionVideosDeleted)", tint: .videoSapphire)
                 summaryRow(label: "Moved to Recently Deleted", value: ByteCountFormatter.string(fromByteCount: combat.sessionBytesFreed, countStyle: .file), tint: .gemEmerald)
                 summaryRow(label: "XP earned", value: "+\(combat.sessionXP)", tint: .questAmber)
                 summaryRow(label: "Gems earned", value: "+\(combat.sessionGems)", tint: .gemEmerald)
@@ -377,13 +377,13 @@ struct CombatView: View {
             Text("Salvage")
                 .font(.dungeonTitle)
                 .foregroundStyle(.textPrimary)
-            Text("Your hero fell — but every confirmed purge is already yours.")
+            Text("Your hero fell — but every confirmed deletion is already yours.")
                 .font(.callout).foregroundStyle(.textSecondary)
                 .multilineTextAlignment(.center)
 
             VStack(spacing: 8) {
-                summaryRow(label: "Photos purged", value: "\(combat.sessionPhotosDeleted)", tint: .questAmber)
-                summaryRow(label: "Videos purged", value: "\(combat.sessionVideosDeleted)", tint: .videoSapphire)
+                summaryRow(label: "Photos deleted", value: "\(combat.sessionPhotosDeleted)", tint: .questAmber)
+                summaryRow(label: "Videos deleted", value: "\(combat.sessionVideosDeleted)", tint: .videoSapphire)
                 summaryRow(label: "Moved to Recently Deleted", value: ByteCountFormatter.string(fromByteCount: combat.sessionBytesFreed, countStyle: .file), tint: .gemEmerald)
                 summaryRow(label: "XP secured", value: "+\(combat.sessionXP)", tint: .questAmber)
                 summaryRow(label: "Gems secured", value: "+\(combat.sessionGems)", tint: .gemEmerald)
