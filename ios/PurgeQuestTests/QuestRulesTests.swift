@@ -189,18 +189,45 @@ struct QuestRulesTests {
         for kind in ["copies", "bursts", "edits", "repeats"] { #expect(text.lowercased().contains(kind), "\(text) never says \(kind)") }
     }
 
-    /// The count builds across the whole day and across dives (a quest lasts a day and `updateQuests` adds
-    /// to it), so "in one session" was wrong. And each file is booked at its size rounded to the nearest
-    /// megabyte on its own (`Int(mb.rounded())` in CombatViewModel), so a file under half a megabyte adds
-    /// nothing: the line says so rather than promise a sum it does not keep. Fixing that bookkeeping is a
-    /// separate decision; if it changes, this line and this test change with it.
-    @Test func theStorageQuestIsADayNotASessionAndSaysHowFilesAreCounted() throws {
+    /// The count builds across the whole day and across dives (a quest lasts a day and its progress is added
+    /// to), so "in one session" was wrong. Each confirmed room adds the total size of what it deleted, in the
+    /// megabytes Photos shows (`QuestProgress`); the line says that.
+    @Test func theStorageQuestIsADayNotASessionAndSaysWhenItCounts() throws {
         let quest = try #require(QuestCatalog.daily.first { $0.kind == .mbFreed })
         #expect(quest.subtitle.contains("\(quest.targetCount) MB"), "\(quest.subtitle)")
         #expect(quest.subtitle.contains("today"), "\(quest.subtitle)")
-        #expect(quest.subtitle.contains("to the nearest MB"), "\(quest.subtitle)")
-        #expect(quest.subtitle.contains("under half an MB count as zero"), "\(quest.subtitle)")
+        #expect(quest.subtitle.contains("Each room you confirm adds the size of what you deleted"), "\(quest.subtitle)")
         #expect(!quest.subtitle.lowercased().contains("session"), "\(quest.subtitle)")
+        // The rule it used to confess to is gone: small files are no longer rounded away one by one.
+        #expect(!quest.subtitle.contains("count as zero"), "\(quest.subtitle)")
+    }
+
+    // MARK: - How the storage quest adds up
+
+    @Test func aMegabyteIsWhatPhotosAndTheClassifierCallOne() {
+        #expect(QuestProgress.bytesPerMegabyte == 1_000_000)
+        #expect(QuestProgress.bytesPerMegabyte == MonsterClassifier.hundredMegabyte / 100)
+    }
+
+    @Test func nothingDeletedAddsNothing() {
+        #expect(QuestProgress.megabytes(forBytes: 0) == 0)
+        #expect(QuestProgress.megabytes(forBytes: -5) == 0)
+    }
+
+    @Test func aRoomsBytesRoundToTheNearestMegabyteWithHalvesUp() {
+        #expect(QuestProgress.megabytes(forBytes: 499_999) == 0)
+        #expect(QuestProgress.megabytes(forBytes: 500_000) == 1)
+        #expect(QuestProgress.megabytes(forBytes: 1_499_999) == 1)
+        #expect(QuestProgress.megabytes(forBytes: 1_500_000) == 2)
+        #expect(QuestProgress.megabytes(forBytes: 500_000_000) == 500)
+    }
+
+    /// The case the owner's decision fixes: 600 screenshots of 470 KB are 282 MB, and a room that deletes
+    /// them has to add 282, not 0 (each file rounded on its own) and not 600 (each rounded up).
+    @Test func smallFilesAddUpInsteadOfEachRoundingToNothing() {
+        let screenshot: Int64 = 470_000
+        #expect(QuestProgress.megabytes(forBytes: screenshot) == 0, "alone, a file this small is under half a megabyte")
+        #expect(QuestProgress.megabytes(forBytes: 600 * screenshot) == 282, "together they are 282 MB")
     }
 
     @Test func theAnyMonsterQuestSaysEveryMonsterCountsButShadesDoNot() throws {

@@ -28,6 +28,20 @@ struct QuestTemplate: Sendable, Equatable {
     let rewardGems: Int
 }
 
+/// How a storage quest adds up. Its target is in megabytes as Photos shows them (1 MB = 1,000,000 bytes, the
+/// unit the classifier's size lines use too), and a confirmed room adds the total size of what it deleted,
+/// rounded once to the nearest megabyte. Each file used to be rounded on its own, in mebibytes, so a file under
+/// half a megabyte added nothing: 600 screenshots of 470 KB (282 MB) moved the quest by 0.
+nonisolated enum QuestProgress {
+    static let bytesPerMegabyte: Int64 = 1_000_000
+
+    /// Whole megabytes for a room's total deleted bytes; halves round up. Nothing (or less) adds nothing.
+    static func megabytes(forBytes bytes: Int64) -> Int {
+        guard bytes > 0 else { return 0 }
+        return Int((bytes + bytesPerMegabyte / 2) / bytesPerMegabyte)
+    }
+}
+
 enum QuestCatalog {
     /// Every quest the daily draw can pick from.
     static let daily: [QuestTemplate] = [
@@ -39,7 +53,7 @@ enum QuestCatalog {
                       kind: .videoSlay, monsterType: .videoVampire, targetCount: 6, rewardXP: 200, rewardGems: 100),
         QuestTemplate(title: "LongTake Leviathan", subtitle: "Delete 3 LongTake Leviathans: videos over two minutes, under 500 MB, not 4K and not duplicates.",
                       kind: .videoSlay, monsterType: .longTakeLeviathan, targetCount: 3, rewardXP: 240, rewardGems: 140),
-        QuestTemplate(title: "Storage Liberation", subtitle: "Delete 500 MB of photos and videos today. Each file counts its size to the nearest MB, so files under half an MB count as zero.",
+        QuestTemplate(title: "Storage Liberation", subtitle: "Delete 500 MB of photos and videos today. Each room you confirm adds the size of what you deleted.",
                       kind: .mbFreed, monsterType: nil, targetCount: 500, rewardXP: 180, rewardGems: 120),
         QuestTemplate(title: "Dungeon Clear", subtitle: "Delete 25 photos or videos. Any monster counts; Shades do not.",
                       kind: .anySlay, monsterType: nil, targetCount: 25, rewardXP: 150, rewardGems: 70),

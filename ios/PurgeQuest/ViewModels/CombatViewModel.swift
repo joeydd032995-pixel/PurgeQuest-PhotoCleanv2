@@ -712,6 +712,8 @@ final class CombatViewModel {
             // math can't double-count a farmed asset.
             let completedBefore = Set(quests.filter(\.completed).map(\.id))
             let decisionsByID = Dictionary(uniqueKeysWithValues: pendingDecisions.filter { $0.willDelete }.map { ($0.item.id, $0) })
+            // The room's storage progress is its total size, added up here and rounded once below.
+            var awardedBytes: Int64 = 0
             for item in toDelete {
                 let awards = decisionsByID[item.id]?.awardsProgress ?? true
                 let assetID = item.id
@@ -733,10 +735,11 @@ final class CombatViewModel {
                 }
                 // Farm-proofing: shades advance no quests.
                 if awards {
-                    let mb = Double(item.estimatedBytes) / 1_048_576.0
-                    GameDataService.updateQuests(quests, for: item.monsterType, mbFreedThisAction: mb)
+                    awardedBytes += item.estimatedBytes
+                    GameDataService.updateQuests(quests, for: item.monsterType)
                 }
             }
+            GameDataService.addStorageProgress(quests, bytes: awardedBytes)
             // Deletion succeeded: these assets can never pay rewards again.
             rewardedIDs.formUnion(toDelete.map(\.id))
             // Quest payouts are SECURED: any quest this confirmation completed

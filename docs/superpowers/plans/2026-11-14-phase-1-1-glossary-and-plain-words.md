@@ -1150,17 +1150,17 @@ The plan above is kept as it was executed. The owner then answered the five open
    - Video Vampire: videos of 100 MB or more but under 500 MB that fit no other monster.
    - LongTake Leviathan: videos over two minutes, under 500 MB, not 4K and not duplicates.
    - Memory Hog Minotaur: videos of 500 MB or more but under 1 GB, not duplicates (two identical 1.2 GB videos are a Perfect Pair Wyrmling, not a Gorgon).
-   - Storage Liberation: "Delete 500 MB of photos and videos today. Each file counts its size to the nearest MB, so files under half an MB count as zero." (it said "in one session", but the count builds across the day and across dives, and each file is rounded on its own).
+   - Storage Liberation: "Delete 500 MB of photos and videos today. Each room you confirm adds the size of what you deleted." (it said "in one session", but the count builds across the day and across dives; see 6).
    - Dungeon Clear: "Delete 25 photos or videos. Any monster counts; Shades do not." A caption under the list says Shades never count toward any quest.
    The Library's quest row has no line limit, so a rule is never cut off.
 3. **"Delete", not "purged", wherever the player reads an action or a count.** The app name and the names PurgeQuest, Phantom Purge, Resolution Purge, Purge Plate, The Great Purge and the Video Vampire Purge quest keep "Purge". `repo_guard` check 18 holds the line.
 4. **Shade gloss:** "a photo or video you deleted before; deleting it again pays nothing."
 5. **Lore text left as is:** `MonsterType.lore` still says "Slay one, the other vanishes."
+6. **Storage quest bookkeeping fixed (owner: yes, 15 November 2026).** `CombatViewModel` booked each file as `Int((bytes / 1,048,576).rounded())`, so 600 screenshots of 470 KB (282 MB) added 0 and one 500,000,000-byte video added 477, not 500. A confirmed room now adds up the bytes of everything that awards progress and rounds once to the nearest megabyte of 1,000,000 bytes, like Photos and the classifier (`QuestProgress`, `GameDataService.addStorageProgress`); the Room Summary's quest preview adds up the same way. Rounding per room, not per file, needs no new stored property, so no saved data changes; the error is at most half a megabyte per confirmed room, and it does not lean one way. `updateQuests` no longer takes a megabyte argument.
 
 **Still open (found while doing 2, not changed):**
-- **The storage quest's bookkeeping loses small files.** `CombatViewModel` books each file as `Int((bytes / 1,048,576).rounded())`, so 600 screenshots of 470 KB (282 MB) add 0 and a single 500,000,000-byte video adds 477, not 500. The line now says so. The fix is code, not wording: add up bytes with the remainder carried (a new stored property on `Quest`, or rounding once per confirmed room) and use 1,000,000 bytes per MB like Photos does. That touches saved data and the confirm path, so it is the owner's call.
+- The event taglines and the medium widget's two-line cut are postponed by the owner ("future update", "postpone widget work").
 - A quest lasts 24 hours from when it is drawn (`Quest.expiresAt`), and `updateQuests` never checks it, so "today" is approximate.
 - The four seasonal event taglines make the same kind of claim and some overstate: Summer says "+50% video XP" but the bonus covers three video monsters; Valentine says "+60% photo XP" for three photo monsters; Halloween says "shadowy foes"; New Year's "captures from years past" is really photos three or more years old with nothing else wrong.
-- The storage quest adds megabytes as 1,048,576 bytes, while the classifier and Photos use 1,000,000, so "500 MB" is reached about 5% early.
 - The medium widget shows the quest line at two lines of small text, so the longer rules are cut with an ellipsis there. The small widget shows only the title and count.
 - A quest already stored on a device keeps its old line until the day's quests are redrawn (at most a day).

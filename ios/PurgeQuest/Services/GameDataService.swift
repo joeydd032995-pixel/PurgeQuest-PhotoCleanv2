@@ -333,7 +333,9 @@ enum GameDataService {
         quest.monsterType.map(slain.counts(as:)) ?? false
     }
 
-    static func updateQuests(_ quests: [Quest], for slainMonster: MonsterType, mbFreedThisAction: Double) {
+    /// One deleted item's effect on the kill quests. Storage quests are not touched here: they are booked once
+    /// per confirmed room, from the room's total bytes (`addStorageProgress`).
+    static func updateQuests(_ quests: [Quest], for slainMonster: MonsterType) {
         for q in quests where !q.completed {
             switch q.kind {
             case .photoSlay:
@@ -347,8 +349,24 @@ enum GameDataService {
             case .anySlay:
                 q.currentCount += 1
             case .mbFreed:
-                q.currentCount += Int(mbFreedThisAction.rounded())
+                break   // booked per room, see addStorageProgress
             }
+            if q.currentCount >= q.targetCount {
+                q.currentCount = q.targetCount
+                q.completed = true
+            }
+        }
+    }
+
+    /// A confirmed room's deletions advance every open storage quest by the whole megabytes they freed. The
+    /// sizes are added up first and rounded once (`QuestProgress.megabytes(forBytes:)`), so a room of small
+    /// files adds up instead of each file rounding to nothing. `bytes` is the total of the items that award
+    /// progress (a Shade, already deleted once, adds nothing).
+    static func addStorageProgress(_ quests: [Quest], bytes: Int64) {
+        let megabytes = QuestProgress.megabytes(forBytes: bytes)
+        guard megabytes > 0 else { return }
+        for q in quests where !q.completed && q.kind == .mbFreed {
+            q.currentCount += megabytes
             if q.currentCount >= q.targetCount {
                 q.currentCount = q.targetCount
                 q.completed = true
