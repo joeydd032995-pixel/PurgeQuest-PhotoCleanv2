@@ -382,7 +382,7 @@ SPARE_WORD = re.compile(r"\bspar(?:e|ed|es|ing)\b", re.I)
 # 18. "Purge" is the app's name and the name of a few things (PurgeQuest, Phantom Purge, Purge Plate, The Great
 # Purge, Resolution Purge, the Video Vampire Purge quest), and it stays there. Where the player reads it as an action, a count or
 # an instruction, the plain word is "delete" (owner, 15 November 2026): "Photos deleted", never "Photos purged".
-# "PurgeQuest" never matches (the word runs on into "Quest"); a literal that holds one of the names is allowed.
+# "PurgeQuest" never matches (the word runs on into "Quest"); a name excuses only itself, in any case.
 PURGE_WORD = re.compile(r"\bpurg(?:e|ed|es|ing)\b", re.I)
 PURGE_NAMES = ("Phantom Purge", "Resolution Purge", "Great Purge", "great.purge", "Purge Plate", "Video Vampire Purge")
 for f in swift_files("PurgeQuest", "PurgeQuestWidget"):
@@ -395,11 +395,15 @@ for f in swift_files("PurgeQuest", "PurgeQuestWidget"):
             line = source.count("\n", 0, at) + 1 if at >= 0 else "?"
             window = visible[max(0, m.start() - 30):m.end() + 30]
             failures.append(f"visible wording: {f.relative_to(ROOT)}:{line} says \"{m.group(0)}\" to the player in ...{window}...")
-        pm = PURGE_WORD.search(visible)
-        if pm and not any(name in visible for name in PURGE_NAMES):
+        # A name excuses only itself: "Phantom Purge: 12 photos purged" still fails on "purged".
+        scrubbed = visible
+        for name in PURGE_NAMES:
+            scrubbed = re.sub(re.escape(name), " ", scrubbed, flags=re.I)
+        pm = PURGE_WORD.search(scrubbed)
+        if pm:
             at = source.find(literal)
             line = source.count("\n", 0, at) + 1 if at >= 0 else "?"
-            window = visible[max(0, pm.start() - 30):pm.end() + 30]
+            window = scrubbed[max(0, pm.start() - 30):pm.end() + 30]
             failures.append(f"visible wording: {f.relative_to(ROOT)}:{line} says \"{pm.group(0)}\" to the player (say \"delete\"; \"Purge\" is only a name) in ...{window}...")
 
 if failures:

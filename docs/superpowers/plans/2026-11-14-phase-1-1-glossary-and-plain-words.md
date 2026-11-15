@@ -1145,19 +1145,21 @@ The plan above is kept as it was executed. The owner then answered the five open
 
 1. **Room gloss:** "Room: up to 20 items." (the tour showed "16 left" beside "20 items"). Same commit as 4.
 2. **Quests state exactly what they count** (decision 1 above is superseded for the wording). The lines are pinned to the classifier by `QuestRulesTests`, and the Bestiary's `signalDescription` for the same monsters says the same:
-   - Blur Beast: out-of-focus photos, and photos that fit no other monster (the classifier's catch-all).
-   - Duplicate Dragon: photos from duplicate groups; copies, bursts, edits and repeats all count.
+   - Blur Beast: photos that no other monster claims, blurry or sharp (the classifier's catch-all). A blurry Live Photo, screenshot or duplicate is a different monster, because those are checked before focus.
+   - Duplicate Dragon: items from duplicate groups, photos or videos (videos are clustered too, and a copy takes the group's photo-typed monster); copies, bursts, edits and repeats all count.
    - Video Vampire: videos of 100 MB or more but under 500 MB that fit no other monster.
-   - LongTake Leviathan: videos over two minutes, under 500 MB and not 4K.
-   - Memory Hog Minotaur: videos of 500 MB or more but under 1 GB.
-   - Storage Liberation: "Delete 500 MB of photos and videos today." (it said "in one session", but the count builds across the day and across dives).
-   - Dungeon Clear: "Delete 25 photos or videos. Any monster counts."
+   - LongTake Leviathan: videos over two minutes, under 500 MB, not 4K and not duplicates.
+   - Memory Hog Minotaur: videos of 500 MB or more but under 1 GB, not duplicates (two identical 1.2 GB videos are a Perfect Pair Wyrmling, not a Gorgon).
+   - Storage Liberation: "Delete 500 MB of photos and videos today. Each file counts its size to the nearest MB, so files under half an MB count as zero." (it said "in one session", but the count builds across the day and across dives, and each file is rounded on its own).
+   - Dungeon Clear: "Delete 25 photos or videos. Any monster counts; Shades do not." A caption under the list says Shades never count toward any quest.
    The Library's quest row has no line limit, so a rule is never cut off.
 3. **"Delete", not "purged", wherever the player reads an action or a count.** The app name and the names PurgeQuest, Phantom Purge, Resolution Purge, Purge Plate, The Great Purge and the Video Vampire Purge quest keep "Purge". `repo_guard` check 18 holds the line.
 4. **Shade gloss:** "a photo or video you deleted before; deleting it again pays nothing."
 5. **Lore text left as is:** `MonsterType.lore` still says "Slay one, the other vanishes."
 
 **Still open (found while doing 2, not changed):**
+- **The storage quest's bookkeeping loses small files.** `CombatViewModel` books each file as `Int((bytes / 1,048,576).rounded())`, so 600 screenshots of 470 KB (282 MB) add 0 and a single 500,000,000-byte video adds 477, not 500. The line now says so. The fix is code, not wording: add up bytes with the remainder carried (a new stored property on `Quest`, or rounding once per confirmed room) and use 1,000,000 bytes per MB like Photos does. That touches saved data and the confirm path, so it is the owner's call.
+- A quest lasts 24 hours from when it is drawn (`Quest.expiresAt`), and `updateQuests` never checks it, so "today" is approximate.
 - The four seasonal event taglines make the same kind of claim and some overstate: Summer says "+50% video XP" but the bonus covers three video monsters; Valentine says "+60% photo XP" for three photo monsters; Halloween says "shadowy foes"; New Year's "captures from years past" is really photos three or more years old with nothing else wrong.
 - The storage quest adds megabytes as 1,048,576 bytes, while the classifier and Photos use 1,000,000, so "500 MB" is reached about 5% early.
 - The medium widget shows the quest line at two lines of small text, so the longer rules are cut with an ellipsis there. The small widget shows only the title and count.

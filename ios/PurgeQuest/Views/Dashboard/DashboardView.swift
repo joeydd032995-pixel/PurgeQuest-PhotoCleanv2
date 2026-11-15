@@ -356,6 +356,13 @@ struct DashboardView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(12)
                 }
+                if !quests.isEmpty {
+                    // True of every quest above; each line states its own rule.
+                    Text("Shades, items you deleted before, never count toward a quest.")
+                        .font(.caption).foregroundStyle(.textSecondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }
         }
     }
