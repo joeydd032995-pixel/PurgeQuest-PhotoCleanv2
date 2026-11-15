@@ -612,10 +612,11 @@ private struct QuestRow: View {
                         .font(.caption.monospacedDigit().weight(.semibold))
                         .foregroundStyle(.textSecondary)
                 }
+                // No line limit: a rule that is cut off mid-sentence is worse than a taller row.
                 Text(quest.subtitle)
                     .font(.caption)
                     .foregroundStyle(.textSecondary)
-                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
                 DungeonProgressBar(value: quest.progressFraction, tint: tint, height: 6)
                 HStack(spacing: 10) {
                     Label("+\(quest.rewardGems)", systemImage: "diamond.fill")

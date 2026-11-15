@@ -31,19 +31,19 @@ struct QuestTemplate: Sendable, Equatable {
 enum QuestCatalog {
     /// Every quest the daily draw can pick from.
     static let daily: [QuestTemplate] = [
-        QuestTemplate(title: "Blur Beast Hunter", subtitle: "Delete 8 Blur Beasts: out-of-focus photos.",
+        QuestTemplate(title: "Blur Beast Hunter", subtitle: "Delete 8 Blur Beasts: out-of-focus photos, and photos that fit no other monster.",
                       kind: .photoSlay, monsterType: .blurBeast, targetCount: 8, rewardXP: 120, rewardGems: 60),
-        QuestTemplate(title: "Duplicate Dragon Slayer", subtitle: "Delete 5 duplicate photos.",
+        QuestTemplate(title: "Duplicate Dragon Slayer", subtitle: "Delete 5 photos from duplicate groups. Copies, bursts, edits and repeats all count.",
                       kind: .photoSlay, monsterType: .duplicateDragon, targetCount: 5, rewardXP: 160, rewardGems: 80),
-        QuestTemplate(title: "Video Vampire Purge", subtitle: "Delete 6 Video Vampires: videos draining 100 MB or more.",
+        QuestTemplate(title: "Video Vampire Purge", subtitle: "Delete 6 Video Vampires: videos of 100 MB or more but under 500 MB that fit no other monster.",
                       kind: .videoSlay, monsterType: .videoVampire, targetCount: 6, rewardXP: 200, rewardGems: 100),
-        QuestTemplate(title: "LongTake Leviathan", subtitle: "Delete 3 LongTake Leviathans: recordings over two minutes.",
+        QuestTemplate(title: "LongTake Leviathan", subtitle: "Delete 3 LongTake Leviathans: videos over two minutes, under 500 MB and not 4K.",
                       kind: .videoSlay, monsterType: .longTakeLeviathan, targetCount: 3, rewardXP: 240, rewardGems: 140),
-        QuestTemplate(title: "Storage Liberation", subtitle: "Move 500 MB to Recently Deleted in one session.",
+        QuestTemplate(title: "Storage Liberation", subtitle: "Delete 500 MB of photos and videos today.",
                       kind: .mbFreed, monsterType: nil, targetCount: 500, rewardXP: 180, rewardGems: 120),
-        QuestTemplate(title: "Dungeon Clear", subtitle: "Delete 25 photos or videos.",
+        QuestTemplate(title: "Dungeon Clear", subtitle: "Delete 25 photos or videos. Any monster counts.",
                       kind: .anySlay, monsterType: nil, targetCount: 25, rewardXP: 150, rewardGems: 70),
-        QuestTemplate(title: "Memory Hog Hunter", subtitle: "Delete 2 Memory Hog Minotaurs: files over 500 MB.",
+        QuestTemplate(title: "Memory Hog Hunter", subtitle: "Delete 2 Memory Hog Minotaurs: videos of 500 MB or more but under 1 GB.",
                       kind: .videoSlay, monsterType: .memoryHogMinotaur, targetCount: 2, rewardXP: 220, rewardGems: 140)
     ]
 }
