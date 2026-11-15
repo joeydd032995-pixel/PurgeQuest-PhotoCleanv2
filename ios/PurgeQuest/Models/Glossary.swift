@@ -36,9 +36,9 @@ nonisolated enum Glossary {
     static func gloss(_ term: Term) -> String {
         switch term {
         case .dive:  return "one session of up to \(spelled(maxRoomsPerDive)) rooms"
-        case .room:  return "\(itemsPerRoom) items"
+        case .room:  return "up to \(itemsPerRoom) items"
         case .elite: return "a boss-tier monster that pays more"
-        case .shade: return "a photo you deleted before; deleting it again pays nothing"
+        case .shade: return "a photo or video you deleted before; deleting it again pays nothing"
         }
     }
 

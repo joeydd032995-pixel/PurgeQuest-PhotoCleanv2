@@ -2,7 +2,7 @@
 //  GlossaryAppConstantsTests.swift
 //  PurgeQuestTests
 //
-//  The glossary says "Room: 20 items" and "up to five rooms". Those numbers must be the ones the dive
+//  The glossary says "Room: up to 20 items" and "up to five rooms". Those numbers must be the ones the dive
 //  actually uses. Needs the app target (CombatViewModel), so it runs in Xcode and CI only.
 //
 

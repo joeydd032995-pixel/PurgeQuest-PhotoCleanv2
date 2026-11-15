@@ -15,11 +15,13 @@ struct GlossaryTests {
 
     // MARK: The sentences
 
-    @Test func theSentencesAreExactlyAppendixB() {
+    // Appendix B, with two owner-approved corrections (15 November 2026): a room is "up to 20" (a library of 19 items
+    // shows "16 left" beside it), and a Shade can be a video too.
+    @Test func theSentencesAreAppendixBAsCorrected() {
         #expect(Glossary.sentence(.dive)  == "Dive: one session of up to five rooms.")
-        #expect(Glossary.sentence(.room)  == "Room: 20 items.")
+        #expect(Glossary.sentence(.room)  == "Room: up to 20 items.")
         #expect(Glossary.sentence(.elite) == "Elite: a boss-tier monster that pays more.")
-        #expect(Glossary.sentence(.shade) == "Shade: a photo you deleted before; deleting it again pays nothing.")
+        #expect(Glossary.sentence(.shade) == "Shade: a photo or video you deleted before; deleting it again pays nothing.")
     }
 
     @Test func everyTermIsNamedAndExplained() {
