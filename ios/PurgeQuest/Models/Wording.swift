@@ -43,4 +43,14 @@ nonisolated enum Wording {
         if marked <= 0 { return kept > 0 ? "Nothing marked, \(kept) kept" : "Nothing marked" }
         return kept > 0 ? "\(marked) marked, \(kept) kept" : "\(marked) marked"
     }
+
+    /// The wait while the library is read. The count is how many items this dive is reading, once it is
+    /// known; before that it is the plain "Scanning your library…". It never says anything about monsters.
+    static func scanning(count: Int) -> String {
+        switch count {
+        case ..<1: return "Scanning your library…"
+        case 1:    return "Scanning 1 item…"
+        default:   return "Scanning \(count) items…"
+        }
+    }
 }

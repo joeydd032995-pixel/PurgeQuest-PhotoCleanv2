@@ -17,6 +17,9 @@ struct CombatView: View {
     @State private var shakeOffset: CGFloat = 0
     @State private var fxTrigger: Int = 0
     @State private var confirmingExit = false
+    /// Which game words have been explained, and the one being explained over the card on top right now.
+    @State private var glossary = GlossaryStore.load()
+    @State private var tipTerm: Glossary.Term? = nil
 
     var body: some View {
         ZStack {
@@ -64,6 +67,14 @@ struct CombatView: View {
         .onChange(of: combat.screenShakeTrigger) { _, _ in
             shake()
         }
+        // On `body`, not `fightingView`: that view is removed when the last card of a room is decided.
+        // That also means this sees a room's first card arrive (nil to an id), at an unspecified moment
+        // beside `fightingView`'s own `onAppear`. Only a card that was showing and is now decided counts as
+        // "the word was seen", so the order of the two cannot mark a note explained before anyone read it.
+        .onChange(of: combat.topItem?.id) { old, new in
+            if old != nil, let shown = tipTerm { markExplained(shown) }
+            tipTerm = new == nil ? nil : nextGlossaryTip()
+        }
     }
 
     private var dungeonIntensity: Double {
@@ -101,7 +112,7 @@ struct CombatView: View {
     private var loadingView: some View {
         VStack(spacing: 18) {
             ProgressView().tint(.questAmber).scaleEffect(1.4)
-            Text("Summoning monsters from your library…")
+            Text(Wording.scanning(count: combat.scanCount))
                 .font(.callout).foregroundStyle(.textSecondary)
             // The tab bar is hidden during a dive, so a scan that stalls needs its own way out.
             Button("Cancel") { exit() }
@@ -165,6 +176,14 @@ struct CombatView: View {
             )
             .padding(.horizontal, 14)
             .padding(.top, combat.roomNumber == 1 ? 0 : 8)
+
+            if let term = tipTerm {
+                GlossaryTip(term: term) {
+                    markExplained(term)
+                    tipTerm = nextGlossaryTip()
+                }
+                .padding(.horizontal, 14)
+            }
 
             ZStack {
                 if let next = combat.nextItem {
@@ -232,6 +251,23 @@ struct CombatView: View {
                 .padding(.bottom, 14)
             }
         }
+        .onAppear { tipTerm = nextGlossaryTip() }
+    }
+
+    // MARK: Game words, explained once
+
+    /// The one word to explain over the card on top, if any: the room first, then an Elite or a Shade.
+    private func nextGlossaryTip() -> Glossary.Term? {
+        var visible: [Glossary.Term] = [.room]
+        if let top = combat.topItem {
+            if top.monsterType.isElite { visible.append(.elite) }
+            if combat.isShade(top) { visible.append(.shade) }
+        }
+        return glossary.nextTip(among: visible)
+    }
+
+    private func markExplained(_ term: Glossary.Term) {
+        glossary = GlossaryStore.markSeen(term)
     }
 
     /// Dive-start banner naming the auto-detected dungeon theme.
@@ -280,8 +316,8 @@ struct CombatView: View {
                 .font(.dungeonTitle)
                 .foregroundStyle(.textPrimary)
             VStack(spacing: 8) {
-                summaryRow(label: "Photos purged", value: "\(combat.sessionPhotosDeleted)", tint: .questAmber)
-                summaryRow(label: "Videos purged", value: "\(combat.sessionVideosDeleted)", tint: .videoSapphire)
+                summaryRow(label: "Photos deleted", value: "\(combat.sessionPhotosDeleted)", tint: .questAmber)
+                summaryRow(label: "Videos deleted", value: "\(combat.sessionVideosDeleted)", tint: .videoSapphire)
                 summaryRow(label: "Moved to Recently Deleted", value: ByteCountFormatter.string(fromByteCount: combat.sessionBytesFreed, countStyle: .file), tint: .gemEmerald)
                 summaryRow(label: "XP earned", value: "+\(combat.sessionXP)", tint: .questAmber)
                 summaryRow(label: "Gems earned", value: "+\(combat.sessionGems)", tint: .gemEmerald)
@@ -341,13 +377,13 @@ struct CombatView: View {
             Text("Salvage")
                 .font(.dungeonTitle)
                 .foregroundStyle(.textPrimary)
-            Text("Your hero fell — but every confirmed purge is already yours.")
+            Text("Your hero fell — but every confirmed deletion is already yours.")
                 .font(.callout).foregroundStyle(.textSecondary)
                 .multilineTextAlignment(.center)
 
             VStack(spacing: 8) {
-                summaryRow(label: "Photos purged", value: "\(combat.sessionPhotosDeleted)", tint: .questAmber)
-                summaryRow(label: "Videos purged", value: "\(combat.sessionVideosDeleted)", tint: .videoSapphire)
+                summaryRow(label: "Photos deleted", value: "\(combat.sessionPhotosDeleted)", tint: .questAmber)
+                summaryRow(label: "Videos deleted", value: "\(combat.sessionVideosDeleted)", tint: .videoSapphire)
                 summaryRow(label: "Moved to Recently Deleted", value: ByteCountFormatter.string(fromByteCount: combat.sessionBytesFreed, countStyle: .file), tint: .gemEmerald)
                 summaryRow(label: "XP secured", value: "+\(combat.sessionXP)", tint: .questAmber)
                 summaryRow(label: "Gems secured", value: "+\(combat.sessionGems)", tint: .gemEmerald)

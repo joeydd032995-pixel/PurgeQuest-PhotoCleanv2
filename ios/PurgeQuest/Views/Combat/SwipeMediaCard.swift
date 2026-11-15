@@ -214,7 +214,7 @@ struct SwipeMediaCard: View {
         .foregroundStyle(.textSecondary)
         .background(RoundedRectangle(cornerRadius: 6).fill(Color.dungeonAsh.opacity(0.9)))
         .overlay(RoundedRectangle(cornerRadius: 6).stroke(.white.opacity(0.25), lineWidth: 0.6))
-        .accessibilityLabel("Shade. Already purged once — no rewards this time.")
+        .accessibilityLabel("Shade. Already deleted once — no rewards this time.")
     }
 
     /// Small gold tag marking a Live Photo — tap the card to play it.

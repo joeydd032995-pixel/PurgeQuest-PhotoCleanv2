@@ -141,4 +141,19 @@ struct DateScopeIntegrationTests {
             #expect(DateScopeStore.load(from: defaults) == DateScope.all)
         }
     }
+
+    /// The same reset starts the glossary over: a player who resets sees each game word explained again.
+    @Test func resettingAllDataStartsTheGlossaryOver() throws {
+        let container = try makeContainer()
+        let context = ModelContext(container)
+        try withDefaults { defaults in
+            var ledger = GlossaryLedger()
+            ledger.markSeen(.elite)
+            GlossaryStore.save(ledger, to: defaults)
+            try withExtendedLifetime(container) {
+                GameDataService.resetAllData(in: context, defaults: defaults)
+            }
+            #expect(GlossaryStore.load(from: defaults) == GlossaryLedger())
+        }
+    }
 }

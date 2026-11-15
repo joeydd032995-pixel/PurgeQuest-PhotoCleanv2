@@ -28,22 +28,36 @@ struct QuestTemplate: Sendable, Equatable {
     let rewardGems: Int
 }
 
+/// How a storage quest adds up. Its target is in megabytes as Photos shows them (1 MB = 1,000,000 bytes, the
+/// unit the classifier's size lines use too), and a confirmed room adds the total size of what it deleted,
+/// rounded once to the nearest megabyte. Each file used to be rounded on its own, in mebibytes, so a file under
+/// half a megabyte added nothing: 600 screenshots of 470 KB (282 MB) moved the quest by 0.
+nonisolated enum QuestProgress {
+    static let bytesPerMegabyte: Int64 = 1_000_000
+
+    /// Whole megabytes for a room's total deleted bytes; halves round up. Nothing (or less) adds nothing.
+    static func megabytes(forBytes bytes: Int64) -> Int {
+        guard bytes > 0 else { return 0 }
+        return Int((bytes + bytesPerMegabyte / 2) / bytesPerMegabyte)
+    }
+}
+
 enum QuestCatalog {
     /// Every quest the daily draw can pick from.
     static let daily: [QuestTemplate] = [
-        QuestTemplate(title: "Blur Beast Hunter", subtitle: "Slay 8 blurry photo monsters.",
+        QuestTemplate(title: "Blur Beast Hunter", subtitle: "Delete 8 Blur Beasts: photos that no other monster claims, blurry or sharp. A Live Photo, a screenshot or a duplicate is a different monster.",
                       kind: .photoSlay, monsterType: .blurBeast, targetCount: 8, rewardXP: 120, rewardGems: 60),
-        QuestTemplate(title: "Duplicate Dragon Slayer", subtitle: "Vanquish 5 Duplicate Dragons.",
+        QuestTemplate(title: "Duplicate Dragon Slayer", subtitle: "Delete 5 items from duplicate groups, photos or videos. Copies, bursts, edits and repeats all count.",
                       kind: .photoSlay, monsterType: .duplicateDragon, targetCount: 5, rewardXP: 160, rewardGems: 80),
-        QuestTemplate(title: "Video Vampire Purge", subtitle: "Banish 6 Video Vampires.",
+        QuestTemplate(title: "Video Vampire Purge", subtitle: "Delete 6 Video Vampires: videos of 100 MB or more but under 500 MB that fit no other monster.",
                       kind: .videoSlay, monsterType: .videoVampire, targetCount: 6, rewardXP: 200, rewardGems: 100),
-        QuestTemplate(title: "Long-Take Leviathan", subtitle: "Defeat 3 Leviathans over 2 minutes.",
+        QuestTemplate(title: "LongTake Leviathan", subtitle: "Delete 3 LongTake Leviathans: videos over two minutes, under 500 MB, not 4K and not duplicates.",
                       kind: .videoSlay, monsterType: .longTakeLeviathan, targetCount: 3, rewardXP: 240, rewardGems: 140),
-        QuestTemplate(title: "Storage Liberation", subtitle: "Move 500 MB to Recently Deleted in one session.",
+        QuestTemplate(title: "Storage Liberation", subtitle: "Delete 500 MB of photos and videos today. Each room you confirm adds the size of what you deleted.",
                       kind: .mbFreed, monsterType: nil, targetCount: 500, rewardXP: 180, rewardGems: 120),
-        QuestTemplate(title: "Dungeon Clear", subtitle: "Defeat 25 monsters of any kind.",
+        QuestTemplate(title: "Dungeon Clear", subtitle: "Delete 25 photos or videos. Any monster counts; Shades do not.",
                       kind: .anySlay, monsterType: nil, targetCount: 25, rewardXP: 150, rewardGems: 70),
-        QuestTemplate(title: "Memory Hog Hunter", subtitle: "Slay 2 Memory Hog Minotaurs.",
+        QuestTemplate(title: "Memory Hog Hunter", subtitle: "Delete 2 Memory Hog Minotaurs: videos of 500 MB or more but under 1 GB, not duplicates.",
                       kind: .videoSlay, monsterType: .memoryHogMinotaur, targetCount: 2, rewardXP: 220, rewardGems: 140)
     ]
 }

@@ -68,6 +68,18 @@ struct AchievementCopyTests {
         }
     }
 
+    /// "Slay 50 Duplicate Dragons" cannot be read by someone who has not met the monsters. A trophy says what
+    /// to do in plain words; the lore stays in its title.
+    @Test func noTrophyAsksForALoreVerb() {
+        let loreWords = ["slay", "slain", "vanquish", "banish", "defeat"]
+        for seed in GameDataService.achievementSeeds() {
+            let words = seed.subtitle.lowercased()
+            for word in loreWords {
+                #expect(!words.contains(word), "\(seed.id) still says \"\(word)\"")
+            }
+        }
+    }
+
     @Test func everyTrophyHasAUniqueIdAndSomethingToSay() {
         let seeds = GameDataService.achievementSeeds()
         #expect(Set(seeds.map(\.id)).count == seeds.count, "two trophies share an id")

@@ -35,21 +35,21 @@ struct MonsterTypeCountingTests {
     @Test func aDuplicateDragonQuestProgressesOnAnyCopy() {
         let quest = Quest(title: "Duplicate Dragon Slayer", subtitle: "", kind: .photoSlay,
                           monsterType: .duplicateDragon, targetCount: 3, rewardXP: 1, rewardGems: 1)
-        GameDataService.updateQuests([quest], for: .burstHydra, mbFreedThisAction: 1)
-        GameDataService.updateQuests([quest], for: .hoardHydra, mbFreedThisAction: 1)
-        GameDataService.updateQuests([quest], for: .blurBeast, mbFreedThisAction: 1)
+        GameDataService.updateQuests([quest], for: .burstHydra)
+        GameDataService.updateQuests([quest], for: .hoardHydra)
+        GameDataService.updateQuests([quest], for: .blurBeast)
         #expect(quest.currentCount == 2)
         #expect(!quest.completed)
-        GameDataService.updateQuests([quest], for: .duplicateDragon, mbFreedThisAction: 1)
+        GameDataService.updateQuests([quest], for: .duplicateDragon)
         #expect(quest.completed)
     }
 
     @Test func aBlurBeastQuestIgnoresDuplicates() {
         let quest = Quest(title: "Blur Beast Hunter", subtitle: "", kind: .photoSlay,
                           monsterType: .blurBeast, targetCount: 2, rewardXP: 1, rewardGems: 1)
-        GameDataService.updateQuests([quest], for: .burstHydra, mbFreedThisAction: 1)
+        GameDataService.updateQuests([quest], for: .burstHydra)
         #expect(quest.currentCount == 0)
-        GameDataService.updateQuests([quest], for: .blurBeast, mbFreedThisAction: 1)
+        GameDataService.updateQuests([quest], for: .blurBeast)
         #expect(quest.currentCount == 1)
     }
 

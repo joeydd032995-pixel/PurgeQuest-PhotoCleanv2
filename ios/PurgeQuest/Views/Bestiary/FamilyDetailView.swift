@@ -143,7 +143,7 @@ private struct MonsterEntryCard: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(
             isDiscovered
-                ? "\(type.rarity.displayName) monster \(type.displayName). \(type.lore). Encountered \(stats.encountered) times, spared \(stats.spared), slain \(stats.slain)."
+                ? "\(type.rarity.displayName) monster \(type.displayName). \(type.lore). Met \(stats.encountered) times, kept \(stats.spared), deleted \(stats.slain)."
                 : "Undiscovered \(type.rarity.displayName) monster."
         )
     }
@@ -195,8 +195,8 @@ private struct MonsterEntryCard: View {
         VStack(alignment: .leading, spacing: 5) {
             HStack(spacing: 14) {
                 statBlock(value: "\(stats.encountered)", label: "Met", tint: .textPrimary)
-                statBlock(value: "\(stats.spared)", label: "Spared", tint: .gemEmerald)
-                statBlock(value: "\(stats.slain)", label: "Slain", tint: .combatCrimson)
+                statBlock(value: "\(stats.spared)", label: "Kept", tint: .gemEmerald)
+                statBlock(value: "\(stats.slain)", label: "Deleted", tint: .combatCrimson)
                 Spacer()
             }
             HStack(spacing: 8) {

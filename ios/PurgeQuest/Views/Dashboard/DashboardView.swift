@@ -27,6 +27,8 @@ struct DashboardView: View {
     /// Shown when the picker returned choices that carry no asset identifiers —
     /// the signature of missing photo-library access.
     @State private var showAccessHint = false
+    /// Which game words have been explained; "dive" is explained once, under the Enter button.
+    @State private var glossary = GlossaryStore.load()
     /// The date range sheet (see DatesSheet).
     @State private var showDatesSheet = false
 
@@ -44,6 +46,9 @@ struct DashboardView: View {
                 libraryOverview
                 heroStrip
                 enterDungeonButton
+                if glossary.nextTip(among: [.dive]) != nil {
+                    GlossaryTip(term: .dive) { markDiveExplained() }
+                }
                 HStack(spacing: 10) {
                     focusedDiveMenu
                     pickedHuntPicker
@@ -61,6 +66,11 @@ struct DashboardView: View {
         }
         .scrollIndicators(.hidden)
         .background(DungeonBackgroundView())
+        // Any dive that starts (the Enter button, a focused dive, a hand-picked hunt) means the player has
+        // met the word "dive", so it is explained once, in this one place.
+        .onChange(of: appState.combatRequested) { _, requested in
+            if requested { markDiveExplained() }
+        }
         .task {
             libraryStats = PhotoLibraryService.shared.fetchLibraryStats()
             updateStreak()
@@ -346,6 +356,13 @@ struct DashboardView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(12)
                 }
+                if !quests.isEmpty {
+                    // True of every quest above; each line states its own rule.
+                    Text("Shades, items you deleted before, never count toward a quest.")
+                        .font(.caption).foregroundStyle(.textSecondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }
         }
     }
@@ -365,6 +382,12 @@ struct DashboardView: View {
         }
         .buttonStyle(.gold(fullWidth: true))
         .accessibilityLabel("Enter the dungeon and start a cleanup session")
+    }
+
+    /// Starting a dive means the player has met the word, so it is explained once and never again.
+    private func markDiveExplained() {
+        guard glossary.nextTip(among: [.dive]) != nil else { return }
+        glossary = GlossaryStore.markSeen(.dive)
     }
 
     /// Optional: lean this dive toward one kind of clutter. "Enter the Dungeon" above stays the mixed
@@ -596,10 +619,11 @@ private struct QuestRow: View {
                         .font(.caption.monospacedDigit().weight(.semibold))
                         .foregroundStyle(.textSecondary)
                 }
+                // No line limit: a rule that is cut off mid-sentence is worse than a taller row.
                 Text(quest.subtitle)
                     .font(.caption)
                     .foregroundStyle(.textSecondary)
-                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
                 DungeonProgressBar(value: quest.progressFraction, tint: tint, height: 6)
                 HStack(spacing: 10) {
                     Label("+\(quest.rewardGems)", systemImage: "diamond.fill")

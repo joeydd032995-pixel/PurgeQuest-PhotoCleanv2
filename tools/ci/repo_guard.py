@@ -26,6 +26,8 @@ Checks:
  15. Rork's build-time Config.swift is not used by the app, and a copy in the tree holds no values.
  16. Cinzel license: the Credits screen shows the SIL Open Font License from a data asset, and that
      asset is byte-identical to the copy kept in docs/licenses.
+ 17. Visible wording: nothing the player reads says "spare" (keeping a photo is free, D1, so there is
+     nothing to be spared from). Names in code, such as SparedMediaRecord, are not visible and stay.
 """
 import json
 import plistlib
@@ -369,6 +371,40 @@ elif ofl_asset is None or not ofl_asset.exists():
     failures.append("cinzel license: ThirdPartyCredits.fontLicenseAssetName does not name a .txt data asset in Assets.xcassets")
 elif ofl_docs.read_bytes() != ofl_asset.read_bytes():
     failures.append(f"cinzel license: {ofl_asset.relative_to(ROOT)} differs from docs/licenses/cinzel-OFL.txt")
+
+# 17. visible wording
+# D1 made keeping a photo free, so the player-facing word is "keep". Only text inside string literals is
+# checked, with comments and the code inside \( ) interpolations removed: `stats.spared` is a property name
+# the player never reads, "Forget spared monsters" is something they do.
+STRING_LITERAL = re.compile(r'"(?:[^"\\\n]|\\.)*"')
+INTERPOLATION = re.compile(r"\\\((?:[^()]|\([^()]*\))*\)")
+SPARE_WORD = re.compile(r"\bspar(?:e|ed|es|ing)\b", re.I)
+# 18. "Purge" is the app's name and the name of a few things (PurgeQuest, Phantom Purge, Purge Plate, The Great
+# Purge, Resolution Purge, the Video Vampire Purge quest), and it stays there. Where the player reads it as an action, a count or
+# an instruction, the plain word is "delete" (owner, 15 November 2026): "Photos deleted", never "Photos purged".
+# "PurgeQuest" never matches (the word runs on into "Quest"); a name excuses only itself, in any case.
+PURGE_WORD = re.compile(r"\bpurg(?:e|ed|es|ing)\b", re.I)
+PURGE_NAMES = ("Phantom Purge", "Resolution Purge", "Great Purge", "great.purge", "Purge Plate", "Video Vampire Purge")
+for f in swift_files("PurgeQuest", "PurgeQuestWidget"):
+    source = f.read_text()
+    for literal in STRING_LITERAL.findall(strip_comments(source)):
+        visible = INTERPOLATION.sub("", literal)
+        m = SPARE_WORD.search(visible)
+        if m:
+            at = source.find(literal)
+            line = source.count("\n", 0, at) + 1 if at >= 0 else "?"
+            window = visible[max(0, m.start() - 30):m.end() + 30]
+            failures.append(f"visible wording: {f.relative_to(ROOT)}:{line} says \"{m.group(0)}\" to the player in ...{window}...")
+        # A name excuses only itself: "Phantom Purge: 12 photos purged" still fails on "purged".
+        scrubbed = visible
+        for name in PURGE_NAMES:
+            scrubbed = re.sub(re.escape(name), " ", scrubbed, flags=re.I)
+        pm = PURGE_WORD.search(scrubbed)
+        if pm:
+            at = source.find(literal)
+            line = source.count("\n", 0, at) + 1 if at >= 0 else "?"
+            window = scrubbed[max(0, pm.start() - 30):pm.end() + 30]
+            failures.append(f"visible wording: {f.relative_to(ROOT)}:{line} says \"{pm.group(0)}\" to the player (say \"delete\"; \"Purge\" is only a name) in ...{window}...")
 
 if failures:
     print("repo_guard FAILED:")

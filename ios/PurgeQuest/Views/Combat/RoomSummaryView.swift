@@ -107,9 +107,10 @@ struct RoomSummaryView: View {
     /// only advance when the room is moved to Recently Deleted: this makes that visible.
     private var questDeltas: [UUID: Int] {
         var result: [UUID: Int] = [:]
+        var awardedBytes: Int64 = 0
         for decision in combat.pendingDecisions where decision.willDelete && decision.awardsProgress {
             let slain = decision.item.monsterType
-            let mb = Double(decision.item.estimatedBytes) / 1_048_576.0
+            awardedBytes += decision.item.estimatedBytes
             for q in quests where !q.completed {
                 switch q.kind {
                 case .photoSlay:
@@ -123,8 +124,14 @@ struct RoomSummaryView: View {
                 case .anySlay:
                     result[q.id, default: 0] += 1
                 case .mbFreed:
-                    result[q.id, default: 0] += Int(mb.rounded())
+                    break   // added up for the whole room below, as `GameDataService.addStorageProgress` does
                 }
+            }
+        }
+        let megabytes = QuestProgress.megabytes(forBytes: awardedBytes)
+        if megabytes > 0 {
+            for q in quests where !q.completed && q.kind == .mbFreed {
+                result[q.id, default: 0] += megabytes
             }
         }
         return result

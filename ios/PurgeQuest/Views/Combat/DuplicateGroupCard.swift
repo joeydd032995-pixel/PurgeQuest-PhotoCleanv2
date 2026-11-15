@@ -212,9 +212,11 @@ struct DuplicateGroupCard: View {
         HStack(spacing: 4) {
             Image(systemName: willDelete ? "xmark" : "shield.fill")
                 .font(.caption2.weight(.black))
-            Text(willDelete ? "SLAY" : "KEEP")
+            Text(willDelete ? "DELETE" : "KEEP")
                 .font(.caption2.weight(.black))
                 .tracking(0.6)
+                .lineLimit(1)
+                .fixedSize()
         }
         .padding(.horizontal, 8).padding(.vertical, 5)
         .background(RoundedRectangle(cornerRadius: 6).fill(willDelete ? Color.combatCrimson : Color.gemEmeraldDeep))
@@ -234,7 +236,7 @@ struct DuplicateGroupCard: View {
                 Button {
                     setDecision(true)
                 } label: {
-                    Label("Slay this copy", systemImage: "xmark")
+                    Label("Delete this copy", systemImage: "xmark")
                         .font(.subheadline.weight(.heavy))
                         .frame(maxWidth: .infinity).padding(.vertical, 11)
                         .background(RoundedRectangle(cornerRadius: 9).fill(decisionForSelected == true ? Color.combatCrimson : Color.dungeonStone))
@@ -300,7 +302,7 @@ struct DuplicateGroupCard: View {
             let r = markedReward
             HStack(spacing: 8) {
                 Image(systemName: "bolt.fill")
-                Text("Purge reward: +\(r.xp) XP · +\(r.gems) gems")
+                Text("Reward for deleting: +\(r.xp) XP · +\(r.gems) gems")
                     .font(.caption.weight(.bold).monospacedDigit())
                 Spacer()
             }
@@ -319,7 +321,7 @@ struct DuplicateGroupCard: View {
             onConfirm(decisions)
         } label: {
             Label(
-                slayCount > 0 ? "Confirm — purge \(slayCount) cop\(slayCount == 1 ? "y" : "ies")" : "Confirm — keep all copies",
+                slayCount > 0 ? "Confirm — delete \(slayCount) cop\(slayCount == 1 ? "y" : "ies")" : "Confirm — keep all copies",
                 systemImage: "checkmark.seal.fill"
             )
             .font(.headline.weight(.heavy))

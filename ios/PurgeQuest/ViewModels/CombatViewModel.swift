@@ -61,6 +61,8 @@ final class CombatViewModel {
 
     // Library queue
     var allItems: [MediaItem] = []
+    /// How many items this dive is reading while the library is scanned; 0 until the fetch has answered.
+    var scanCount: Int = 0
     private var queueIndex: Int = 0
 
     // Current room
@@ -187,6 +189,7 @@ final class CombatViewModel {
             phase = .empty
             return
         }
+        scanCount = fresh.count
         let thumbSize = CGSize(width: 600, height: 600)
         let items = await svc.buildMediaItems(from: fresh, thumbSize: thumbSize)
         await loadBatch(items, context: context)
@@ -204,6 +207,7 @@ final class CombatViewModel {
             rewardedIDs = Set(purged.map(\.assetIdentifier))
         }
         openSession(hero: hero, context: context)
+        scanCount = assetIDs.count
         Self.log.info("picked hunt: resolving \(assetIDs.count, privacy: .public) chosen assets")
 
         func fetchPicked() -> [PHAsset] {
@@ -254,6 +258,7 @@ final class CombatViewModel {
         roomsCompleted = 0
         // A new dive always starts clean: combo back to 1× and no leftover
         // pending bonuses from a previous run.
+        scanCount = 0
         combo = 0
         comboMultiplier = ComboMultiplier()
         pendingBonusXP = 0
@@ -707,6 +712,8 @@ final class CombatViewModel {
             // math can't double-count a farmed asset.
             let completedBefore = Set(quests.filter(\.completed).map(\.id))
             let decisionsByID = Dictionary(uniqueKeysWithValues: pendingDecisions.filter { $0.willDelete }.map { ($0.item.id, $0) })
+            // The room's storage progress is its total size, added up here and rounded once below.
+            var awardedBytes: Int64 = 0
             for item in toDelete {
                 let awards = decisionsByID[item.id]?.awardsProgress ?? true
                 let assetID = item.id
@@ -728,10 +735,11 @@ final class CombatViewModel {
                 }
                 // Farm-proofing: shades advance no quests.
                 if awards {
-                    let mb = Double(item.estimatedBytes) / 1_048_576.0
-                    GameDataService.updateQuests(quests, for: item.monsterType, mbFreedThisAction: mb)
+                    awardedBytes += item.estimatedBytes
+                    GameDataService.updateQuests(quests, for: item.monsterType)
                 }
             }
+            GameDataService.addStorageProgress(quests, bytes: awardedBytes)
             // Deletion succeeded: these assets can never pay rewards again.
             rewardedIDs.formUnion(toDelete.map(\.id))
             // Quest payouts are SECURED: any quest this confirmation completed

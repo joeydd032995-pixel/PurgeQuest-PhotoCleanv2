@@ -84,14 +84,14 @@ struct SettingsView: View {
                     Button(role: .destructive) {
                         confirmForgetSpared = true
                     } label: {
-                        Label("Forget spared monsters", systemImage: "arrow.uturn.backward")
+                        Label("Show kept photos again", systemImage: "arrow.uturn.backward")
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
 
                 section(title: "Lifetime Stats") {
-                    statRow(label: "Photos purged",  value: "\(hero?.totalPhotosPurged ?? 0)", icon: "photo.fill", tint: .questAmber)
-                    statRow(label: "Videos purged",  value: "\(hero?.totalVideosPurged ?? 0)", icon: "video.fill", tint: .videoSapphire)
+                    statRow(label: "Photos deleted",  value: "\(hero?.totalPhotosPurged ?? 0)", icon: "photo.fill", tint: .questAmber)
+                    statRow(label: "Videos deleted",  value: "\(hero?.totalVideosPurged ?? 0)", icon: "video.fill", tint: .videoSapphire)
                     statRow(label: "Total moved",    value: formattedFreed,                   icon: "internaldrive.fill", tint: .gemEmerald)
                     statRow(label: "Highest combo",  value: Wording.inARow(hero?.highestCombo ?? 0), icon: "bolt.fill", tint: .combatCrimson)
                     statRow(label: "Longest streak", value: Wording.days(hero?.streakDays ?? 0), icon: "flame.fill", tint: .questAmberDeep)
@@ -99,7 +99,7 @@ struct SettingsView: View {
 
                 section(title: "Recently Deleted (last 7 days)") {
                     if deletions.isEmpty {
-                        Text("No items in your purge log.")
+                        Text("Nothing deleted in the last 7 days.")
                             .font(.callout).foregroundStyle(.textSecondary)
                     } else {
                         ForEach(deletions.prefix(20)) { rec in
@@ -172,11 +172,11 @@ struct SettingsView: View {
         } message: {
             Text("This will erase your hero, achievements, and quests. Your Photos library is unaffected.")
         }
-        .alert("Forget spared monsters?", isPresented: $confirmForgetSpared) {
+        .alert("Show kept photos again?", isPresented: $confirmForgetSpared) {
             Button("Cancel", role: .cancel) {}
-            Button("Forget", role: .destructive) { forgetSpared() }
+            Button("Show again", role: .destructive) { forgetSpared() }
         } message: {
-            Text("Monsters you previously spared will reappear at the top of your next dive.")
+            Text("Photos you kept before will come back at the top of your next dive.")
         }
         .sheet(isPresented: $showHeroCard) {
             if let hero { HeroCardSheet(hero: hero) }

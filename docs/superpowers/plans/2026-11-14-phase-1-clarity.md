@@ -90,7 +90,7 @@ My reading, not a measurement: the SUS target of 80 is a judgment on the whole e
 - Modify (strings found by search when expanded): `SettingsView.swift` ("Forget spared monsters"), the Bestiary stats ("Spared"), `GameDataService.swift` (quest and trophy text such as "Defeat 3 Leviathans over 2 minutes"), `CombatView.swift` (the scan wait).
 
 **Interfaces**
-- Produces (proposed): `Glossary.Term` (`dive`, `room`, `elite`, `shade`) with `Glossary.gloss(_:) -> String`, exactly the four glosses in Appendix B ("Dive: one session of up to five rooms. Room: 20 items. Elite: a boss-tier monster that pays more. Shade: a photo you deleted before; deleting it again pays nothing."). The first-seen flag lives in the app layer (`UserDefaults`, key `pq.glossary.seen.<term>`), not in the pure file.
+- Produces (proposed): `Glossary.Term` (`dive`, `room`, `elite`, `shade`) with `Glossary.gloss(_:) -> String`, the four glosses of Appendix B with two owner-approved corrections on 15 November 2026 ("Dive: one session of up to five rooms. Room: up to 20 items. Elite: a boss-tier monster that pays more. Shade: a photo or video you deleted before; deleting it again pays nothing."). The first-seen flag lives in the app layer (`UserDefaults`, key `pq.glossary.seen.<term>`), not in the pure file.
 
 **Scope notes**
 - Appendix B renames "Focused Dive / Hunt Chosen" to "Choose what to clean / Pick items": that belongs to 1.4 (they become one sheet). "Palette" stays until Phase 2 (D2).
@@ -117,6 +117,8 @@ My reading, not a measurement: the SUS target of 80 is a judgment on the whole e
 **Spec (assessment 10.2, verbatim):** "Undo: Glass pill above the buttons for 5 s after any decision; rewinds one step." "Coach mark: First card only: two arrows with labels, dismissed by the first swipe or tap." "Decisions: Keep (`surface`, `patina` shield) and Delete (`ember-fill`, `on-ember`), equal width, 56 pt." Keep and Delete are also VoiceOver actions.
 
 **Also in 1.2 (found reviewing the Phase 0 tour):** the assessment's combat-card spec (10.2) says "no reward preview appears anywhere on the card", but the card's strip still shows "+33 XP · +0 on confirm" under the photo, beside the Keep and Delete buttons, which the principle "A reward never shares a surface with a safeguard" forbids. Remove the XP and gem preview from `SwipeMediaCard`'s `bottomMetaBar` and its `rewardXP` and `rewardGems` inputs. The duplicate card's per-copy preview (`DuplicateGroupCard`'s `previewReward`) needs the owner's call: it is the one place a reward preview helps pick a copy.
+
+**Hazard from 1.1 (the Room note and the coach mark):** 1.1 puts a one-line "Room: up to 20 items." note (`GlossaryTip`) above the card stack on the very first card, and it leaves as soon as that card is decided. The coach mark lands on the same card. Showing both at once crowds the 44 pt "Got it" target, the two arrows and the Delete and Keep row on a small phone, and when the note leaves, the card jumps up by about 56 pt. Decide in 1.2 which one wins the first card (the coach mark is the stronger teacher; the Room note can wait for the second card, or fold into the coach mark's text), and measure the card and both buttons on the tour in Light and Dark with the larger text sizes.
 
 **Acceptance:** keep or delete, tap Undo within five seconds, and the card returns with combo, perfect-room state and persistence exactly as before; after five seconds, or one step back, there is nothing to undo; the coach mark appears on the very first card only and never again.
 

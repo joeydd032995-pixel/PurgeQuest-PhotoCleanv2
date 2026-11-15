@@ -61,4 +61,50 @@ struct GameContentTests {
             #expect(!quest.subtitle.isEmpty)
         }
     }
+
+    // MARK: - Plain words first
+
+    /// The old quests said "Slay 8 blurry photo monsters" and "Vanquish 5 Duplicate Dragons": a first-time
+    /// player cannot tell what to do. A quest now starts with what to do, in plain words.
+    @Test func everyQuestStartsWithAPlainVerb() {
+        let loreWords = ["slay", "slain", "vanquish", "banish", "defeat", "monsters"]
+        for quest in QuestCatalog.daily {
+            #expect(quest.subtitle.hasPrefix("Delete ") || quest.subtitle.hasPrefix("Move "),
+                    "\(quest.title) starts with \"\(quest.subtitle)\"")
+            let words = quest.subtitle.lowercased()
+            for word in loreWords {
+                #expect(!words.contains(word), "\(quest.title) still says \"\(word)\"")
+            }
+        }
+    }
+
+    /// A quest counts the monster the card shows, so it names that monster (the chip on the card is the
+    /// handle a player matches) and says in plain words what the monster is. The Duplicate Dragon quest
+    /// counts a whole family (`MonsterType.counts(as:)`), so it says duplicates instead.
+    @Test func aMonsterQuestNamesTheMonsterTheCardWillShow() {
+        for quest in QuestCatalog.daily {
+            guard let monster = quest.monsterType else { continue }
+            if monster == .duplicateDragon {
+                #expect(quest.subtitle.lowercased().contains("duplicate"), "\(quest.title) never says duplicates")
+            } else {
+                #expect(quest.subtitle.contains(monster.displayName), "\(quest.title) never names \(monster.displayName)")
+            }
+        }
+    }
+
+    @Test func aQuestSubtitleStatesItsOwnTarget() {
+        for quest in QuestCatalog.daily {
+            #expect(quest.subtitle.hasPrefix("Delete \(quest.targetCount) ") || quest.subtitle.hasPrefix("Move \(quest.targetCount) "),
+                    "\(quest.title) says a different number than \(quest.targetCount)")
+        }
+    }
+
+    /// The sizes a quest quotes are the classifier's own lines, not a rounding of them. (The two-minute
+    /// line of the Leviathan is `duration > 120` inline in MonsterClassifier, so it has no constant to pin.)
+    @Test func theSizesAQuestQuotesAreTheClassifiersOwn() throws {
+        let minotaur = try #require(QuestCatalog.daily.first { $0.monsterType == .memoryHogMinotaur })
+        #expect(minotaur.subtitle.contains("\(MonsterClassifier.halfGigabyte / 1_000_000) MB"))
+        let vampire = try #require(QuestCatalog.daily.first { $0.monsterType == .videoVampire })
+        #expect(vampire.subtitle.contains("\(MonsterClassifier.hundredMegabyte / 1_000_000) MB"))
+    }
 }

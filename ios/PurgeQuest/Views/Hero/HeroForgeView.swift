@@ -212,7 +212,7 @@ struct HeroForgeView: View {
                 Text("Hero Forge")
                     .font(.dungeonTitle)
                     .foregroundStyle(.textPrimary)
-                Text(tier.displayName + " gear tier")
+                Text(tier.displayName + " gear")
                     .font(.caption2.weight(.semibold))
                     .foregroundStyle(tier.labelColor)
             }
@@ -268,7 +268,7 @@ struct HeroForgeView: View {
         VStack(spacing: 6) {
             Picker("Preview context", selection: $showStripPreview) {
                 Text("Portrait").tag(false)
-                Text("Dashboard Strip").tag(true)
+                Text("Home preview").tag(true)
             }
             .pickerStyle(.segmented)
             .frame(maxWidth: 300)
