@@ -211,10 +211,7 @@ struct CombatView: View {
                 }
                 if let top = combat.topItem, let hero = heroes.first {
                     if let group = combat.group(for: top) {
-                        DuplicateGroupCard(
-                            group: group,
-                            previewReward: { item, step in combat.previewReward(for: item, comboStep: step, hero: hero) }
-                        ) { decisions in
+                        DuplicateGroupCard(group: group) { decisions in
                             combat.commitGroupDecisions(group, decisions: decisions, hero: hero, context: modelContext)
                         }
                         .id(top.id)

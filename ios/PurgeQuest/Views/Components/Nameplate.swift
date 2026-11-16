@@ -15,6 +15,9 @@ struct Nameplate: View {
     /// One plain sentence from the classification ("Why did this appear?"), or nil.
     let why: String?
     var needsCarefulReview: Bool = false
+    /// The single card's own label already reads the monster out, so the plate is hidden from VoiceOver there.
+    /// The duplicate card has no such label for the reason line, so it asks to be read.
+    var readAloud: Bool = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -46,6 +49,6 @@ struct Nameplate: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 6)
-        .accessibilityHidden(true)   // the card's own label already reads all of this
+        .accessibilityHidden(!readAloud)
     }
 }

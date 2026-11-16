@@ -10,8 +10,8 @@
 import SwiftUI
 
 struct ExhibitFrame<Photo: View>: View {
-    /// "12.4 MB · 2 yr ago", shown in a glass chip over the photo's lower corner.
-    let chip: String
+    /// "12.4 MB · 2 yr ago", shown in a glass chip over the photo's lower corner; nil for none.
+    let chip: String?
     let accent: Color
     @ViewBuilder let photo: () -> Photo
 
@@ -33,7 +33,14 @@ struct ExhibitFrame<Photo: View>: View {
     }
 
     /// A blur of the photo under a dark tint, in the fixed on-glass colors, so it reads over any photo.
+    @ViewBuilder
     private var chipView: some View {
+        if let chip {
+            chipText(chip)
+        }
+    }
+
+    private func chipText(_ chip: String) -> some View {
         Text(chip)
             .font(.caption.weight(.semibold).monospacedDigit())
             .foregroundStyle(Color.onGlass)
