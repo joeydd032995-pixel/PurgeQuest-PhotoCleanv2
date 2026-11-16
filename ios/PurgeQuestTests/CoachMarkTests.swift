@@ -11,9 +11,9 @@ import Foundation
         #expect(!CoachMark.shows(isFirstCardOfDive: false, seen: true))
     }
 
-    @Test func theRoomNoteWaitsForTheArrows() {
-        #expect(!CoachMark.roomNoteMayShow(arrowsShowing: true), "never two notes on one card")
-        #expect(CoachMark.roomNoteMayShow(arrowsShowing: false))
+    @Test func everyOtherNoteWaitsForTheArrows() {
+        #expect(!CoachMark.notesMayShow(arrowsShowing: true), "never two notes on one card")
+        #expect(CoachMark.notesMayShow(arrowsShowing: false))
     }
 
     @Test func aFirstTimePlayerSeesTheArrowsThenTheRoomNoteThenNeitherAgain() {
@@ -21,12 +21,12 @@ import Foundation
         var seen = false
         let cardOneArrows = CoachMark.shows(isFirstCardOfDive: true, seen: seen)
         #expect(cardOneArrows)
-        #expect(!CoachMark.roomNoteMayShow(arrowsShowing: cardOneArrows))
+        #expect(!CoachMark.notesMayShow(arrowsShowing: cardOneArrows))
         // The first decision marks the arrows seen. Card two: the Room note, no arrows.
         seen = true
         let cardTwoArrows = CoachMark.shows(isFirstCardOfDive: false, seen: seen)
         #expect(!cardTwoArrows)
-        #expect(CoachMark.roomNoteMayShow(arrowsShowing: cardTwoArrows))
+        #expect(CoachMark.notesMayShow(arrowsShowing: cardTwoArrows))
     }
 
     @Test func theLabelsNameTheDirectionAndWhatItDoes() {

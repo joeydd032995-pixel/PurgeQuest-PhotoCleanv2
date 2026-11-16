@@ -5,7 +5,7 @@
 //  The two arrows on the very first card ("Swipe left to delete", "Swipe right to keep") and the rule for when
 //  they show (sub-plan 1.2, task 6). They are shown once: the flag is saved, so they never return after the first
 //  card has been decided or touched, and "Reset all PurgeQuest data" starts them over with the rest of the
-//  player's progress. The Room note waits for them: the card never carries two notes at once. Foundation only,
+//  player's progress. Every other note waits for them: the card never carries two notes at once. Foundation only,
 //  so the Linux harness checks it.
 //
 
@@ -19,9 +19,9 @@ nonisolated enum CoachMark {
         isFirstCardOfDive && !seen
     }
 
-    /// Whether the Room note ("Room: up to 20 items.") may show on this card. It waits while the arrows are up, and
-    /// comes on the next card, so a first-time player is given one thing at a time.
-    static func roomNoteMayShow(arrowsShowing: Bool) -> Bool {
+    /// Whether a game-word note (the Room note, "Elite", "Shade") may show on this card. Notes wait while the arrows
+    /// are up and come on the next card, so a first-time player is given one thing at a time.
+    static func notesMayShow(arrowsShowing: Bool) -> Bool {
         !arrowsShowing
     }
 

@@ -305,8 +305,10 @@ struct CombatView: View {
 
     /// The one word to explain over the card on top, if any: the room first, then an Elite or a Shade.
     private func nextGlossaryTip() -> Glossary.Term? {
-        // The Room note waits while the swipe arrows are up: one note on a card at a time.
-        var visible: [Glossary.Term] = CoachMark.roomNoteMayShow(arrowsShowing: showCoach) ? [.room] : []
+        // Every note waits while the swipe arrows are up: one note on a card at a time. (The first tour build showed
+        // the Elite note over the arrows on an Elite first card.)
+        guard CoachMark.notesMayShow(arrowsShowing: showCoach) else { return nil }
+        var visible: [Glossary.Term] = [.room]
         if let top = combat.topItem {
             if top.monsterType.isElite { visible.append(.elite) }
             if combat.isShade(top) { visible.append(.shade) }

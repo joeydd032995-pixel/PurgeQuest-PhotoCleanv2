@@ -132,7 +132,9 @@ What the tour measured on the simulator (402 × 874 pt screen, iPhone, Dark and 
 | Delete and Keep labels, first build | Dark **4.24:1** (Delete) and **2.15:1** (Keep): both under 4.5:1. Fixed by filling both with the deep shade and white text: 7.2:1 or better in Dark, 9.4:1 in Light (computed from the palette; confirmed by the next tour) |
 | Duplicate card reason line, Light | was 1.20:1 (E0); now the theme text color, 16.5:1 class (same `Nameplate`) |
 
-Found and fixed along the way: the Undo pill covering the duplicate card's per-copy buttons; "1 companion copy await judgment together" (now "awaits"); the Dark Delete and Keep contrast above; the coach chips overlapping the photo frame's edge.
+Re-measured on the fix build (`82dc99f`, Dark): Delete label 7.23:1, Keep label 8.57:1 (the first build: 4.24:1 and 2.15:1), coach chips 15.9:1 and 15.2:1, nameplate name and reason line 12.7:1, rarity line 7.4:1, Undo label 10.9:1. The Light tour's first card was a duplicate group in that run, so it has no coach-mark shot; Light was measured on the first build.
+
+Found and fixed along the way: the Undo pill covering the duplicate card's per-copy buttons; "1 companion copy await judgment together" (now "awaits"); the Dark Delete and Keep contrast above; the coach chips overlapping the photo frame's edge; the Elite note showing over the arrows on an Elite first card (every note now waits for the arrows).
 
 Still to check on a device (not simulator): VoiceOver reading of the nameplate and the group card, the pill's announcement, Reduce Motion with the pill's time-left line, and the largest Dynamic Type sizes (the buttons are built to fit, `minimumScaleFactor` 0.8, but only a device pass confirms it).
 
