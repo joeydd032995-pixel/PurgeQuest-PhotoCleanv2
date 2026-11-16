@@ -336,7 +336,22 @@ final class AppearanceTourUITests: XCTestCase {
         let summaryTitle = app.staticTexts["Review this room"]
         let confirmGroup = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Confirm'")).firstMatch
         let delete = app.buttons["Delete"]
+        let keep = app.buttons["Keep"]
         var shotDuplicate = false
+        var shotCoach = false
+        var shotPill = false
+        // The first card: the swipe arrows, and the size of the two decision buttons, measured on the device.
+        if delete.waitForExistence(timeout: 10), keep.exists {
+            settle(0.6)
+            shot("\(mode)-11a-coach-mark")
+            shotCoach = true
+            let d = delete.frame, k = keep.frame
+            note("measure (\(mode)): Delete \(Int(d.width))x\(Int(d.height)) pt, Keep \(Int(k.width))x\(Int(k.height)) pt, "
+                 + "screen \(Int(app.frame.width))x\(Int(app.frame.height)) pt, "
+                 + "both on screen: \(app.frame.contains(d) && app.frame.contains(k))")
+        } else {
+            note("room summary (\(mode)): the first card was not a single card, so no coach mark shot")
+        }
         // A hard budget, so a screen that stops answering can never run the job out of time.
         let deadline = Date().addingTimeInterval(180)
         for _ in 0..<40 where Date() < deadline {
@@ -351,6 +366,17 @@ final class AppearanceTourUITests: XCTestCase {
                 confirmGroup.tap()
             } else if delete.exists {
                 delete.tap()
+                // The Undo pill is up for five seconds after a decision: shoot it, and measure it against the buttons.
+                if !shotPill {
+                    let pill = app.buttons["Undo delete"]
+                    if pill.waitForExistence(timeout: 2) {
+                        shot("\(mode)-12-undo-pill")
+                        shotPill = true
+                        let p = pill.frame
+                        note("measure (\(mode)): Undo pill \(Int(p.width))x\(Int(p.height)) pt at y \(Int(p.minY)), "
+                             + "overlaps Delete: \(p.intersects(delete.frame)), overlaps Keep: \(p.intersects(keep.frame))")
+                    }
+                }
             } else {
                 settle(1.0)
             }
@@ -363,6 +389,7 @@ final class AppearanceTourUITests: XCTestCase {
             note("room summary (\(mode)): never reached the Room Summary")
         }
         if !shotDuplicate { note("room summary (\(mode)): no duplicate group came up in this room") }
+        if !shotCoach || !shotPill { note("room summary (\(mode)): coach mark shot \(shotCoach), undo pill shot \(shotPill)") }
         app.terminate()
     }
 

@@ -16,7 +16,10 @@ struct PurgeQuestApp: App {
         // A tour launch starts the glossary over. Its ledger lives in UserDefaults, which a launch inherits from the
         // test before it, so without this only the first screenshot of a run would show the first-time notes.
         // `isTour` is a constant false in Release builds.
-        if UITestSupport.isTour { GlossaryStore.clear() }
+        if UITestSupport.isTour {
+            GlossaryStore.clear()
+            CoachMarkStore.clear()
+        }
     }
 
     @State private var appState = AppState()
