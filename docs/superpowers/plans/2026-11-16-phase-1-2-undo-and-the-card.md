@@ -1,6 +1,6 @@
 # Phase 1.2 expanded: Undo, equal-weight decisions, the coach mark, and the combat card (plan only)
 
-**Status:** plan only, written 16 November 2026. Nothing here is built. It expands sub-plan 1.2 of `2026-11-14-phase-1-clarity.md` (slice A, chosen by the owner) and folds in work package E3 of `2026-11-16-visual-elevation.md` (decision E-1, owner: yes), so the card is rebuilt once. It is expanded to the level of interfaces, files, tests and acceptance; the step-by-step code for each task is written just before that task runs, as 1.1 was.
+**Status:** built, 16 November 2026. Tasks 1 to 5 are in PR #42 (merged); tasks 6 to 8 are in PR #43. The step-by-step code was written just before each task ran, as in 1.1. Measured results are in the section at the end. It expands sub-plan 1.2 of `2026-11-14-phase-1-clarity.md` (slice A, chosen by the owner) and folds in work package E3 of `2026-11-16-visual-elevation.md` (decision E-1, owner: yes), so the card was rebuilt once.
 
 **Goal:** a decision can be reversed for five seconds; Keep and Delete are equal in weight and size; the first card teaches the gesture; and the card announces the monster in a frame with a nameplate instead of a photo with a small chip. It also fixes the Light duplicate-card text (1.20:1) that the E0 tour exposed.
 
@@ -115,3 +115,25 @@ Keep or delete, tap Undo within five seconds, and the card returns with the comb
 ## Execution handoff
 
 Plan only until the owner says go. Recommended: subagent per task in the order above, with a review after each (as in 1.1), then a whole-branch review, then the tour. Tasks 1 to 3 and 6 can ship as the 1.0 floor if the visual tasks (4 and 5) are split out.
+
+## Built and measured (16 November 2026)
+
+What the tour measured on the simulator (402 × 874 pt screen, iPhone, Dark and Light), and what it found.
+
+| Check | Result |
+|---|---|
+| Delete and Keep size | 177 × 56 pt each, equal, fully on screen |
+| Undo pill | 149 × 44 pt at y 704; overlaps neither Delete nor Keep on a single card |
+| Undo pill on a duplicate group | The first real shot showed it covering "Delete this copy" and "Keep this copy"; it now sits at the bottom edge, under the card, and covers nothing |
+| Nameplate text, Light | name 16.5:1, rarity line 6.9:1, reason line 16.5:1 |
+| Nameplate text, Dark | name 12.7:1, rarity line 7.4:1, reason line 12.7:1 |
+| Coach mark chips | 16.1:1 (Dark), 15.9:1 (Light) |
+| Undo label | 9.8:1 (Dark), 15.2:1 (Light) |
+| Delete and Keep labels, first build | Dark **4.24:1** (Delete) and **2.15:1** (Keep): both under 4.5:1. Fixed by filling both with the deep shade and white text: 7.2:1 or better in Dark, 9.4:1 in Light (computed from the palette; confirmed by the next tour) |
+| Duplicate card reason line, Light | was 1.20:1 (E0); now the theme text color, 16.5:1 class (same `Nameplate`) |
+
+Found and fixed along the way: the Undo pill covering the duplicate card's per-copy buttons; "1 companion copy await judgment together" (now "awaits"); the Dark Delete and Keep contrast above; the coach chips overlapping the photo frame's edge.
+
+Still to check on a device (not simulator): VoiceOver reading of the nameplate and the group card, the pill's announcement, Reduce Motion with the pill's time-left line, and the largest Dynamic Type sizes (the buttons are built to fit, `minimumScaleFactor` 0.8, but only a device pass confirms it).
+
+One thing to know: on a single card the pill briefly covers the lower lines of the nameplate (the reason line) for up to five seconds. It never covers a button. Moving it would mean either covering the photo's chip and badges or taking layout space, which the owner can decide.

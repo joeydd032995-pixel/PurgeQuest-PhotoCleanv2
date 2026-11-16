@@ -190,7 +190,7 @@ struct DuplicateGroupCard: View {
                 .fixedSize()
         }
         .padding(.horizontal, 8).padding(.vertical, 5)
-        .background(RoundedRectangle(cornerRadius: 6).fill(willDelete ? Color.combatCrimson : Color.gemEmeraldDeep))
+        .background(RoundedRectangle(cornerRadius: 6).fill(willDelete ? Color.combatCrimsonDeep : Color.gemEmeraldDeep))
         .foregroundStyle(.white)
     }
 
@@ -204,11 +204,11 @@ struct DuplicateGroupCard: View {
                     .foregroundStyle(.textSecondary)
             }
             HStack(spacing: 12) {
-                copyButton("Delete this copy", symbol: "xmark", fill: .combatCrimson, edge: .combatCrimsonDeep,
+                copyButton("Delete this copy", symbol: "xmark", fill: .combatCrimsonDeep, edge: .combatCrimson,
                            ink: .white, chosen: decisionForSelected == true,
                            label: "Mark this copy for deletion") { setDecision(true) }
                 copyButton("Keep this copy", symbol: "checkmark.shield.fill", fill: .gemEmeraldDeep, edge: .gemEmerald,
-                           ink: .onAccent, chosen: decisionForSelected == false,
+                           ink: .white, chosen: decisionForSelected == false,
                            label: "Keep this copy") { setDecision(false) }
             }
         }
@@ -265,8 +265,8 @@ struct DuplicateGroupCard: View {
             )
             .font(.headline.weight(.heavy))
             .frame(maxWidth: .infinity).padding(.vertical, 13)
-            .background(RoundedRectangle(cornerRadius: 9).fill(slayCount > 0 ? Color.combatCrimson : Color.goldFill))
-            .overlay(RoundedRectangle(cornerRadius: 9).stroke(slayCount > 0 ? Color.combatCrimsonDeep : Color.goldRim, lineWidth: 1))
+            .background(RoundedRectangle(cornerRadius: 9).fill(slayCount > 0 ? Color.combatCrimsonDeep : Color.goldFill))
+            .overlay(RoundedRectangle(cornerRadius: 9).stroke(slayCount > 0 ? Color.combatCrimson : Color.goldRim, lineWidth: 1))
             .foregroundStyle(slayCount > 0 ? .white : .goldInk)
         }
         .padding(.horizontal, 14)

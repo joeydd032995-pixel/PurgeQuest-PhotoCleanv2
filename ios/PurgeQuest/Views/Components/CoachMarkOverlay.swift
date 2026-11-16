@@ -18,7 +18,7 @@ struct CoachMarkOverlay: View {
             chip(CoachMark.swipeRightLabel, symbol: "arrow.right", arrowFirst: false)
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
-        .padding(.horizontal, 22)
+        .padding(.horizontal, 44)   // inside the photo's frame, not over its edge
         .allowsHitTesting(false)
         .accessibilityHidden(true)
     }

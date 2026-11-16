@@ -251,12 +251,12 @@ struct CombatView: View {
             // Duplicate groups resolve through their own per-copy controls.
             if !combat.topItemIsGroup {
                 HStack(spacing: 16) {
-                    decisionButton("Delete", symbol: "xmark", fill: .combatCrimson, edge: .combatCrimsonDeep,
+                    decisionButton("Delete", symbol: "xmark", fill: .combatCrimsonDeep, edge: .combatCrimson,
                                    ink: .white, hint: "Mark this item for deletion") {
                         if let top = combat.topItem, let hero = heroes.first { combat.decideDelete(top, hero: hero) }
                     }
                     decisionButton("Keep", symbol: "checkmark.shield.fill", fill: .gemEmeraldDeep, edge: .gemEmerald,
-                                   ink: .onAccent, hint: "Keep this item. It stays in your library.") {
+                                   ink: .white, hint: "Keep this item. It stays in your library.") {
                         if let top = combat.topItem, let hero = heroes.first {
                             combat.decideSpare(top, hero: hero, context: modelContext)
                         }
@@ -281,7 +281,9 @@ struct CombatView: View {
     }
 
     /// One of the two decision buttons. Delete and Keep are made here from the same numbers, so they are always
-    /// the same width and height (56 pt at least, more at larger text sizes) and neither is the quiet one.
+    /// the same width and height (56 pt at least, more at larger text sizes) and neither is the quiet one. Both are
+    /// filled with the deep shade and carry white text (7.2:1 or better in Dark, 9.4:1 in Light): the lighter Dark
+    /// accents under white measured 4.24:1, and the theme's dark on-accent ink on deep green measured 2.15:1.
     private func decisionButton(
         _ title: String, symbol: String, fill: Color, edge: Color, ink: Color, hint: String,
         action: @escaping () -> Void
