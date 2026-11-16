@@ -1,6 +1,6 @@
 # Visual elevation: the plan (no code yet)
 
-**Status:** plan only. Approved in direction by the owner on 16 November 2026 after reviewing the before and after mockups ("heading towards a better UI/UX feel. I approve"). Nothing here is built. Every work package below needs its own go-ahead before code, and nothing merges without the owner's explicit ask.
+**Status:** plan only. Approved in direction by the owner on 16 November 2026 after reviewing the before and after mockups ("heading towards a better UI/UX feel. I approve"), and the eight decisions in section 8 were then settled as recommended. Nothing here is built. Every work package below needs its own go-ahead before code, and nothing merges without the owner's explicit ask.
 
 **Goal:** make the app feel like the product it claims to be, a torchlit vault where clearing clutter is a small, satisfying game, without losing what Phase 0 and 1.1 just made clear. The first aesthetic critique scored the app about 6 of 10: coherent and tidy, but an accounting screen in a fantasy costume. Target: 7 or more on the same critique, then keep going.
 
@@ -135,18 +135,18 @@ Parchment pass, the app icon redrawn from the emblem (D6, needs the owner's art 
 - Inter stands in for SF Pro; Cinzel is the real bundled font.
 - The Dates row and the "Next dive" banner are dropped from the Library mockup. Their new homes are an open question (E-4).
 
-## 8. Decisions needed from the owner
+## 8. Decisions (owner, 16 November 2026: all eight as recommended)
 
-| # | Question | Recommendation |
+| # | Question | Decided |
 |---|---|---|
 | E-1 | Fold the card's new structure (frame, nameplate) into 1.2 so 1.0 ships with it? | Yes, for the card and Room Summary; leave the rest for the first update |
-| E-2 | Art: re-render the hero sprites at a higher resolution for the alcove? | Yes; needs the original art source and the licence terms in `docs/CREDITS.md` checked |
+| E-2 | Art: re-render the hero sprites at a higher resolution for the alcove? | Yes; needs the original art source and the licence terms in `docs/CREDITS.md` checked first (an open task inside E5, not yet done) |
 | E-3 | One art language: monster portraits, family icons or both? Today they are mixed (glossy shield, cartoon sprites, line icons, SF Symbols) | Line-art family icons plus a bespoke nameplate emblem per family (36 monsters is too many to draw for 1.0) |
 | E-4 | Where do the Dates row and "Next dive" go? | Both into the one "Choose what to clean" sheet (1.4) |
 | E-5 | Rarity on the nameplate: show it? | Yes, from `MonsterRarity`, in text that is not colour only |
 | E-6 | The Armory's gold: it sells things, so is it a primary? | No: gems and prices in brass text, no plate; the plate stays for Enter, Forge and Delete |
 | E-7 | Motion budget: allow the three moments above? | Yes, with Reduce Motion fallbacks and a device pass before they ship |
-| E-8 | Does Blur Beast keep its name for the catch-all photo? | Rename the catch-all (for example "Gallery Wanderer") so Blur Beast means blurry again; changes quest and Bestiary text |
+| E-8 | Does Blur Beast keep its name for the catch-all photo? | Rename the catch-all (for example "Gallery Wanderer") so Blur Beast means blurry again. This changes the classifier's catch-all type, the Blur Beast quest and Bestiary text, and any saved records, so it gets its own small plan before it is built |
 
 ## 9. Risks
 
