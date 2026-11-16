@@ -14,7 +14,8 @@ Mockups, each as the real current app (left) against the proposal (right). Files
 |---|---|
 | `elevation-combat-dark.jpg`, `elevation-combat-light.jpg` | The card as an exhibit in a frame, a monster nameplate, equal-weight Delete and Keep, no reward on the card |
 | `elevation-library-dark.jpg`, `elevation-library-light.jpg`, `elevation-library-verdigris.jpg` | The hero as the subject in a torch-lit alcove, the gold plate as the one glow, storage demoted to a compact ledger; also in the Verdigris palette that decisions D2 and D4 move to |
-| `elevation-room-summary-dark.jpg` | Loot as the headline, every photo a flippable tile, "Delete 7 items" with where they go (no "before": the tour has no Room Summary shot) |
+| `elevation-room-summary-dark.jpg` | Loot as the headline, every photo a flippable tile, one commit control that says how many and where |
+| `before-duplicate-card-and-room-summary.jpg` | The real current duplicate card and Room Summary, Dark then Light, from the E0 tour (left to right: duplicate Dark, summary Dark, duplicate Light, summary Light) |
 | `elevation-hero-dark.jpg` | The hero filling the stage, lifetime stats as plaques, gear as sockets, Forge as the one gold action |
 
 ## 2. Principles (from the critique and section 7.1)
@@ -54,7 +55,7 @@ Sizes use the master plan's scale (S at most half a day, M 1 to 2 days, L 3 to 5
 
 ### E0. Tour additions (S)
 Add screenshots the redesign needs and the baseline lacks: Room Summary (the missing "before"), the duplicate card, the Undo pill, the Hero tab at full size, and the Armory with state labels. Reset the glossary ledger between tour tests so the Dive note is shot where intended. Add a photo-library check at the start of the tour that fails with a clear message if the simulator library is empty (the one infrastructure flake seen so far).
-**Built (16 November 2026, awaiting CI):** `testZRoomSummaryAndDuplicateCard` (runs last, best-effort, plays a room with every card marked for deletion and never confirms, so nothing is deleted) adds `13-duplicate-card` and `14-room-summary` in Dark and Light; each tour launch resets the glossary ledger; the main tour waits up to 30 s for the Library to show photos and fails with a plain message if the simulator library is empty. Not added: the Undo pill (it does not exist until 1.2), and Hero and Armory shots (the tour already has `20-hero` and `22-armory`; they are re-shot after the redesign).
+**Done (16 November 2026, tour run on `b1e397f`, all six CI jobs green, artifact checked):** `testZRoomSummaryAndDuplicateCard` (runs last, best-effort, plays a room with every card marked for deletion and never confirms, so nothing is deleted) adds `13-duplicate-card` and `14-room-summary` in Dark and Light; each tour launch resets the glossary ledger; the main tour waits up to 30 s for the Library to show photos and fails with a plain message if the simulator library is empty. The two new shots exist in both modes with no notes. They also showed that the current Room Summary already has stat tiles, a three-column photo grid and the commit wording "Move 14 to Recently Deleted, 13.5 MB, recoverable for 30 days", and exposed a bug (section 4, E3). Not added: the Undo pill (it does not exist until 1.2), and Hero and Armory shots (the tour already has `20-hero` and `22-armory`; they are re-shot after the redesign).
 **Acceptance:** the tour has a before-shot for every screen in this plan; an empty library fails fast.
 
 ### E3. Combat card and HUD (L, inside 1.2)
@@ -64,6 +65,7 @@ Add screenshots the redesign needs and the baseline lacks: Room Summary (the mis
 - HUD: one slim gold progress line, "Room N of M" and "N left", combo as a display numeral. Hero HP stays hidden (D1).
 - The glossary note sits above the frame (as today, restyled); the coach mark from 1.2 replaces it on the first card only (the hazard recorded in the Phase 1 plan: decide which one wins).
 - Equal-width Delete (ember) and Keep (surface, patina shield), 56 pt, 44 pt minimum targets; Undo pill above them for five seconds.
+- **Must-fix found by E0:** on the Light duplicate card the explanatory line ("Identical file content to another capture…") is near-white on parchment, 1.20:1 (Dark is 10.8:1). It is unreadable, and Phase 0's contrast work never saw it because the tour had no shot. Fixed as part of rebuilding the duplicate card here; the tour shot  is the check.
 - No reward preview on the card. The duplicate card keeps its per-copy preview only if the owner says so (open question from 1.2).
 **Acceptance:** keep or delete still behaves exactly as before; every control at least 44 pt; Delete and Keep equal in size and both fully on screen at the largest Dynamic Type that fits; contrast at least 4.5:1 for all text; measured on the tour in Light, Dark and Verdigris.
 
@@ -77,6 +79,7 @@ Built once, used everywhere (section 5). Each has a preview and a test where it 
 
 ### E4. Room Summary (M)
 `RoomSummaryView`, `DecisionTile`.
+- **Starting point (from the E0 shot):** "Room 1 / 14 marked, 5 kept", three stat tiles (megabytes to move, XP, gems), a three-column grid of photo tiles with a delete mark, a red "Move 14 to Recently Deleted" bar with "13.5 MB, recoverable for 30 days", and "Keep all, finish dive". So E4 is a restyle and re-hierarchy, not a new screen. **Keep that commit wording** (it is more exact than the mockup's "Delete 7 items", and  pins it); the mockup's button text is illustrative.
 - Header "Room cleared". A spoils panel: XP, gems and megabytes to free as display numerals, labelled "paid when you confirm" (rewards stay unbooked until deletion succeeds, as today).
 - The grid of tiles (photo, state badge), tap to flip, counts below ("7 to delete", "5 kept").
 - Quest progress compact, with the preview that already mirrors the booking (`QuestProgress`).
