@@ -60,4 +60,23 @@ struct WordingTests {
         #expect(Wording.scanning(count: 1) == "Scanning 1 item…")
         #expect(Wording.scanning(count: 150) == "Scanning 150 items…")
     }
+
+    // MARK: Undo
+
+    @Test func theUndoPillSaysWhatItTakesBack() {
+        #expect(Wording.undo(.delete) == "Undo delete")
+        #expect(Wording.undo(.keep) == "Undo keep")
+        #expect(Wording.undo(.group) == "Undo choices")
+    }
+
+    @Test func theUndoHintSaysWhatHappensAndEndsInAFullStop() {
+        #expect(Wording.undoHint(.delete) == "Puts the photo back as the top card.")
+        #expect(Wording.undoHint(.keep) == "Puts the photo back as the top card and forgets you kept it.")
+        #expect(Wording.undoHint(.group) == "Puts the whole group back as the top card.")
+    }
+
+    @Test func theUndoAnnouncementSaysHowLongItLasts() {
+        #expect(Wording.undoAvailable(seconds: 5) == "Undo available for 5 seconds")
+        #expect(Wording.undoAvailable(seconds: 1) == "Undo available for 1 second")
+    }
 }

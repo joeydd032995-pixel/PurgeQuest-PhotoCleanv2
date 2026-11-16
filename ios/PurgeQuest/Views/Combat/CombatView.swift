@@ -20,6 +20,9 @@ struct CombatView: View {
     /// Which game words have been explained, and the one being explained over the card on top right now.
     @State private var glossary = GlossaryStore.load()
     @State private var tipTerm: Glossary.Term? = nil
+    /// The decision the Undo pill is offering to take back right now, if any.
+    @State private var undoOffer: DecisionHistory.Entry? = nil
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         ZStack {
@@ -75,6 +78,21 @@ struct CombatView: View {
             if old != nil, let shown = tipTerm { markExplained(shown) }
             tipTerm = new == nil ? nil : nextGlossaryTip()
         }
+        // The Undo offer lasts `DiveRules.undoWindowSeconds` from each decision, and a new decision starts it
+        // again. On `body` for the same reason as the observer above.
+        .task(id: combat.decisionHistory.last?.recordedAt) {
+            guard let entry = combat.decisionHistory.last else { undoOffer = nil; return }
+            undoOffer = entry
+            AccessibilityNotification.Announcement(Wording.undoAvailable(seconds: Int(DiveRules.undoWindowSeconds))).post()
+            try? await Task.sleep(for: .seconds(DiveRules.undoWindowSeconds))
+            if !Task.isCancelled { undoOffer = nil }
+        }
+    }
+
+    /// Takes back the last decision (the Undo pill's action).
+    private func undo() {
+        guard let hero = heroes.first else { return }
+        combat.undoLastDecision(hero: hero, context: modelContext)
     }
 
     private var dungeonIntensity: Double {
@@ -252,6 +270,15 @@ struct CombatView: View {
             }
         }
         .onAppear { tipTerm = nextGlossaryTip() }
+        // An overlay, so the pill coming and going never moves the card or the buttons. It sits just above the
+        // Delete and Keep row (about 78 pt of row and margin, plus a gap).
+        .overlay(alignment: .bottom) {
+            if let offer = undoOffer, combat.canUndo() {
+                UndoPill(kind: offer.kind, seconds: DiveRules.undoWindowSeconds, onUndo: undo)
+                    .padding(.bottom, 92)
+                    .transition(reduceMotion ? .identity : .opacity)
+            }
+        }
     }
 
     // MARK: Game words, explained once
