@@ -518,6 +518,7 @@ struct BestiaryExpansionTests {
             relatedAssetIdentifiers: ["x"]
         )
         #expect(grouped.whyText.contains("1 companion copy"))
+        #expect(grouped.whyText.hasSuffix("awaits judgment together"))
     }
 
     // MARK: - Dungeon themes

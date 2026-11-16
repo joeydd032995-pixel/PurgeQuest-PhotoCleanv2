@@ -256,12 +256,14 @@ struct CombatView: View {
             }
         }
         .onAppear { tipTerm = nextGlossaryTip() }
-        // An overlay, so the pill coming and going never moves the card or the buttons. It sits just above the
-        // Delete and Keep row (about 78 pt of row and margin, plus a gap).
+        // An overlay, so the pill coming and going never moves the card or the buttons. On a single card it sits
+        // just above the Delete and Keep row (about 70 pt of row and margin, plus a gap). A duplicate group has
+        // no such row, and its own buttons are higher up, so there the pill drops to the bottom edge, under the
+        // card, where it covers nothing.
         .overlay(alignment: .bottom) {
             if let offer = undoOffer, combat.canUndo() {
                 UndoPill(kind: offer.kind, seconds: DiveRules.undoWindowSeconds, onUndo: undo)
-                    .padding(.bottom, 92)
+                    .padding(.bottom, combat.topItemIsGroup ? 12 : 92)
                     .transition(reduceMotion ? .identity : .opacity)
             }
         }

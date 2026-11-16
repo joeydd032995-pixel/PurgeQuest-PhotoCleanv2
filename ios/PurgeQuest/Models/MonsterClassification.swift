@@ -144,8 +144,8 @@ struct MonsterClassification: Equatable, Sendable {
         guard !reasons.isEmpty else { return ClassificationReason.noStrongSignal.factText }
         let facts = reasons.map(\.factText).joined(separator: " · ")
         guard isGrouped else { return facts }
-        let companionCopy = groupSize == 1 ? "1 companion copy" : "\(groupSize) companion copies"
-        return "\(facts) — \(companionCopy) await judgment together"
+        let companionCopy = groupSize == 1 ? "1 companion copy awaits" : "\(groupSize) companion copies await"
+        return "\(facts) — \(companionCopy) judgment together"
     }
 
     /// Short bestiary line separating "potentially removable" from
