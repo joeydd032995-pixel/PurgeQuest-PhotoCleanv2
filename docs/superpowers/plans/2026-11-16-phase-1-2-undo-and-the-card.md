@@ -52,6 +52,7 @@
 Each task is test-first and runs as one subagent with a review, as in 1.1. Order matters: the tasks share `CombatView` and `SwipeMediaCard`, so they run in sequence.
 
 ### Task 1: `DecisionHistory` and the Undo window (pure) (S)
+**Built (16 November 2026):** `Models/DecisionHistory.swift` (`DecisionSnapshot`, `DecisionHistory`, `Entry`, `Kind`), `DiveRules.undoWindowSeconds = 5`, and 12 harness tests in `DecisionHistoryTests`; harness 399 tests in 29 suites. Not yet used by the view-model (Task 2).
 **Produces:** `struct DecisionHistory { mutating func record(_ entry: Entry); mutating func undoLast(now: Date) -> Entry?; func canUndo(now: Date) -> Bool; mutating func clear() }`. `Entry` holds the item ids affected (one, or a group's), whether it was a delete, keep or group commit, the **previous** `combo`, `peakCombo`, `ComboMultiplier`, `perfectRoom`, `hero.highestCombo`, the persisted records it inserted, and `recordedAt`.
 **Tests (harness):**
 - `undoLast` returns the most recent entry within `undoWindowSeconds` and nothing after it.
