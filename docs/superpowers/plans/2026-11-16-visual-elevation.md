@@ -54,6 +54,7 @@ Sizes use the master plan's scale (S at most half a day, M 1 to 2 days, L 3 to 5
 
 ### E0. Tour additions (S)
 Add screenshots the redesign needs and the baseline lacks: Room Summary (the missing "before"), the duplicate card, the Undo pill, the Hero tab at full size, and the Armory with state labels. Reset the glossary ledger between tour tests so the Dive note is shot where intended. Add a photo-library check at the start of the tour that fails with a clear message if the simulator library is empty (the one infrastructure flake seen so far).
+**Built (16 November 2026, awaiting CI):** `testZRoomSummaryAndDuplicateCard` (runs last, best-effort, plays a room with every card marked for deletion and never confirms, so nothing is deleted) adds `13-duplicate-card` and `14-room-summary` in Dark and Light; each tour launch resets the glossary ledger; the main tour waits up to 30 s for the Library to show photos and fails with a plain message if the simulator library is empty. Not added: the Undo pill (it does not exist until 1.2), and Hero and Armory shots (the tour already has `20-hero` and `22-armory`; they are re-shot after the redesign).
 **Acceptance:** the tour has a before-shot for every screen in this plan; an empty library fails fast.
 
 ### E3. Combat card and HUD (L, inside 1.2)
