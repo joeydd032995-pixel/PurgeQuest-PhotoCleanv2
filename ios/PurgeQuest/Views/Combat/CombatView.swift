@@ -226,8 +226,6 @@ struct CombatView: View {
                             item: top,
                             isFront: true,
                             isShade: combat.isShade(top),
-                            rewardXP: combat.previewReward(for: top, hero: hero).xp,
-                            rewardGems: combat.previewReward(for: top, hero: hero).gems,
                             onDelete: { combat.decideDelete(top, hero: hero) },
                             onSpare: {
                                 if let hero = heroes.first { combat.decideSpare(top, hero: hero, context: modelContext) }
@@ -245,25 +243,16 @@ struct CombatView: View {
             // Duplicate groups resolve through their own per-copy controls.
             if !combat.topItemIsGroup {
                 HStack(spacing: 16) {
-                    Button { if let top = combat.topItem, let hero = heroes.first { combat.decideDelete(top, hero: hero) } } label: {
-                        Label("DELETE", systemImage: "xmark")
-                            .font(.headline.weight(.heavy))
-                            .frame(maxWidth: .infinity).padding(.vertical, 14)
-                            .background(RoundedRectangle(cornerRadius: 10).fill(Color.combatCrimson))
-                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.combatCrimsonDeep, lineWidth: 1))
-                            .foregroundStyle(.white)
+                    decisionButton("Delete", symbol: "xmark", fill: .combatCrimson, edge: .combatCrimsonDeep,
+                                   ink: .white, hint: "Mark this item for deletion") {
+                        if let top = combat.topItem, let hero = heroes.first { combat.decideDelete(top, hero: hero) }
                     }
-                    .accessibilityHint("Mark this item for deletion")
-
-                    Button { if let top = combat.topItem, let hero = heroes.first { combat.decideSpare(top, hero: hero, context: modelContext) } } label: {
-                        Label("KEEP", systemImage: "shield.fill")
-                            .font(.headline.weight(.heavy))
-                            .frame(maxWidth: .infinity).padding(.vertical, 14)
-                            .background(RoundedRectangle(cornerRadius: 10).fill(Color.dungeonStoneLight))
-                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
-                            .foregroundStyle(.textPrimary)
+                    decisionButton("Keep", symbol: "checkmark.shield.fill", fill: .gemEmeraldDeep, edge: .gemEmerald,
+                                   ink: .onAccent, hint: "Keep this item. It stays in your library.") {
+                        if let top = combat.topItem, let hero = heroes.first {
+                            combat.decideSpare(top, hero: hero, context: modelContext)
+                        }
                     }
-                    .accessibilityHint("Keep this item. It stays in your library.")
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 14)
@@ -279,6 +268,25 @@ struct CombatView: View {
                     .transition(reduceMotion ? .identity : .opacity)
             }
         }
+    }
+
+    /// One of the two decision buttons. Delete and Keep are made here from the same numbers, so they are always
+    /// the same width and height (56 pt at least, more at larger text sizes) and neither is the quiet one.
+    private func decisionButton(
+        _ title: String, symbol: String, fill: Color, edge: Color, ink: Color, hint: String,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            Label(title, systemImage: symbol)
+                .font(.headline.weight(.bold))
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .frame(maxWidth: .infinity, minHeight: 56)
+                .background(RoundedRectangle(cornerRadius: 12).fill(fill))
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(edge, lineWidth: 1))
+                .foregroundStyle(ink)
+        }
+        .accessibilityHint(hint)
     }
 
     // MARK: Game words, explained once

@@ -13,16 +13,12 @@ struct SwipeMediaCard: View {
     /// This asset was purged once before and recovered — deleting it again
     /// earns no XP, gems, or quest progress.
     var isShade: Bool = false
-    /// Live reward preview: what deleting this card pays at the current combo.
-    var rewardXP: Int = 0
-    var rewardGems: Int = 0
     let onDelete: () -> Void
     let onSpare: () -> Void
 
     @State private var dragOffset: CGSize = .zero
     @State private var isDragging: Bool = false
     @State private var snapAway: CGSize? = nil
-    @State private var dynamicFlavor: String? = nil
     @State private var showLivePreview: Bool = false
     /// Live Photo playback raised by tapping the card.
     @State private var showLivePlayback: Bool = false
@@ -49,15 +45,7 @@ struct SwipeMediaCard: View {
                             .accessibilityLabel("Live Photo playing. Tap to stop.")
                     }
                 }
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(item.monsterType.accentColor.opacity(0.5), lineWidth: 1.5)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.black.opacity(0.6), lineWidth: 1)
-                )
+                .clipShape(RoundedRectangle(cornerRadius: 16))
         }
         .scaleEffect(isFront ? 1.0 : 0.94)
         .offset(x: snapAway?.width ?? dragOffset.width, y: snapAway?.height ?? dragOffset.height)
@@ -71,12 +59,6 @@ struct SwipeMediaCard: View {
         }
         .task(id: item.id) {
             guard isFront else { return }
-            if let cached = FoundationFlavorService.shared.cached(for: item) {
-                dynamicFlavor = cached
-            } else {
-                let result = await FoundationFlavorService.shared.flavor(for: item)
-                dynamicFlavor = result
-            }
             // Kick off looping video preview after a tiny delay so the
             // thumbnail reads first and the player has time to attach.
             if item.kind == .video {
@@ -108,7 +90,30 @@ struct SwipeMediaCard: View {
         }
     }
 
+    /// The card: the photo in its frame, and the nameplate under it. Nothing is drawn over the photo except
+    /// its badges and the size chip, so the whole picture can be judged before deciding.
     private var cardBody: some View {
+        VStack(spacing: 10) {
+            ExhibitFrame(
+                chip: Wording.exhibitChip(size: item.formattedSize, age: item.ageDescription),
+                accent: item.monsterType.accentColor
+            ) { photoLayer }
+            Nameplate(
+                monster: item.monsterType,
+                why: item.classification?.whyText,
+                needsCarefulReview: item.classification?.requiresCarefulReview == true
+            )
+        }
+        .padding(8)
+        .padding(.bottom, 4)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.dungeonStone)
+                .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.dungeonAsh, lineWidth: 1))
+        )
+    }
+
+    private var photoLayer: some View {
         Color.dungeonStoneLight
             .overlay {
                 if let thumb = item.thumbnail {
@@ -129,15 +134,6 @@ struct SwipeMediaCard: View {
                         .transition(.opacity)
                 }
             }
-            .overlay(
-                // Lighter scrim — the frost blur under the meta bar now does
-                // the heavy lifting for readability.
-                LinearGradient(
-                    colors: [.clear, .black.opacity(0.25), .black.opacity(0.55)],
-                    startPoint: .top, endPoint: .bottom
-                )
-                .allowsHitTesting(false)
-            )
             .overlay {
                 if item.kind == .video, !(isFront && showLivePreview) {
                     Image(systemName: "play.circle.fill")
@@ -147,21 +143,10 @@ struct SwipeMediaCard: View {
                 }
             }
             .overlay(alignment: .top) { topMetaBar }
-            .overlay(alignment: .bottomLeading) { bottomMetaBar }
     }
 
     private var topMetaBar: some View {
         HStack(spacing: 8) {
-            HStack(spacing: 6) {
-                Image(systemName: item.monsterType.symbol)
-                    .font(.caption.weight(.bold))
-                Text(item.monsterType.displayName)
-                    .font(.caption.weight(.semibold))
-                    .lineLimit(1)
-            }
-            .padding(.horizontal, 10).padding(.vertical, 6)
-            .background(RoundedRectangle(cornerRadius: 6).fill(item.monsterType.accentColor.opacity(0.85)))
-            .foregroundStyle(.onAccent)
             if item.monsterType.isElite {
                 eliteBadge
             }
@@ -180,7 +165,7 @@ struct SwipeMediaCard: View {
                     .foregroundStyle(.white)
             }
         }
-        .padding(12)
+        .padding(10)
     }
 
     /// Small gold tag marking high-HP "boss" monsters — the foes a Purge
@@ -231,72 +216,6 @@ struct SwipeMediaCard: View {
         .background(RoundedRectangle(cornerRadius: 6).fill(Color.goldFill))
         .overlay(RoundedRectangle(cornerRadius: 6).stroke(.white.opacity(0.55), lineWidth: 0.6))
         .accessibilityHidden(true)
-    }
-
-    /// Dark-glass footer: a blur of the photo under an 82% tint, so the text on it keeps its contrast over
-    /// any photo or video frame, white ones included. Its text colors are the fixed on-glass set
-    /// (ThemePalette.Glass), measured at 4.5:1 or better over a white photo. The theme's own accents are
-    /// not used here: the Light-mode ones are dark inks and measured 2.2:1 on this strip.
-    private var bottomMetaBar: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            Text("“\(dynamicFlavor ?? item.monsterType.flavor)”")
-                .font(.callout.italic())
-                .foregroundStyle(.onGlass)
-                .lineLimit(3)
-                .animation(.easeInOut(duration: 0.25), value: dynamicFlavor)
-            // "Why did this appear?" — plain-language reason from the classifier.
-            if let why = item.classification?.whyText {
-                HStack(alignment: .top, spacing: 5) {
-                    Image(systemName: "questionmark.circle.fill")
-                        .font(.caption2.weight(.bold))
-                        .foregroundStyle(.onGlassMuted)
-                    Text(why)
-                        .font(.caption2.weight(.semibold))
-                        .foregroundStyle(.onGlass)
-                        .lineLimit(2)
-                }
-            }
-            if item.classification?.requiresCarefulReview == true {
-                Label("Review carefully", systemImage: "eye.fill")
-                    .font(.caption2.weight(.black))
-                    .padding(.horizontal, 8).padding(.vertical, 4)
-                    .background(RoundedRectangle(cornerRadius: 6).fill(Color.goldFill.opacity(0.92)))
-                    .foregroundStyle(.goldInk)
-                    .accessibilityHint("This monster deserves a close look before deciding")
-            }
-            HStack(spacing: 8) {
-                Label(item.formattedSize, systemImage: "internaldrive.fill")
-                    .font(.caption2.weight(.bold))
-                    .foregroundStyle(.patinaOnGlass)
-                Text("·").foregroundStyle(.onGlassMuted)
-                Text(item.ageDescription)
-                    .font(.caption2)
-                    .foregroundStyle(.onGlassMuted)
-            }
-            if rewardXP > 0 || rewardGems > 0 {
-                HStack(spacing: 8) {
-                    Label("+\(rewardXP) XP", systemImage: "bolt.fill")
-                        .font(.caption2.weight(.bold).monospacedDigit())
-                        .foregroundStyle(.brassOnGlass)
-                    Text("·").foregroundStyle(.onGlassMuted)
-                    Label("+\(rewardGems)", systemImage: "diamond.fill")
-                        .font(.caption2.weight(.bold).monospacedDigit())
-                        .foregroundStyle(.patinaOnGlass)
-                    Text("on confirm")
-                        .font(.caption2)
-                        .foregroundStyle(.onGlassMuted)
-                }
-            }
-        }
-        .padding(12)
-        .background {
-            ZStack {
-                BlurEffectView(style: .systemUltraThinMaterialDark)
-                Color.glassFill
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-        }
-        .padding(10)
     }
 
     private var deleteOverlay: some View {

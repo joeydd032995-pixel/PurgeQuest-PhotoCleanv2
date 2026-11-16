@@ -335,7 +335,7 @@ final class AppearanceTourUITests: XCTestCase {
 
         let summaryTitle = app.staticTexts["Review this room"]
         let confirmGroup = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Confirm'")).firstMatch
-        let delete = app.buttons["DELETE"]
+        let delete = app.buttons["Delete"]
         var shotDuplicate = false
         // A hard budget, so a screen that stops answering can never run the job out of time.
         let deadline = Date().addingTimeInterval(180)

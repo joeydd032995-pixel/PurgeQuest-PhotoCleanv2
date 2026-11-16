@@ -79,4 +79,14 @@ struct WordingTests {
         #expect(Wording.undoAvailable(seconds: 5) == "Undo available for 5 seconds")
         #expect(Wording.undoAvailable(seconds: 1) == "Undo available for 1 second")
     }
+
+    // MARK: The card
+
+    @Test func theNameplateLineNamesRarityThenFamily() {
+        #expect(Wording.nameplateLine(rarity: "Rare", family: "Storage Behemoths") == "Rare · Storage Behemoths")
+    }
+
+    @Test func theChipSaysSizeThenAge() {
+        #expect(Wording.exhibitChip(size: "12.4 MB", age: "2 yr ago") == "12.4 MB · 2 yr ago")
+    }
 }

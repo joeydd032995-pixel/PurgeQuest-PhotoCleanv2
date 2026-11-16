@@ -78,4 +78,16 @@ nonisolated enum Wording {
         default:   return "Scanning \(count) items…"
         }
     }
+
+    // MARK: The card
+
+    /// Under the monster's name on the card: how rare it is and which family it belongs to.
+    static func nameplateLine(rarity: String, family: String) -> String {
+        "\(rarity) · \(family)"
+    }
+
+    /// The glass chip on the photo: how big it is and how old it is.
+    static func exhibitChip(size: String, age: String) -> String {
+        "\(size) · \(age)"
+    }
 }
