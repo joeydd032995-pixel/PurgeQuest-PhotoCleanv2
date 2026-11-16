@@ -65,7 +65,7 @@ Add screenshots the redesign needs and the baseline lacks: Room Summary (the mis
 - HUD: one slim gold progress line, "Room N of M" and "N left", combo as a display numeral. Hero HP stays hidden (D1).
 - The glossary note sits above the frame (as today, restyled); the coach mark from 1.2 replaces it on the first card only (the hazard recorded in the Phase 1 plan: decide which one wins).
 - Equal-width Delete (ember) and Keep (surface, patina shield), 56 pt, 44 pt minimum targets; Undo pill above them for five seconds.
-- **Must-fix found by E0:** on the Light duplicate card the explanatory line ("Identical file content to another capture…") is near-white on parchment, 1.20:1 (Dark is 10.8:1). It is unreadable, and Phase 0's contrast work never saw it because the tour had no shot. Fixed as part of rebuilding the duplicate card here; the tour shot  is the check.
+- **Must-fix found by E0:** on the Light duplicate card the explanatory line ("Identical file content to another capture…") is near-white on parchment, 1.20:1 (Dark is 10.8:1). It is unreadable, and Phase 0's contrast work never saw it because the tour had no shot. Fixed as part of rebuilding the duplicate card here; the tour shot `light-13-duplicate-card` is the check.
 - No reward preview on the card. The duplicate card keeps its per-copy preview only if the owner says so (open question from 1.2).
 **Acceptance:** keep or delete still behaves exactly as before; every control at least 44 pt; Delete and Keep equal in size and both fully on screen at the largest Dynamic Type that fits; contrast at least 4.5:1 for all text; measured on the tour in Light, Dark and Verdigris.
 
@@ -79,7 +79,7 @@ Built once, used everywhere (section 5). Each has a preview and a test where it 
 
 ### E4. Room Summary (M)
 `RoomSummaryView`, `DecisionTile`.
-- **Starting point (from the E0 shot):** "Room 1 / 14 marked, 5 kept", three stat tiles (megabytes to move, XP, gems), a three-column grid of photo tiles with a delete mark, a red "Move 14 to Recently Deleted" bar with "13.5 MB, recoverable for 30 days", and "Keep all, finish dive". So E4 is a restyle and re-hierarchy, not a new screen. **Keep that commit wording** (it is more exact than the mockup's "Delete 7 items", and  pins it); the mockup's button text is illustrative.
+- **Starting point (from the E0 shot):** "Room 1 / 14 marked, 5 kept", three stat tiles (megabytes to move, XP, gems), a three-column grid of photo tiles with a delete mark, a red "Move 14 to Recently Deleted" bar with "13.5 MB, recoverable for 30 days", and "Keep all, finish dive". So E4 is a restyle and re-hierarchy, not a new screen. **Keep that commit wording** (it is more exact than the mockup's "Delete 7 items", and `Wording` pins it); the mockup's button text is illustrative.
 - Header "Room cleared". A spoils panel: XP, gems and megabytes to free as display numerals, labelled "paid when you confirm" (rewards stay unbooked until deletion succeeds, as today).
 - The grid of tiles (photo, state badge), tap to flip, counts below ("7 to delete", "5 kept").
 - Quest progress compact, with the preview that already mirrors the booking (`QuestProgress`).
