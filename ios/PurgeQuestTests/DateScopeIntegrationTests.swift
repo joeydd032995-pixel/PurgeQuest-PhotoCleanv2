@@ -156,4 +156,17 @@ struct DateScopeIntegrationTests {
             #expect(GlossaryStore.load(from: defaults) == GlossaryLedger())
         }
     }
+
+    /// And it shows the swipe arrows on the first card again.
+    @Test func resettingAllDataBringsTheSwipeArrowsBack() throws {
+        let container = try makeContainer()
+        let context = ModelContext(container)
+        try withDefaults { defaults in
+            CoachMarkStore.markSeen(in: defaults)
+            try withExtendedLifetime(container) {
+                GameDataService.resetAllData(in: context, defaults: defaults)
+            }
+            #expect(!CoachMarkStore.hasSeen(in: defaults))
+        }
+    }
 }

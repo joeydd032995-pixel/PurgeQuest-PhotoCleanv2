@@ -101,6 +101,7 @@ enum GameDataService {
         clearOnboardingChoices(from: defaults)
         DateScopeStore.clear(in: defaults)
         GlossaryStore.clear(in: defaults)
+        CoachMarkStore.clear(in: defaults)
     }
 
     // MARK: - Cosmetics

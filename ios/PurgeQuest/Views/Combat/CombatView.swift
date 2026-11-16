@@ -20,6 +20,8 @@ struct CombatView: View {
     /// Which game words have been explained, and the one being explained over the card on top right now.
     @State private var glossary = GlossaryStore.load()
     @State private var tipTerm: Glossary.Term? = nil
+    /// Whether the swipe arrows have been seen. They show on the first card only, and not again.
+    @State private var coachSeen = CoachMarkStore.hasSeen()
     /// The decision the Undo pill is offering to take back right now, if any.
     @State private var undoOffer: DecisionHistory.Entry? = nil
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -76,6 +78,8 @@ struct CombatView: View {
         // "the word was seen", so the order of the two cannot mark a note explained before anyone read it.
         .onChange(of: combat.topItem?.id) { old, new in
             if old != nil, let shown = tipTerm { markExplained(shown) }
+            // The first decision ends the arrows, and the Room note, which waited for them, may come on this card.
+            if old != nil { dismissCoach() }
             tipTerm = new == nil ? nil : nextGlossaryTip()
         }
         // The Undo offer lasts `DiveRules.undoWindowSeconds` from each decision, and a new decision starts it
@@ -236,6 +240,13 @@ struct CombatView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .overlay {
+                if showCoach { CoachMarkOverlay().transition(.opacity) }
+            }
+            // Any touch or swipe on the first card puts the arrows away. They sit in an overlay that lets touches
+            // through, and these gestures run alongside the card's own, so deciding works exactly as before.
+            .simultaneousGesture(TapGesture().onEnded { dismissCoach() })
+            .simultaneousGesture(DragGesture(minimumDistance: 4).onChanged { _ in dismissCoach() })
 
             // Duplicate groups resolve through their own per-copy controls.
             if !combat.topItemIsGroup {
@@ -292,12 +303,27 @@ struct CombatView: View {
 
     /// The one word to explain over the card on top, if any: the room first, then an Elite or a Shade.
     private func nextGlossaryTip() -> Glossary.Term? {
-        var visible: [Glossary.Term] = [.room]
+        // The Room note waits while the swipe arrows are up: one note on a card at a time.
+        var visible: [Glossary.Term] = CoachMark.roomNoteMayShow(arrowsShowing: showCoach) ? [.room] : []
         if let top = combat.topItem {
             if top.monsterType.isElite { visible.append(.elite) }
             if combat.isShade(top) { visible.append(.shade) }
         }
         return glossary.nextTip(among: visible)
+    }
+
+    /// Whether the swipe arrows are up: the first card of the first room, a single card (a duplicate group has its
+    /// own buttons), and not seen before.
+    private var showCoach: Bool {
+        CoachMark.shows(isFirstCardOfDive: combat.isFirstCardOfDive, seen: coachSeen) && !combat.topItemIsGroup
+    }
+
+    /// Puts the arrows away for good. Touching the first card does not bring the Room note on at once: it waits
+    /// for the next card.
+    private func dismissCoach() {
+        guard !coachSeen else { return }
+        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) { coachSeen = true }
+        CoachMarkStore.markSeen()
     }
 
     private func markExplained(_ term: Glossary.Term) {

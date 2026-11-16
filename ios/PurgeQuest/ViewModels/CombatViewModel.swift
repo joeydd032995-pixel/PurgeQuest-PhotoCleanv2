@@ -70,6 +70,9 @@ final class CombatViewModel {
     private var currentRoomIndex: Int = 0
     var roomNumber: Int = 1
 
+    /// The very first card of a dive: where the swipe arrows are offered.
+    var isFirstCardOfDive: Bool { roomNumber == 1 && currentRoomIndex == 0 }
+
     // Pending decisions for the current room (populated as we swipe)
     var pendingDecisions: [PendingDecision] = []
 
