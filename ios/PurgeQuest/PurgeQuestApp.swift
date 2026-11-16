@@ -13,6 +13,10 @@ struct PurgeQuestApp: App {
         DungeonFont.registerAll()
         // Publish the saved palette before the first view reads a color token.
         ThemeStore.shared.set(ColorTheme(storedValue: UserDefaults.standard.string(forKey: ColorTheme.storageKey)))
+        // A tour launch starts the glossary over. Its ledger lives in UserDefaults, which a launch inherits from the
+        // test before it, so without this only the first screenshot of a run would show the first-time notes.
+        // `isTour` is a constant false in Release builds.
+        if UITestSupport.isTour { GlossaryStore.clear() }
     }
 
     @State private var appState = AppState()

@@ -302,6 +302,70 @@ final class AppearanceTourUITests: XCTestCase {
         settle(2.0)
     }
 
+    /// Two screens the main tour never reaches: the duplicate card and the Room Summary. It plays one real room
+    /// (every card marked for deletion) and stops on the summary without confirming, so nothing is deleted. The
+    /// name starts with Z so it runs last: it is the one test that asks the app questions after a dive has
+    /// started, which the main tour avoids (see the note above its combat step). It is best-effort: a screen it
+    /// cannot reach is reported as a note, not a failure, so it can never fail the tour.
+    @MainActor
+    func testZRoomSummaryAndDuplicateCard() {
+        for mode in ["dark", "light"] { captureRoomSummary(mode) }
+    }
+
+    @MainActor
+    private func captureRoomSummary(_ mode: String) {
+        let app = launch(mode, phase: "main")
+        guard app.tabBars.firstMatch.waitForExistence(timeout: 25) else {
+            note("room summary (\(mode)): the tab bar did not appear")
+            app.terminate()
+            return
+        }
+        dismissPhotoPrompt()
+        settle(1.5)
+        let enter = app.buttons["Enter the dungeon and start a cleanup session"]
+        guard enter.waitForExistence(timeout: 10) else {
+            note("room summary (\(mode)): the Enter button was not found")
+            app.terminate()
+            return
+        }
+        enter.tap()
+        dismissPhotoPrompt()
+        // The scan: a plain sleep, nothing asks the app anything until it has finished.
+        settle(25.0)
+
+        let summaryTitle = app.staticTexts["Review this room"]
+        let confirmGroup = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Confirm'")).firstMatch
+        let delete = app.buttons["Delete"]
+        var shotDuplicate = false
+        // A hard budget, so a screen that stops answering can never run the job out of time.
+        let deadline = Date().addingTimeInterval(180)
+        for _ in 0..<40 where Date() < deadline {
+            if summaryTitle.exists { break }
+            if confirmGroup.exists {
+                // A duplicate group resolves through its own per-copy controls instead of DELETE and KEEP.
+                if !shotDuplicate {
+                    settle(0.8)
+                    shot("\(mode)-13-duplicate-card")
+                    shotDuplicate = true
+                }
+                confirmGroup.tap()
+            } else if delete.exists {
+                delete.tap()
+            } else {
+                settle(1.0)
+            }
+            settle(0.9)
+        }
+        if summaryTitle.waitForExistence(timeout: 10) {
+            settle(1.0)
+            shot("\(mode)-14-room-summary")
+        } else {
+            note("room summary (\(mode)): never reached the Room Summary")
+        }
+        if !shotDuplicate { note("room summary (\(mode)): no duplicate group came up in this room") }
+        app.terminate()
+    }
+
     // MARK: - Launch screens
 
     @MainActor
@@ -332,6 +396,7 @@ final class AppearanceTourUITests: XCTestCase {
             return
         }
         dismissPhotoPrompt()
+        requireLibraryPhotos(in: app, mode)
         settle(1.5)
         shot("\(mode)-10-library")
         app.swipeUp()
@@ -439,6 +504,25 @@ final class AppearanceTourUITests: XCTestCase {
         if let palette { app.launchArguments += ["-pq.colorTheme", palette] }
         app.launch()
         return app
+    }
+
+    /// The Library must show photos before the first screenshot. A run whose simulator library is empty (the
+    /// sample pictures are added with `simctl addmedia`, which can run before Photos is ready on a slow boot)
+    /// would photograph an empty Library and an "All clear" dive, so it says so plainly and early instead.
+    @MainActor
+    private func requireLibraryPhotos(in app: XCUIApplication, _ mode: String) {
+        let withPhotos = app.descendants(matching: .any).matching(NSPredicate(format: "label MATCHES %@", ".*[1-9][0-9]* photos.*")).firstMatch
+        if !withPhotos.waitForExistence(timeout: 30) {
+            XCTFail("The simulator photo library is empty (\(mode)): the Library never showed any photos. The sample pictures were probably added before Photos was ready, so re-run the job.")
+        }
+    }
+
+    /// A message for the tour's output that does not fail the test.
+    private func note(_ message: String) {
+        print("tour note: \(message)")
+        let attachment = XCTAttachment(string: message)
+        attachment.lifetime = .keepAlways
+        add(attachment)
     }
 
     private func settle(_ seconds: TimeInterval) {

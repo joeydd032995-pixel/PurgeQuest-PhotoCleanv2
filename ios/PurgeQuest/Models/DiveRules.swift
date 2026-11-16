@@ -27,6 +27,12 @@ enum DiveRules {
     /// delete it, so turning the old rule back on is a one-word change.
     static let keepingCostsHP = false
 
+    // MARK: Undo
+
+    /// How long the player can take back their last decision (sub-plan 1.2, assessment 10.2: "5 s after any
+    /// decision; rewinds one step"). `DecisionHistory` applies it.
+    static let undoWindowSeconds: TimeInterval = 5
+
     /// The HP a keep takes from the hero. Nothing, while `keepingCostsHP` is off.
     static func damageForKeeping(_ monster: MonsterType, costsHP: Bool = DiveRules.keepingCostsHP) -> Int {
         costsHP ? monster.attackDamage : 0

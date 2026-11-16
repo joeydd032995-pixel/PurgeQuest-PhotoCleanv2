@@ -44,6 +44,31 @@ nonisolated enum Wording {
         return kept > 0 ? "\(marked) marked, \(kept) kept" : "\(marked) marked"
     }
 
+    // MARK: Undo
+
+    /// The Undo pill: what it takes back.
+    static func undo(_ kind: DecisionHistory.Kind) -> String {
+        switch kind {
+        case .delete: return "Undo delete"
+        case .keep:   return "Undo keep"
+        case .group:  return "Undo choices"
+        }
+    }
+
+    /// What VoiceOver says after the Undo pill's name: what actually happens.
+    static func undoHint(_ kind: DecisionHistory.Kind) -> String {
+        switch kind {
+        case .delete: return "Puts the photo back as the top card."
+        case .keep:   return "Puts the photo back as the top card and forgets you kept it."
+        case .group:  return "Puts the whole group back as the top card."
+        }
+    }
+
+    /// Announced when the pill appears, so a VoiceOver user knows there is a way back and for how long.
+    static func undoAvailable(seconds: Int) -> String {
+        seconds == 1 ? "Undo available for 1 second" : "Undo available for \(seconds) seconds"
+    }
+
     /// The wait while the library is read. The count is how many items this dive is reading, once it is
     /// known; before that it is the plain "Scanning your library…". It never says anything about monsters.
     static func scanning(count: Int) -> String {
@@ -52,5 +77,17 @@ nonisolated enum Wording {
         case 1:    return "Scanning 1 item…"
         default:   return "Scanning \(count) items…"
         }
+    }
+
+    // MARK: The card
+
+    /// Under the monster's name on the card: how rare it is and which family it belongs to.
+    static func nameplateLine(rarity: String, family: String) -> String {
+        "\(rarity) · \(family)"
+    }
+
+    /// The glass chip on the photo: how big it is and how old it is.
+    static func exhibitChip(size: String, age: String) -> String {
+        "\(size) · \(age)"
     }
 }

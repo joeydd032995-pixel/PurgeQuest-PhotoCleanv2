@@ -25,7 +25,8 @@ concurrency:
 jobs:
   tour:
     runs-on: macos-latest
-    timeout-minutes: 30
+    # The tour alone takes about 27 minutes; the room-summary test adds about 5 more. 45 leaves headroom without hiding a hang.
+    timeout-minutes: 45
 
     steps:
       - name: Checkout

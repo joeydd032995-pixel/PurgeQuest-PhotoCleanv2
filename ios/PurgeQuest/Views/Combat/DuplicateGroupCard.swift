@@ -11,10 +11,6 @@ import SwiftUI
 
 struct DuplicateGroupCard: View {
     let group: DuplicateGroup
-    /// Live reward preview per copy: `(item, comboStep)` → `(xp, gems)`.
-    /// `comboStep` is the kill's position in this batch, matching the order
-    /// the ViewModel will apply them in. Shades return (0, 0).
-    var previewReward: (MediaItem, Int) -> (xp: Int, gems: Int) = { _, _ in (0, 0) }
     let onConfirm: ([String: Bool]) -> Void
 
     /// Per-copy decision: false = keep, true = slay. Defaults to keep so a
@@ -36,14 +32,12 @@ struct DuplicateGroupCard: View {
             headerBar
             carousel
             decisionControls
-            markedRewardLine
             confirmButton
         }
-        .background(Color.dungeonStoneLight)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(group.monsterType.accentColor.opacity(0.6), lineWidth: 1.5)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.dungeonStone)
+                .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.dungeonAsh, lineWidth: 1))
         )
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Duplicate group. \(group.members.count) copies of \(group.monsterType.displayName). Choose which copies to delete.")
@@ -51,69 +45,46 @@ struct DuplicateGroupCard: View {
 
     // MARK: - Header
 
+    /// The same nameplate as the single card, on the card's own surface. The reason line used to be near-white
+    /// text on this surface, which measured 1.20:1 in Light; it now uses the theme's text color.
     private var headerBar: some View {
         VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 8) {
-                HStack(spacing: 6) {
-                    Image(systemName: group.monsterType.symbol)
-                        .font(.caption.weight(.bold))
-                    Text(group.monsterType.displayName)
-                        .font(.caption.weight(.semibold))
-                        .lineLimit(1)
-                }
-                .padding(.horizontal, 10).padding(.vertical, 6)
-                .background(RoundedRectangle(cornerRadius: 6).fill(group.monsterType.accentColor.opacity(0.85)))
-                .foregroundStyle(.onAccent)
-
-                rarityChip
-                Spacer()
-                if group.monsterType.rarity.hasCrownBadge {
-                    Image(systemName: "crown.fill")
-                        .font(.caption.weight(.bold))
-                        .foregroundStyle(.questAmber)
-                }
-            }
-            if let why = group.classification?.whyText {
-                Text(why)
-                    .font(.caption2.weight(.semibold))
-                    .foregroundStyle(.white.opacity(0.92))
-                    .lineLimit(2)
-            }
-            if let guidance = group.representative.flatMap({ $0.classification?.reviewNote }) {
-                Label(guidance, systemImage: group.classification?.requiresCarefulReview == true ? "eye.fill" : "checkmark.circle.fill")
+            Nameplate(
+                monster: group.monsterType,
+                why: group.classification?.whyText,
+                needsCarefulReview: group.classification?.requiresCarefulReview == true,
+                readAloud: true
+            )
+            if let guidance = group.representative.flatMap({ $0.classification?.reviewNote }),
+               group.classification?.requiresCarefulReview != true {
+                Label(guidance, systemImage: "checkmark.circle.fill")
                     .font(.caption2.weight(.bold))
-                    .foregroundStyle(group.classification?.requiresCarefulReview == true ? .questAmber : .gemEmerald)
+                    .foregroundStyle(Color.textSecondary)
+                    .padding(.horizontal, 6)
             }
         }
-        .padding(14)
-    }
-
-    private var rarityChip: some View {
-        Text(group.monsterType.rarity.displayName)
-            .font(.caption2.weight(.black).monospaced())
-            .tracking(0.6)
-            .padding(.horizontal, 8).padding(.vertical, 5)
-            .background(RoundedRectangle(cornerRadius: 6).fill(Color.dungeonVoid.opacity(0.7)))
-            .overlay(RoundedRectangle(cornerRadius: 6).stroke(group.monsterType.rarity.frameColor.opacity(0.8), lineWidth: 1))
-            .foregroundStyle(group.monsterType.rarity.frameColor)
+        .padding(.horizontal, 8)
+        .padding(.top, 14)
+        .padding(.bottom, 6)
     }
 
     // MARK: - Carousel
 
     private var carousel: some View {
         VStack(spacing: 8) {
-            TabView(selection: Binding(
-                get: { selectedMemberID ?? group.representative?.id },
-                set: { selectedMemberID = $0 }
-            )) {
-                ForEach(group.members, id: \.id) { member in
-                    memberView(member)
-                        .tag(member.id)
-                        .padding(.horizontal, 2)
+            ExhibitFrame(chip: nil, accent: group.monsterType.accentColor) {
+                TabView(selection: Binding(
+                    get: { selectedMemberID ?? group.representative?.id },
+                    set: { selectedMemberID = $0 }
+                )) {
+                    ForEach(group.members, id: \.id) { member in
+                        memberView(member)
+                            .tag(member.id)
+                    }
                 }
+                .tabViewStyle(.page(indexDisplayMode: .automatic))
             }
-            .tabViewStyle(.page(indexDisplayMode: .automatic))
-            .frame(height: 240)
+            .frame(height: 250)
 
             Text("Copy \(indexOfSelected + 1) of \(group.members.count)")
                 .font(.caption2.weight(.bold).monospacedDigit())
@@ -189,11 +160,11 @@ struct DuplicateGroupCard: View {
                     }
                     Label(member.formattedSize, systemImage: "internaldrive.fill")
                         .font(.caption2.weight(.bold))
-                        .foregroundStyle(.gemEmerald)
-                    Text("·").foregroundStyle(.white.opacity(0.5))
+                        .foregroundStyle(Color.patinaOnGlass)
+                    Text("·").foregroundStyle(Color.onGlassMuted)
                     Text(member.ageDescription)
                         .font(.caption2)
-                        .foregroundStyle(.white.opacity(0.85))
+                        .foregroundStyle(Color.onGlass)
                     Spacer()
                     decisionBadge(willDelete: willDelete)
                 }
@@ -233,33 +204,36 @@ struct DuplicateGroupCard: View {
                     .foregroundStyle(.textSecondary)
             }
             HStack(spacing: 12) {
-                Button {
-                    setDecision(true)
-                } label: {
-                    Label("Delete this copy", systemImage: "xmark")
-                        .font(.subheadline.weight(.heavy))
-                        .frame(maxWidth: .infinity).padding(.vertical, 11)
-                        .background(RoundedRectangle(cornerRadius: 9).fill(decisionForSelected == true ? Color.combatCrimson : Color.dungeonStone))
-                        .overlay(RoundedRectangle(cornerRadius: 9).stroke(Color.combatCrimsonDeep, lineWidth: decisionForSelected == true ? 1 : 0))
-                        .foregroundStyle(decisionForSelected == true ? .white : .combatCrimson)
-                }
-                .accessibilityLabel("Mark this copy for deletion")
-
-                Button {
-                    setDecision(false)
-                } label: {
-                    Label("Keep this copy", systemImage: "shield.fill")
-                        .font(.subheadline.weight(.heavy))
-                        .frame(maxWidth: .infinity).padding(.vertical, 11)
-                        .background(RoundedRectangle(cornerRadius: 9).fill(decisionForSelected == false ? Color.gemEmeraldDeep : Color.dungeonStone))
-                        .overlay(RoundedRectangle(cornerRadius: 9).stroke(decisionForSelected == false ? Color.gemEmerald : Color.dungeonAsh, lineWidth: 1))
-                        .foregroundStyle(decisionForSelected == false ? .white : .gemEmerald)
-                }
-                .accessibilityLabel("Keep this copy")
+                copyButton("Delete this copy", symbol: "xmark", fill: .combatCrimson, edge: .combatCrimsonDeep,
+                           ink: .white, chosen: decisionForSelected == true,
+                           label: "Mark this copy for deletion") { setDecision(true) }
+                copyButton("Keep this copy", symbol: "checkmark.shield.fill", fill: .gemEmeraldDeep, edge: .gemEmerald,
+                           ink: .onAccent, chosen: decisionForSelected == false,
+                           label: "Keep this copy") { setDecision(false) }
             }
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
+    }
+
+    /// A per-copy button. Delete and Keep are the same size and both filled; the one chosen for this copy
+    /// shows a ring and a tick, so neither looks like the default.
+    private func copyButton(
+        _ title: String, symbol: String, fill: Color, edge: Color, ink: Color, chosen: Bool,
+        label: String, action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            Label(title, systemImage: chosen ? "checkmark.circle.fill" : symbol)
+                .font(.subheadline.weight(.bold))
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .frame(maxWidth: .infinity, minHeight: 48)
+                .background(RoundedRectangle(cornerRadius: 12).fill(fill))
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(chosen ? Color.textPrimary : edge, lineWidth: chosen ? 2.5 : 1))
+                .foregroundStyle(ink)
+        }
+        .accessibilityLabel(label)
+        .accessibilityAddTraits(chosen ? .isSelected : [])
     }
 
     private var decisionForSelected: Bool? {
@@ -275,41 +249,6 @@ struct DuplicateGroupCard: View {
         if let idx = group.members.firstIndex(where: { $0.id == member.id }) {
             let next = (idx + 1) % group.members.count
             selectedMemberID = group.members[next].id
-        }
-    }
-
-    // MARK: - Marked reward
-
-    /// Total payout for exactly the copies currently marked for slaying,
-    /// with the combo stepping per kill in member order — the same math the
-    /// ViewModel applies on confirm.
-    private var markedReward: (xp: Int, gems: Int) {
-        var step = 0
-        var xp = 0
-        var gems = 0
-        for member in group.members where decisions[member.id] == true {
-            let r = previewReward(member, step)
-            xp += r.xp
-            gems += r.gems
-            if r.xp > 0 { step += 1 }
-        }
-        return (xp, gems)
-    }
-
-    @ViewBuilder
-    private var markedRewardLine: some View {
-        if slayCount > 0 {
-            let r = markedReward
-            HStack(spacing: 8) {
-                Image(systemName: "bolt.fill")
-                Text("Reward for deleting: +\(r.xp) XP · +\(r.gems) gems")
-                    .font(.caption.weight(.bold).monospacedDigit())
-                Spacer()
-            }
-            .foregroundStyle(.questAmber)
-            .padding(.horizontal, 14)
-            .padding(.bottom, 8)
-            .accessibilityLabel("Marked copies pay \(r.xp) experience and \(r.gems) gems on confirm")
         }
     }
 
