@@ -92,6 +92,9 @@ final class CombatViewModel {
     /// pending Perfect Room bonus. (Keeping costs no HP, but it still forfeits this bonus.)
     var perfectRoom: Bool = true
 
+    /// The last decision of this room, for Undo (sub-plan 1.2): one step, for `DiveRules.undoWindowSeconds`.
+    private(set) var decisionHistory = DecisionHistory()
+
     // FX flags
     var deleteFlashTrigger: Int = 0
     var spareFlashTrigger: Int = 0
@@ -297,6 +300,7 @@ final class CombatViewModel {
         queueIndex += take
         currentRoomIndex = 0
         pendingDecisions = []
+        decisionHistory.clear()
         perfectRoom = true
         phase = .fighting
     }
@@ -368,11 +372,13 @@ final class CombatViewModel {
         // Shades: this asset was purged once before and later recovered. One
         // reward per asset per lifetime — a re-kill earns nothing, builds no
         // combo, and advances no quests, closing the recover-and-redelete loop.
+        let before = snapshot(hero: hero)
         if rewardedIDs.contains(item.id) {
             HapticsService.shared.light()
             pendingDecisions.append(
                 PendingDecision(item: item, willDelete: true, xpReward: 0, gemReward: 0, awardsProgress: false)
             )
+            recordDecision(.delete, ids: [item.id], before: before)
             pushLiveActivityUpdate()
             advance()
             return
@@ -391,6 +397,7 @@ final class CombatViewModel {
         pendingDecisions.append(
             PendingDecision(item: item, willDelete: true, xpReward: earned.xp, gemReward: earned.gems)
         )
+        recordDecision(.delete, ids: [item.id], before: before)
         deleteFlashTrigger &+= 1
 
         if item.kind == .video {
@@ -434,6 +441,7 @@ final class CombatViewModel {
     /// ends it) and ends the room's Perfect Room bonus, and it takes no HP unless
     /// `DiveRules.keepingCostsHP` is turned back on.
     func decideSpare(_ item: MediaItem, hero: Hero, context: ModelContext) {
+        let before = snapshot(hero: hero)
         combo = 0
         comboMultiplier.afterKeep()
         perfectRoom = false
@@ -446,6 +454,8 @@ final class CombatViewModel {
         // Persist the spare so this monster is skipped on every future dive.
         context.insert(SparedMediaRecord(assetIdentifier: item.id, monsterType: item.monsterType))
         try? context.save()
+        // A keep that cost HP (the old rule, off under D1) is not undoable: the snapshot does not cover HP.
+        if dmg > 0 { decisionHistory.clear() } else { recordDecision(.keep, ids: [item.id], before: before, kept: [item.id]) }
         spareFlashTrigger &+= 1
         if dmg > 0 { screenShakeTrigger &+= 1 }
         if heroCurrentHP <= 0 {
@@ -474,6 +484,8 @@ final class CombatViewModel {
     /// marked for deletion is recorded individually, and every spare persists
     /// a record so the copies never resurface.
     func commitGroupDecisions(_ group: DuplicateGroup, decisions: [String: Bool], hero: Hero, context: ModelContext) {
+        let before = snapshot(hero: hero)
+        var keptIDs: [String] = []
         var slays = 0
         var spares = 0
         for member in group.members {
@@ -498,6 +510,7 @@ final class CombatViewModel {
             } else {
                 pendingDecisions.append(PendingDecision(item: member, willDelete: false))
                 context.insert(SparedMediaRecord(assetIdentifier: member.id, monsterType: member.monsterType))
+                keptIDs.append(member.id)
                 spares += 1
             }
         }
@@ -520,6 +533,12 @@ final class CombatViewModel {
             spareFlashTrigger &+= 1
         }
         try? context.save()
+        // One undoable step for the whole group, unless a kept copy cost HP (the old rule, off under D1).
+        if spares > 0 && DiveRules.damageForKeeping(group.monsterType) > 0 {
+            decisionHistory.clear()
+        } else {
+            recordDecision(.group, ids: group.members.map(\.id), before: before, kept: keptIDs)
+        }
         pushLiveActivityUpdate()
         if heroCurrentHP <= 0 {
             enterDefeat(context: context)
@@ -528,12 +547,59 @@ final class CombatViewModel {
         advance()
     }
 
+    // MARK: Undo
+
+    /// What a decision is about to overwrite, taken before it changes anything.
+    private func snapshot(hero: Hero) -> DecisionSnapshot {
+        DecisionSnapshot(
+            combo: combo, peakCombo: peakCombo, multiplierTenths: comboMultiplier.tenths,
+            perfectRoom: perfectRoom, heroHighestCombo: hero.highestCombo
+        )
+    }
+
+    private func recordDecision(_ kind: DecisionHistory.Kind, ids: [String], before: DecisionSnapshot, kept: [String] = []) {
+        decisionHistory.record(DecisionHistory.Entry(
+            kind: kind, itemIDs: ids, before: before, keptRecordIDs: kept, recordedAt: Date()
+        ))
+    }
+
+    /// Whether the last decision can still be taken back: inside the window, and only while a card is up
+    /// (once the Room Summary shows, flipping a card there is the way back).
+    func canUndo(now: Date = Date()) -> Bool {
+        phase == .fighting && decisionHistory.canUndo(now: now)
+    }
+
+    /// Takes back the last decision and puts everything it changed back: the streak, the multiplier, the
+    /// room's perfect state, the hero's best combo, the pending decision(s), the saved "kept" record(s), and
+    /// the queue position. Returns false (and changes nothing) when there is nothing to undo.
+    @discardableResult
+    func undoLastDecision(hero: Hero, context: ModelContext, now: Date = Date()) -> Bool {
+        guard phase == .fighting, currentRoomIndex > 0, let entry = decisionHistory.undoLast(now: now) else { return false }
+        let ids = Set(entry.itemIDs)
+        pendingDecisions.removeAll { ids.contains($0.item.id) }
+        combo = entry.before.combo
+        peakCombo = entry.before.peakCombo
+        comboMultiplier = ComboMultiplier(tenths: entry.before.multiplierTenths)
+        perfectRoom = entry.before.perfectRoom
+        hero.highestCombo = entry.before.heroHighestCombo
+        for assetID in entry.keptRecordIDs {
+            let descriptor = FetchDescriptor<SparedMediaRecord>(predicate: #Predicate { $0.assetIdentifier == assetID })
+            for record in (try? context.fetch(descriptor)) ?? [] { context.delete(record) }
+        }
+        try? context.save()
+        currentRoomIndex -= 1
+        HapticsService.shared.light()
+        pushLiveActivityUpdate()
+        return true
+    }
+
     /// HP hit zero: the run ends here. The defeat screen offers a paid rally
     /// (full heal, resume the room) or a retreat back to the Library.
     /// D1: nothing takes HP any more, so this is only reached if `DiveRules.keepingCostsHP` is turned
     /// back on. The path is kept, not deleted, until the owner decides it is gone for good.
     private func enterDefeat(context: ModelContext) {
         phase = .defeated
+        decisionHistory.clear()
         // SALVAGE RULES — what the hero keeps vs loses on HP drain:
         // • Secured rewards (banked at each Room Summary confirmation: base
         //   XP, gems, quest/achievement progress, lifetime counters) are
