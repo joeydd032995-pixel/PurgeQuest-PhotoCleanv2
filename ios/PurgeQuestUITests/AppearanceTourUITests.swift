@@ -337,7 +337,9 @@ final class AppearanceTourUITests: XCTestCase {
         let confirmGroup = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Confirm'")).firstMatch
         let delete = app.buttons["DELETE"]
         var shotDuplicate = false
-        for _ in 0..<40 {
+        // A hard budget, so a screen that stops answering can never run the job out of time.
+        let deadline = Date().addingTimeInterval(180)
+        for _ in 0..<40 where Date() < deadline {
             if summaryTitle.exists { break }
             if confirmGroup.exists {
                 // A duplicate group resolves through its own per-copy controls instead of DELETE and KEEP.
