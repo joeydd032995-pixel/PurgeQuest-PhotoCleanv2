@@ -65,11 +65,21 @@ def swift_profiles() -> dict:
     return out
 
 
+def shop_price(base: int) -> int:
+    """What the shop charges for an item with this base price: the same rule as Models/ShopPricing.swift
+    (the base times 2.5 to the nearest 10 gems, halves rounding up; zero stays zero)."""
+    return 0 if base <= 0 else ((base * 25 + 50) // 100) * 10
+
+
 def catalog_ids_and_prices() -> dict:
     src = GAMEDATA.read_text()
     out = {}
-    for m in re.finditer(r'CosmeticItem\(id: "([^"]+)",.*?priceGems: (\d+)(?:,\s*isUnlocked: (true|false))?', src):
-        out[m.group(1)] = {"price": int(m.group(2)), "unlocked": m.group(3) == "true"}
+    # A price is either a plain number (a free item, 0) or ShopPricing.price(base: N), the catalog's base price.
+    pattern = (r'CosmeticItem\(id: "([^"]+)",.*?priceGems: '
+               r'(?:ShopPricing\.price\(base: (\d+)\)|(\d+))(?:,\s*isUnlocked: (true|false))?')
+    for m in re.finditer(pattern, src):
+        price = shop_price(int(m.group(2))) if m.group(2) is not None else int(m.group(3))
+        out[m.group(1)] = {"price": price, "unlocked": m.group(4) == "true"}
     return out
 
 
