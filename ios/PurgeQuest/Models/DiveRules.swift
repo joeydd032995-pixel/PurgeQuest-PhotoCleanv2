@@ -33,6 +33,18 @@ enum DiveRules {
     /// decision; rewinds one step"). `DecisionHistory` applies it.
     static let undoWindowSeconds: TimeInterval = 5
 
+    // MARK: Gems
+
+    /// Gems for deleting one photo, and one video (owner, 17 November 2026). A flat award: it no longer
+    /// scales with the file's size, the combo or the hero's class. Perfect Room, the full-dive bonus and quest
+    /// rewards are separate and unchanged.
+    static let gemsPerPhoto = 2
+    static let gemsPerVideo = 3
+
+    static func gemsForDeleting(isVideo: Bool) -> Int {
+        isVideo ? gemsPerVideo : gemsPerPhoto
+    }
+
     /// The HP a keep takes from the hero. Nothing, while `keepingCostsHP` is off.
     static func damageForKeeping(_ monster: MonsterType, costsHP: Bool = DiveRules.keepingCostsHP) -> Int {
         costsHP ? monster.attackDamage : 0

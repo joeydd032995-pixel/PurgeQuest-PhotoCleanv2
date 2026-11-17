@@ -143,6 +143,12 @@ enum GameDataService {
                     item.iconName = seed.iconName
                     didChange = true
                 }
+                // Prices are the catalog's too (ShopPricing), so a change to the economy reaches existing installs.
+                // What a player already owns stays owned; only what an item costs from now on changes.
+                if item.priceGems != seed.priceGems {
+                    item.priceGems = seed.priceGems
+                    didChange = true
+                }
             } else {
                 context.insert(seed)
                 didChange = true
@@ -156,51 +162,51 @@ enum GameDataService {
     private static var cosmeticSeeds: [CosmeticItem] {
         let base: [CosmeticItem] = [
         CosmeticItem(id: "skin.iron",      name: "Iron Vestments",     subtitle: "Default armor. Sturdy and bold.",      type: .skin,   iconName: "shield.lefthalf.filled", priceGems: 0,    isUnlocked: true),
-        CosmeticItem(id: "skin.embers",    name: "Ember Cloak",        subtitle: "Heat-treated weave. Pairs with ember headgear.", type: .skin, iconName: "flame.fill",             priceGems: 250),
-        CosmeticItem(id: "skin.archivist", name: "Archivist Robes",    subtitle: "Catalog-grade cloth for methodical cleanups.", type: .skin, iconName: "books.vertical.fill",    priceGems: 400),
-        CosmeticItem(id: "skin.warden",    name: "Warden Guise",       subtitle: "Heavy plate built for deep vault runs.", type: .skin,   iconName: "person.crop.rectangle.stack.fill", priceGems: 550),
+        CosmeticItem(id: "skin.embers",    name: "Ember Cloak",        subtitle: "Heat-treated weave. Pairs with ember headgear.", type: .skin, iconName: "flame.fill",             priceGems: ShopPricing.price(base: 250)),
+        CosmeticItem(id: "skin.archivist", name: "Archivist Robes",    subtitle: "Catalog-grade cloth for methodical cleanups.", type: .skin, iconName: "books.vertical.fill",    priceGems: ShopPricing.price(base: 400)),
+        CosmeticItem(id: "skin.warden",    name: "Warden Guise",       subtitle: "Heavy plate built for deep vault runs.", type: .skin,   iconName: "person.crop.rectangle.stack.fill", priceGems: ShopPricing.price(base: 550)),
         CosmeticItem(id: "head.iron",      name: "Iron Helm",          subtitle: "Standard issue. Battle-scarred plating.", type: .head,  iconName: "crown.fill",             priceGems: 0,    isUnlocked: true),
-        CosmeticItem(id: "head.starhat",   name: "Starlit Cap",        subtitle: "Enchanted brim. Survey-grade focus.",  type: .head,   iconName: "graduationcap.fill",     priceGems: 300),
-        CosmeticItem(id: "head.hood",      name: "Shadow Hood",        subtitle: "Low-profile hood for stealth runs.",    type: .head,   iconName: "theatermasks.fill",      priceGems: 500),
-        CosmeticItem(id: "head.dragoncrest", name: "Dragoncrest Helm", subtitle: "Scaled plating forged from elite kills.", type: .head,  iconName: "flame.fill",             priceGems: 650),
+        CosmeticItem(id: "head.starhat",   name: "Starlit Cap",        subtitle: "Enchanted brim. Survey-grade focus.",  type: .head,   iconName: "graduationcap.fill",     priceGems: ShopPricing.price(base: 300)),
+        CosmeticItem(id: "head.hood",      name: "Shadow Hood",        subtitle: "Low-profile hood for stealth runs.",    type: .head,   iconName: "theatermasks.fill",      priceGems: ShopPricing.price(base: 500)),
+        CosmeticItem(id: "head.dragoncrest", name: "Dragoncrest Helm", subtitle: "Scaled plating forged from elite kills.", type: .head,  iconName: "flame.fill",             priceGems: ShopPricing.price(base: 650)),
         CosmeticItem(id: "armor.iron",     name: "Purge Plate",        subtitle: "Standard cuirass. Reliable in every room.", type: .armor,  iconName: "tshirt.fill",            priceGems: 0,    isUnlocked: true),
-        CosmeticItem(id: "armor.arcanist", name: "Arcanist Robes",     subtitle: "Mana-woven layers with verdigris trim.", type: .armor,  iconName: "moon.stars.fill",        priceGems: 450),
-        CosmeticItem(id: "armor.dragonhide", name: "Dragonhide Cloak", subtitle: "Reinforced seams. Tailored from elite kills.", type: .armor, iconName: "lizard.fill",         priceGems: 800),
+        CosmeticItem(id: "armor.arcanist", name: "Arcanist Robes",     subtitle: "Mana-woven layers with verdigris trim.", type: .armor,  iconName: "moon.stars.fill",        priceGems: ShopPricing.price(base: 450)),
+        CosmeticItem(id: "armor.dragonhide", name: "Dragonhide Cloak", subtitle: "Reinforced seams. Tailored from elite kills.", type: .armor, iconName: "lizard.fill",         priceGems: ShopPricing.price(base: 800)),
         CosmeticItem(id: "weapon.shard",   name: "Crystal Shard",      subtitle: "Standard issue. Sharp and dependable.", type: .weapon, iconName: "rhombus.fill",           priceGems: 0,    isUnlocked: true),
-        CosmeticItem(id: "weapon.reel",    name: "Film Reel Blade",    subtitle: "Video-themed edge for media cleanups.",  type: .weapon, iconName: "film.fill",              priceGems: 600,  isVideoThemed: true),
-        CosmeticItem(id: "weapon.gem",     name: "Gem Hammer",         subtitle: "+10% gems on critical hits.",          type: .weapon, iconName: "hammer.fill",            priceGems: 800),
-        CosmeticItem(id: "weapon.staff",   name: "Archmage Staff",     subtitle: "Channels deletion magic at range.",    type: .weapon, iconName: "wand.and.stars",         priceGems: 500),
-        CosmeticItem(id: "weapon.stormblade", name: "Storm Cleaver",   subtitle: "Conductive edge for fast clears.",      type: .weapon, iconName: "bolt.fill",              priceGems: 700),
-        CosmeticItem(id: "weapon.chevron", name: "Oathbreaker Greatsword", subtitle: "Oathbound steel with a chevron-forged edge.", type: .weapon, iconName: "chevron.up.chevron.down", priceGems: 750),
-        CosmeticItem(id: "weapon.ruby",    name: "Ruby Fang",              subtitle: "Crimson steel, reinforced point.",      type: .weapon, iconName: "diamond.fill",            priceGems: 700),
-        CosmeticItem(id: "weapon.arcane",  name: "Arcane Edge",            subtitle: "Verdigris-forged longsword. Mage pairing.", type: .weapon, iconName: "wand.and.rays",           priceGems: 900),
-        CosmeticItem(id: "shield.crux",    name: "Azure Aegis",            subtitle: "Gilded cross guard on a blue field.",   type: .shield, iconName: "shield.fill",             priceGems: 500),
-        CosmeticItem(id: "shield.templar", name: "Templar Bulwark",        subtitle: "Oathbound. Scarlet cross on a white field.", type: .shield, iconName: "checkmark.shield.fill", priceGems: 850),
-        CosmeticItem(id: "pet.familiar",   name: "Pixel Familiar",     subtitle: "Loyal scout. Flags clutter on approach.", type: .pet,    iconName: "pawprint.fill",           priceGems: 350,  isUnlocked: true),
-        CosmeticItem(id: "pet.reel",       name: "Reel Spirit",        subtitle: "Spectral reel. Hovers over video rooms.", type: .pet,    iconName: "video.circle.fill",      priceGems: 550,  isVideoThemed: true),
-        CosmeticItem(id: "pet.owl",        name: "Nocturne Owl",       subtitle: "Night watch. Never misses a duplicate.", type: .pet,    iconName: "bird.fill",              priceGems: 450),
+        CosmeticItem(id: "weapon.reel",    name: "Film Reel Blade",    subtitle: "Video-themed edge for media cleanups.",  type: .weapon, iconName: "film.fill",              priceGems: ShopPricing.price(base: 600),  isVideoThemed: true),
+        CosmeticItem(id: "weapon.gem",     name: "Gem Hammer",         subtitle: "+10% gems on critical hits.",          type: .weapon, iconName: "hammer.fill",            priceGems: ShopPricing.price(base: 800)),
+        CosmeticItem(id: "weapon.staff",   name: "Archmage Staff",     subtitle: "Channels deletion magic at range.",    type: .weapon, iconName: "wand.and.stars",         priceGems: ShopPricing.price(base: 500)),
+        CosmeticItem(id: "weapon.stormblade", name: "Storm Cleaver",   subtitle: "Conductive edge for fast clears.",      type: .weapon, iconName: "bolt.fill",              priceGems: ShopPricing.price(base: 700)),
+        CosmeticItem(id: "weapon.chevron", name: "Oathbreaker Greatsword", subtitle: "Oathbound steel with a chevron-forged edge.", type: .weapon, iconName: "chevron.up.chevron.down", priceGems: ShopPricing.price(base: 750)),
+        CosmeticItem(id: "weapon.ruby",    name: "Ruby Fang",              subtitle: "Crimson steel, reinforced point.",      type: .weapon, iconName: "diamond.fill",            priceGems: ShopPricing.price(base: 700)),
+        CosmeticItem(id: "weapon.arcane",  name: "Arcane Edge",            subtitle: "Verdigris-forged longsword. Mage pairing.", type: .weapon, iconName: "wand.and.rays",           priceGems: ShopPricing.price(base: 900)),
+        CosmeticItem(id: "shield.crux",    name: "Azure Aegis",            subtitle: "Gilded cross guard on a blue field.",   type: .shield, iconName: "shield.fill",             priceGems: ShopPricing.price(base: 500)),
+        CosmeticItem(id: "shield.templar", name: "Templar Bulwark",        subtitle: "Oathbound. Scarlet cross on a white field.", type: .shield, iconName: "checkmark.shield.fill", priceGems: ShopPricing.price(base: 850)),
+        CosmeticItem(id: "pet.familiar",   name: "Pixel Familiar",     subtitle: "Loyal scout. Flags clutter on approach.", type: .pet,    iconName: "pawprint.fill",           priceGems: ShopPricing.price(base: 350),  isUnlocked: true),
+        CosmeticItem(id: "pet.reel",       name: "Reel Spirit",        subtitle: "Spectral reel. Hovers over video rooms.", type: .pet,    iconName: "video.circle.fill",      priceGems: ShopPricing.price(base: 550),  isVideoThemed: true),
+        CosmeticItem(id: "pet.owl",        name: "Nocturne Owl",       subtitle: "Night watch. Never misses a duplicate.", type: .pet,    iconName: "bird.fill",              priceGems: ShopPricing.price(base: 450)),
         // Forest Spirits: pixel-art sprouts that bob beside the hero.
-        CosmeticItem(id: "pet.spiritBlue",   name: "Bluebell Sprout", subtitle: "A calm forest spirit in a river-blue tunic.", type: .pet, iconName: "leaf.fill", priceGems: 400),
-        CosmeticItem(id: "pet.spiritGreen",  name: "Mossy Sprout",    subtitle: "A forest spirit who naps on mossy stones.",   type: .pet, iconName: "leaf.fill", priceGems: 400),
-        CosmeticItem(id: "pet.spiritRed",    name: "Ember Sprout",    subtitle: "A forest spirit with a warm red tunic.",      type: .pet, iconName: "leaf.fill", priceGems: 400),
-        CosmeticItem(id: "pet.spiritYellow", name: "Sunny Sprout",    subtitle: "A forest spirit that follows the light.",     type: .pet, iconName: "leaf.fill", priceGems: 400),
+        CosmeticItem(id: "pet.spiritBlue",   name: "Bluebell Sprout", subtitle: "A calm forest spirit in a river-blue tunic.", type: .pet, iconName: "leaf.fill", priceGems: ShopPricing.price(base: 400)),
+        CosmeticItem(id: "pet.spiritGreen",  name: "Mossy Sprout",    subtitle: "A forest spirit who naps on mossy stones.",   type: .pet, iconName: "leaf.fill", priceGems: ShopPricing.price(base: 400)),
+        CosmeticItem(id: "pet.spiritRed",    name: "Ember Sprout",    subtitle: "A forest spirit with a warm red tunic.",      type: .pet, iconName: "leaf.fill", priceGems: ShopPricing.price(base: 400)),
+        CosmeticItem(id: "pet.spiritYellow", name: "Sunny Sprout",    subtitle: "A forest spirit that follows the light.",     type: .pet, iconName: "leaf.fill", priceGems: ShopPricing.price(base: 400)),
         CosmeticItem(id: "fx.sparks",      name: "Golden Sparks",      subtitle: "Default delete burst.",                type: .effect, iconName: "flame.fill",              priceGems: 0,    isUnlocked: true),
-        CosmeticItem(id: "fx.filmstrip",   name: "Film Strip Burst",   subtitle: "Video-themed burst on delete.",        type: .effect, iconName: "film.stack.fill",        priceGems: 450,  isVideoThemed: true),
-        CosmeticItem(id: "fx.aurora",      name: "Aurora Trail",       subtitle: "Cool-toned trail on delete.",          type: .effect, iconName: "moon.haze.fill",         priceGems: 700),
+        CosmeticItem(id: "fx.filmstrip",   name: "Film Strip Burst",   subtitle: "Video-themed burst on delete.",        type: .effect, iconName: "film.stack.fill",        priceGems: ShopPricing.price(base: 450),  isVideoThemed: true),
+        CosmeticItem(id: "fx.aurora",      name: "Aurora Trail",       subtitle: "Cool-toned trail on delete.",          type: .effect, iconName: "moon.haze.fill",         priceGems: ShopPricing.price(base: 700)),
         // Seasonal exclusives. Seeded year-round so event screens can reference
         // them; the Armory surfaces them when the matching event is live.
-        CosmeticItem(id: "skin.wraithcloak",    name: "Wraithcloak",     subtitle: "Ash-gray weave from the Phantom Purge.", type: .skin,   iconName: "moon.stars.fill",          priceGems: 600),
-        CosmeticItem(id: "skin.sandblade",      name: "Sandblade Garb",  subtitle: "Sun-bleached cloth for summer runs.",    type: .skin,   iconName: "sun.max.fill",             priceGems: 550),
-        CosmeticItem(id: "weapon.fireworkBlade", name: "Firework Blade", subtitle: "New Year steel with a bursting edge.",   type: .weapon, iconName: "fireworks",                priceGems: 750),
-        CosmeticItem(id: "pet.beachSpirit",     name: "Beach Spirit",    subtitle: "A wave-shaped companion that drifts.",   type: .pet,    iconName: "fish.fill",                 priceGems: 500),
-        CosmeticItem(id: "pet.ghost",           name: "Sheet Ghost",     subtitle: "A bobbing sheet from the Phantom Purge.", type: .pet,   iconName: "moon.stars.fill",           priceGems: 600),
-        CosmeticItem(id: "pet.bat",             name: "Cave Bat",        subtitle: "A flapping scout from the Phantom Purge.", type: .pet,  iconName: "bird.fill",                 priceGems: 500),
-        CosmeticItem(id: "fx.spectral",         name: "Spectral Wisps",  subtitle: "Pale wisps rise on every delete.",       type: .effect, iconName: "ghost.fill",               priceGems: 600),
-        CosmeticItem(id: "fx.confetti",         name: "Confetti Vault",  subtitle: "New Year burst on every delete.",        type: .effect, iconName: "party.popper.fill",        priceGems: 550),
-        CosmeticItem(id: "fx.hearts",           name: "Heartbreak Trail", subtitle: "A Valentine trail follows the blade.",  type: .effect, iconName: "heart.fill",               priceGems: 550),
+        CosmeticItem(id: "skin.wraithcloak",    name: "Wraithcloak",     subtitle: "Ash-gray weave from the Phantom Purge.", type: .skin,   iconName: "moon.stars.fill",          priceGems: ShopPricing.price(base: 600)),
+        CosmeticItem(id: "skin.sandblade",      name: "Sandblade Garb",  subtitle: "Sun-bleached cloth for summer runs.",    type: .skin,   iconName: "sun.max.fill",             priceGems: ShopPricing.price(base: 550)),
+        CosmeticItem(id: "weapon.fireworkBlade", name: "Firework Blade", subtitle: "New Year steel with a bursting edge.",   type: .weapon, iconName: "fireworks",                priceGems: ShopPricing.price(base: 750)),
+        CosmeticItem(id: "pet.beachSpirit",     name: "Beach Spirit",    subtitle: "A wave-shaped companion that drifts.",   type: .pet,    iconName: "fish.fill",                 priceGems: ShopPricing.price(base: 500)),
+        CosmeticItem(id: "pet.ghost",           name: "Sheet Ghost",     subtitle: "A bobbing sheet from the Phantom Purge.", type: .pet,   iconName: "moon.stars.fill",           priceGems: ShopPricing.price(base: 600)),
+        CosmeticItem(id: "pet.bat",             name: "Cave Bat",        subtitle: "A flapping scout from the Phantom Purge.", type: .pet,  iconName: "bird.fill",                 priceGems: ShopPricing.price(base: 500)),
+        CosmeticItem(id: "fx.spectral",         name: "Spectral Wisps",  subtitle: "Pale wisps rise on every delete.",       type: .effect, iconName: "ghost.fill",               priceGems: ShopPricing.price(base: 600)),
+        CosmeticItem(id: "fx.confetti",         name: "Confetti Vault",  subtitle: "New Year burst on every delete.",        type: .effect, iconName: "party.popper.fill",        priceGems: ShopPricing.price(base: 550)),
+        CosmeticItem(id: "fx.hearts",           name: "Heartbreak Trail", subtitle: "A Valentine trail follows the blade.",  type: .effect, iconName: "heart.fill",               priceGems: ShopPricing.price(base: 550)),
         // Permanent character upgrades. Ownership lives on the hero record;
         // the Titan Blade additionally requires an earned achievement.
-        CosmeticItem(id: "upgrade.titanBlade",  name: "Titan Blade",     subtitle: "Doubles the size of your held weapon.",  type: .upgrade, iconName: "arrow.up.left.and.arrow.down.right", priceGems: 3000),
+        CosmeticItem(id: "upgrade.titanBlade",  name: "Titan Blade",     subtitle: "Doubles the size of your held weapon.",  type: .upgrade, iconName: "arrow.up.left.and.arrow.down.right", priceGems: ShopPricing.price(base: 3000)),
         ]
         // Race gear: 40 staves, 40 shields, each race's signature weapon, and
         // the eight race armor sets. Seeded alongside the classic cosmetics so
