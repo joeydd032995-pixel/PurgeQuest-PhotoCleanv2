@@ -17,6 +17,8 @@ struct SettingsView: View {
     @State private var confirmForgetSpared = false
     @State private var showHeroCard = false
     @State private var showCredits = false
+    /// How the last scan's thumbnails loaded; read when the screen opens.
+    @State private var photoLoading = ThumbnailTallyStore.loadSummary()
 
     /// Light / Dark / System, shared with the app root.
     @AppStorage(AppearanceMode.storageKey) private var appearanceRaw = AppearanceMode.system.rawValue
@@ -137,6 +139,17 @@ struct SettingsView: View {
                         .foregroundStyle(.textSecondary)
                 }
 
+                section(title: "Photo loading, last dive") {
+                    Text(photoLoading ?? "No dive has been scanned yet.")
+                        .font(.callout)
+                        .foregroundStyle(.textSecondary)
+                        .textSelection(.enabled)
+                    Text("If photos show as Null Portrait, send this to the developer.")
+                        .font(.caption)
+                        .foregroundStyle(.textSecondary)
+                }
+                .accessibilityIdentifier("settings.photoLoading")
+
                 section(title: "About") {
                     HStack { Text("Version"); Spacer(); Text("1.0.0").foregroundStyle(.textSecondary) }
                     Button {
@@ -166,6 +179,7 @@ struct SettingsView: View {
         }
         .scrollIndicators(.hidden)
         .background(DungeonBackgroundView())
+        .onAppear { photoLoading = ThumbnailTallyStore.loadSummary() }
         .alert("Reset all data?", isPresented: $confirmReset) {
             Button("Cancel", role: .cancel) {}
             Button("Reset", role: .destructive) { resetAllData() }
