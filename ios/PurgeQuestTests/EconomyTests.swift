@@ -47,7 +47,7 @@ struct EconomyTests {
         let expected = ["helm": 630, "chest": 880, "legs": 700, "hands": 550]   // 250, 350, 280, 220
         for design in GearCatalog.armorSets {
             let suffix = String(design.id.split(separator: ".").last ?? "")
-            #expect(design.priceGems == expected[suffix], design.id)
+            #expect(design.priceGems == expected[suffix], "\(design.id)")
         }
     }
 
