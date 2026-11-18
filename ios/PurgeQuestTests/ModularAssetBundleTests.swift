@@ -95,13 +95,16 @@ struct ModularAssetBundleTests {
         GameDataService.seedCosmeticsIfNeeded(in: context)
         let items = Dictionary(uniqueKeysWithValues: try context.fetch(FetchDescriptor<CosmeticItem>()).map { ($0.id, $0) })
         let expected: [(String, String, Int, Bool)] = [
-            ("head.starhat", "Starlit Cap", 300, false), ("head.hood", "Shadow Hood", 500, false), ("head.dragoncrest", "Dragoncrest Helm", 650, false),
-            ("weapon.shard", "Crystal Shard", 0, true), ("weapon.reel", "Film Reel Blade", 600, false), ("weapon.gem", "Gem Hammer", 800, false),
-            ("weapon.staff", "Archmage Staff", 500, false), ("weapon.stormblade", "Storm Cleaver", 700, false),
-            ("weapon.chevron", "Oathbreaker Greatsword", 750, false), ("weapon.ruby", "Ruby Fang", 700, false),
-            ("weapon.arcane", "Arcane Edge", 900, false), ("weapon.fireworkBlade", "Firework Blade", 750, false),
-            ("shield.crux", "Azure Aegis", 500, false), ("shield.templar", "Templar Bulwark", 850, false),
-            ("upgrade.titanBlade", "Titan Blade", 3000, false)
+            // Prices are the base price times 2.5 to the nearest 10 gems (ShopPricing, 17 November 2026):
+            // 300 → 750, 500 → 1250, 650 → 1630, 600 → 1500, 800 → 2000, 700 → 1750, 750 → 1880, 900 → 2250,
+            // 850 → 2130, 3000 → 7500. A free item stays free.
+            ("head.starhat", "Starlit Cap", 750, false), ("head.hood", "Shadow Hood", 1250, false), ("head.dragoncrest", "Dragoncrest Helm", 1630, false),
+            ("weapon.shard", "Crystal Shard", 0, true), ("weapon.reel", "Film Reel Blade", 1500, false), ("weapon.gem", "Gem Hammer", 2000, false),
+            ("weapon.staff", "Archmage Staff", 1250, false), ("weapon.stormblade", "Storm Cleaver", 1750, false),
+            ("weapon.chevron", "Oathbreaker Greatsword", 1880, false), ("weapon.ruby", "Ruby Fang", 1750, false),
+            ("weapon.arcane", "Arcane Edge", 2250, false), ("weapon.fireworkBlade", "Firework Blade", 1880, false),
+            ("shield.crux", "Azure Aegis", 1250, false), ("shield.templar", "Templar Bulwark", 2130, false),
+            ("upgrade.titanBlade", "Titan Blade", 7500, false)
         ]
         for (id, name, price, unlocked) in expected {
             let item = try #require(items[id], "\(id)")

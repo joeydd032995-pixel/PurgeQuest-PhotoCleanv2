@@ -106,7 +106,7 @@ What this does **not** show:
 - **Bestiary**: every monster met, with its signal, lore and review guidance (`Views/Bestiary/`).
 
 ### Cosmetics & avatar
-- A **41-item cosmetic catalog** (skin, head, armor, legs, hands, weapon, shield, pet, effect, upgrade), bought with gems earned by freeing space.
+- A **41-item cosmetic catalog** (skin, head, armor, legs, hands, weapon, shield, pet, effect, upgrade), bought with gems earned by deleting: 2 per photo and 3 per video. Prices are the catalog base times 2.5 (`Models/ShopPricing.swift`).
 - The hero is drawn from layered sprite art with skin, hair, eye and armor-dye recoloring, held weapons and shields, and a **Forge** for editing a look as a draft until saved (`Views/Hero/`). A hand-drawn vector avatar (`MiniAvatarView` and its `MiniAvatar+…` files) serves compact contexts.
 - Two color themes (Classic, Verdigris) and a Light / Dark / System appearance setting.
 
@@ -259,7 +259,7 @@ Full steps, the StoreKit configuration and the device test pass are in [`ios/REA
 | UI tests: Forge draft/save/cancel, onboarding after a reset, a Light/Dark screenshot tour (artifact `ui-snapshots`) | `ios/PurgeQuestUITests/` | `ios.yml` |
 | Build and static analysis | | `.github/workflows/objective-c-xcode.yml` |
 | Screenshots of every screen, Light and Dark, with a synthetic photo library in the simulator (artifact `ui-snapshots-tour`; not a merge gate) | `tools/ci/make_library_fixtures.py` | `.github/workflows/ui-snapshots.yml`, on pull requests that touch the app |
-| **Linux harness**: the pure-Foundation sources and their suites, no Xcode or simulator. 409 tests in 30 suites, including the date range, the classifier, the audit that every monster named by a quest or event can be summoned, capture rules, rule precedence, video frame signals, the scan's bounded-concurrency and deadline helpers, what the app may say about photo access, the dive's keep and combo rules and room count, the wording of its numbers, the glossary of game words, the plain wording of the quests, what each quest counts (pinned to the classifier's own thresholds), and the undo rule (one step, five seconds) | `tools/swift_harness/run.sh` | `.github/workflows/modular-assets.yml` |
+| **Linux harness**: the pure-Foundation sources and their suites, no Xcode or simulator. 422 tests in 32 suites, including the date range, the classifier, the audit that every monster named by a quest or event can be summoned, capture rules, rule precedence, video frame signals, the scan's bounded-concurrency and deadline helpers, what the app may say about photo access, the dive's keep and combo rules and room count, the wording of its numbers, the glossary of game words, the plain wording of the quests, what each quest counts (pinned to the classifier's own thresholds), and the undo rule (one step, five seconds) | `tools/swift_harness/run.sh` | `.github/workflows/modular-assets.yml` |
 | Asset checks: manifests, masks, fits, the approval gate (content-pinned), catalog drift, generated docs up to date. 72 tests | `tools/modular_assets/` | `modular-assets.yml` |
 | Repository contracts: offline, no dependencies, recoverable deletion, StoreKit IDs, App Group and snapshot agreement, privacy manifests, versions | `tools/ci/repo_guard.py` | `.github/workflows/repo-guard.yml` |
 | Detection benchmark on real photographs (not in CI) | `tools/detection_bench/` | by hand |

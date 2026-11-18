@@ -59,7 +59,7 @@ nonisolated enum GearCatalog {
                     subtitle: "\(setName) staff, tier \(tierNames[tier - 1]). Fits any race's grip.",
                     slot: .weapon,
                     kind: .staff,
-                    priceGems: 200 + setIndex * 80 + (tier - 1) * 60,
+                    priceGems: ShopPricing.price(base: 200 + setIndex * 80 + (tier - 1) * 60),
                     iconName: "wand.and.stars",
                     resourceName: "staff_\(setIndex + 1)_\(tier)"
                 ))
@@ -79,7 +79,7 @@ nonisolated enum GearCatalog {
                     subtitle: "\(setName) shield, tier \(tierNames[tier - 1]). Off-hand ready.",
                     slot: .shield,
                     kind: nil,
-                    priceGems: 150 + setIndex * 70 + (tier - 1) * 50,
+                    priceGems: ShopPricing.price(base: 150 + setIndex * 70 + (tier - 1) * 50),
                     iconName: "shield.fill",
                     resourceName: "shield_\(setIndex + 1)_\(tier)"
                 ))
@@ -108,7 +108,7 @@ nonisolated enum GearCatalog {
                 subtitle: subtitle,
                 slot: .weapon,
                 kind: isBow ? .bow : .sword,
-                priceGems: 400,
+                priceGems: ShopPricing.price(base: 400),
                 iconName: isBow ? "arrowtriangle.right.fill" : "sword.fill",
                 resourceName: "\(race.rawValue)_v1_\(isBow ? "bow" : "sword")"
             )
@@ -136,7 +136,7 @@ nonisolated enum GearCatalog {
                     subtitle: "Signature armor of the \(race.displayName). Dye it in the Forge.",
                     slot: category.slot,
                     kind: nil,
-                    priceGems: category.price,
+                    priceGems: ShopPricing.price(base: category.price),
                     iconName: category.icon,
                     resourceName: nil
                 ))

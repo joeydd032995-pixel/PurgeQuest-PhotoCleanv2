@@ -498,12 +498,14 @@ nonisolated struct HeroAppearance: Equatable, Codable {
         return decoded
     }
 
-    /// Maps equipped gear value to a plaque tier.
+    /// Maps equipped gear value to a plaque tier. `maxEquippedPrice` is the shop price. The tiers were set at
+    /// base prices of 250, 500, 750 and 900 gems, and the shop now charges `ShopPricing` times those, so the
+    /// thresholds are scaled the same way: a piece stays in the tier it was in before the economy changed.
     static func gearTier(maxEquippedPrice: Int, hasPremium: Bool) -> GearTier {
-        if hasPremium || maxEquippedPrice >= 900 { return .mythic }
-        if maxEquippedPrice >= 750 { return .legendary }
-        if maxEquippedPrice >= 500 { return .elite }
-        if maxEquippedPrice >= 250 { return .seasoned }
+        if hasPremium || maxEquippedPrice >= ShopPricing.price(base: 900) { return .mythic }
+        if maxEquippedPrice >= ShopPricing.price(base: 750) { return .legendary }
+        if maxEquippedPrice >= ShopPricing.price(base: 500) { return .elite }
+        if maxEquippedPrice >= ShopPricing.price(base: 250) { return .seasoned }
         return .standard
     }
 }

@@ -119,11 +119,13 @@ struct HeroAppearanceTests {
 
     @Test func gearTierMappingFollowsEquippedValue() {
         #expect(HeroAppearance.gearTier(maxEquippedPrice: 0, hasPremium: false) == .standard)
-        #expect(HeroAppearance.gearTier(maxEquippedPrice: 249, hasPremium: false) == .standard)
-        #expect(HeroAppearance.gearTier(maxEquippedPrice: 250, hasPremium: false) == .seasoned)
-        #expect(HeroAppearance.gearTier(maxEquippedPrice: 600, hasPremium: false) == .elite)
-        #expect(HeroAppearance.gearTier(maxEquippedPrice: 750, hasPremium: false) == .legendary)
-        #expect(HeroAppearance.gearTier(maxEquippedPrice: 900, hasPremium: false) == .mythic)
+        // Shop prices are ShopPricing times the base: the tier edges that were 250, 500, 750 and 900 are now
+        // 630, 1250, 1880 and 2250, so a piece stays in the tier it was in.
+        #expect(HeroAppearance.gearTier(maxEquippedPrice: 629, hasPremium: false) == .standard)
+        #expect(HeroAppearance.gearTier(maxEquippedPrice: 630, hasPremium: false) == .seasoned)
+        #expect(HeroAppearance.gearTier(maxEquippedPrice: 1500, hasPremium: false) == .elite)
+        #expect(HeroAppearance.gearTier(maxEquippedPrice: 1880, hasPremium: false) == .legendary)
+        #expect(HeroAppearance.gearTier(maxEquippedPrice: 2250, hasPremium: false) == .mythic)
         #expect(HeroAppearance.gearTier(maxEquippedPrice: 0, hasPremium: true) == .mythic)
     }
 

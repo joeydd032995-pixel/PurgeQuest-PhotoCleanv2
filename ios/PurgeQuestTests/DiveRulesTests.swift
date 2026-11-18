@@ -127,4 +127,11 @@ struct DiveRulesTests {
         #expect(ComboMultiplier(tenths: 18).plain == "1.8")
         #expect(ComboMultiplier(tenths: 20).plain == "2.0")
     }
+
+    // MARK: Gems
+
+    @Test func aPhotoPaysTwoGemsAndAVideoThree() {
+        #expect(DiveRules.gemsForDeleting(isVideo: false) == 2)
+        #expect(DiveRules.gemsForDeleting(isVideo: true) == 3)
+    }
 }

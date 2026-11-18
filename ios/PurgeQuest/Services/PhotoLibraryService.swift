@@ -34,11 +34,18 @@ struct LibraryStats: Sendable {
     var estimatedGB: Double { Double(estimatedBytes) / 1_073_741_824.0 }
 }
 
+/// Logs from PhotoKit's completion handler, which runs on a queue of its own and so must not touch the main actor's
+/// state. A `Logger` is safe to use from anywhere.
+nonisolated private let thumbnailLog = Logger(subsystem: "PurgeQuest", category: "Scan")
+
 @MainActor
 final class PhotoLibraryService {
     static let shared = PhotoLibraryService()
 
     let cachingManager = PHCachingImageManager()
+
+    /// How the thumbnail requests of the scan in progress are going; saved for Settings when the scan ends.
+    nonisolated let thumbnailTally = ThumbnailTallyBox()
 
     private static let log = Logger(subsystem: "PurgeQuest", category: "Scan")
 
@@ -122,19 +129,64 @@ final class PhotoLibraryService {
 
     // MARK: - Thumbnails
 
+    /// The thumbnail for one asset, or nil if PhotoKit could not give one. A nil here makes the classifier call the
+    /// photo broken media ("Null Portrait"), so one failed request must not decide it: a failure is often passing
+    /// (an iCloud original still arriving, a request cancelled under load, PhotoKit busy). The first request is the
+    /// fast one; if it comes back empty, one more is made with the plain manager, asking for the finished image
+    /// only. Why a request failed is logged either way, so a library full of "Null Portrait" can be diagnosed.
     func requestThumbnail(for asset: PHAsset, size: CGSize) async -> UIImage? {
+        let first = await requestImage(for: asset, size: size, retrying: false)
+        if let image = first.image {
+            thumbnailTally.recordLoaded(afterRetry: false)
+            return image
+        }
+        let second = await requestImage(for: asset, size: size, retrying: true)
+        if let image = second.image {
+            thumbnailTally.recordLoaded(afterRetry: true)
+            return image
+        }
+        thumbnailTally.recordFailed(second.failure ?? first.failure ?? ThumbnailFailure())
+        Self.log.error("thumbnail: gave up on \(asset.localIdentifier, privacy: .private) after two requests")
+        return nil
+    }
+
+    /// What one request came to: the image, or why there was none.
+    private struct ThumbnailOutcome {
+        var image: UIImage?
+        var failure: ThumbnailFailure?
+    }
+
+    private func requestImage(for asset: PHAsset, size: CGSize, retrying: Bool) async -> ThumbnailOutcome {
         await withCheckedContinuation { cont in
             let options = PHImageRequestOptions()
-            options.deliveryMode = .opportunistic
             options.isNetworkAccessAllowed = true
-            options.resizeMode = .fast
+            if retrying {
+                options.deliveryMode = .highQualityFormat
+                options.resizeMode = .exact
+            } else {
+                options.deliveryMode = .opportunistic
+                options.resizeMode = .fast
+            }
+            let manager: PHImageManager = retrying ? PHImageManager.default() : cachingManager
             var resumed = false
-            cachingManager.requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: options) { image, info in
+            manager.requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: options) { image, info in
                 let isDegraded = (info?[PHImageResultIsDegradedKey] as? Bool) ?? false
                 if isDegraded { return }
                 guard !resumed else { return }
                 resumed = true
-                cont.resume(returning: image)
+                guard image == nil else {
+                    cont.resume(returning: ThumbnailOutcome(image: image, failure: nil))
+                    return
+                }
+                let error = info?[PHImageErrorKey] as? NSError
+                let failure = ThumbnailFailure(
+                    cancelled: (info?[PHImageCancelledKey] as? Bool) ?? false,
+                    inCloud: (info?[PHImageResultIsInCloudKey] as? Bool) ?? false,
+                    errorDomain: error?.domain,
+                    errorCode: error?.code ?? 0
+                )
+                thumbnailLog.error("thumbnail: request \(retrying ? "2" : "1", privacy: .public) returned no image (\(failure.label, privacy: .public))")
+                cont.resume(returning: ThumbnailOutcome(image: nil, failure: failure))
             }
         }
     }
@@ -181,12 +233,14 @@ final class PhotoLibraryService {
         // wait on it again (see VisionAnalysisService.analyze).
         let visionTripwire = BlockingCall.Tripwire()
         let started = Date()
+        if withThumbnails { thumbnailTally.reset() }
         Self.log.info("scan: enriching \(assets.count, privacy: .public) assets")
         let items = await BoundedConcurrency.map(assets, limit: Self.enrichmentConcurrency) { asset in
             await self.buildMediaItem(from: asset, thumbSize: thumbSize, withThumbnails: withThumbnails, visionTripwire: visionTripwire)
         }
         let seconds = Date().timeIntervalSince(started)
         let visionState = visionTripwire.isTripped ? "stopped answering" : "answered"
+        if withThumbnails { ThumbnailTallyStore.save(thumbnailTally.current) }
         Self.log.info("scan: built \(items.count, privacy: .public) items in \(seconds, format: .fixed(precision: 1), privacy: .public) s; vision \(visionState, privacy: .public)")
         return items
     }

@@ -414,8 +414,8 @@ final class CombatViewModel {
         advance()
     }
 
-    /// XP + gems for slaying one monster at the given combo multiplier, with class perks and the active
-    /// seasonal event folded in. The multiplier runs from ×1.0 to ×2.0 (`ComboMultiplier`; D1 lowered the
+    /// XP + gems for slaying one monster. XP is at the given combo multiplier, with class perks and the active
+    /// seasonal event folded in; gems are the flat award for a photo or a video. The multiplier runs from ×1.0 to ×2.0 (`ComboMultiplier`; D1 lowered the
     /// top from ×3), and at either end it pays exactly the base or double it.
     private func reward(for item: MediaItem, hero: Hero, multiplier: ComboMultiplier) -> (xp: Int, gems: Int) {
         var xp = multiplier.scaled(item.monsterType.xpReward)
@@ -424,10 +424,8 @@ final class CombatViewModel {
         let seasonalBonus = SeasonalEventService.shared.xpMultiplier(for: item.monsterType)
         if seasonalBonus > 1.0 { xp = Int(Double(xp) * seasonalBonus) }
 
-        let mb = Double(item.estimatedBytes) / 1_048_576.0
-        var gems = multiplier.scaled(Int(mb.rounded()))
-        let gemBonus = hero.heroClass.gemMultiplier
-        if gemBonus > 1.0 { gems = Int(Double(gems) * gemBonus) }
+        // Gems are a flat award per photo or video (DiveRules): not scaled by size, combo or class.
+        let gems = DiveRules.gemsForDeleting(isVideo: item.kind == .video)
 
         return (xp, gems)
     }
