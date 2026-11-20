@@ -14,7 +14,7 @@ Paste the block below into the Notes field. It is written for a reviewer who has
 
 **Photo access.** The app asks for read/write library access because it both reads items and requests their deletion. It works with Limited access, showing only the selected items. The app never saves or adds anything to the library.
 
-**Purchases.** Three consumable gem packs and three non-consumable cosmetic unlocks. All are cosmetic: every game mode and all cleanup functionality is free. Each purchase gives a named item or a fixed number of gems, never a random reward. Restore is at the top right of the Armory tab.
+**Purchases.** Five consumable gem packs and three non-consumable cosmetic unlocks. All are cosmetic: every game mode and all cleanup functionality is free. Each purchase gives a named item or a fixed number of gems, never a random reward. Restore is at the top right of the Armory tab.
 
 **How to test quickly.**
 1. Launch, pass onboarding, allow photo access.
