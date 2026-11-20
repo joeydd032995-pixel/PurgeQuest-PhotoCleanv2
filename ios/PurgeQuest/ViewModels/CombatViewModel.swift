@@ -128,7 +128,7 @@ final class CombatViewModel {
     // MARK: - Setup
 
     /// Gem cost to rally after defeat: restores full HP and resumes the room.
-    static let rallyCostGems: Int = 100
+    static let rallyCostGems: Int = DiveRules.rallyCostGems
 
     // MARK: - Secured vs pending rewards
     //
@@ -144,9 +144,9 @@ final class CombatViewModel {
     // secured when the dive completes (`applyFullDiveBonus`) and are discarded
     // when HP drains (`enterDefeat`), which also resets the combo to 1×.
     static let perfectRoomBonusXP: Int = 30
-    static let perfectRoomBonusGems: Int = 15
+    static let perfectRoomBonusGems: Int = DiveRules.perfectRoomBonusGems
     static let fullDiveBonusXPPerRoom: Int = 20
-    static let fullDiveBonusGemsPerRoom: Int = 10
+    static let fullDiveBonusGemsPerRoom: Int = DiveRules.fullDiveBonusGemsPerRoom
 
     private var pendingBonusXP = 0
     private var pendingBonusGems = 0
