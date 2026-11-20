@@ -3,7 +3,7 @@
   "nonRenewingSubscriptions" : [],
   "products" : [
     {
-      "displayPrice" : "1.99",
+      "displayPrice" : "0.99",
       "familyShareable" : false,
       "internalID" : "PQGEMS500",
       "localizations" : [
@@ -18,7 +18,7 @@
       "type" : "Consumable"
     },
     {
-      "displayPrice" : "3.99",
+      "displayPrice" : "1.99",
       "familyShareable" : false,
       "internalID" : "PQGEMS1250",
       "localizations" : [
@@ -33,7 +33,7 @@
       "type" : "Consumable"
     },
     {
-      "displayPrice" : "5.99",
+      "displayPrice" : "3.99",
       "familyShareable" : false,
       "internalID" : "PQGEMS2000",
       "localizations" : [
@@ -48,7 +48,7 @@
       "type" : "Consumable"
     },
     {
-      "displayPrice" : "9.99",
+      "displayPrice" : "6.99",
       "familyShareable" : false,
       "internalID" : "PQGEMS4500",
       "localizations" : [
@@ -63,7 +63,7 @@
       "type" : "Consumable"
     },
     {
-      "displayPrice" : "19.99",
+      "displayPrice" : "9.99",
       "familyShareable" : false,
       "internalID" : "PQGEMS10000",
       "localizations" : [
