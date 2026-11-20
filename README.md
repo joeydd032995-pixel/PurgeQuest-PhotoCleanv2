@@ -111,7 +111,7 @@ What this does **not** show:
 - Two color themes (Classic, Verdigris) and a Light / Dark / System appearance setting.
 
 ### Monetization
-- **StoreKit 2**: three consumable gem packs and three non-consumable cosmetic unlocks (`Services/StoreKitService.swift`, local test configuration in `Configuration.storekit`). All gameplay and all cleanup is free; purchases are cosmetic, and nothing bought is random.
+- **StoreKit 2**: five consumable gem packs (500, 1,250, 2,000, 4,500 and 10,000 gems) and three non-consumable cosmetic unlocks (`Services/StoreKitService.swift`, local test configuration in `Configuration.storekit`). All gameplay and all cleanup is free; purchases are cosmetic, and nothing bought is random.
 
 ### Seasonal events
 - Four date-based events (Halloween, New Year, Summer, Valentine's), each paying bonus XP for a few monsters and selling event gear only while it runs (`Services/SeasonalEventService.swift`, bonuses in `SeasonalBonusCatalog`). No remote config; local date matching only. A bonus for the Duplicate Dragon pays for the whole family, as quests do.

@@ -27,7 +27,7 @@ source and not otherwise verified.
 ## Blocks submission: only the owner can close these
 
 1. **Signing.** `DEVELOPMENT_TEAM` is blank. Set the team, register `com.purgequest.app` and `com.purgequest.app.purgequestwidget`, and provision the App Group `group.com.purgequest.app` for both.
-2. **App Store Connect products.** Create the six in-app purchases with exactly the IDs in `StoreKitService.ProductID`, with prices and review screenshots. They exist today only in the local StoreKit file.
+2. **App Store Connect products.** Create the eight in-app purchases with exactly the IDs in `StoreKitService.ProductID`, with prices and review screenshots. They exist today only in the local StoreKit file.
 3. **Privacy policy URL.** The policy is written: [`../privacy/PRIVACY_POLICY.md`](../privacy/PRIVACY_POLICY.md). What is left is to publish it at a public web address (the repository is going private, so not from this repository) and enter that URL in App Store Connect. Re-read it against the app before submitting.
 4. **A device pass.** Nothing in this repository has been run on an iPhone by the sessions that wrote it. Work through "Device test pass" in `ios/README-SETUP.md`, including iPad compatibility mode (Apple reviews iPhone-only apps on iPad too).
 5. **Make the repository private before launch.** The owner decided on 13 November 2026 to keep it public until then. It holds the third-party art files (`docs/CREDITS.md`), and the licenses are clearest when they are not publicly downloadable. Private repositories get limited free CI minutes, and macOS minutes count extra, so check Settings > Billing first and consider dropping the duplicate `tour` job in `ui-snapshots.yml` (the same tour runs inside `ios.yml`).

@@ -11,7 +11,7 @@ Set by the owner on 17 November 2026: **a photo pays 2 gems, a video 3, and ever
 | A Perfect Room (nothing kept) | 10 (5 photos' worth) | `DiveRules.perfectRoomBonusGems` |
 | Each room of a completed dive | 8 (4 photos' worth) | `DiveRules.fullDiveBonusGemsPerRoom` |
 | A daily quest | 20 to 100, see below | `QuestCatalog.daily` (`Models/GameContent.swift`) |
-| Real-money gem packs | 250, 1,000, 5,000 | `Services/StoreKitService.swift` |
+| Real-money gem packs | 500, 1,250, 2,000, 4,500, 10,000 | `Services/StoreKitService.swift` |
 
 A deletion's gems are flat: not scaled by file size, the combo or the hero's class. Keeping a photo earns nothing and costs nothing.
 
@@ -48,7 +48,9 @@ Four of the seven are drawn each day. The old rewards (60 to 140) were set when 
 | Arcane Edge (2,250) | | 1,125 |
 | Titan Blade (7,500) | | 3,750 |
 
-## Not changed, and why
+## The real-money gem packs
 
-- **The real-money gem packs.** Their gem counts are tied to App Store product ids (`com.purgequest.gems.250` and so on) and to the listings in App Store Connect, which this repository cannot change. A 250 pack now buys less than half of the cheapest item. Changing the counts is the owner's decision and needs the store listings changed to match.
+Set by the owner on 20 November 2026: five consumable packs (`com.purgequest.gems.500`, `.1250`, `.2000`, `.4500`, `.10000`). The dollar prices in `Configuration.storekit` are **test values** (1.99, 3.99, 5.99, 9.99, 19.99, the same gems-per-dollar curve as before); the real prices are set in App Store Connect, which this repository cannot do. The products are not live yet (the launch checklist's App Store Connect step is still open), so renaming them cost nothing. What a pack buys: 500 gems is just short of the cheapest paid item (550), 2,000 buys one Gem Hammer, and 10,000 buys the Titan Blade (7,500) with change.
+
+## Not changed, and why
 - **The hero classes' gem perks** (Voidstalker and Water Shaman +15%, Earth Shaman +10%). On a flat 2 or 3 gems a per-deletion bonus rounds away to nothing, so they do nothing today.
