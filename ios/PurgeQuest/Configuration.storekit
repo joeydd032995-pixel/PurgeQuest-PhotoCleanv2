@@ -33,7 +33,7 @@
       "type" : "Consumable"
     },
     {
-      "displayPrice" : "3.49",
+      "displayPrice" : "2.99",
       "familyShareable" : false,
       "internalID" : "PQGEMS2000",
       "localizations" : [
@@ -48,7 +48,7 @@
       "type" : "Consumable"
     },
     {
-      "displayPrice" : "6.99",
+      "displayPrice" : "5.49",
       "familyShareable" : false,
       "internalID" : "PQGEMS4500",
       "localizations" : [

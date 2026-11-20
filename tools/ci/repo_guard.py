@@ -17,6 +17,7 @@ Checks:
      cosmetic catalog, and the Wraith monsters have a sheet.
  10. StoreKit: the local Configuration.storekit and StoreKitService.ProductID list the same products,
      each with the same kind (consumable or not).
+     The gem packs also end in 9 cents and each bigger pack is dearer and better value (more gems a dollar).
  11. App Group: both entitlements name one identical group, both targets use that name and the same
      snapshot key, and the snapshot struct has the same fields on both sides.
  12. Privacy manifests: the app and the widget each ship a PrivacyInfo.xcprivacy that declares no
@@ -268,6 +269,25 @@ for case, pid in code_products.items():
         failures.append(f"storekit: '{pid}' is {kind} in Configuration.storekit but StoreKitService treats it otherwise")
 if storekit.get("subscriptionGroups"):
     failures.append("storekit: Configuration.storekit has subscriptions; the app sells none")
+
+# 10b. Gem packs (owner, 20 November 2026): every price ends in 9 cents, and a bigger pack is always the better
+# value, so the price rises with the size and the gems a dollar rise with it.
+from decimal import Decimal
+_packs = []
+for _p in storekit.get("products", []):
+    _m = re.fullmatch(r"com\.purgequest\.gems\.(\d+)", _p["productID"])
+    if _m and _p["type"] == "Consumable":
+        _packs.append((int(_m.group(1)), _p["displayPrice"]))
+_packs.sort()
+for _gems, _price in _packs:
+    if not _price.endswith("9"):
+        failures.append(f"storekit: the {_gems}-gem pack costs {_price}, which does not end in 9 cents")
+for (_g1, _p1), (_g2, _p2) in zip(_packs, _packs[1:]):
+    if Decimal(_p2) <= Decimal(_p1):
+        failures.append(f"storekit: the {_g2}-gem pack ({_p2}) is not dearer than the {_g1}-gem pack ({_p1})")
+    elif Decimal(_g2) / Decimal(_p2) <= Decimal(_g1) / Decimal(_p1):
+        failures.append(f"storekit: the {_g2}-gem pack ({_p2}) is not better value than the {_g1}-gem pack ({_p1}): "
+                        f"{Decimal(_g2) / Decimal(_p2):.0f} against {Decimal(_g1) / Decimal(_p1):.0f} gems a dollar")
 
 # 11. App Group and the widget snapshot
 def entitled_groups(rel):
