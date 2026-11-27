@@ -14,9 +14,11 @@
 //      com.purgequest.cosmetic.embers
 //      com.purgequest.cosmetic.aurora
 //    Consumable:
-//      com.purgequest.gems.250
-//      com.purgequest.gems.1000
-//      com.purgequest.gems.5000
+//      com.purgequest.gems.500
+//      com.purgequest.gems.1250
+//      com.purgequest.gems.2000
+//      com.purgequest.gems.4500
+//      com.purgequest.gems.10000
 //
 
 import Foundation
@@ -31,13 +33,15 @@ final class StoreKitService {
         case videoSlayerBundle = "com.purgequest.cosmetic.videoSlayerBundle"
         case embersSkin        = "com.purgequest.cosmetic.embers"
         case auroraEffect      = "com.purgequest.cosmetic.aurora"
-        case gems250           = "com.purgequest.gems.250"
-        case gems1000          = "com.purgequest.gems.1000"
-        case gems5000          = "com.purgequest.gems.5000"
+        case gems500           = "com.purgequest.gems.500"
+        case gems1250          = "com.purgequest.gems.1250"
+        case gems2000          = "com.purgequest.gems.2000"
+        case gems4500          = "com.purgequest.gems.4500"
+        case gems10000         = "com.purgequest.gems.10000"
 
         var isConsumable: Bool {
             switch self {
-            case .gems250, .gems1000, .gems5000: return true
+            case .gems500, .gems1250, .gems2000, .gems4500, .gems10000: return true
             default: return false
             }
         }
@@ -54,9 +58,11 @@ final class StoreKitService {
 
         var gemAmount: Int {
             switch self {
-            case .gems250:  return 250
-            case .gems1000: return 1000
-            case .gems5000: return 5000
+            case .gems500:   return 500
+            case .gems1250:  return 1250
+            case .gems2000:  return 2000
+            case .gems4500:  return 4500
+            case .gems10000: return 10000
             default: return 0
             }
         }

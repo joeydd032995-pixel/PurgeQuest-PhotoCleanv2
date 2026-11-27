@@ -44,21 +44,37 @@ nonisolated enum QuestProgress {
 
 enum QuestCatalog {
     /// Every quest the daily draw can pick from.
+    ///
+    /// Gem rewards (17 November 2026). Deleting now pays a flat 2 gems for a photo and 3 for a video
+    /// (`DiveRules`), so a quest's gems are set against what the deletions it asks for already pay. A quest
+    /// pays 1.5 to 3.5 times that, the rarer the ask the more, rounded to 5. They were 60 to 140 when a photo
+    /// paid about 2.7 gems and a video tens, which would now be worth 30 to 70 photos each.
+    ///
+    ///   quest                   asks            deletions pay   quest pays   times
+    ///   Blur Beast Hunter       8 photos        16              25           1.6
+    ///   Duplicate Dragon        5 items         10              25           2.5
+    ///   Video Vampire           6 videos        18              40           2.2
+    ///   LongTake Leviathan      3 videos         9              25           2.8
+    ///   Dungeon Clear           25 items        50              75           1.5
+    ///   Memory Hog Hunter       2 videos         6              20           3.3
+    ///   Storage Liberation      500 MB          (about 50 items, 100)        100
+    ///
+    /// XP rewards are unchanged.
     static let daily: [QuestTemplate] = [
         QuestTemplate(title: "Blur Beast Hunter", subtitle: "Delete 8 Blur Beasts: photos that no other monster claims, blurry or sharp. A Live Photo, a screenshot or a duplicate is a different monster.",
-                      kind: .photoSlay, monsterType: .blurBeast, targetCount: 8, rewardXP: 120, rewardGems: 60),
+                      kind: .photoSlay, monsterType: .blurBeast, targetCount: 8, rewardXP: 120, rewardGems: 25),
         QuestTemplate(title: "Duplicate Dragon Slayer", subtitle: "Delete 5 items from duplicate groups, photos or videos. Copies, bursts, edits and repeats all count.",
-                      kind: .photoSlay, monsterType: .duplicateDragon, targetCount: 5, rewardXP: 160, rewardGems: 80),
+                      kind: .photoSlay, monsterType: .duplicateDragon, targetCount: 5, rewardXP: 160, rewardGems: 25),
         QuestTemplate(title: "Video Vampire Purge", subtitle: "Delete 6 Video Vampires: videos of 100 MB or more but under 500 MB that fit no other monster.",
-                      kind: .videoSlay, monsterType: .videoVampire, targetCount: 6, rewardXP: 200, rewardGems: 100),
+                      kind: .videoSlay, monsterType: .videoVampire, targetCount: 6, rewardXP: 200, rewardGems: 40),
         QuestTemplate(title: "LongTake Leviathan", subtitle: "Delete 3 LongTake Leviathans: videos over two minutes, under 500 MB, not 4K and not duplicates.",
-                      kind: .videoSlay, monsterType: .longTakeLeviathan, targetCount: 3, rewardXP: 240, rewardGems: 140),
+                      kind: .videoSlay, monsterType: .longTakeLeviathan, targetCount: 3, rewardXP: 240, rewardGems: 25),
         QuestTemplate(title: "Storage Liberation", subtitle: "Delete 500 MB of photos and videos today. Each room you confirm adds the size of what you deleted.",
-                      kind: .mbFreed, monsterType: nil, targetCount: 500, rewardXP: 180, rewardGems: 120),
+                      kind: .mbFreed, monsterType: nil, targetCount: 500, rewardXP: 180, rewardGems: 100),
         QuestTemplate(title: "Dungeon Clear", subtitle: "Delete 25 photos or videos. Any monster counts; Shades do not.",
-                      kind: .anySlay, monsterType: nil, targetCount: 25, rewardXP: 150, rewardGems: 70),
+                      kind: .anySlay, monsterType: nil, targetCount: 25, rewardXP: 150, rewardGems: 75),
         QuestTemplate(title: "Memory Hog Hunter", subtitle: "Delete 2 Memory Hog Minotaurs: videos of 500 MB or more but under 1 GB, not duplicates.",
-                      kind: .videoSlay, monsterType: .memoryHogMinotaur, targetCount: 2, rewardXP: 220, rewardGems: 140)
+                      kind: .videoSlay, monsterType: .memoryHogMinotaur, targetCount: 2, rewardXP: 220, rewardGems: 20)
     ]
 }
 

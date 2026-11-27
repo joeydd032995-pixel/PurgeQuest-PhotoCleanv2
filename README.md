@@ -111,7 +111,7 @@ What this does **not** show:
 - Two color themes (Classic, Verdigris) and a Light / Dark / System appearance setting.
 
 ### Monetization
-- **StoreKit 2**: three consumable gem packs and three non-consumable cosmetic unlocks (`Services/StoreKitService.swift`, local test configuration in `Configuration.storekit`). All gameplay and all cleanup is free; purchases are cosmetic, and nothing bought is random.
+- **StoreKit 2**: five consumable gem packs (500, 1,250, 2,000, 4,500 and 10,000 gems) and three non-consumable cosmetic unlocks (`Services/StoreKitService.swift`, local test configuration in `Configuration.storekit`). All gameplay and all cleanup is free; purchases are cosmetic, and nothing bought is random.
 
 ### Seasonal events
 - Four date-based events (Halloween, New Year, Summer, Valentine's), each paying bonus XP for a few monsters and selling event gear only while it runs (`Services/SeasonalEventService.swift`, bonuses in `SeasonalBonusCatalog`). No remote config; local date matching only. A bonus for the Duplicate Dragon pays for the whole family, as quests do.
@@ -259,7 +259,7 @@ Full steps, the StoreKit configuration and the device test pass are in [`ios/REA
 | UI tests: Forge draft/save/cancel, onboarding after a reset, a Light/Dark screenshot tour (artifact `ui-snapshots`) | `ios/PurgeQuestUITests/` | `ios.yml` |
 | Build and static analysis | | `.github/workflows/objective-c-xcode.yml` |
 | Screenshots of every screen, Light and Dark, with a synthetic photo library in the simulator (artifact `ui-snapshots-tour`; not a merge gate) | `tools/ci/make_library_fixtures.py` | `.github/workflows/ui-snapshots.yml`, on pull requests that touch the app |
-| **Linux harness**: the pure-Foundation sources and their suites, no Xcode or simulator. 422 tests in 32 suites, including the date range, the classifier, the audit that every monster named by a quest or event can be summoned, capture rules, rule precedence, video frame signals, the scan's bounded-concurrency and deadline helpers, what the app may say about photo access, the dive's keep and combo rules and room count, the wording of its numbers, the glossary of game words, the plain wording of the quests, what each quest counts (pinned to the classifier's own thresholds), and the undo rule (one step, five seconds) | `tools/swift_harness/run.sh` | `.github/workflows/modular-assets.yml` |
+| **Linux harness**: the pure-Foundation sources and their suites, no Xcode or simulator. 429 tests in 33 suites, including the date range, the classifier, the audit that every monster named by a quest or event can be summoned, capture rules, rule precedence, video frame signals, the scan's bounded-concurrency and deadline helpers, what the app may say about photo access, the dive's keep and combo rules and room count, the wording of its numbers, the glossary of game words, the plain wording of the quests, what each quest counts (pinned to the classifier's own thresholds), and the undo rule (one step, five seconds) | `tools/swift_harness/run.sh` | `.github/workflows/modular-assets.yml` |
 | Asset checks: manifests, masks, fits, the approval gate (content-pinned), catalog drift, generated docs up to date. 72 tests | `tools/modular_assets/` | `modular-assets.yml` |
 | Repository contracts: offline, no dependencies, recoverable deletion, StoreKit IDs, App Group and snapshot agreement, privacy manifests, versions | `tools/ci/repo_guard.py` | `.github/workflows/repo-guard.yml` |
 | Detection benchmark on real photographs (not in CI) | `tools/detection_bench/` | by hand |

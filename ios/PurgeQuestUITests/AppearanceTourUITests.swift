@@ -83,7 +83,9 @@ final class AppearanceTourUITests: XCTestCase {
                 let row = app.buttons["dashboard.dates"]
                 if row.waitForExistence(timeout: 5) {
                     row.tap()
-                    if app.buttons["dates.apply"].waitForExistence(timeout: 5) {
+                    // 20 s, not 5: this is the first sheet a cold simulator presents, and on a slow runner 5 s was not
+                    // always enough (the screen it waits on is the same one that passes on a warm run).
+                    if app.buttons["dates.apply"].waitForExistence(timeout: 20) {
                         settle(1.0)
                         shot("dates-\(palette)-\(mode)-2-sheet")
                         // Pull the sheet up to its full height so the date rows and quick picks show too.
@@ -373,8 +375,17 @@ final class AppearanceTourUITests: XCTestCase {
                         shot("\(mode)-12-undo-pill")
                         shotPill = true
                         let p = pill.frame
+                        // Measure against whichever decision controls are on screen now. After a delete the next card can
+                        // be a duplicate group, which has per-copy buttons and no "Delete" or "Keep" (or the room can have
+                        // ended). A control that is not there is skipped: asking an absent element for its frame fails the
+                        // test, and this test must only ever report.
+                        var covered: [String] = []
+                        for name in ["Delete", "Keep", "Mark this copy for deletion", "Keep this copy"] {
+                            let control = app.buttons[name]
+                            if control.exists, p.intersects(control.frame) { covered.append(name) }
+                        }
                         note("measure (\(mode)): Undo pill \(Int(p.width))x\(Int(p.height)) pt at y \(Int(p.minY)), "
-                             + "overlaps Delete: \(p.intersects(delete.frame)), overlaps Keep: \(p.intersects(keep.frame))")
+                             + "covers: \(covered.isEmpty ? "no decision button" : covered.joined(separator: ", "))")
                     }
                 }
             } else {

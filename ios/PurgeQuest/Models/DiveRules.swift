@@ -45,6 +45,17 @@ enum DiveRules {
         isVideo ? gemsPerVideo : gemsPerPhoto
     }
 
+    /// The dive bonuses are sized in photos' worth of gems, so they follow the flat award instead of drifting
+    /// from it. A Perfect Room (a room with nothing kept) pays 5 photos' worth, 10 gems, a quarter of what 20
+    /// photos pay. Each room of a completed dive pays 4 photos' worth, 8 gems. Both are the shares they were
+    /// when a photo paid about 2.7 gems (15 and 10).
+    static let perfectRoomBonusGems = 5 * gemsPerPhoto
+    static let fullDiveBonusGemsPerRoom = 4 * gemsPerPhoto
+
+    /// What the Rally costs after a defeat (off while keeping is free): its old 100 gems under the shop's
+    /// multiplier, because it is a price like any other.
+    static let rallyCostGems = ShopPricing.price(base: 100)
+
     /// The HP a keep takes from the hero. Nothing, while `keepingCostsHP` is off.
     static func damageForKeeping(_ monster: MonsterType, costsHP: Bool = DiveRules.keepingCostsHP) -> Int {
         costsHP ? monster.attackDamage : 0
