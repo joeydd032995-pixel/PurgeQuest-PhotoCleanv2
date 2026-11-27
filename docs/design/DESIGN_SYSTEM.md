@@ -29,7 +29,12 @@ sheen along a panel's top edge and a low shadow under it.
    capitals in `.dungeonCaption`; explanations are `.caption2` in the secondary text color.
 7. **Wording that says what is measured stays.** The storage ledger's titles and captions separate
    an estimate from a measurement; restyle them, never shorten them.
-8. **Motion is a spring when a value changes**, and nothing else. No loops, no drifting, no pulses.
+8. **Motion is a spring when a value changes.** Nothing loops, drifts or pulses on its own, with two
+   exceptions the owner decided on 27 November 2026 (D7 in `UI_ASSESSMENT.md`): the front combat card's
+   family edge layer (slow motes, dust, wisps, a glitch flicker, drawn only in the 10 pt bands at the card's
+   sides) and the video preview's slow breath. Both stop under Reduce Motion and Low Power Mode. Drag
+   feedback on the card (tilt, lift, a detent, a pull) follows the finger and is not ambient. A family's hue
+   may appear on the combat card's frame and edge layer, never on a chip, a control or the photo.
 9. **No new hues.** Use the tokens in `Color+Theme.swift`. No neon, pastel or purple. White and
    black appear only at low opacity, as sheen and shadow.
 10. **Check all four looks**: Light and Dark, Classic and Verdigris.

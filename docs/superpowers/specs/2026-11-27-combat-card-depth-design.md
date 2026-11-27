@@ -163,3 +163,20 @@ Two inconsistencies in this document, found when the first PR was planned agains
 
 1. **Invariant 1 versus the drag overlays.** As first written, invariant 1 said only an 8% edge band may touch the photo, yet section 4 let the delete tear reach 34% of the card's width, which overlaps the photo while a finger is down. The owner's own spec asks for overlays that are "edge-weighted and semi-transparent until the very end of the drag". Invariant 1 now applies to the photo **at rest**; the drag overlays are the one bounded exception (34% and 24% of the width, edge alpha at most 0.55 and 0.5, fading to nothing inward, only while dragging). The skins-on and skins-off pixel diff in PR 2 compares the card at rest.
 2. **Commit timing.** Invariant 6 said the callback fires 220 ms after the commit; the code fires it after 80 ms under Reduce Motion. Section 3.4 also put Low Power in the commit row, which would have changed timing for those players. Timing is now stated as it is (220 ms, 80 ms under Reduce Motion) and the commit's snap is tied to Reduce Motion only.
+
+## 13. What parts 2 and 3 built, and where it differs from sections 5 and 6 (27 November 2026)
+
+Built as one PR (plan: `docs/superpowers/plans/2026-11-27-combat-card-depth-pr2-3.md`). The differences, stated plainly:
+
+- **Where things are drawn.** The rim treatments, the combo rim and the Live Photo glow are drawn in the frame's background, which sits behind the photo, and the skins clip to the rim ring besides. The edge layer clips to two 10 pt bands at the card's sides before it draws anything. `CardSkinInvarianceTests` renders all six skins with the combo rim and the glow switched on and requires every pixel inside a flat photo to equal the plain card's, and also requires the dressed card to differ somewhere so the test cannot pass by drawing nothing.
+- **Clutter Undead.** Section 5 put a vignette "on the mat". Built: worn chips and speckle on the rim, no vignette.
+- **Archive Relics.** "One static diagonal light band" is built as a light band in one corner; there are no rays.
+- **Video Phantoms.** The two after-image outlines are clipped to the side bands with everything else, so only the part of each outline inside a band shows.
+- **Storage Behemoths.** Pressure cracks grow on the rim from 60% of the drag; stone chips are thrown outward in the bands when the card commits. The chips are the only thing that starts on a commit, and the commit itself is unchanged.
+- **One `TimelineView` per card** holds for every skin except Glitchborn, which has two at 30 Hz: the edge layer and the nameplate's one-glyph jitter, because the nameplate is outside the edge layer's canvas.
+- **The duplicate card** gets the still Duplicate Dragons frame only. It has no swipe, so no combo rim and no edge layer.
+- **Combo.** The glow, the inner line from x1.5, the arrival pulse, the one sheen at x2.0 and the fade after a keep are as designed. A keep that takes the multiplier down to x1.0 shows a brief ash fade although no glow is left to cool, so its cost is felt there too.
+- **Live Photo.** The iris opens from a fixed point near the card's top-left corner, an approximation of where the LIVE badge sits; the badge moves when an Elite badge is also shown.
+- **Hues.** Every skin colour is `family.accentColor` or the existing `glitchRose` and `videoSapphire`; no new hues and no new image assets.
+
+**Not verified.** No one has seen any of this rendered, and every constant (arc sizes, counts, alphas, speeds, positions) is a first guess. `testZFamilySkins` shoots each skin on the first card in Light and Dark, and `testZCardDragPoses` shoots the drag; those screenshots are how the owner judges the look. Frame rate with a skin running, thermals, Reduce Motion, Low Power Mode, VoiceOver and Dynamic Type still need a device pass.

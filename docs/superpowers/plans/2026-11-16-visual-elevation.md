@@ -149,7 +149,7 @@ Parchment pass, the app icon redrawn from the emblem (D6, needs the owner's art 
 | E-4 | Where do the Dates row and "Next dive" go? | Both into the one "Choose what to clean" sheet (1.4) |
 | E-5 | Rarity on the nameplate: show it? | Yes, from `MonsterRarity`, in text that is not colour only |
 | E-6 | The Armory's gold: it sells things, so is it a primary? | No: gems and prices in brass text, no plate; the plate stays for Enter, Forge and Delete |
-| E-7 | Motion budget: allow the three moments above? | Yes, with Reduce Motion fallbacks and a device pass before they ship |
+| E-7 | Motion budget: allow the three moments above? | Yes, with Reduce Motion fallbacks and a device pass before they ship. **Amended by D7 (27 November 2026):** the combat card's drag feedback, family edge layer, combo cues and the video preview's breath are added, each off under Reduce Motion and Low Power Mode (`2026-11-27-combat-card-depth-design.md`) |
 | E-8 | Does Blur Beast keep its name for the catch-all photo? | Rename the catch-all (for example "Gallery Wanderer") so Blur Beast means blurry again. This changes the classifier's catch-all type, the Blur Beast quest and Bestiary text, and any saved records, so it gets its own small plan before it is built |
 
 ## 9. Risks

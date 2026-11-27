@@ -223,7 +223,7 @@ A deep verdigris-black ground (oxidized copper), aged brass, ivory ink and ember
 
 **Glass over photographs** (theme-invariant, fixes A-02): `glass` `rgba(8,12,10,0.82)` with a 20 pt blur; `on-glass` `#F6F4EC`, `on-glass-2` `#D2D6CC`, and `brass`, `patina`, `ice`, `ember` `-on-glass` (the Dark role values). Worst case, over a white photo: 10.8, 8.1, 6.4, 6.3, 5.9, 5.1 : 1. Today's Light meta text measures 2.2 to 2.4:1.
 
-**Monster families** (Bestiary only, plus a 6 pt dot): `family-undead` `#CFC8B2`/`#6A5C3A`, `-relic` `#9CC97F`/`#3D652D`, `-behemoth` `#9AA6E8`/`#4A55A8`, `-dragon` `#E8806A`/`#96422D`, `-phantom` `#6CC4D6`/`#1C6575`, `-glitch` `#D08AD4`/`#85418E`. Pairwise ΔE2000 at least 17.9 (Dark) and 17.2 (Light), against 10.1 and 3.8 today. Never on combat chips or beside Keep and Delete.
+**Monster families** (Bestiary only, plus a 6 pt dot): `family-undead` `#CFC8B2`/`#6A5C3A`, `-relic` `#9CC97F`/`#3D652D`, `-behemoth` `#9AA6E8`/`#4A55A8`, `-dragon` `#E8806A`/`#96422D`, `-phantom` `#6CC4D6`/`#1C6575`, `-glitch` `#D08AD4`/`#85418E`. Pairwise ΔE2000 at least 17.9 (Dark) and 17.2 (Light), against 10.1 and 3.8 today. Never on combat chips or beside Keep and Delete. **Amended by D7 (27 November 2026):** a family's hue may also appear on the combat card's frame and in the 10 pt bands at its sides (the family skins); still never on a chip, never beside Keep and Delete, never on the photo.
 
 **Also:** four `*-tint` tokens replace 26 ad hoc opacities; `scrim` for dimming; `focus` is a 2 pt `brass` ring.
 
