@@ -42,6 +42,13 @@ struct SwipeMediaCard: View {
         SwipeProgress(dx: Double(dragOffset.width), dy: Double(dragOffset.height), gate: gate, wasArmed: armedSide)
     }
 
+    /// Where the card sits: flying away once committed, else under the finger plus the cosmetic pull toward the tear.
+    private var cardOffset: CGSize {
+        if let away = snapAway { return away }
+        let pull = CGFloat(progress.pull)
+        return CGSize(width: dragOffset.width + pull, height: dragOffset.height)
+    }
+
     var body: some View {
         ZStack {
             cardBody
@@ -62,10 +69,7 @@ struct SwipeMediaCard: View {
         .rotation3DEffect(.degrees(progress.tiltY), axis: (x: 0, y: 1, z: 0), perspective: 0.6)
         .rotation3DEffect(.degrees(progress.tiltX), axis: (x: 1, y: 0, z: 0), perspective: 0.6)
         .scaleEffect(isFront ? punch : 0.94)
-        .offset(
-            x: snapAway?.width ?? (dragOffset.width + CGFloat(progress.pull)),
-            y: snapAway?.height ?? dragOffset.height
-        )
+        .offset(cardOffset)
         .rotationEffect(snapAway == nil ? rotation : .degrees(Double((snapAway?.width ?? 0) / 14)))
         .gesture(isFront ? dragGesture : nil)
         .onChange(of: dragOffset) { _, _ in updateArming() }
@@ -250,9 +254,9 @@ struct SwipeMediaCard: View {
     private var deleteOverlay: some View {
         let strength = max(0, min(1, -dragOffset.width / commitThreshold))
         // Under the gate the armed state shows at once: the stamp jumps to full strength.
-        let stamp = (gate.isStill && armedSide == .delete) ? 1.0 : strength
+        let stamp: CGFloat = (gate.isStill && armedSide == .delete) ? 1 : strength
         return ZStack {
-            TearOverlay(strength: strength, armed: armedSide == .delete, animated: !gate.isStill)
+            TearOverlay(strength: Double(strength), armed: armedSide == .delete, animated: !gate.isStill)
             Text("DELETE")
                 .font(.system(size: 26, weight: .black))
                 .foregroundStyle(.white)
@@ -269,9 +273,9 @@ struct SwipeMediaCard: View {
 
     private var spareOverlay: some View {
         let strength = max(0, min(1, dragOffset.width / commitThreshold))
-        let stamp = (gate.isStill && armedSide == .keep) ? 1.0 : strength
+        let stamp: CGFloat = (gate.isStill && armedSide == .keep) ? 1 : strength
         return ZStack(alignment: .topTrailing) {
-            BarrierOverlay(strength: strength, armed: armedSide == .keep, animated: !gate.isStill)
+            BarrierOverlay(strength: Double(strength), armed: armedSide == .keep, animated: !gate.isStill)
             Text("KEEP")
                 .font(.system(size: 26, weight: .black))
                 .foregroundStyle(.onAccent)

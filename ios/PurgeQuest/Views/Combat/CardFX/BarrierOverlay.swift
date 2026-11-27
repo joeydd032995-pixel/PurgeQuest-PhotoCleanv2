@@ -21,13 +21,14 @@ struct BarrierShape: Shape {
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        let depth = rect.width * widthFraction
+        let depth: CGFloat = rect.width * CGFloat(widthFraction)
         guard depth > 0.5 else { return path }
         // A quadratic curve reaches half of its control offset, so the control sits 2x depth in for an arc `depth` deep.
+        let controlX: CGFloat = rect.maxX - depth * 2
         path.move(to: CGPoint(x: rect.maxX, y: rect.minY))
         path.addQuadCurve(
             to: CGPoint(x: rect.maxX, y: rect.maxY),
-            control: CGPoint(x: rect.maxX - depth * 2, y: rect.midY)
+            control: CGPoint(x: controlX, y: rect.midY)
         )
         if !edgeOnly { path.closeSubpath() }
         return path
@@ -45,21 +46,23 @@ struct BarrierOverlay: View {
     var body: some View {
         let width = EdgeOverlay.barrierWidth(strength: strength, armed: armed)
         let alpha = EdgeOverlay.barrierAlpha(strength: strength)
+        let reach = CGFloat(max(width, 0.01))
+        let fillColors: [Color] = [
+            Color.questAmber.opacity(alpha),
+            Color.questAmber.opacity(alpha * 0.35),
+            Color.questAmber.opacity(0)
+        ]
+        let fill = LinearGradient(colors: fillColors, startPoint: .trailing, endPoint: UnitPoint(x: 1 - reach, y: 0.5))
+        let edgeAlpha: Double = min(1, alpha * (armed ? 2.0 : 1.4))
+        let edgeWidth: CGFloat = armed ? 3 : 1.5
+        let spring: Animation? = animated ? .spring(response: 0.18, dampingFraction: 0.6) : nil
         ZStack {
             BarrierShape(widthFraction: width)
-                .fill(LinearGradient(
-                    colors: [
-                        Color.questAmber.opacity(alpha),
-                        Color.questAmber.opacity(alpha * 0.35),
-                        Color.questAmber.opacity(0)
-                    ],
-                    startPoint: .trailing,
-                    endPoint: UnitPoint(x: 1 - max(width, 0.01), y: 0.5)
-                ))
+                .fill(fill)
             BarrierShape(widthFraction: width, edgeOnly: true)
-                .stroke(Color.questAmber.opacity(min(1, alpha * (armed ? 2.0 : 1.4))), lineWidth: armed ? 3 : 1.5)
+                .stroke(Color.questAmber.opacity(edgeAlpha), lineWidth: edgeWidth)
         }
-        .animation(animated ? .spring(response: 0.18, dampingFraction: 0.6) : nil, value: armed)
+        .animation(spring, value: armed)
         .allowsHitTesting(false)
         .accessibilityHidden(true)
     }

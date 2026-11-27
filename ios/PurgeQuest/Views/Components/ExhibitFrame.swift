@@ -23,13 +23,21 @@ struct ExhibitFrame<Photo: View>: View {
     private let rim: CGFloat = 4
 
     var body: some View {
-        let photoShadow = LightSource.shadowOffset(depth: 3 + 7 * lift)
+        // Every value is typed on its own line: one expression mixing Double, CGFloat and literals is more than the
+        // compiler will type-check in reasonable time.
+        let l = CGFloat(lift)
+        let offset = LightSource.shadowOffset(depth: 3 + 7 * lift)
+        let shadowX = CGFloat(offset.x)
+        let shadowY = CGFloat(offset.y)
+        let shadowRadius: CGFloat = 3 + 9 * l
+        let shadowOpacity: Double = 0.30 * lift
+        let scale: CGFloat = 1 + 0.03 * l
         photo()
             .clipShape(RoundedRectangle(cornerRadius: outer - rim))
             .overlay(RoundedRectangle(cornerRadius: outer - rim).stroke(Color.black.opacity(0.55), lineWidth: 1))
             .overlay(alignment: .bottomLeading) { chipView }
-            .scaleEffect(1 + 0.03 * lift)
-            .shadow(color: .black.opacity(0.30 * lift), radius: 3 + 9 * lift, x: photoShadow.x, y: photoShadow.y)
+            .scaleEffect(scale)
+            .shadow(color: Color.black.opacity(shadowOpacity), radius: shadowRadius, x: shadowX, y: shadowY)
             .padding(rim)
             .background(frameBackground)
     }
@@ -37,25 +45,24 @@ struct ExhibitFrame<Photo: View>: View {
     /// The bronze rim: the plate gradient, the accent and dark keylines, a faint lit edge that moves with the tilt,
     /// and a shadow that deepens as the photo lifts. Light and shadow both come from `LightSource`.
     private var frameBackground: some View {
-        let frameShadow = LightSource.shadowOffset(depth: 2 + 4 * lift)
+        let l = CGFloat(lift)
+        let offset = LightSource.shadowOffset(depth: 2 + 4 * lift)
+        let shadowX = CGFloat(offset.x)
+        let shadowY = CGFloat(offset.y)
+        let shadowRadius: CGFloat = 5 + 8 * l
+        let shadowOpacity: Double = 0.25 + 0.15 * lift
         let points = LightSource.highlightPoints(shiftDegrees: highlightShift)
+        let litStart = UnitPoint(x: CGFloat(points.start.x), y: CGFloat(points.start.y))
+        let litEnd = UnitPoint(x: CGFloat(points.end.x), y: CGFloat(points.end.y))
+        let bevelColors: [Color] = [Color.white.opacity(0.45), Color.white.opacity(0), Color.black.opacity(0.25)]
+        let bevel = LinearGradient(colors: bevelColors, startPoint: litStart, endPoint: litEnd)
+        let litEdge = RoundedRectangle(cornerRadius: outer - 1).stroke(bevel, lineWidth: 1).padding(1)
         return RoundedRectangle(cornerRadius: outer)
             .fill(LinearGradient.goldPlate)
             .overlay(RoundedRectangle(cornerRadius: outer).stroke(accent.opacity(0.5), lineWidth: 1))
             .overlay(RoundedRectangle(cornerRadius: outer).stroke(Color.black.opacity(0.6), lineWidth: 0.5).padding(0.5))
-            .overlay(
-                RoundedRectangle(cornerRadius: outer - 1)
-                    .stroke(
-                        LinearGradient(
-                            colors: [Color.white.opacity(0.45), Color.white.opacity(0), Color.black.opacity(0.25)],
-                            startPoint: UnitPoint(x: points.start.x, y: points.start.y),
-                            endPoint: UnitPoint(x: points.end.x, y: points.end.y)
-                        ),
-                        lineWidth: 1
-                    )
-                    .padding(1)
-            )
-            .shadow(color: .black.opacity(0.25 + 0.15 * lift), radius: 5 + 8 * lift, x: frameShadow.x, y: frameShadow.y)
+            .overlay(litEdge)
+            .shadow(color: Color.black.opacity(shadowOpacity), radius: shadowRadius, x: shadowX, y: shadowY)
     }
 
     /// A blur of the photo under a dark tint, in the fixed on-glass colors, so it reads over any photo.

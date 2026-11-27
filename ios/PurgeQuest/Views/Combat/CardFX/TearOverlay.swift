@@ -22,14 +22,16 @@ struct TearShape: Shape {
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        let depth = rect.width * widthFraction
+        let depth: CGFloat = rect.width * CGFloat(widthFraction)
         guard depth > 0.5 else { return path }
         let steps = 14
         func point(_ i: Int) -> CGPoint {
-            let t = Double(i) / Double(steps)
-            let jag = i.isMultiple(of: 2) ? 1.0 : 0.6
-            let wobble = 0.85 + 0.15 * sin(t * 9)
-            return CGPoint(x: rect.minX + depth * jag * wobble, y: rect.minY + rect.height * t)
+            let t: CGFloat = CGFloat(i) / CGFloat(steps)
+            let jag: CGFloat = i.isMultiple(of: 2) ? 1.0 : 0.6
+            let wobble: CGFloat = 0.85 + 0.15 * sin(t * 9)
+            let x: CGFloat = rect.minX + depth * jag * wobble
+            let y: CGFloat = rect.minY + rect.height * t
+            return CGPoint(x: x, y: y)
         }
         path.move(to: edgeOnly ? point(0) : CGPoint(x: rect.minX, y: rect.minY))
         for i in 0...steps { path.addLine(to: point(i)) }
@@ -52,21 +54,23 @@ struct TearOverlay: View {
     var body: some View {
         let width = EdgeOverlay.tearWidth(strength: strength, armed: armed)
         let alpha = EdgeOverlay.tearAlpha(strength: strength)
+        let reach = CGFloat(max(width, 0.01))
+        let fillColors: [Color] = [
+            Color.black.opacity(alpha),
+            Color.combatCrimsonDeep.opacity(alpha * 0.7),
+            Color.combatCrimson.opacity(0)
+        ]
+        let fill = LinearGradient(colors: fillColors, startPoint: .leading, endPoint: UnitPoint(x: reach, y: 0.5))
+        let edgeAlpha: Double = min(1, alpha * (armed ? 1.8 : 1.2))
+        let edgeWidth: CGFloat = armed ? 2.5 : 1.5
+        let spring: Animation? = animated ? .spring(response: 0.18, dampingFraction: 0.6) : nil
         ZStack {
             TearShape(widthFraction: width)
-                .fill(LinearGradient(
-                    colors: [
-                        Color.black.opacity(alpha),
-                        Color.combatCrimsonDeep.opacity(alpha * 0.7),
-                        Color.combatCrimson.opacity(0)
-                    ],
-                    startPoint: .leading,
-                    endPoint: UnitPoint(x: max(width, 0.01), y: 0.5)
-                ))
+                .fill(fill)
             TearShape(widthFraction: width, edgeOnly: true)
-                .stroke(Color.combatCrimson.opacity(min(1, alpha * (armed ? 1.8 : 1.2))), lineWidth: armed ? 2.5 : 1.5)
+                .stroke(Color.combatCrimson.opacity(edgeAlpha), lineWidth: edgeWidth)
         }
-        .animation(animated ? .spring(response: 0.18, dampingFraction: 0.6) : nil, value: armed)
+        .animation(spring, value: armed)
         .allowsHitTesting(false)
         .accessibilityHidden(true)
     }
