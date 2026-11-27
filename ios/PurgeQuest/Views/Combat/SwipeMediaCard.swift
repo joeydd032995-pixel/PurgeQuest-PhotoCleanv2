@@ -13,6 +13,10 @@ struct SwipeMediaCard: View {
     /// This asset was purged once before and recovered — deleting it again
     /// earns no XP, gems, or quest progress.
     var isShade: Bool = false
+    /// What the combo multiplier means to the rim, and what the last decision did to it. The front card only; the
+    /// card behind keeps the defaults (no glow, no cue).
+    var comboTier = ComboTier(tenths: 10)
+    var comboCue: ComboCue = .none
     let onDelete: () -> Void
     let onSpare: () -> Void
 

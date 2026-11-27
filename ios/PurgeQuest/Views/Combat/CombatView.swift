@@ -227,6 +227,8 @@ struct CombatView: View {
                             item: top,
                             isFront: true,
                             isShade: combat.isShade(top),
+                            comboTier: ComboTier(tenths: combat.comboMultiplier.tenths),
+                            comboCue: combat.comboCue,
                             onDelete: { combat.decideDelete(top, hero: hero) },
                             onSpare: {
                                 if let hero = heroes.first { combat.decideSpare(top, hero: hero, context: modelContext) }
