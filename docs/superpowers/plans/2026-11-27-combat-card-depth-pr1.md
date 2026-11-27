@@ -413,7 +413,7 @@ nonisolated enum EdgeOverlay {
 }
 ```
 
-- [ ] **Step 5: Commit the model.** The first CI run of the harness (after Task 0) must pass: 17 new tests, harness 439 in 33 suites. If a boundary assertion fails (floating point on the 90% line), adjust the **test's** inputs away from the exact boundary, never the thresholds.
+- [ ] **Step 5: Commit the model.** The first CI run of the harness (after Task 0) must pass: 17 new tests, harness 446 in 34 suites (main had moved to 429 in 33 by the time this landed). If a boundary assertion fails (floating point on the 90% line), adjust the **test's** inputs away from the exact boundary, never the thresholds.
 
 ```bash
 git add ios/PurgeQuest/Models/CardFX.swift
@@ -965,7 +965,7 @@ git push
 | D8 | How family skins are built | **Procedural SwiftUI**: no new art, no Metal; a `FamilySkin` seam lets one family move to a shader later | PR 2 of the card design |
 ```
 
-- [ ] **Step 3: README count.** On the Linux harness row, change "422 tests in 32 suites" to "439 tests in 33 suites" and add "the card's swipe, tilt, light and overlay limits" to the list of what it covers.
+- [ ] **Step 3: README count.** On the Linux harness row, change the count to "446 tests in 34 suites" (it read 422 in 32 when this was planned and 429 in 33 after PR #45 landed; 17 new tests and one new suite on top) and add "the card's swipe, tilt, light and overlay limits" to the list of what it covers.
 - [ ] **Step 4: Commit and push.**
 
 ```bash
