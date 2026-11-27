@@ -40,6 +40,8 @@ struct SwipeMediaCard: View {
     @State private var comboSheen: CGFloat = -0.4
     @State private var comboCool: Double = 0
     @State private var comboShown: Double = 0
+    /// A brass glow around the frame while a Live Photo plays.
+    @State private var liveGlow: Double = 0
 
     private let commitThreshold: CGFloat = 110
     private var rotation: Angle {
@@ -55,6 +57,15 @@ struct SwipeMediaCard: View {
         if UITestSupport.skinsDisabled { return nil }
         if isFront, let forced = UITestSupport.forcedSkin { return forced }
         return FamilySkinKind.active(for: item.monsterType.family)
+    }
+
+    /// The Live Photo reveal: a circle opening from the LIVE badge's corner, or the plain cross-fade under the gate.
+    private var liveReveal: AnyTransition {
+        gate.isStill ? AnyTransition.opacity : AnyTransition(IrisTransition(origin: CGPoint(x: 34, y: 34)))
+    }
+
+    private var liveAnimation: Animation {
+        Animation.easeInOut(duration: gate.isStill ? 0.2 : 0.22)
     }
 
     /// The combo on this card's rim, front card only. Nothing shows at x1.0 unless a keep just cooled it.
@@ -95,9 +106,12 @@ struct SwipeMediaCard: View {
                     if item.isLivePhoto, isFront, showLivePlayback {
                         LivePhotoPreviewView(phAssetID: item.id)
                             .onTapGesture {
-                                withAnimation(.easeInOut(duration: 0.2)) { showLivePlayback = false }
+                                withAnimation(liveAnimation) {
+                                    showLivePlayback = false
+                                    liveGlow = 0
+                                }
                             }
-                            .transition(.opacity)
+                            .transition(liveReveal)
                             .accessibilityLabel("Live Photo playing. Tap to stop.")
                     }
                 }
@@ -124,7 +138,10 @@ struct SwipeMediaCard: View {
             // Live Photos: tap the front card to play the paired motion.
             guard isFront, item.isLivePhoto else { return }
             HapticsService.shared.light()
-            withAnimation(.easeInOut(duration: 0.2)) { showLivePlayback.toggle() }
+            withAnimation(liveAnimation) {
+                showLivePlayback.toggle()
+                liveGlow = showLivePlayback ? 1 : 0
+            }
         }
         .task(id: item.id) {
             guard isFront else { return }
@@ -142,6 +159,7 @@ struct SwipeMediaCard: View {
                 VideoPreviewService.shared.stop(forAssetID: item.id)
             }
             showLivePlayback = false
+            liveGlow = 0
         }
         .onChange(of: scenePhase) { _, phase in
             if phase != .active, item.kind == .video {
@@ -171,7 +189,8 @@ struct SwipeMediaCard: View {
                 skin: skin,
                 skinSeed: item.id,
                 crack: crackAmount,
-                combo: comboState
+                combo: comboState,
+                liveGlow: liveGlow
             ) { photoLayer }
             Nameplate(
                 monster: item.monsterType,
@@ -226,7 +245,7 @@ struct SwipeMediaCard: View {
             }
             .overlay {
                 if item.kind == .video, isFront, showLivePreview {
-                    VideoPreviewLayerView()
+                    VideoPreviewStage(gate: gate)
                         .allowsHitTesting(false)
                         .transition(.opacity)
                 }

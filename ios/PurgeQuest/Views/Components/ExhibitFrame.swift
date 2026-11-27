@@ -25,6 +25,8 @@ struct ExhibitFrame<Photo: View>: View {
     var crack: Double = 0
     /// The combo on the front card's rim, or nil for none (the card behind, the duplicate card).
     var combo: ComboRimState? = nil
+    /// 0...1: a brass glow around the frame while a Live Photo plays.
+    var liveGlow: Double = 0
     @ViewBuilder let photo: () -> Photo
 
     private let outer: CGFloat = 12
@@ -71,7 +73,8 @@ struct ExhibitFrame<Photo: View>: View {
         let glowRadius: CGFloat = skin == .phantoms ? 10 : 0
         // The combo's glow also reaches a little outside the frame, never inside it.
         let comboGlowAlpha: Double = (combo?.tier.glowAlpha ?? 0) * (combo?.shown ?? 0) * 0.8
-        let comboGlow: Color = Color.questAmber.opacity(comboGlowAlpha)
+        let liveGlowAlpha: Double = liveGlow * 0.8
+        let comboGlow: Color = Color.questAmber.opacity(min(1, comboGlowAlpha + liveGlowAlpha))
         return RoundedRectangle(cornerRadius: outer)
             .fill(LinearGradient.goldPlate)
             .overlay(RoundedRectangle(cornerRadius: outer).stroke(accent.opacity(0.5), lineWidth: 1))
