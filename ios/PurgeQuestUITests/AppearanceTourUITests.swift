@@ -414,15 +414,33 @@ final class AppearanceTourUITests: XCTestCase {
             ("left-half", "L55"), ("left-armed", "L125"), ("right-half", "R55"), ("right-armed", "R125")
         ]
         for mode in ["dark", "light"] {
-            for pose in poses { captureCardPose(mode, name: pose.name, value: pose.value) }
+            for pose in poses {
+                captureFirstCard(mode, label: "card pose \(pose.name)", shotName: "\(mode)-15-card-\(pose.name)",
+                                 extra: ["-UITestCardPose", pose.value])
+            }
         }
     }
 
+    /// Each family's skin on the first card, in Light and Dark. The first card of a dive is whatever the room dealt, so
+    /// the app is told which skin to wear (`-UITestFamily`). Best-effort, and last, like the poses.
     @MainActor
-    private func captureCardPose(_ mode: String, name: String, value: String) {
-        let app = launch(mode, phase: "main", extra: ["-UITestCardPose", value])
+    func testZFamilySkins() {
+        let families = ["dragons", "undead", "relics", "behemoths", "phantoms", "glitch"]
+        for mode in ["dark", "light"] {
+            for family in families {
+                captureFirstCard(mode, label: "family skin \(family)", shotName: "\(mode)-16-skin-\(family)",
+                                 extra: ["-UITestFamily", family])
+            }
+        }
+    }
+
+    /// Launches, enters the dungeon, waits out the scan with a plain sleep and shoots the first card. Nothing asks the
+    /// app anything while it scans: a scanning app can stop answering accessibility queries.
+    @MainActor
+    private func captureFirstCard(_ mode: String, label: String, shotName: String, extra: [String]) {
+        let app = launch(mode, phase: "main", extra: extra)
         guard app.tabBars.firstMatch.waitForExistence(timeout: 25) else {
-            note("card pose \(name) (\(mode)): the tab bar did not appear")
+            note("\(label) (\(mode)): the tab bar did not appear")
             app.terminate()
             return
         }
@@ -430,15 +448,14 @@ final class AppearanceTourUITests: XCTestCase {
         settle(1.5)
         let enter = app.buttons["Enter the dungeon and start a cleanup session"]
         guard enter.waitForExistence(timeout: 10) else {
-            note("card pose \(name) (\(mode)): the Enter button was not found")
+            note("\(label) (\(mode)): the Enter button was not found")
             app.terminate()
             return
         }
         enter.tap()
         dismissPhotoPrompt()
-        // The scan: a plain sleep, nothing asks the app anything until it has finished.
         settle(25.0)
-        shot("\(mode)-15-card-\(name)")
+        shot(shotName)
         app.terminate()
     }
 
