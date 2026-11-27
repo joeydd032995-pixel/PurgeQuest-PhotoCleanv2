@@ -1,6 +1,6 @@
 # Combat card depth, family skins and commit feedback (design)
 
-**Status:** design approved by the owner section by section on 27 November 2026; the written spec awaits the owner's review. No code yet. Nothing merges without the owner's explicit ask.
+**Status:** design approved by the owner section by section on 27 November 2026; the written spec awaits the owner's review. Revised the same day to close five gaps the owner asked to have closed (section 11). No code yet. Nothing merges without the owner's explicit ask.
 
 **Source:** the owner's "Deep-dive UI/UX specification" of 27 November 2026, section 1 ("Combat Card Experience") and the combat-card parts of sections 6 and 7. That spec has seven workstreams; this document designs **the first only**. The others (atmosphere and light, celebrations and hero presence, dashboard, sound and haptics, onboarding, material and typography and share card) each get their own design, in the order the owner's spec gives.
 
@@ -10,6 +10,8 @@
 |---|---|---|---|
 | D7 | The 27 November spec versus the older rules (`DESIGN_SYSTEM.md` rule 8 "no loops, no pulses"; the assessment's "family hues only in the Bestiary"; E-7 "no idle animation"; E8 "three moments only") | **The new spec supersedes them.** Amended narrowly here: only what this sub-project uses (section 8). Later sub-projects amend more when they need to | 27 Nov 2026 |
 | D8 | Build approach for family skins | **Procedural SwiftUI** (a pure model plus `Canvas`, gradients and `TimelineView` layers). No new art, no Metal, no new project registration. A `FamilySkin` seam lets one family move to a shader later | 27 Nov 2026 |
+
+**Terms and additions to the owner's spec, stated plainly.** The action word is **Keep**, the app's own wording; the owner's spec says "Spare". **Low Power Mode** is added to the Reduce Motion gate; the owner's spec does not mention it.
 
 ## 2. Goal
 
@@ -25,12 +27,13 @@ Foundation only, so it joins the Linux harness (add it to both lists in `tools/s
 
 | Type | What it holds |
 |---|---|
-| `SwipeProgress` | The drag against the 110 pt threshold: signed progress from -1 (full delete) to +1 (full keep), the tilt angles, and an **armed** flag with hysteresis: it arms at 100% of the threshold and disarms below 90%, so jitter at the threshold cannot repeat a haptic |
+| `SwipeProgress` | The drag against the 110 pt threshold: signed progress from -1 (full delete) to +1 (full keep), the tilt angles (Y up to 10 degrees, X up to 8), the lift (0...1, from drag distance), the delete-side **pull** offset (section 4), and an **armed** flag with hysteresis: it arms at 100% of the threshold and disarms below 90%, so jitter at the threshold cannot repeat a haptic |
 | `ComboTier` | From `ComboMultiplier.tenths`: a continuous intensity 0...1 (0 at x1.0), `isHot` from x1.5, `isMax` at x2.0 |
 | `ComboCue` | `.raised`, `.cooled` or `.none`, from the multiplier before and after a decision |
 | `FamilySkinKind` | An exhaustive map from `MonsterFamily` (six cases) |
 | `FXGate` | `.live` or `.still`: `.still` when Reduce Motion or Low Power Mode is on |
 | `SeededGeometry` | Deterministic crack, notch and chip positions from the item id, in bounds |
+| `LightSource` | One constant: the torch sits at top-centre, 15 degrees left of vertical, so the light direction on screen is the unit vector (sin 15, cos 15) = (0.26, 0.97), y down. The bevel highlight, the frame and photo shadow offsets and the glint line all read it; tilt shifts the highlight angle by up to 20 degrees. Sub-project 2 (atmosphere and lighting) may change the value, never the call sites |
 
 ### 3.2 View layers
 
@@ -40,20 +43,39 @@ New folder `ios/PurgeQuest/Views/Combat/CardFX/` (the Xcode project uses synchro
 
 1. **The photo interior is never tinted, desaturated, blurred or covered.** Effects live on the frame, the mat, the outer glow, and a band of at most 8% at the photo's edge. The user decides deletions on that image, and the elevation plan's principle is that the photo is seen whole. This narrows the owner's spec on purpose: no Clutter Undead desaturation, no Glitchborn scan lines over the photo, no letterbox bars, no Live Photo after-image.
 2. Every FX layer is `accessibilityHidden` and `allowsHitTesting(false)`. The VoiceOver Keep, Delete and adjustable actions are untouched.
-3. Under `FXGate.still`, every skin renders a still: the frame treatment stays; no tilt, no particles, no pulses, no breathing. The commit beat becomes the existing 80 ms snap plus a fade.
+3. Under `FXGate.still`, every skin renders a still and every cue has a deliberate reduced version (section 3.4), so state changes are still communicated. **The sense of lift never goes away:** the photo's scale and shadow follow the finger without easing.
 4. Only the front card animates. The back card keeps its 0.94 scale and renders the still skin with no tilt.
 5. Budget: at most 24 particles per skin and one `TimelineView` per card.
 6. **Gameplay timing does not change.** `onDelete` and `onSpare` still fire 220 ms after the commit, so undo, the view-model tests and the economy are unaffected. Nothing here touches HP, XP, gems, combo rules or quests.
 
+### 3.4 Reduced versions under `FXGate.still`
+
+Haptics are silenced by Reduce Motion today (`HapticsService`), and that stays, so a reduced cue must be visible without them.
+
+| Cue | Live | Reduced (Reduce Motion or Low Power) |
+|---|---|---|
+| Tilt | `rotation3DEffect`, Y 10 degrees, X 8 | Off |
+| Lift | Photo scale 1.03 and shadow follow the finger | **Kept**, unchanged: it is the drag itself, not decoration |
+| Threshold detent | 150 ms scale punch, overlay opens, haptic | No punch. The armed state is shown instantly: the tear is at its widened shape or the barrier at its locked brightness, and the DELETE or KEEP stamp jumps to full opacity and scale |
+| Pull into the tear | Section 4 | Off |
+| Commit | Spring snap-away | The existing 80 ms snap plus a fade |
+| Combo glow, raise and cool | One-shot pulse, 400 ms cooling fade | A 150 ms cross-fade of the rim to the new tier's glow: opacity only, no scale or movement. The state change is still seen |
+| Sheen at x2.0 | One sweep per card | No sweep; the steady inner line and peak glow already mark the tier |
+| Family edge layers | Particles, ghost outlines, glitch blocks, jitter | Off; the frame treatment (scales, cracks, notches, thickness, glow) stays |
+| Video breath | 1.0 to 1.015 over 4 s | Off; the vignette stays |
+| Live Photo reveal | Circular iris from the LIVE badge | The existing 200 ms cross-fade |
+
 ## 4. Depth, drag and commit
 
-- **Tilt.** `rotation3DEffect` on top of the existing z-rotation (which stays: the assessment lists the swipe physics as a keeper). Y tilts up to 10 degrees with horizontal drag, X up to 6 degrees with vertical drag, perspective about 0.6. Zero under `FXGate.still`.
-- **Lift.** The photo scales to 1.03 and its shadow grows as the drag grows; the frame gets the heavier shadow; the frame's inner bevel highlight shifts with the tilt.
+- **Tilt.** `rotation3DEffect` on top of the existing z-rotation (which stays: the assessment lists the swipe physics as a keeper). Y tilts up to 10 degrees with horizontal drag, X up to 8 degrees with vertical drag, perspective about 0.6. Off under `FXGate.still`.
+- **Lift.** The photo scales to 1.03 and its shadow grows as the drag grows; the frame gets the heavier shadow; the frame's inner bevel highlight shifts with the tilt. Shadow offsets and the highlight angle come from `LightSource`. Lift stays under `FXGate.still`.
 - **Threshold detent.** On arming: a haptic (a sharp transient for delete, a soft one for keep: two new `HapticsService` methods, both still silenced by Reduce Motion as today), a 150 ms scale punch, and the overlay "opens". Dropping below 90% disarms silently.
+- **Pull into the tear (delete only).** Past the arming point the card is drawn a little toward the tear: the displayed offset adds 0.25 of the distance beyond the threshold, capped at 24 pt. It is cosmetic. The gesture's raw translation still decides the commit, so nothing about when a decision registers changes. Keep has no pull: the barrier holds the card, it does not draw it. Off under `FXGate.still`.
 - **Overlays, edge-weighted.** The full-card 45% wash is removed (it tints the photo).
   - **Delete:** a jagged crimson void tear grows from the left edge, at most 34% of the card's width, strongest at the edge and fading inward; on arming the tear widens.
   - **Keep:** a brass barrier along the right edge, at most 24% of the width, that brightens and locks on arming.
   - The DELETE and KEEP stamps stay. **Colour default (veto-able):** the barrier is brass but the KEEP stamp stays patina, so the Keep button, the stamp and the word keep one meaning.
+- **Not included:** the owner's spec lists an optional soft particle burst at commit. It is left out of the first PR (only Behemoth stone chips fire on commit); revisit once the tour shows whether the tear and barrier land on their own.
 
 ## 5. The six family skins
 
@@ -85,7 +107,7 @@ Nameplate tone is typography and glow only; text never drops below the 4.5:1 con
 
 ## 7. Testing and verification
 
-**Harness tests (`CardFXTests`, run by CI's Linux job):** progress clamping and sign; the arm and disarm hysteresis table; tilt clamp, and zero under `.still`; `ComboTier` at tenths 10, 14, 15, 19 and 20; raised, cooled and none detection; `FamilySkinKind` covering every `MonsterFamily.allCases`; seeded geometry deterministic and in bounds.
+**Harness tests (`CardFXTests`, run by CI's Linux job):** progress clamping and sign; the arm and disarm hysteresis table; tilt clamp (Y 10, X 8), and zero under `.still`; lift non-zero under `.still`; the pull offset (zero below arming, 0.25 of the excess after it, capped at 24 pt, delete side only, zero under `.still`); `LightSource` a unit vector; `ComboTier` at tenths 10, 14, 15, 19 and 20; raised, cooled and none detection; `FamilySkinKind` covering every `MonsterFamily.allCases`; seeded geometry deterministic and in bounds.
 
 **Tour additions (`AppearanceTourUITests`, `UITestSupport`):**
 - A launch flag forces a family onto the first card, so the tour shoots all six in Light and Dark.
@@ -120,3 +142,17 @@ Sound; the hero companion in combat; atmosphere and the consistent light source;
 | Code that has never compiled lands on the owner's CI | Three small PRs; the pure model is separately testable; each PR's description says what was and was not run |
 | Effects bias a deletion decision | Invariant 1, enforced by the pixel-diff check |
 | The brass barrier and patina stamp read as two colours for one gesture | Called out as a veto-able default; judged on the mid-drag tour shots |
+
+## 11. Revision: five gaps closed (27 November 2026)
+
+After comparing this design with the owner's spec, the owner asked for these gaps to be closed. Where each landed:
+
+| Gap | Fix | Section |
+|---|---|---|
+| "Card begins to be pulled into" the tear was not designed | A cosmetic delete-side pull past the arming point; the commit rule is untouched | 4 |
+| The sense of lift under Reduce Motion was not kept explicit | Lift follows the finger and stays under `.still` | 3.3, 3.4 |
+| Combo cues had no deliberate reduced version | A cue-by-cue table of live and reduced versions; combo changes become a short cross-fade | 3.4 |
+| The bevel's light direction was not tied to a shared source | One `LightSource` constant read by the bevel, shadows and glint | 3.1 |
+| X tilt was 6 degrees, below the owner's 8 to 12 | X tilt is 8 degrees (Y stays 10) | 3.1, 4 |
+
+Two things the first version did without saying so are now stated in section 1: the action word "Keep" instead of "Spare", and Low Power Mode in the gate.
