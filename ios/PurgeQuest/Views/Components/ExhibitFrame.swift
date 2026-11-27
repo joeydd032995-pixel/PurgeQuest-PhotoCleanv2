@@ -23,6 +23,8 @@ struct ExhibitFrame<Photo: View>: View {
     var skinSeed: String = ""
     /// 0...1: the Storage Behemoths' pressure cracks, from the drag. 0 at rest.
     var crack: Double = 0
+    /// The combo on the front card's rim, or nil for none (the card behind, the duplicate card).
+    var combo: ComboRimState? = nil
     @ViewBuilder let photo: () -> Photo
 
     private let outer: CGFloat = 12
@@ -67,14 +69,27 @@ struct ExhibitFrame<Photo: View>: View {
         // The Video Phantoms' cool glow sits outside the frame; the frame is opaque, so it never reaches the photo.
         let glowColor: Color = skin == .phantoms ? accent.opacity(0.45) : Color.clear
         let glowRadius: CGFloat = skin == .phantoms ? 10 : 0
+        // The combo's glow also reaches a little outside the frame, never inside it.
+        let comboGlowAlpha: Double = (combo?.tier.glowAlpha ?? 0) * (combo?.shown ?? 0) * 0.8
+        let comboGlow: Color = Color.questAmber.opacity(comboGlowAlpha)
         return RoundedRectangle(cornerRadius: outer)
             .fill(LinearGradient.goldPlate)
             .overlay(RoundedRectangle(cornerRadius: outer).stroke(accent.opacity(0.5), lineWidth: 1))
             .overlay(RoundedRectangle(cornerRadius: outer).stroke(Color.black.opacity(0.6), lineWidth: 0.5).padding(0.5))
             .overlay { skinLayer }
+            .overlay { comboLayer }
             .overlay(litEdge)
+            .shadow(color: comboGlow, radius: 7)
             .shadow(color: glowColor, radius: glowRadius)
             .shadow(color: Color.black.opacity(shadowOpacity), radius: shadowRadius, x: shadowX, y: shadowY)
+    }
+
+    /// The combo's rim glow, line, pulse, sheen and cooling, drawn on the rim only.
+    @ViewBuilder
+    private var comboLayer: some View {
+        if let combo {
+            ComboRim(state: combo, outerRadius: outer, rim: rim)
+        }
     }
 
     /// The family skin's rim treatment, clipped to the rim ring by the skin itself.

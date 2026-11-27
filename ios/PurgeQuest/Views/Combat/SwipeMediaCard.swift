@@ -35,6 +35,11 @@ struct SwipeMediaCard: View {
     @State private var lowPower = ProcessInfo.processInfo.isLowPowerModeEnabled
     /// When this card was committed, for the Storage Behemoths' stone chips.
     @State private var burstStart: Date? = nil
+    /// The combo on the rim: a pulse after a raise, the sheen at x2.0, the fade after a keep, and the fade-in.
+    @State private var comboPulse: Double = 0
+    @State private var comboSheen: CGFloat = -0.4
+    @State private var comboCool: Double = 0
+    @State private var comboShown: Double = 0
 
     private let commitThreshold: CGFloat = 110
     private var rotation: Angle {
@@ -50,6 +55,17 @@ struct SwipeMediaCard: View {
         if UITestSupport.skinsDisabled { return nil }
         if isFront, let forced = UITestSupport.forcedSkin { return forced }
         return FamilySkinKind.active(for: item.monsterType.family)
+    }
+
+    /// The combo on this card's rim, front card only. Nothing shows at x1.0 unless a keep just cooled it.
+    private var comboState: ComboRimState? {
+        guard isFront, comboTier.tenths > 10 || comboCue == .cooled else { return nil }
+        var state = ComboRimState(tier: comboTier)
+        state.pulse = comboPulse
+        state.sheen = comboSheen
+        state.cool = comboCool
+        state.shown = comboShown
+        return state
     }
 
     /// How far the Storage Behemoths' pressure cracks have grown, from the drag. It is part of the frame treatment,
@@ -97,6 +113,7 @@ struct SwipeMediaCard: View {
         .onReceive(NotificationCenter.default.publisher(for: .NSProcessInfoPowerStateDidChange)) { _ in
             lowPower = ProcessInfo.processInfo.isLowPowerModeEnabled
         }
+        .task(id: item.id) { await playComboCue() }
         .task(id: item.id) {
             // Tour only: draw the front card mid-drag, with no finger down.
             guard isFront, let pose = UITestSupport.cardPoseWidth else { return }
@@ -153,7 +170,8 @@ struct SwipeMediaCard: View {
                 highlightShift: progress.highlightShift,
                 skin: skin,
                 skinSeed: item.id,
-                crack: crackAmount
+                crack: crackAmount,
+                combo: comboState
             ) { photoLayer }
             Nameplate(
                 monster: item.monsterType,
@@ -356,6 +374,34 @@ struct SwipeMediaCard: View {
                     }
                 }
             }
+    }
+
+    /// The combo's moment on this card as it arrives: a pulse after a raise, a fade from ash after a keep, one sheen at
+    /// x2.0. Event-driven and once per card. Under the gate nothing moves: the rim fades in over 150 ms.
+    private func playComboCue() async {
+        guard isFront else { return }
+        if gate.isStill {
+            withAnimation(.easeInOut(duration: 0.15)) { comboShown = 1 }
+            return
+        }
+        comboShown = 1
+        switch comboCue {
+        case .raised:
+            comboPulse = 1
+            try? await Task.sleep(for: .milliseconds(30))
+            withAnimation(.easeOut(duration: 0.25)) { comboPulse = 0 }
+        case .cooled:
+            comboCool = 1
+            try? await Task.sleep(for: .milliseconds(30))
+            withAnimation(.easeInOut(duration: 0.4)) { comboCool = 0 }
+        case .none:
+            break
+        }
+        if comboTier.isMax {
+            try? await Task.sleep(for: .milliseconds(150))
+            guard !Task.isCancelled else { return }
+            withAnimation(.easeInOut(duration: 0.5)) { comboSheen = 1.4 }
+        }
     }
 
     /// Keeps `armedSide` in step with the drag and fires the detent once per crossing.
