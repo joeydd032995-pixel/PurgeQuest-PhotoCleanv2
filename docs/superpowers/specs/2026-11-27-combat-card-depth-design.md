@@ -41,12 +41,12 @@ New folder `ios/PurgeQuest/Views/Combat/CardFX/` (the Xcode project uses synchro
 
 ### 3.3 Invariants every layer obeys
 
-1. **The photo interior is never tinted, desaturated, blurred or covered.** Effects live on the frame, the mat, the outer glow, and a band of at most 8% at the photo's edge. The user decides deletions on that image, and the elevation plan's principle is that the photo is seen whole. This narrows the owner's spec on purpose: no Clutter Undead desaturation, no Glitchborn scan lines over the photo, no letterbox bars, no Live Photo after-image.
+1. **At rest, the photo interior is never tinted, desaturated, blurred or covered.** Skin effects live on the frame, the mat, the outer glow, and a band of at most 8% at the photo's edge, at all times. The one bounded exception is the drag overlays (section 4): they exist only while a finger is down and `EdgeOverlay` limits them, the tear to 34% of the card's width and the barrier to 24%, at most 0.55 and 0.5 alpha at the edge and fading to nothing inward. The user decides on that image, and the elevation plan's principle is that the photo is seen whole. This narrows the owner's spec on purpose: no Clutter Undead desaturation, no Glitchborn scan lines over the photo, no letterbox bars, no Live Photo after-image.
 2. Every FX layer is `accessibilityHidden` and `allowsHitTesting(false)`. The VoiceOver Keep, Delete and adjustable actions are untouched.
 3. Under `FXGate.still`, every skin renders a still and every cue has a deliberate reduced version (section 3.4), so state changes are still communicated. **The sense of lift never goes away:** the photo's scale and shadow follow the finger without easing.
 4. Only the front card animates. The back card keeps its 0.94 scale and renders the still skin with no tilt.
 5. Budget: at most 24 particles per skin and one `TimelineView` per card.
-6. **Gameplay timing does not change.** `onDelete` and `onSpare` still fire 220 ms after the commit, so undo, the view-model tests and the economy are unaffected. Nothing here touches HP, XP, gems, combo rules or quests.
+6. **Gameplay timing does not change.** `onDelete` and `onSpare` still fire 220 ms after the commit (80 ms under Reduce Motion), as today, so undo, the view-model tests and the economy are unaffected. Nothing here touches HP, XP, gems, combo rules or quests.
 
 ### 3.4 Reduced versions under `FXGate.still`
 
@@ -58,7 +58,7 @@ Haptics are silenced by Reduce Motion today (`HapticsService`), and that stays, 
 | Lift | Photo scale 1.03 and shadow follow the finger | **Kept**, unchanged: it is the drag itself, not decoration |
 | Threshold detent | 150 ms scale punch, overlay opens, haptic | No punch. The armed state is shown instantly: the tear is at its widened shape or the barrier at its locked brightness, and the DELETE or KEEP stamp jumps to full opacity and scale |
 | Pull into the tear | Section 4 | Off |
-| Commit | Spring snap-away | The existing 80 ms snap plus a fade |
+| Commit | Spring snap-away | Unchanged. Under Reduce Motion it is the existing 80 ms snap; Low Power keeps the spring, since it costs nothing and changing it would change timing for those players |
 | Combo glow, raise and cool | One-shot pulse, 400 ms cooling fade | A 150 ms cross-fade of the rim to the new tier's glow: opacity only, no scale or movement. The state change is still seen |
 | Sheen at x2.0 | One sweep per card | No sweep; the steady inner line and peak glow already mark the tier |
 | Family edge layers | Particles, ghost outlines, glitch blocks, jitter | Off; the frame treatment (scales, cracks, notches, thickness, glow) stays |
@@ -112,7 +112,7 @@ Nameplate tone is typography and glow only; text never drops below the 4.5:1 con
 **Tour additions (`AppearanceTourUITests`, `UITestSupport`):**
 - A launch flag forces a family onto the first card, so the tour shoots all six in Light and Dark.
 - Mid-drag shots hold the card at partial and armed positions, left and right.
-- **Photo-interior pixel diff:** the same card with skins on and off must be identical inside the photo's interior. This enforces invariant 1 automatically.
+- **Photo-interior pixel diff:** the same card with skins on and off must be identical inside the photo's interior, at rest (no finger down). This enforces invariant 1 automatically.
 - Nameplate text contrast measured from pixels for every family and theme, at least 4.5:1.
 
 **Not verifiable here, and not claimed.** This container has no Swift toolchain, so nothing compiles or runs locally; the first compile is the owner's CI. The following need a device pass by the owner: frame rate during a drag with a skin running on the oldest supported phone, thermals, Reduce Motion, Low Power Mode, VoiceOver, Dynamic Type at the largest size.
@@ -156,3 +156,10 @@ After comparing this design with the owner's spec, the owner asked for these gap
 | X tilt was 6 degrees, below the owner's 8 to 12 | X tilt is 8 degrees (Y stays 10) | 3.1, 4 |
 
 Two things the first version did without saying so are now stated in section 1: the action word "Keep" instead of "Spare", and Low Power Mode in the gate.
+
+## 12. Errata found while planning PR 1 (27 November 2026)
+
+Two inconsistencies in this document, found when the first PR was planned against the real code. Both are corrected in place above; this section records what changed and why.
+
+1. **Invariant 1 versus the drag overlays.** As first written, invariant 1 said only an 8% edge band may touch the photo, yet section 4 let the delete tear reach 34% of the card's width, which overlaps the photo while a finger is down. The owner's own spec asks for overlays that are "edge-weighted and semi-transparent until the very end of the drag". Invariant 1 now applies to the photo **at rest**; the drag overlays are the one bounded exception (34% and 24% of the width, edge alpha at most 0.55 and 0.5, fading to nothing inward, only while dragging). The skins-on and skins-off pixel diff in PR 2 compares the card at rest.
+2. **Commit timing.** Invariant 6 said the callback fires 220 ms after the commit; the code fires it after 80 ms under Reduce Motion. Section 3.4 also put Low Power in the commit row, which would have changed timing for those players. Timing is now stated as it is (220 ms, 80 ms under Reduce Motion) and the commit's snap is tied to Reduce Motion only.

@@ -69,6 +69,38 @@ final class HapticsService {
         }
     }
 
+    /// The delete detent: the card crossing the commit line on a left drag. Sharp and short.
+    func detentDelete() {
+        guard !reduceMotion else { return }
+        transient(intensity: 1.0, sharpness: 0.9) { UIImpactFeedbackGenerator(style: .rigid).impactOccurred() }
+    }
+
+    /// The keep detent: the same moment on a right drag, softer and rounder, so keeping feels protective.
+    func detentKeep() {
+        guard !reduceMotion else { return }
+        transient(intensity: 0.45, sharpness: 0.15) { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+    }
+
+    /// One Core Haptics tap, or the plain generator when the hardware has no engine.
+    private func transient(intensity: Float, sharpness: Float, fallback: () -> Void) {
+        guard supportsHaptics, let engine else { fallback(); return }
+        let event = CHHapticEvent(
+            eventType: .hapticTransient,
+            parameters: [
+                CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity),
+                CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness)
+            ],
+            relativeTime: 0
+        )
+        do {
+            let pattern = try CHHapticPattern(events: [event], parameters: [])
+            let player = try engine.makePlayer(with: pattern)
+            try player.start(atTime: 0)
+        } catch {
+            fallback()
+        }
+    }
+
     func comboBurst() {
         guard !reduceMotion, supportsHaptics, let engine else {
             success(); return
