@@ -24,10 +24,22 @@ struct SwipeMediaCard: View {
     @State private var showLivePlayback: Bool = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
+    /// The side the card is armed for while it is dragged past the commit line (see `SwipeProgress`).
+    @State private var armedSide: SwipeProgress.Side? = nil
+    /// A 150 ms scale punch when the card arms.
+    @State private var punch: CGFloat = 1
+    @State private var lowPower = ProcessInfo.processInfo.isLowPowerModeEnabled
 
     private let commitThreshold: CGFloat = 110
     private var rotation: Angle {
         .degrees(Double(dragOffset.width / 18))
+    }
+
+    /// Reduce Motion or Low Power Mode: every decorative effect becomes a still.
+    private var gate: FXGate { FXGate(reduceMotion: reduceMotion, lowPowerMode: lowPower) }
+
+    private var progress: SwipeProgress {
+        SwipeProgress(dx: Double(dragOffset.width), dy: Double(dragOffset.height), gate: gate, wasArmed: armedSide)
     }
 
     var body: some View {
@@ -47,10 +59,25 @@ struct SwipeMediaCard: View {
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 16))
         }
-        .scaleEffect(isFront ? 1.0 : 0.94)
-        .offset(x: snapAway?.width ?? dragOffset.width, y: snapAway?.height ?? dragOffset.height)
+        .rotation3DEffect(.degrees(progress.tiltY), axis: (x: 0, y: 1, z: 0), perspective: 0.6)
+        .rotation3DEffect(.degrees(progress.tiltX), axis: (x: 1, y: 0, z: 0), perspective: 0.6)
+        .scaleEffect(isFront ? punch : 0.94)
+        .offset(
+            x: snapAway?.width ?? (dragOffset.width + CGFloat(progress.pull)),
+            y: snapAway?.height ?? dragOffset.height
+        )
         .rotationEffect(snapAway == nil ? rotation : .degrees(Double((snapAway?.width ?? 0) / 14)))
         .gesture(isFront ? dragGesture : nil)
+        .onChange(of: dragOffset) { _, _ in updateArming() }
+        .onReceive(NotificationCenter.default.publisher(for: .NSProcessInfoPowerStateDidChange)) { _ in
+            lowPower = ProcessInfo.processInfo.isLowPowerModeEnabled
+        }
+        .task(id: item.id) {
+            // Tour only: draw the front card mid-drag, with no finger down.
+            guard isFront, let pose = UITestSupport.cardPoseWidth else { return }
+            try? await Task.sleep(for: .milliseconds(400))
+            dragOffset = CGSize(width: pose, height: 0)
+        }
         .onTapGesture {
             // Live Photos: tap the front card to play the paired motion.
             guard isFront, item.isLivePhoto else { return }
@@ -96,7 +123,9 @@ struct SwipeMediaCard: View {
         VStack(spacing: 10) {
             ExhibitFrame(
                 chip: Wording.exhibitChip(size: item.formattedSize, age: item.ageDescription),
-                accent: item.monsterType.accentColor
+                accent: item.monsterType.accentColor,
+                lift: progress.lift,
+                highlightShift: progress.highlightShift
             ) { photoLayer }
             Nameplate(
                 monster: item.monsterType,
@@ -220,9 +249,10 @@ struct SwipeMediaCard: View {
 
     private var deleteOverlay: some View {
         let strength = max(0, min(1, -dragOffset.width / commitThreshold))
+        // Under the gate the armed state shows at once: the stamp jumps to full strength.
+        let stamp = (gate.isStill && armedSide == .delete) ? 1.0 : strength
         return ZStack {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.combatCrimson.opacity(0.45 * strength))
+            TearOverlay(strength: strength, armed: armedSide == .delete, animated: !gate.isStill)
             Text("DELETE")
                 .font(.system(size: 26, weight: .black))
                 .foregroundStyle(.white)
@@ -230,8 +260,8 @@ struct SwipeMediaCard: View {
                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.combatCrimsonDeep))
                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(.white.opacity(0.6), lineWidth: 1))
                 .rotationEffect(.degrees(-12))
-                .opacity(strength)
-                .scaleEffect(0.6 + strength * 0.5)
+                .opacity(stamp)
+                .scaleEffect(0.6 + stamp * 0.5)
                 .position(x: 110, y: 80)
         }
         .allowsHitTesting(false)
@@ -239,9 +269,9 @@ struct SwipeMediaCard: View {
 
     private var spareOverlay: some View {
         let strength = max(0, min(1, dragOffset.width / commitThreshold))
-        return ZStack {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.gemEmerald.opacity(0.4 * strength))
+        let stamp = (gate.isStill && armedSide == .keep) ? 1.0 : strength
+        return ZStack(alignment: .topTrailing) {
+            BarrierOverlay(strength: strength, armed: armedSide == .keep, animated: !gate.isStill)
             Text("KEEP")
                 .font(.system(size: 26, weight: .black))
                 .foregroundStyle(.onAccent)
@@ -249,12 +279,12 @@ struct SwipeMediaCard: View {
                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.gemEmeraldDeep))
                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(.white.opacity(0.6), lineWidth: 1))
                 .rotationEffect(.degrees(12))
-                .opacity(strength)
-                .scaleEffect(0.6 + strength * 0.5)
+                .opacity(stamp)
+                .scaleEffect(0.6 + stamp * 0.5)
+                .padding(.top, 60)
+                .padding(.trailing, 28)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-        .padding(.top, 60)
-        .padding(.trailing, 28)
         .allowsHitTesting(false)
     }
 
@@ -276,6 +306,30 @@ struct SwipeMediaCard: View {
                     }
                 }
             }
+    }
+
+    /// Keeps `armedSide` in step with the drag and fires the detent once per crossing.
+    private func updateArming() {
+        guard isFront, snapAway == nil else { return }
+        let next = progress.armed
+        guard next != armedSide else { return }
+        armedSide = next
+        guard let side = next else { return }
+        fireDetent(side)
+    }
+
+    /// The haptic, then a 150 ms scale punch (skipped under the gate).
+    private func fireDetent(_ side: SwipeProgress.Side) {
+        switch side {
+        case .delete: HapticsService.shared.detentDelete()
+        case .keep:   HapticsService.shared.detentKeep()
+        }
+        guard !gate.isStill else { return }
+        withAnimation(.spring(response: 0.12, dampingFraction: 0.5)) { punch = 1.03 }
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(90))
+            withAnimation(.spring(response: 0.18, dampingFraction: 0.7)) { punch = 1 }
+        }
     }
 
     private func commit(left: Bool) {

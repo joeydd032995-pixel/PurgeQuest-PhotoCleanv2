@@ -12,6 +12,7 @@
 //    -UITestEvent <id>      seasonal event to show as running (e.g. halloween)
 //    -UITestVariant <n>     paint variant (1...3) of the hero's race; pick the race with -pq.race
 //    -UITestDateScope <json>  date range to start with, in the form a range is saved in (kept in memory only)
+//    -UITestCardPose <L|R><points>  draw the front card mid-drag, e.g. L125 (toward Delete) or R55 (toward Keep)
 //
 
 import Foundation
@@ -53,6 +54,25 @@ enum UITestSupport {
         #if DEBUG
         guard isTour else { return nil }
         return UserDefaults.standard.string(forKey: "UITestEvent")
+        #else
+        return nil
+        #endif
+    }
+
+    /// The front card's drag pose for the tour, from `-UITestCardPose L125` (125 points toward Delete) or `R55`
+    /// (55 toward Keep), or nil. The card is drawn as if held there with no finger down, because a UI test cannot hold
+    /// a finger and take a screenshot at once.
+    static var cardPoseWidth: Double? {
+        #if DEBUG
+        guard isTour,
+              let raw = UserDefaults.standard.string(forKey: "UITestCardPose"),
+              let first = raw.first,
+              let points = Double(raw.dropFirst()) else { return nil }
+        switch first {
+        case "L": return -points
+        case "R": return points
+        default:  return nil
+        }
         #else
         return nil
         #endif
