@@ -33,6 +33,8 @@ struct SwipeMediaCard: View {
     /// A 150 ms scale punch when the card arms.
     @State private var punch: CGFloat = 1
     @State private var lowPower = ProcessInfo.processInfo.isLowPowerModeEnabled
+    /// When this card was committed, for the Storage Behemoths' stone chips.
+    @State private var burstStart: Date? = nil
 
     private let commitThreshold: CGFloat = 110
     private var rotation: Angle {
@@ -41,6 +43,20 @@ struct SwipeMediaCard: View {
 
     /// Reduce Motion or Low Power Mode: every decorative effect becomes a still.
     private var gate: FXGate { FXGate(reduceMotion: reduceMotion, lowPowerMode: lowPower) }
+
+    /// The family skin on this card: forced in a tour launch, off in the comparison launches, nil when the family's
+    /// kill switch is off. The card behind keeps its skin too, drawn still.
+    private var skin: FamilySkinKind? {
+        if UITestSupport.skinsDisabled { return nil }
+        if isFront, let forced = UITestSupport.forcedSkin { return forced }
+        return FamilySkinKind.active(for: item.monsterType.family)
+    }
+
+    /// How far the Storage Behemoths' pressure cracks have grown, from the drag. It is part of the frame treatment,
+    /// so it stays under the gate.
+    private var crackAmount: Double {
+        skin == .behemoths ? SkinDrag.pressureCracks(strength: progress.strength) : 0
+    }
 
     private var progress: SwipeProgress {
         SwipeProgress(dx: Double(dragOffset.width), dy: Double(dragOffset.height), gate: gate, wasArmed: armedSide)
@@ -58,6 +74,7 @@ struct SwipeMediaCard: View {
             cardBody
                 .overlay(alignment: .topLeading) { deleteOverlay }
                 .overlay(alignment: .topTrailing) { spareOverlay }
+                .overlay { edgeLayer }
                 .overlay {
                     if item.isLivePhoto, isFront, showLivePlayback {
                         LivePhotoPreviewView(phAssetID: item.id)
@@ -133,12 +150,19 @@ struct SwipeMediaCard: View {
                 chip: Wording.exhibitChip(size: item.formattedSize, age: item.ageDescription),
                 accent: item.monsterType.accentColor,
                 lift: progress.lift,
-                highlightShift: progress.highlightShift
+                highlightShift: progress.highlightShift,
+                skin: skin,
+                skinSeed: item.id,
+                crack: crackAmount
             ) { photoLayer }
             Nameplate(
                 monster: item.monsterType,
                 why: item.classification?.whyText,
-                needsCarefulReview: item.classification?.requiresCarefulReview == true
+                needsCarefulReview: item.classification?.requiresCarefulReview == true,
+                skin: skin,
+                jitters: isFront && !gate.isStill,
+                seedKey: item.id,
+                glowColor: item.monsterType.accentColor
             )
         }
         .padding(8)
@@ -148,6 +172,24 @@ struct SwipeMediaCard: View {
                 .fill(Color.dungeonStone)
                 .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.dungeonAsh, lineWidth: 1))
         )
+    }
+
+    /// The skin's moving parts, in the two side bands only (see `SkinEdgeLayer`).
+    @ViewBuilder
+    private var edgeLayer: some View {
+        if let skin {
+            SkinEdgeLayer(
+                kind: skin,
+                seedKey: item.id,
+                accent: item.monsterType.accentColor,
+                gate: gate,
+                isFront: isFront,
+                dragX: Double(dragOffset.width),
+                dragY: Double(dragOffset.height),
+                lift: progress.lift,
+                burstStart: burstStart
+            )
+        }
     }
 
     private var photoLayer: some View {
@@ -342,6 +384,8 @@ struct SwipeMediaCard: View {
 
     private func commit(left: Bool) {
         let target = CGSize(width: left ? -700 : 700, height: dragOffset.height + 50)
+        // The Storage Behemoths throw stone chips as they go. Only a timestamp: the commit itself is unchanged.
+        if skin == .behemoths, !gate.isStill { burstStart = Date() }
         if reduceMotion {
             snapAway = target
         } else {

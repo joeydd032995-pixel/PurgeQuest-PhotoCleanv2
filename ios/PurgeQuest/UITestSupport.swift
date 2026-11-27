@@ -13,6 +13,8 @@
 //    -UITestVariant <n>     paint variant (1...3) of the hero's race; pick the race with -pq.race
 //    -UITestDateScope <json>  date range to start with, in the form a range is saved in (kept in memory only)
 //    -UITestCardPose <L|R><points>  draw the front card mid-drag, e.g. L125 (toward Delete) or R55 (toward Keep)
+//    -UITestFamily <skin>   force a family skin (dragons, undead, relics, behemoths, phantoms, glitch) onto the front card
+//    -UITestNoSkins         turn every family skin off, for comparison shots
 //
 
 import Foundation
@@ -75,6 +77,26 @@ enum UITestSupport {
         }
         #else
         return nil
+        #endif
+    }
+
+    /// The family skin a tour launch forces onto the front card, from `-UITestFamily dragons` (a `FamilySkinKind` raw
+    /// value), or nil. The first card of a dive is whatever the room dealt, so the tour cannot wait for each family.
+    static var forcedSkin: FamilySkinKind? {
+        #if DEBUG
+        guard isTour, let raw = UserDefaults.standard.string(forKey: "UITestFamily") else { return nil }
+        return FamilySkinKind(rawValue: raw)
+        #else
+        return nil
+        #endif
+    }
+
+    /// True when a tour launch turns every family skin off (`-UITestNoSkins`), for comparison shots.
+    static var skinsDisabled: Bool {
+        #if DEBUG
+        return isTour && CommandLine.arguments.contains("-UITestNoSkins")
+        #else
+        return false
         #endif
     }
 
