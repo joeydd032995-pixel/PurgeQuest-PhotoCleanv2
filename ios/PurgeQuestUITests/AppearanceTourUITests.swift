@@ -404,6 +404,44 @@ final class AppearanceTourUITests: XCTestCase {
         app.terminate()
     }
 
+    /// The card caught mid-drag, short of the commit line and past it, toward Delete and toward Keep. The app draws the
+    /// pose itself (`-UITestCardPose`), because a UI test cannot hold a finger down and take a screenshot at once.
+    /// Best-effort, like the Room Summary test: a pose that does not come up is a note, not a failure. The name starts
+    /// with Z so it runs last.
+    @MainActor
+    func testZCardDragPoses() {
+        let poses: [(name: String, value: String)] = [
+            ("left-half", "L55"), ("left-armed", "L125"), ("right-half", "R55"), ("right-armed", "R125")
+        ]
+        for mode in ["dark", "light"] {
+            for pose in poses { captureCardPose(mode, name: pose.name, value: pose.value) }
+        }
+    }
+
+    @MainActor
+    private func captureCardPose(_ mode: String, name: String, value: String) {
+        let app = launch(mode, phase: "main", extra: ["-UITestCardPose", value])
+        guard app.tabBars.firstMatch.waitForExistence(timeout: 25) else {
+            note("card pose \(name) (\(mode)): the tab bar did not appear")
+            app.terminate()
+            return
+        }
+        dismissPhotoPrompt()
+        settle(1.5)
+        let enter = app.buttons["Enter the dungeon and start a cleanup session"]
+        guard enter.waitForExistence(timeout: 10) else {
+            note("card pose \(name) (\(mode)): the Enter button was not found")
+            app.terminate()
+            return
+        }
+        enter.tap()
+        dismissPhotoPrompt()
+        // The scan: a plain sleep, nothing asks the app anything until it has finished.
+        settle(25.0)
+        shot("\(mode)-15-card-\(name)")
+        app.terminate()
+    }
+
     // MARK: - Launch screens
 
     @MainActor
