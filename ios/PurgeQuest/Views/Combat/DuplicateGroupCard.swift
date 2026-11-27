@@ -72,7 +72,13 @@ struct DuplicateGroupCard: View {
 
     private var carousel: some View {
         VStack(spacing: 8) {
-            ExhibitFrame(chip: nil, accent: group.monsterType.accentColor) {
+            // The duplicate card is always a Duplicate Dragons encounter: the still Dragons frame (it has no swipe).
+            ExhibitFrame(
+                chip: nil,
+                accent: group.monsterType.accentColor,
+                skin: FamilySkinKind.active(for: .duplicateDragons),
+                skinSeed: group.representative?.id ?? "group"
+            ) {
                 TabView(selection: Binding(
                     get: { selectedMemberID ?? group.representative?.id },
                     set: { selectedMemberID = $0 }
