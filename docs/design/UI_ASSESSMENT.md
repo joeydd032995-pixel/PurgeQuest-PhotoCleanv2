@@ -39,6 +39,8 @@ Three root causes sit under the 29 findings:
 | D6 | App icon | **Redraw from the emblem** | Phase 3. Needs the owner's art direction; the provenance notes in `docs/CREDITS.md` apply to the new art too. |
 | D7 | Motion and family hues versus the 27 November UI spec | **The new spec supersedes the older rules**, amended narrowly, only where a sub-project uses it (`docs/superpowers/specs/2026-11-27-combat-card-depth-design.md`, owner, 27 November 2026) | Rule 8 of `DESIGN_SYSTEM.md`, the family-hue rule of 7.3 and E-7 are amended by the sub-project that needs each, not up front. PR 1 of the card design uses none of them: its motion follows the finger. |
 | D8 | How the combat card's family skins are built | **Procedural SwiftUI**: no new art, no Metal; a `FamilySkin` seam lets one family move to a shader later (owner, 27 November 2026) | PR 2 of the card design. |
+| D9 | May an atmosphere tint the canvas (workstream 2) | **No tint: light and weight only** (owner, 28 November 2026) | An environment changes the torch's strength, the vignette, a neutral haze or motes, never a hue. Rule 9 and the family-hue rule stand; rule 8 is amended by the sub-project that adds motes, and only for them. |
+| D10 | Strength of the canvas torch in Dark (workstream 2) | **Glow**: the brand's mid-plate gold at 8% at its centre (owner, 28 November 2026) | The old pool was drawn in the gold plate's dark-brown ink: about two levels at the top edge in Dark, and a stain in Light. Part 1 of `docs/superpowers/specs/2026-11-28-atmosphere-and-light-design.md`. |
 
 ## 2. The first-time user
 

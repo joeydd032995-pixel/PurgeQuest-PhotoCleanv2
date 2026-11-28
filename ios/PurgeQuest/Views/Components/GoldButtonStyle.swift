@@ -19,6 +19,9 @@ struct GoldPlate: View {
 
     var body: some View {
         let shape = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        let offset = LightSource.shadowOffset(depth: 2)
+        let shadowX = CGFloat(offset.x)
+        let shadowY = CGFloat(offset.y)
         ZStack {
             shape.fill(LinearGradient.goldPlate)
             shape.inset(by: 3).stroke(Color.goldBevel.opacity(0.55), lineWidth: 1)
@@ -27,7 +30,7 @@ struct GoldPlate: View {
                 shape.fill(Color.goldInk.opacity(0.12))
             }
         }
-        .shadow(color: Color.goldRim.opacity(0.35), radius: 3, x: 0, y: 2)
+        .shadow(color: Color.goldRim.opacity(0.35), radius: 3, x: shadowX, y: shadowY)
     }
 }
 

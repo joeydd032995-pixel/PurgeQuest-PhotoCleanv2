@@ -311,6 +311,7 @@ struct CombatView: View {
                 .frame(maxWidth: .infinity, minHeight: 56)
                 .background(RoundedRectangle(cornerRadius: 12).fill(fill))
                 .overlay(RoundedRectangle(cornerRadius: 12).stroke(edge, lineWidth: 1))
+                .litEdge(cornerRadius: 12)
                 .foregroundStyle(ink)
         }
         .accessibilityHint(hint)

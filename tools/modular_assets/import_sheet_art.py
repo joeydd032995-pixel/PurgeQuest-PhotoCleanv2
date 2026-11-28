@@ -4,7 +4,8 @@ The owner supplied the updated art for all 99 held and store gear items as scree
 (`docs/modular/source_photos/`): a grid of named tiles ("Oaken Ward I", "Crystal Shard", ...), each with two drawings
 side by side (the original and a recoloured example) on a flat dark tile colour. This tool finds the tile grid in each
 photo, cuts the chosen drawing of every tile out of the tile colour, and fits it into the existing sprite's canvas, so
-filenames, canvas sizes, catalog ids and the visible-art box stay as they are.
+filenames, canvas sizes, catalog ids and the visible-art box stay as they are. A few tiles are cloudy rather than flat
+(`CLOUDY_TILES`): there a cloud counts as tile colour, not as smoke.
 
     python3 -I tools/modular_assets/import_sheet_art.py                    # plan only: source photo and upscale per item
     python3 -I tools/modular_assets/import_sheet_art.py --write            # replace the 99 sprites in place
@@ -250,10 +251,24 @@ WEAK_D = 80.0
 WEAK_DARKER = -8.0
 HULL_CLOSE = 8       # radius (px) of the closing that bridges gaps in an outline before its interior is filled
 
+# A few tiles on the owner's sheets are not flat: Ashen Bough IV sits on a cloudy tile. A cloud has the tile's own hue and
+# is never darker than the tile, so it is tile colour, not smoke. Read as smoke (the rule above) the clouds became a grey
+# haze beside the staff, the fit scaled the staff down to fit the haze, and the clouds inside the hook's ring kept the
+# ring filled in. For the tiles named here a pixel is also tile colour when its hue is within CLOUD_CHROMA_TOL of the
+# tile's and its luminance relative to the tile's is inside CLOUD_LUMA (not as dark as an outline, not a highlight).
+# Every other tile is cut exactly as before.
+CLOUDY_TILES = {"Ashen Bough IV"}
+CLOUD_CHROMA_TOL = 14.0
+CLOUD_LUMA = (-10.0, 70.0)
 
-def cut_out(crop: np.ndarray, bg: np.ndarray, pad: int = 4) -> np.ndarray:
+# An item whose sprite on disk is not the one it was designed to fit (the haze above shrank Ashen Bough IV's) is fitted
+# into the art box of the sprite it replaced (git 376d703^) instead of the box of the sprite that is on disk now.
+ART_BOX_OVERRIDE = {"Ashen Bough IV": (9, 0, 356, 128)}
+
+
+def cut_out(crop: np.ndarray, bg: np.ndarray, pad: int = 4, cloudy: bool = False) -> np.ndarray:
     """RGBA uint8 (padded by `pad`): solid art opaque with a smooth antialiased edge, smoke / glow partly transparent,
-    the flat tile colour transparent."""
+    the flat tile colour transparent. `cloudy` (see CLOUDY_TILES): the tile has clouds, which are tile colour too."""
     h0, w0 = crop.shape[:2]
     big = np.empty((h0 + 2 * pad, w0 + 2 * pad, 3), dtype=np.float32)
     big[:] = bg
@@ -263,14 +278,18 @@ def cut_out(crop: np.ndarray, bg: np.ndarray, pad: int = 4) -> np.ndarray:
     # JPEG noise makes a thin dark outline flicker between "solid" and "glow" pixel by pixel; classify on a lightly
     # smoothed signal so the contour is continuous.
     d_s, dl_s = gauss(d, 0.8), gauss(dl, 0.8)
-    lab = label(d <= 12, eight=False)
+    tile_like = d <= 12
+    if cloudy:
+        chroma = np.abs((big - big.mean(axis=2, keepdims=True)) - (bg - float(bg.mean()))).max(axis=2)
+        tile_like = tile_like | ((gauss(chroma, 0.8) <= CLOUD_CHROMA_TOL) & (dl_s > CLOUD_LUMA[0]) & (dl_s < CLOUD_LUMA[1]))
+    lab = label(tile_like, eight=False)
     border = border_labels(lab)
     exterior = np.isin(lab, border)
     for i in np.unique(lab):                      # enclosed tile-coloured pockets (the hole of a ring)
         if i == 0 or i in border:
             continue
         pocket = lab == i
-        if pocket.sum() >= 40 and d[pocket].max() <= 10:
+        if pocket.sum() >= 40 and (cloudy or d[pocket].max() <= 10):
             exterior |= pocket
     obj = ~exterior
     weak_candidate = (d_s < WEAK_D) & (dl_s > WEAK_DARKER)
@@ -398,7 +417,7 @@ def extract(photos: Path, verbose: bool = True) -> Dict[str, List[dict]]:
                     cx0, cy0 = max(0, bx0 - 6), max(0, by0 - 6)
                     cx1, cy1 = min(tile.shape[1], bx1 + 6), min(tile.shape[0], by1 + 6)
                     cx0, cx1 = (cx0, min(cx1, mid)) if side == "left" else (max(cx0, mid), cx1)   # not the other half
-                    rec[side] = cut_out(tile[cy0:cy1, cx0:cx1], bg)
+                    rec[side] = cut_out(tile[cy0:cy1, cx0:cx1], bg, cloudy=name in CLOUDY_TILES)
                 rec["width"] = {s: int(tight(rec[s]).shape[1]) for s in ("left", "right")}
                 found.setdefault(name, []).append(rec)
     return found
@@ -409,7 +428,8 @@ def build(item: dict, candidates: List[dict], half: str) -> Tuple[Image.Image, f
     pick = max(candidates, key=lambda c: c["width"][half])
     with Image.open(item["path"]) as cur:
         cur = cur.convert("RGBA")
-    sprite, scale = fit_into(pick[half], cur.size, opaque_bbox(cur), align=align_for(item))
+    box = ART_BOX_OVERRIDE.get(item["name"]) or opaque_bbox(cur)
+    sprite, scale = fit_into(pick[half], cur.size, box, align=align_for(item))
     return sprite, scale, pick["photo"]
 
 

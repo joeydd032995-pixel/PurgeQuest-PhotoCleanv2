@@ -32,6 +32,7 @@ struct CombatHUD: View {
                 .fill(Color.dungeonVoid.opacity(0.88))
                 .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.dungeonAsh, lineWidth: 1))
         )
+        .litEdge(cornerRadius: 12)
     }
 
     /// 44 x 44 pt, the smallest target Apple recommends. It was 36.
@@ -42,6 +43,7 @@ struct CombatHUD: View {
                 .frame(width: 44, height: 44)
                 .background(RoundedRectangle(cornerRadius: 10).fill(Color.dungeonStone))
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.dungeonAsh, lineWidth: 1))
+                .litEdge(cornerRadius: 10)
                 .foregroundStyle(.textPrimary)
         }
         .accessibilityLabel("Exit dungeon")
@@ -96,6 +98,7 @@ struct CombatHUD: View {
                 .fill(Color.dungeonStone)
                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(tint.opacity(0.5), lineWidth: 1))
         )
+        .litEdge(cornerRadius: 8)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(combo > 0
             ? "Combo, rewards times \(comboMultiplier.plain), \(combo) in a row"

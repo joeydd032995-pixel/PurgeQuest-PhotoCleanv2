@@ -29,22 +29,27 @@ struct DungeonPanelBackground: View {
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
+        // The sheen starts at the lit corner and the shadow falls along the torch's light (`LightSource`), so a panel
+        // agrees with the card and the canvas. Every value is typed on its own line.
         let shape = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        let isDark: Bool = colorScheme == .dark
+        let sheenAlpha: Double = isDark ? 0.045 : 0.35
+        let shadowAlpha: Double = elevated ? (isDark ? 0.32 : 0.07) : 0
+        let offset = LightSource.shadowOffset(depth: 3)
+        let shadowX = CGFloat(offset.x)
+        let shadowY = CGFloat(offset.y)
         shape
             .fill(Color.dungeonStone.opacity(fillOpacity))
             .overlay(
                 shape.fill(
                     LinearGradient(
-                        colors: [Color.white.opacity(colorScheme == .dark ? 0.045 : 0.35), Color.white.opacity(0)],
-                        startPoint: .top, endPoint: .center
+                        colors: [Color.white.opacity(sheenAlpha), Color.white.opacity(0)],
+                        startPoint: .topLeading, endPoint: .center
                     )
                 )
             )
             .overlay(shape.strokeBorder(accent?.opacity(0.45) ?? Color.dungeonAsh, lineWidth: 1))
-            .shadow(
-                color: Color.black.opacity(elevated ? (colorScheme == .dark ? 0.32 : 0.07) : 0),
-                radius: 8, x: 0, y: 3
-            )
+            .shadow(color: Color.black.opacity(shadowAlpha), radius: 8, x: shadowX, y: shadowY)
     }
 }
 
