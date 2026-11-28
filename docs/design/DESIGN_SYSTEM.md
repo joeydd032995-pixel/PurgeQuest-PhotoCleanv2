@@ -10,8 +10,9 @@ proposes the next version of the system (roles, scales, components, a roadmap):
 ## Direction
 
 A torchlit vault. A charcoal (or parchment) canvas, engraved Cinzel capitals for titles, and the
-brand gold used sparingly as the one thing that glows. Depth comes from light, not color: a faint
-sheen along a panel's top edge and a low shadow under it.
+brand gold used sparingly as the one thing that glows. Depth comes from light, not color: one torch
+at the top left (`LightSource`), a faint sheen from the lit corner of a panel and a low shadow that
+falls along the light.
 
 ## Rules
 
@@ -38,6 +39,10 @@ sheen along a panel's top edge and a low shadow under it.
 9. **No new hues.** Use the tokens in `Color+Theme.swift`. No neon, pastel or purple. White and
    black appear only at low opacity, as sheen and shadow.
 10. **Check all four looks**: Light and Dark, Classic and Verdigris.
+11. **One torch.** Every lit surface takes its light from `LightSource`: the canvas's gold torch (top edge,
+    30% across), a panel's sheen from the lit corner, shadows offset along the light
+    (`LightSource.shadowOffset`), and `.litEdge(cornerRadius:)` on flat tiles. Do not hand-roll a sheen or a
+    shadow offset.
 
 ## Seeing a change
 
