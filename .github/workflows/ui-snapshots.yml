@@ -27,8 +27,10 @@ jobs:
     runs-on: macos-latest
     # Measured: the tour alone about 27 minutes, the room-summary test about 5 more, the eight card drag poses about 5
     # more (37 minutes in all, run 46078434071), and the twelve family skin shots about 8 more, which with the
-    # setup is just over the old 45 (run 46081457402 was cancelled at the cap). 60 leaves headroom without hiding a hang.
-    timeout-minutes: 60
+    # setup is just over the old 45 (run 46081457402 was cancelled at the cap). The whole job then took 48 minutes (run
+    # 46087492740, 44m44s of it the tour), and the four combo rim shots add about 4 more. 70 leaves headroom without
+    # hiding a hang.
+    timeout-minutes: 70
 
     steps:
       - name: Checkout

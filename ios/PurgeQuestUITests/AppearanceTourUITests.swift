@@ -421,6 +421,20 @@ final class AppearanceTourUITests: XCTestCase {
         }
     }
 
+    /// The combo on the first card's rim, at x1.5 (the inner line and a steady glow) and x2.0 (the strongest glow), in
+    /// Light and Dark. The app is told the combo (`-UITestCombo`, in tenths), because a tour cannot earn one. Best-effort,
+    /// and last, like the poses. The video vignette and the Live Photo glow are not shot: they need a video and a Live
+    /// Photo in the simulator's library, which the synthetic library does not have.
+    @MainActor
+    func testZComboRim() {
+        for mode in ["dark", "light"] {
+            for tenths in ["15", "20"] {
+                captureFirstCard(mode, label: "combo x\(tenths)", shotName: "\(mode)-17-combo-\(tenths)",
+                                 extra: ["-UITestCombo", tenths])
+            }
+        }
+    }
+
     /// Each family's skin on the first card, in Light and Dark. The first card of a dive is whatever the room dealt, so
     /// the app is told which skin to wear (`-UITestFamily`). Best-effort, and last, like the poses.
     @MainActor
@@ -455,6 +469,20 @@ final class AppearanceTourUITests: XCTestCase {
         enter.tap()
         dismissPhotoPrompt()
         settle(25.0)
+        // The first card is whatever the room dealt. A duplicate group has its own controls and can neither be dragged
+        // nor wear a skin (two of the first tour's twelve skin shots landed on one), so put it away, keeping every copy
+        // so nothing is deleted, and shoot the next card. This also clears the first-card swipe arrows from the shot.
+        let confirmGroup = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Confirm'")).firstMatch
+        var putAway = 0
+        while confirmGroup.exists, putAway < 6 {
+            confirmGroup.tap()
+            putAway += 1
+            settle(2.0)
+        }
+        if putAway > 0 {
+            note("\(label) (\(mode)): put away \(putAway) duplicate group(s) to reach a single card")
+            settle(1.0)
+        }
         shot(shotName)
         app.terminate()
     }
