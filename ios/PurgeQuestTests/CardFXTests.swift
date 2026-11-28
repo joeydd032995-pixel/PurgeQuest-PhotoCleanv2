@@ -46,6 +46,52 @@ import Foundation
         #expect(swung.start.y > rest.start.y)
     }
 
+    // MARK: Torch
+
+    @Test func theTorchSitsLeftOfCentreAndItsLightTravelsRight() {
+        #expect(LightSource.torchX > 0 && LightSource.torchX < 0.5)
+        #expect(LightSource.direction.x > 0, "left of centre, so the light travels right, as the card's does")
+        #expect(LightSource.torchReach > 0)
+        #expect(LightSource.farShadeReach > 0)
+    }
+
+    @Test func theDarkTorchIsTheGlowTheOwnerChose() {
+        #expect(close(LightSource.torchAlpha(isDark: true), 0.08), "Glow, chosen on 28 November 2026")
+        #expect(LightSource.torchAlpha(isDark: false) > 0)
+    }
+
+    @Test func theTorchLightsTheDarkCanvasAndDoesNotStainTheLightOne() {
+        for theme in ColorTheme.allCases {
+            let canvas = ThemePalette.neutrals(for: theme).canvasTop
+            let darkAlpha = LightSource.torchAlpha(isDark: true)
+            let darkLit = LightSource.torchColor(isDark: true).over(canvas.dark, alpha: darkAlpha)
+            #expect(darkLit.relativeLuminance > canvas.dark.relativeLuminance, "\(theme) Dark")
+            let lightAlpha = LightSource.torchAlpha(isDark: false)
+            let lightLit = LightSource.torchColor(isDark: false).over(canvas.light, alpha: lightAlpha)
+            let lowest = canvas.light.relativeLuminance * 0.98
+            #expect(lightLit.relativeLuminance > lowest, "\(theme) Light: a warm wash, not the stain the old pool was")
+        }
+    }
+
+    @Test func textStaysReadableAtTheTorchsBrightestPoint() {
+        for theme in ColorTheme.allCases {
+            let n = ThemePalette.neutrals(for: theme)
+            for isDark in [true, false] {
+                let alpha = LightSource.torchAlpha(isDark: isDark)
+                let lit = LightSource.torchColor(isDark: isDark).over(n.canvasTop.resolved(isDark: isDark), alpha: alpha)
+                for text in [n.textPrimary, n.textSecondary, n.textTertiary] {
+                    let ratio = text.resolved(isDark: isDark).contrast(with: lit)
+                    #expect(ratio >= 4.5, "\(theme), dark: \(isDark)")
+                }
+            }
+        }
+    }
+
+    @Test func theRimIsFaintAndNeverAFrame() {
+        #expect(LightSource.rimHighlightAlpha > 0 && LightSource.rimHighlightAlpha <= 0.3)
+        #expect(LightSource.rimShadeAlpha > 0 && LightSource.rimShadeAlpha <= 0.3)
+    }
+
     // MARK: Progress and arming
 
     @Test func progressIsSignedAndClamped() {

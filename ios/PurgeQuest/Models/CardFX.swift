@@ -3,7 +3,8 @@
 //  PurgeQuest
 //
 //  The numbers behind the combat card's depth and commit feel (design:
-//  docs/superpowers/specs/2026-11-27-combat-card-depth-design.md, sections 3 and 4). Views render what this
+//  docs/superpowers/specs/2026-11-27-combat-card-depth-design.md, sections 3 and 4), and the torch every screen
+//  shares (docs/superpowers/specs/2026-11-28-atmosphere-and-light-design.md, section 4). Views render what this
 //  decides and decide nothing themselves. Foundation only, so the Linux harness checks it.
 //
 
@@ -21,8 +22,8 @@ nonisolated enum FXGate: Equatable {
     var isStill: Bool { self == .still }
 }
 
-/// One torch for every lit surface on the card. It sits at the top, 15 degrees left of vertical, so light
-/// travels down and slightly right and shadows fall the same way.
+/// One torch for every lit surface: the card, the panels and the canvas. It sits at the top, 15 degrees left of
+/// vertical, so light travels down and slightly right and shadows fall the same way.
 nonisolated enum LightSource {
     static let angleDegrees: Double = 15
 
@@ -46,6 +47,34 @@ nonisolated enum LightSource {
         let sy = cos(a) / 2
         return ((0.5 - sx, 0.5 - sy), (0.5 + sx, 0.5 + sy))
     }
+
+    // MARK: The torch every screen shares
+
+    /// Where the torch sits on a screen's top edge, as a share of its width. Left of centre, so light travels right,
+    /// as the card's does.
+    static let torchX: Double = 0.30
+
+    /// How far the torch's pool reaches, in points. It fades linearly to nothing at this distance.
+    static let torchReach: Double = 420
+
+    /// How far the shade at the far corner reaches in Light, in points.
+    static let farShadeReach: Double = 520
+
+    /// The torch's strength at its centre. Dark: the "Glow" the owner chose on 28 November 2026, a gold light. Light:
+    /// a warm wash that must not darken the cream (the dark-brown pool it replaces lowered it by about 12%).
+    static func torchAlpha(isDark: Bool) -> Double {
+        isDark ? 0.08 : 0.14
+    }
+
+    /// The torch's colour: the brand's mid-plate gold in Dark, the plate's bevel highlight in Light. Both are existing
+    /// tokens, so no new hue enters the app.
+    static func torchColor(isDark: Bool) -> ThemeRGB {
+        isDark ? ThemePalette.Gold.plateStops[2].color : ThemePalette.Gold.bevel
+    }
+
+    /// The faint rim a flat tile takes from the torch: white on the side the light comes from, black on the far side.
+    static let rimHighlightAlpha: Double = 0.16
+    static let rimShadeAlpha: Double = 0.16
 }
 
 /// What a drag looks like: how far toward Delete or Keep, how the card tilts and lifts, whether the commit line has
