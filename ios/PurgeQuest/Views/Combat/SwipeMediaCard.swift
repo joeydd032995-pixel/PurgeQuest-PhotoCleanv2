@@ -13,6 +13,10 @@ struct SwipeMediaCard: View {
     /// This asset was purged once before and recovered — deleting it again
     /// earns no XP, gems, or quest progress.
     var isShade: Bool = false
+    /// What the combo multiplier means to the rim, and what the last decision did to it. The front card only; the
+    /// card behind keeps the defaults (no glow, no cue).
+    var comboTier = ComboTier(tenths: 10)
+    var comboCue: ComboCue = .none
     let onDelete: () -> Void
     let onSpare: () -> Void
 
@@ -29,6 +33,15 @@ struct SwipeMediaCard: View {
     /// A 150 ms scale punch when the card arms.
     @State private var punch: CGFloat = 1
     @State private var lowPower = ProcessInfo.processInfo.isLowPowerModeEnabled
+    /// When this card was committed, for the Storage Behemoths' stone chips.
+    @State private var burstStart: Date? = nil
+    /// The combo on the rim: a pulse after a raise, the sheen at x2.0, the fade after a keep, and the fade-in.
+    @State private var comboPulse: Double = 0
+    @State private var comboSheen: CGFloat = -0.4
+    @State private var comboCool: Double = 0
+    @State private var comboShown: Double = 0
+    /// A brass glow around the frame while a Live Photo plays.
+    @State private var liveGlow: Double = 0
 
     private let commitThreshold: CGFloat = 110
     private var rotation: Angle {
@@ -37,6 +50,40 @@ struct SwipeMediaCard: View {
 
     /// Reduce Motion or Low Power Mode: every decorative effect becomes a still.
     private var gate: FXGate { FXGate(reduceMotion: reduceMotion, lowPowerMode: lowPower) }
+
+    /// The family skin on this card: forced in a tour launch, off in the comparison launches, nil when the family's
+    /// kill switch is off. The card behind keeps its skin too, drawn still.
+    private var skin: FamilySkinKind? {
+        if UITestSupport.skinsDisabled { return nil }
+        if isFront, let forced = UITestSupport.forcedSkin { return forced }
+        return FamilySkinKind.active(for: item.monsterType.family)
+    }
+
+    /// The Live Photo reveal: a circle opening from the LIVE badge's corner, or the plain cross-fade under the gate.
+    private var liveReveal: AnyTransition {
+        gate.isStill ? AnyTransition.opacity : AnyTransition(IrisTransition(origin: CGPoint(x: 34, y: 34)))
+    }
+
+    private var liveAnimation: Animation {
+        Animation.easeInOut(duration: gate.isStill ? 0.2 : 0.22)
+    }
+
+    /// The combo on this card's rim, front card only. Nothing shows at x1.0 unless a keep just cooled it.
+    private var comboState: ComboRimState? {
+        guard isFront, comboTier.tenths > 10 || comboCue == .cooled else { return nil }
+        var state = ComboRimState(tier: comboTier)
+        state.pulse = comboPulse
+        state.sheen = comboSheen
+        state.cool = comboCool
+        state.shown = comboShown
+        return state
+    }
+
+    /// How far the Storage Behemoths' pressure cracks have grown, from the drag. It is part of the frame treatment,
+    /// so it stays under the gate.
+    private var crackAmount: Double {
+        skin == .behemoths ? SkinDrag.pressureCracks(strength: progress.strength) : 0
+    }
 
     private var progress: SwipeProgress {
         SwipeProgress(dx: Double(dragOffset.width), dy: Double(dragOffset.height), gate: gate, wasArmed: armedSide)
@@ -54,13 +101,17 @@ struct SwipeMediaCard: View {
             cardBody
                 .overlay(alignment: .topLeading) { deleteOverlay }
                 .overlay(alignment: .topTrailing) { spareOverlay }
+                .overlay { edgeLayer }
                 .overlay {
                     if item.isLivePhoto, isFront, showLivePlayback {
                         LivePhotoPreviewView(phAssetID: item.id)
                             .onTapGesture {
-                                withAnimation(.easeInOut(duration: 0.2)) { showLivePlayback = false }
+                                withAnimation(liveAnimation) {
+                                    showLivePlayback = false
+                                    liveGlow = 0
+                                }
                             }
-                            .transition(.opacity)
+                            .transition(liveReveal)
                             .accessibilityLabel("Live Photo playing. Tap to stop.")
                     }
                 }
@@ -76,6 +127,7 @@ struct SwipeMediaCard: View {
         .onReceive(NotificationCenter.default.publisher(for: .NSProcessInfoPowerStateDidChange)) { _ in
             lowPower = ProcessInfo.processInfo.isLowPowerModeEnabled
         }
+        .task(id: item.id) { await playComboCue() }
         .task(id: item.id) {
             // Tour only: draw the front card mid-drag, with no finger down.
             guard isFront, let pose = UITestSupport.cardPoseWidth else { return }
@@ -86,7 +138,10 @@ struct SwipeMediaCard: View {
             // Live Photos: tap the front card to play the paired motion.
             guard isFront, item.isLivePhoto else { return }
             HapticsService.shared.light()
-            withAnimation(.easeInOut(duration: 0.2)) { showLivePlayback.toggle() }
+            withAnimation(liveAnimation) {
+                showLivePlayback.toggle()
+                liveGlow = showLivePlayback ? 1 : 0
+            }
         }
         .task(id: item.id) {
             guard isFront else { return }
@@ -104,6 +159,7 @@ struct SwipeMediaCard: View {
                 VideoPreviewService.shared.stop(forAssetID: item.id)
             }
             showLivePlayback = false
+            liveGlow = 0
         }
         .onChange(of: scenePhase) { _, phase in
             if phase != .active, item.kind == .video {
@@ -129,12 +185,21 @@ struct SwipeMediaCard: View {
                 chip: Wording.exhibitChip(size: item.formattedSize, age: item.ageDescription),
                 accent: item.monsterType.accentColor,
                 lift: progress.lift,
-                highlightShift: progress.highlightShift
+                highlightShift: progress.highlightShift,
+                skin: skin,
+                skinSeed: item.id,
+                crack: crackAmount,
+                combo: comboState,
+                liveGlow: liveGlow
             ) { photoLayer }
             Nameplate(
                 monster: item.monsterType,
                 why: item.classification?.whyText,
-                needsCarefulReview: item.classification?.requiresCarefulReview == true
+                needsCarefulReview: item.classification?.requiresCarefulReview == true,
+                skin: skin,
+                jitters: isFront && !gate.isStill,
+                seedKey: item.id,
+                glowColor: item.monsterType.accentColor
             )
         }
         .padding(8)
@@ -144,6 +209,24 @@ struct SwipeMediaCard: View {
                 .fill(Color.dungeonStone)
                 .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.dungeonAsh, lineWidth: 1))
         )
+    }
+
+    /// The skin's moving parts, in the two side bands only (see `SkinEdgeLayer`).
+    @ViewBuilder
+    private var edgeLayer: some View {
+        if let skin {
+            SkinEdgeLayer(
+                kind: skin,
+                seedKey: item.id,
+                accent: item.monsterType.accentColor,
+                gate: gate,
+                isFront: isFront,
+                dragX: Double(dragOffset.width),
+                dragY: Double(dragOffset.height),
+                lift: progress.lift,
+                burstStart: burstStart
+            )
+        }
     }
 
     private var photoLayer: some View {
@@ -162,7 +245,7 @@ struct SwipeMediaCard: View {
             }
             .overlay {
                 if item.kind == .video, isFront, showLivePreview {
-                    VideoPreviewLayerView()
+                    VideoPreviewStage(gate: gate)
                         .allowsHitTesting(false)
                         .transition(.opacity)
                 }
@@ -312,6 +395,34 @@ struct SwipeMediaCard: View {
             }
     }
 
+    /// The combo's moment on this card as it arrives: a pulse after a raise, a fade from ash after a keep, one sheen at
+    /// x2.0. Event-driven and once per card. Under the gate nothing moves: the rim fades in over 150 ms.
+    private func playComboCue() async {
+        guard isFront else { return }
+        if gate.isStill {
+            withAnimation(.easeInOut(duration: 0.15)) { comboShown = 1 }
+            return
+        }
+        comboShown = 1
+        switch comboCue {
+        case .raised:
+            comboPulse = 1
+            try? await Task.sleep(for: .milliseconds(30))
+            withAnimation(.easeOut(duration: 0.25)) { comboPulse = 0 }
+        case .cooled:
+            comboCool = 1
+            try? await Task.sleep(for: .milliseconds(30))
+            withAnimation(.easeInOut(duration: 0.4)) { comboCool = 0 }
+        case .none:
+            break
+        }
+        if comboTier.isMax {
+            try? await Task.sleep(for: .milliseconds(150))
+            guard !Task.isCancelled else { return }
+            withAnimation(.easeInOut(duration: 0.5)) { comboSheen = 1.4 }
+        }
+    }
+
     /// Keeps `armedSide` in step with the drag and fires the detent once per crossing.
     private func updateArming() {
         guard isFront, snapAway == nil else { return }
@@ -338,6 +449,8 @@ struct SwipeMediaCard: View {
 
     private func commit(left: Bool) {
         let target = CGSize(width: left ? -700 : 700, height: dragOffset.height + 50)
+        // The Storage Behemoths throw stone chips as they go. Only a timestamp: the commit itself is unchanged.
+        if skin == .behemoths, !gate.isStill { burstStart = Date() }
         if reduceMotion {
             snapAway = target
         } else {

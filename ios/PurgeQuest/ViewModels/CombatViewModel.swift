@@ -84,6 +84,9 @@ final class CombatViewModel {
     /// What rewards are multiplied by right now: ×1.0 to ×2.0, up a tenth per deletion, and a keep takes 12% of
     /// it. `combo` above is the streak (deletions in a row), which still ends on a keep.
     var comboMultiplier = ComboMultiplier()
+    /// What the last decision did to `comboMultiplier`, for the next card's rim to show. Set only where the multiplier
+    /// already changes (a delete, a keep, a group's deletions); an undo, a shade, a room's end and a new dive clear it.
+    private(set) var comboCue: ComboCue = .none
 
     // Session totals
     var sessionPhotosDeleted: Int = 0
@@ -267,6 +270,7 @@ final class CombatViewModel {
         scanCount = 0
         combo = 0
         comboMultiplier = ComboMultiplier()
+        comboCue = .none
         pendingBonusXP = 0
         pendingBonusGems = 0
         lostBonusXP = 0
@@ -377,6 +381,7 @@ final class CombatViewModel {
         // combo, and advances no quests, closing the recover-and-redelete loop.
         let before = snapshot(hero: hero)
         if rewardedIDs.contains(item.id) {
+            comboCue = .none
             HapticsService.shared.light()
             pendingDecisions.append(
                 PendingDecision(item: item, willDelete: true, xpReward: 0, gemReward: 0, awardsProgress: false)
@@ -391,7 +396,9 @@ final class CombatViewModel {
         combo += 1
         peakCombo = max(peakCombo, combo)
         hero.highestCombo = max(hero.highestCombo, peakCombo)
+        let tenthsBefore = comboMultiplier.tenths
         comboMultiplier.afterDeletion()
+        comboCue = ComboCue.between(beforeTenths: tenthsBefore, afterTenths: comboMultiplier.tenths)
 
         // Capture the full reward now, while this combo is live. It rides along on the
         // decision so it survives any toggles in the room summary and is banked verbatim
@@ -444,7 +451,9 @@ final class CombatViewModel {
     func decideSpare(_ item: MediaItem, hero: Hero, context: ModelContext) {
         let before = snapshot(hero: hero)
         combo = 0
+        let tenthsBefore = comboMultiplier.tenths
         comboMultiplier.afterKeep()
+        comboCue = ComboCue.between(beforeTenths: tenthsBefore, afterTenths: comboMultiplier.tenths)
         perfectRoom = false
         let dmg = DiveRules.damageForKeeping(item.monsterType)
         if dmg > 0 {
@@ -502,7 +511,9 @@ final class CombatViewModel {
                 combo += 1
                 peakCombo = max(peakCombo, combo)
                 hero.highestCombo = max(hero.highestCombo, peakCombo)
+                let tenthsBefore = comboMultiplier.tenths
                 comboMultiplier.afterDeletion()
+                comboCue = ComboCue.between(beforeTenths: tenthsBefore, afterTenths: comboMultiplier.tenths)
                 let earned = reward(for: member, hero: hero, multiplier: comboMultiplier)
                 pendingDecisions.append(
                     PendingDecision(item: member, willDelete: true, xpReward: earned.xp, gemReward: earned.gems)
@@ -581,6 +592,7 @@ final class CombatViewModel {
         combo = entry.before.combo
         peakCombo = entry.before.peakCombo
         comboMultiplier = ComboMultiplier(tenths: entry.before.multiplierTenths)
+        comboCue = .none
         perfectRoom = entry.before.perfectRoom
         hero.highestCombo = entry.before.heroHighestCombo
         for assetID in entry.keptRecordIDs {
@@ -623,6 +635,7 @@ final class CombatViewModel {
         }
         combo = 0
         comboMultiplier = ComboMultiplier()
+        comboCue = .none
         HapticsService.shared.warning()
         finalizeSession()
         CombatLiveActivityService.shared.end()
@@ -646,6 +659,7 @@ final class CombatViewModel {
         currentRoomIndex += 1
         if currentRoomIndex >= currentRoomItems.count {
             phase = .roomSummary
+            comboCue = .none
             HapticsService.shared.success()
         }
     }
@@ -864,6 +878,7 @@ final class CombatViewModel {
         roomNumber = 1
         combo = 0
         comboMultiplier = ComboMultiplier()
+        comboCue = .none
         perfectRoom = true
         heroCurrentHP = heroMaxHP
         hero.currentHP = heroMaxHP
