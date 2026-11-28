@@ -32,11 +32,12 @@ import Foundation
     @Test func budgetsAndRimStayWithinTheDesign() {
         for kind in FamilySkinKind.allCases { #expect(kind.particleBudget <= 24) }
         #expect(FamilySkinKind.behemoths.particleBudget == 0, "weight, not drift")
-        #expect(FamilySkinKind.behemoths.extraRim == 3)
-        for kind in FamilySkinKind.allCases where kind != .behemoths { #expect(kind.extraRim == 0) }
+        #expect(FamilySkinKind.behemoths.extraRim == 4)
+        for kind in FamilySkinKind.allCases where kind != .behemoths { #expect(kind.extraRim == 2) }
         for kind in FamilySkinKind.allCases {
             #expect(kind.extraRim + 4 + 8 > EdgeParticles.bandWidth,
                     "card padding 8 + rim 4 + extra: the photo starts clear of the 10 pt bands")
+            #expect(kind.extraRim <= 4, "a rim wider than 8 pt would crowd the photo")
         }
     }
 

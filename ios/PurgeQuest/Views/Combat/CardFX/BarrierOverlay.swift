@@ -2,9 +2,10 @@
 //  BarrierOverlay.swift
 //  PurgeQuest
 //
-//  The keep drag's overlay (design section 4): a brass ward that rises along the card's right edge as the drag
+//  The keep drag's overlay (design section 4): a brass ward that rises along the screen's right edge as the drag
 //  grows and locks, brighter, when the commit line is crossed. Defensive, not celebratory: a bowed line and a soft
-//  inward glow, gone by 24% of the card's width. The KEEP stamp stays patina; only the barrier is brass.
+//  inward glow, gone by 24% of the width it is drawn in. The KEEP stamp stays patina; only the barrier is brass.
+//  `ScreenEdgeOverlay` draws it at the screen's edge, not on the card.
 //
 
 import SwiftUI

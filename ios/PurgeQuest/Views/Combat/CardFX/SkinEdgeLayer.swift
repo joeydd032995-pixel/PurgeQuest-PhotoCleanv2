@@ -67,11 +67,17 @@ struct SkinEdgeLayer: View {
         }
     }
 
+    /// How much larger and stronger the particles are drawn than the model's numbers: the first tour's were specks.
+    /// The model's positions are untouched, and the band clip at the top of `draw` still cuts everything at 10 pt.
+    private static let sizeBoost: CGFloat = 1.6
+    private static let alphaBoost: Double = 1.7
+
     private func paint(_ particles: [EdgeParticle], into context: inout GraphicsContext) {
         for (index, particle) in particles.enumerated() {
-            let r: CGFloat = CGFloat(particle.radius)
+            let r: CGFloat = CGFloat(particle.radius) * Self.sizeBoost
             let rect = CGRect(x: CGFloat(particle.x) - r, y: CGFloat(particle.y) - r, width: r * 2, height: r * 2)
-            let color: Color = tint(for: index).opacity(particle.alpha)
+            let alpha: Double = min(1, particle.alpha * Self.alphaBoost)
+            let color: Color = tint(for: index).opacity(alpha)
             if kind == .glitch || kind == .behemoths {
                 context.fill(Path(rect), with: .color(color))
             } else {
@@ -102,7 +108,8 @@ struct SkinEdgeLayer: View {
                 height: size.height - 16
             )
             let outline = Path(roundedRect: rect, cornerSize: CGSize(width: 12, height: 12))
-            context.stroke(outline, with: .color(accent.opacity(ghost.alpha * 2)), lineWidth: 1.5)
+            let alpha: Double = min(1, ghost.alpha * 4)
+            context.stroke(outline, with: .color(accent.opacity(alpha)), lineWidth: 2.5)
         }
     }
 }

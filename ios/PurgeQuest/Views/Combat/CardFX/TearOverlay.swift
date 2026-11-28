@@ -2,9 +2,10 @@
 //  TearOverlay.swift
 //  PurgeQuest
 //
-//  The delete drag's overlay (design section 4): a jagged void that grows from the card's left edge as the drag
+//  The delete drag's overlay (design section 4): a jagged tear that grows from the screen's left edge as the drag
 //  grows, widening when the commit line is crossed. It replaces the old full-card crimson wash, which tinted the
-//  whole photo. Strongest at the edge, gone by 34% of the card's width, so most of the picture stays clear.
+//  whole photo. Strongest at the edge, gone by 34% of the width it is drawn in, so most of the picture stays clear.
+//  `ScreenEdgeOverlay` draws it at the screen's edge, not on the card.
 //
 
 import SwiftUI
@@ -55,8 +56,9 @@ struct TearOverlay: View {
         let width = EdgeOverlay.tearWidth(strength: strength, armed: armed)
         let alpha = EdgeOverlay.tearAlpha(strength: strength)
         let reach = CGFloat(max(width, 0.01))
+        // Crimson from the edge inward: the first tour's black-first fill vanished on the Dark canvas.
         let fillColors: [Color] = [
-            Color.black.opacity(alpha),
+            Color.combatCrimson.opacity(alpha),
             Color.combatCrimsonDeep.opacity(alpha * 0.7),
             Color.combatCrimson.opacity(0)
         ]
