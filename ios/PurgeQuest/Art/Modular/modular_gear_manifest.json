@@ -993,8 +993,8 @@
   {
    "carryAngle": 45.0,
    "gripPx": [
-    15.3,
-    75.5
+    15.92,
+    65.0
    ],
    "group": "staff1",
    "id": "weapon.staff.1.4",
@@ -1003,19 +1003,14 @@
    "kind": "staff",
    "layer": "front",
    "maskResources": {
-    "primary": "staff_1_4_mask_primary",
-    "secondary": "staff_1_4_mask_secondary"
+    "primary": "staff_1_4_mask_primary"
    },
    "name": "Ashen Bough IV",
    "profileOverrides": {},
    "regionTone": {
     "primary": [
-     0.43189,
-     0.03204
-    ],
-    "secondary": [
-     0.37676,
-     0.01391
+     0.4289,
+     0.03213
     ]
    },
    "resourceName": "staff_1_4",
@@ -1057,25 +1052,25 @@
     "automated": {
      "bbox": [
       9,
-      11,
-      324,
-      127
+      2,
+      355,
+      126
      ],
      "canvasGrowth": {
       "1x": [
-       1.013,
-       1.081
+       1.019,
+       1.082
       ],
       "titan": [
-       1.516,
-       1.77
+       1.531,
+       1.783
       ]
      },
      "gripOnItem": true,
      "materialMasks": {
       "algorithm": "chroma-cells-v5",
       "alphaLeak": 0.0,
-      "coverage": 0.892963,
+      "coverage": 0.865364,
       "overlap": 0.0,
       "protectedLeak": 0.0
      }
