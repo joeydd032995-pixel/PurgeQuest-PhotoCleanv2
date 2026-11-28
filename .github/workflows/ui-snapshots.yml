@@ -25,8 +25,10 @@ concurrency:
 jobs:
   tour:
     runs-on: macos-latest
-    # The tour alone takes about 27 minutes; the room-summary test adds about 5 more. 45 leaves headroom without hiding a hang.
-    timeout-minutes: 45
+    # Measured: the tour alone about 27 minutes, the room-summary test about 5 more, the eight card drag poses about 5
+    # more (37 minutes in all, run 46078434071), and the twelve family skin shots about 8 more, which with the
+    # setup is just over the old 45 (run 46081457402 was cancelled at the cap). 60 leaves headroom without hiding a hang.
+    timeout-minutes: 60
 
     steps:
       - name: Checkout

@@ -63,7 +63,11 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             test
       - name: Capture Light/Dark appearance tour
-        # Opt-in screenshots of the real app; never fails the build.
+        # Opt-in screenshots of the real app; never fails the build. It gates nothing but it runs before the
+        # onboarding reset regression test below, which does gate, so its length is this job's budget: the card
+        # drag poses and the family skin shots (about 13 minutes between them, 20 more app launches) are left to
+        # the "UI snapshots" workflow, which exists to produce screenshots. The job's 45 minutes were used up
+        # with the poses alone (43 of 45), and with the skins added the tour was cancelled and the reset test skipped.
         continue-on-error: true
         env:
           TEST_RUNNER_SNAPSHOT_DIR: ${{ runner.temp }}/ui-snapshots
@@ -78,6 +82,8 @@ jobs:
             -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
             -parallel-testing-enabled NO \
             -only-testing:PurgeQuestUITests/AppearanceTourUITests \
+            -skip-testing:PurgeQuestUITests/AppearanceTourUITests/testZCardDragPoses \
+            -skip-testing:PurgeQuestUITests/AppearanceTourUITests/testZFamilySkins \
             CODE_SIGNING_ALLOWED=NO \
             test
       - name: Run onboarding reset regression test
