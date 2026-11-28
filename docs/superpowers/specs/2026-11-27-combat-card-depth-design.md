@@ -194,3 +194,18 @@ The tour of parts 2 and 3 was the first time anyone saw the card rendered. It sh
 | Part 3 had no screenshot at all | `testZComboRim` shoots the combo rim at x1.5 and x2.0 in Light and Dark, with the app told the combo (`-UITestCombo`). The video vignette and breath and the Live Photo glow and iris are still not shot: the synthetic library has no video or Live Photo. They need the owner's device pass |
 
 **Not changed.** One of the shipped staves (Ashen Bough IV) has a grey smudge at its upper right in the art. That is an art question for the owner, not a code change: the modular asset tests pin each sprite's pixels.
+
+### 14.1 Second pass on the skins, and two small fixes (28 November 2026)
+
+The new tour's frame corners at 1:1 showed the first pass of section 14 had made only the Duplicate Dragons unmistakable; the Storage Behemoths and the Video Phantoms had barely changed, and the Undead, Relics and Glitchborn only a little. Each skin now has a mark a person can name at a glance, all still drawn inside the rim ring and nowhere else, so the photo promise and its pixel test are unchanged:
+
+- **Storage Behemoths:** a dark stone slab under the bevel, mortar seams every few dozen points, eight rivets (the four corners and four side midpoints), and heavier pressure cracks.
+- **Video Phantoms:** a brighter glass rim with a shimmer that swings with the tilt, a lit inner edge, and a stronger cool glow outside the frame.
+- **Clutter Undead:** more chips, larger patches of rot and moss, and a darker inner edge.
+- **Archive Relics:** a scatter of limestone dust, fourteen longer cracks, and a stronger corner of light.
+- **Glitchborn:** scanlines across the rim, more and wider notches, six slipped slices of the two glitch colours, and a wider chromatic split.
+- **Duplicate Dragons:** a stronger wash, scales and glint.
+
+The accent wash is stronger for every skin. Everything remains a first guess for the owner to judge on the tour.
+
+Two things the tour showed beside the skins: the card behind a duplicate group showed its nameplate text under the group card, which now sits higher to leave room for the Undo pill, so the card behind is not drawn while a group is on top; and one skin shot caught the Undo pill from the group the tour had put away, so the tour now waits the pill out before it shoots.

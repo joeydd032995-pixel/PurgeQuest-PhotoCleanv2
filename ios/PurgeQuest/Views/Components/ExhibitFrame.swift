@@ -69,8 +69,8 @@ struct ExhibitFrame<Photo: View>: View {
         let bevel = LinearGradient(colors: bevelColors, startPoint: litStart, endPoint: litEnd)
         let litEdge = RoundedRectangle(cornerRadius: outer - 1).stroke(bevel, lineWidth: 1).padding(1)
         // The Video Phantoms' cool glow sits outside the frame; the frame is opaque, so it never reaches the photo.
-        let glowColor: Color = skin == .phantoms ? accent.opacity(0.7) : Color.clear
-        let glowRadius: CGFloat = skin == .phantoms ? 14 : 0
+        let glowColor: Color = skin == .phantoms ? accent.opacity(0.85) : Color.clear
+        let glowRadius: CGFloat = skin == .phantoms ? 18 : 0
         // The combo's glow also reaches a little outside the frame, never inside it.
         let comboGlowAlpha: Double = (combo?.tier.glowAlpha ?? 0) * (combo?.shown ?? 0) * 0.8
         let liveGlowAlpha: Double = liveGlow * 0.8

@@ -214,7 +214,9 @@ struct CombatView: View {
             }
 
             ZStack {
-                if let next = combat.nextItem {
+                // Not behind a duplicate group: that card sits higher to leave room for the Undo pill, and the card
+                // behind would show its nameplate text under it. A group has no swipe, so it needs no stack.
+                if let next = combat.nextItem, !combat.topItemIsGroup {
                     SwipeMediaCard(item: next, isFront: false, onDelete: {}, onSpare: {})
                         .padding(.horizontal, 36)
                         .padding(.vertical, 28)

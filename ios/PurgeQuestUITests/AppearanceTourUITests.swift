@@ -481,7 +481,9 @@ final class AppearanceTourUITests: XCTestCase {
         }
         if putAway > 0 {
             note("\(label) (\(mode)): put away \(putAway) duplicate group(s) to reach a single card")
-            settle(1.0)
+            // Putting a group away starts the Undo pill (five seconds, from the last decision, and two have passed in
+            // the loop). Wait it out so it is not in the shot: one skin shot of the last run caught it over the nameplate.
+            settle(5.0)
         }
         shot(shotName)
         app.terminate()
