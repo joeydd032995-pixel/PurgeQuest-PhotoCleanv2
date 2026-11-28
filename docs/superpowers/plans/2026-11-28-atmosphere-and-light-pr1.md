@@ -65,7 +65,7 @@
         #expect(LightSource.farShadeReach > 0)
     }
 
-    @Test func darksTorchIsTheGlowTheOwnerChose() {
+    @Test func theDarkTorchIsTheGlowTheOwnerChose() {
         #expect(close(LightSource.torchAlpha(isDark: true), 0.08), "Glow, chosen on 28 November 2026")
         #expect(LightSource.torchAlpha(isDark: false) > 0)
     }
@@ -78,8 +78,8 @@
             #expect(darkLit.relativeLuminance > canvas.dark.relativeLuminance, "\(theme) Dark")
             let lightAlpha = LightSource.torchAlpha(isDark: false)
             let lightLit = LightSource.torchColor(isDark: false).over(canvas.light, alpha: lightAlpha)
-            let floor = canvas.light.relativeLuminance * 0.98
-            #expect(lightLit.relativeLuminance > floor, "\(theme) Light: a warm wash, not the stain the old pool was")
+            let lowest = canvas.light.relativeLuminance * 0.98
+            #expect(lightLit.relativeLuminance > lowest, "\(theme) Light: a warm wash, not the stain the old pool was")
         }
     }
 
@@ -105,7 +105,7 @@
 
 - [ ] **Step 3: Write the implementation.** In `Models/CardFX.swift`, change the header comment's second sentence block so it also names the torch, then add the members to `LightSource` after `highlightPoints`.
 
-Header (replace lines 5 to 8):
+Header (replace lines 5 to 7):
 
 ```swift
 //  The numbers behind the combat card's depth and commit feel (design:
@@ -361,7 +361,10 @@ import SwiftUI
 private struct LitEdge: ViewModifier {
     let cornerRadius: CGFloat
 
-    func body(content: Content) -> some View {
+    /// White on the lit side, clear in the middle, black on the far side: the frame's recipe, from `LightSource`.
+    /// A computed property with an explicit `return`, as `ExhibitFrame.frameBackground` does, so `body` stays one
+    /// expression.
+    private var rim: LinearGradient {
         let points = LightSource.highlightPoints()
         let litStart = UnitPoint(x: CGFloat(points.start.x), y: CGFloat(points.start.y))
         let litEnd = UnitPoint(x: CGFloat(points.end.x), y: CGFloat(points.end.y))
@@ -370,7 +373,10 @@ private struct LitEdge: ViewModifier {
             Color.white.opacity(0),
             Color.black.opacity(LightSource.rimShadeAlpha)
         ]
-        let rim = LinearGradient(colors: colors, startPoint: litStart, endPoint: litEnd)
+        return LinearGradient(colors: colors, startPoint: litStart, endPoint: litEnd)
+    }
+
+    func body(content: Content) -> some View {
         content.overlay(
             RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                 .strokeBorder(rim, lineWidth: 1)
