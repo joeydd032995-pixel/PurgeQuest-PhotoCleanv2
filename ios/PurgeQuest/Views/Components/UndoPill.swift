@@ -20,6 +20,10 @@ struct UndoPill: View {
     @State private var remaining: CGFloat = 1
 
     var body: some View {
+        // The pill's shadow falls along the torch's light (`LightSource`), like the card's and the panels'.
+        let offset = LightSource.shadowOffset(depth: 4)
+        let shadowX = CGFloat(offset.x)
+        let shadowY = CGFloat(offset.y)
         Button(action: onUndo) {
             HStack(spacing: 8) {
                 Image(systemName: "arrow.uturn.backward")
@@ -34,7 +38,7 @@ struct UndoPill: View {
             .overlay(Capsule().stroke(Color.white.opacity(0.14), lineWidth: 1))
             .overlay(alignment: .bottom) { timeLeftLine }
             .clipShape(Capsule())
-            .shadow(color: .black.opacity(0.35), radius: 10, y: 4)
+            .shadow(color: .black.opacity(0.35), radius: 10, x: shadowX, y: shadowY)
             .contentShape(Capsule())
         }
         .buttonStyle(.plain)
