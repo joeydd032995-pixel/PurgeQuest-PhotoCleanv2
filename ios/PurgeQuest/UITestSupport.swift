@@ -91,6 +91,17 @@ enum UITestSupport {
         #endif
     }
 
+    /// The combo a tour launch forces onto the front card's rim, from `-UITestCombo 20` (tenths: 15 is x1.5, 20 is
+    /// x2.0), or nil. A tour cannot string together enough deletions to earn one before the screenshot.
+    static var forcedComboTenths: Int? {
+        #if DEBUG
+        guard isTour, let raw = UserDefaults.standard.string(forKey: "UITestCombo") else { return nil }
+        return Int(raw)
+        #else
+        return nil
+        #endif
+    }
+
     /// True when a tour launch turns every family skin off (`-UITestNoSkins`), for comparison shots.
     static var skinsDisabled: Bool {
         #if DEBUG

@@ -12,7 +12,8 @@ import UIKit
 
     private let photoColor = Color(red: 0.2, green: 0.4, blue: 0.8)
     private let cardSize = CGSize(width: 300, height: 300)
-    /// The photo starts 12 pt in (8 pt card padding, 4 pt rim), 15 pt for the heavier Behemoths rim. Compared from 20.
+    /// The plain card's photo starts 12 pt in (8 pt card padding, 4 pt rim); a skin's rim is 2 pt wider (4 for the
+    /// Behemoths), so its photo starts at 14 or 16. Compared from 20, inside every one of them.
     private let interior = CGRect(x: 20, y: 20, width: 260, height: 260)
 
     /// The card as the combat card builds it: the frame inside the card's 8 pt padding, with the edge layer over all of it.

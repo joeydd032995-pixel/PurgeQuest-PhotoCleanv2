@@ -90,7 +90,9 @@ struct DuplicateGroupCard: View {
                 }
                 .tabViewStyle(.page(indexDisplayMode: .automatic))
             }
-            .frame(height: 250)
+            // Up to 250 pt tall, shorter when the screen is crowded (a tip row above, a large text size) so the
+            // card always fits and leaves the Undo pill its room.
+            .frame(minHeight: 140, maxHeight: 250)
 
             Text("Copy \(indexOfSelected + 1) of \(group.members.count)")
                 .font(.caption2.weight(.bold).monospacedDigit())

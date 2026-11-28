@@ -24,7 +24,13 @@ struct CombatView: View {
     @State private var coachSeen = CoachMarkStore.hasSeen()
     /// The decision the Undo pill is offering to take back right now, if any.
     @State private var undoOffer: DecisionHistory.Entry? = nil
+    /// The front card's drag, for the tear and the barrier at the screen's edges. Only `ScreenEdgeOverlay` reads it.
+    @State private var dragModel = CardDragModel()
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    /// Room kept under a duplicate group for the Undo pill (44 pt tall, 12 pt off the bottom), so the pill never covers
+    /// the group's Confirm button. Always kept while a group is up, so the pill coming and going moves nothing.
+    private let undoPillReserve: CGFloat = 56
 
     var body: some View {
         ZStack {
@@ -221,7 +227,8 @@ struct CombatView: View {
                         .id(top.id)
                         .transition(.scale.combined(with: .opacity))
                         .padding(.horizontal, 24)
-                        .padding(.vertical, 16)
+                        .padding(.top, 16)
+                        .padding(.bottom, 16 + undoPillReserve)
                     } else {
                         SwipeMediaCard(
                             item: top,
@@ -229,6 +236,7 @@ struct CombatView: View {
                             isShade: combat.isShade(top),
                             comboTier: ComboTier(tenths: combat.comboMultiplier.tenths),
                             comboCue: combat.comboCue,
+                            dragModel: dragModel,
                             onDelete: { combat.decideDelete(top, hero: hero) },
                             onSpare: {
                                 if let hero = heroes.first { combat.decideSpare(top, hero: hero, context: modelContext) }
@@ -242,6 +250,8 @@ struct CombatView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            // The tear and the barrier, at the screen's own edges, above the card; nothing at rest.
+            .overlay { ScreenEdgeOverlay(model: dragModel) }
             .overlay {
                 if showCoach { CoachMarkOverlay().transition(.opacity) }
             }
@@ -271,8 +281,9 @@ struct CombatView: View {
         .onAppear { tipTerm = nextGlossaryTip() }
         // An overlay, so the pill coming and going never moves the card or the buttons. On a single card it sits
         // just above the Delete and Keep row (about 70 pt of row and margin, plus a gap). A duplicate group has
-        // no such row, and its own buttons are higher up, so there the pill drops to the bottom edge, under the
-        // card, where it covers nothing.
+        // no such row, so there the pill drops to the bottom edge, in the room the group card leaves for it
+        // (`undoPillReserve`). The first tour put the pill over the group's Confirm button, because the card then
+        // filled the screen to the bottom.
         .overlay(alignment: .bottom) {
             if let offer = undoOffer, combat.canUndo() {
                 UndoPill(kind: offer.kind, seconds: DiveRules.undoWindowSeconds, onUndo: undo)

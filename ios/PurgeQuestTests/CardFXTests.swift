@@ -164,4 +164,33 @@ import Foundation
         #expect(EdgeOverlay.tearAlpha(strength: 0) == 0)
         #expect(EdgeOverlay.barrierAlpha(strength: 0) == 0)
     }
+
+    // MARK: Edge signal (what the screen-edge overlays are told)
+
+    @Test func theScreenEdgesAreSilentAtRest() {
+        let rest = EdgeSignal(progress: SwipeProgress(dx: 0, dy: 0, gate: .live))
+        #expect(rest == EdgeSignal.rest)
+        #expect(rest.tearStrength == 0 && rest.barrierStrength == 0)
+        #expect(!rest.tearArmed && !rest.barrierArmed)
+    }
+
+    @Test func aDeleteDragOnlyFeedsTheTearAndAKeepDragOnlyTheBarrier() {
+        let deleting = EdgeSignal(progress: SwipeProgress(dx: -55, dy: 12, gate: .live))
+        #expect(close(deleting.tearStrength, 0.5))
+        #expect(deleting.barrierStrength == 0)
+        #expect(!deleting.tearArmed && !deleting.barrierArmed)
+        let keeping = EdgeSignal(progress: SwipeProgress(dx: 55, dy: -12, gate: .live))
+        #expect(close(keeping.barrierStrength, 0.5))
+        #expect(keeping.tearStrength == 0)
+        #expect(!keeping.tearArmed && !keeping.barrierArmed)
+    }
+
+    @Test func theEdgeThatMatchesTheDragArmsAtTheLine() {
+        let delete = EdgeSignal(progress: SwipeProgress(dx: -125, dy: 0, gate: .live))
+        #expect(delete.tearArmed && !delete.barrierArmed)
+        #expect(delete.tearStrength == 1 && delete.barrierStrength == 0)
+        let keep = EdgeSignal(progress: SwipeProgress(dx: 125, dy: 0, gate: .live))
+        #expect(keep.barrierArmed && !keep.tearArmed)
+        #expect(keep.barrierStrength == 1 && keep.tearStrength == 0)
+    }
 }

@@ -56,8 +56,10 @@ nonisolated enum FamilySkinKind: String, CaseIterable, Equatable {
         return enabled.contains(kind) ? kind : nil
     }
 
-    /// Extra rim width in points: the Storage Behemoths' frame is heavier.
-    var extraRim: Double { self == .behemoths ? 3 : 0 }
+    /// Extra rim width in points on top of the plain frame's 4: every skin gets 2 so its treatment has room to read
+    /// (the first tour's 4 pt rim showed hairlines almost nobody could see), and the Storage Behemoths' frame is
+    /// heavier still. The photo starts at least 14 pt in from the card's edge, clear of the 10 pt side bands.
+    var extraRim: Double { self == .behemoths ? 4 : 2 }
 
     /// The most particles this skin shows at once (the design's cap is 24 for any skin).
     var particleBudget: Int {

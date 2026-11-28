@@ -143,3 +143,31 @@ nonisolated enum EdgeOverlay {
 
     private static func clamp(_ value: Double) -> Double { min(1, max(0, value)) }
 }
+
+/// What the two screen-edge overlays are told while a card is dragged. The tear sits at the screen's left edge for a
+/// Delete drag and the barrier at the right for a Keep drag, so they stay put while the card moves under them (drawn
+/// on the card itself, they slid off the screen with it). Only the side being dragged is ever above zero.
+nonisolated struct EdgeSignal: Equatable {
+    var tearStrength: Double
+    var tearArmed: Bool
+    var barrierStrength: Double
+    var barrierArmed: Bool
+
+    init(tearStrength: Double, tearArmed: Bool, barrierStrength: Double, barrierArmed: Bool) {
+        self.tearStrength = tearStrength
+        self.tearArmed = tearArmed
+        self.barrierStrength = barrierStrength
+        self.barrierArmed = barrierArmed
+    }
+
+    init(progress: SwipeProgress) {
+        let strength: Double = progress.strength
+        tearStrength = progress.side == .delete ? strength : 0
+        barrierStrength = progress.side == .keep ? strength : 0
+        tearArmed = progress.armed == .delete
+        barrierArmed = progress.armed == .keep
+    }
+
+    /// Nothing dragged: both overlays are gone.
+    static let rest = EdgeSignal(tearStrength: 0, tearArmed: false, barrierStrength: 0, barrierArmed: false)
+}

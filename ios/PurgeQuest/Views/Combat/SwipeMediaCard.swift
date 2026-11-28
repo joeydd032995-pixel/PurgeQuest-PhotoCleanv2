@@ -17,6 +17,9 @@ struct SwipeMediaCard: View {
     /// card behind keeps the defaults (no glow, no cue).
     var comboTier = ComboTier(tenths: 10)
     var comboCue: ComboCue = .none
+    /// Where the front card reports its drag, so the screen's edges can draw the tear and the barrier. nil for the
+    /// card behind, which is never dragged.
+    var dragModel: CardDragModel? = nil
     let onDelete: () -> Void
     let onSpare: () -> Void
 
@@ -68,10 +71,16 @@ struct SwipeMediaCard: View {
         Animation.easeInOut(duration: gate.isStill ? 0.2 : 0.22)
     }
 
+    /// The tier the rim shows: the combat screen's, or one a tour launch forces (`-UITestCombo 20`).
+    private var shownTier: ComboTier {
+        if isFront, let tenths = UITestSupport.forcedComboTenths { return ComboTier(tenths: tenths) }
+        return comboTier
+    }
+
     /// The combo on this card's rim, front card only. Nothing shows at x1.0 unless a keep just cooled it.
     private var comboState: ComboRimState? {
-        guard isFront, comboTier.tenths > 10 || comboCue == .cooled else { return nil }
-        var state = ComboRimState(tier: comboTier)
+        guard isFront, shownTier.tenths > 10 || comboCue == .cooled else { return nil }
+        var state = ComboRimState(tier: shownTier)
         state.pulse = comboPulse
         state.sheen = comboSheen
         state.cool = comboCool
@@ -123,7 +132,10 @@ struct SwipeMediaCard: View {
         .offset(cardOffset)
         .rotationEffect(snapAway == nil ? rotation : .degrees(Double((snapAway?.width ?? 0) / 14)))
         .gesture(isFront ? dragGesture : nil)
-        .onChange(of: dragOffset) { _, _ in updateArming() }
+        .onChange(of: dragOffset) { _, _ in
+            updateArming()
+            publishEdges()
+        }
         .onReceive(NotificationCenter.default.publisher(for: .NSProcessInfoPowerStateDidChange)) { _ in
             lowPower = ProcessInfo.processInfo.isLowPowerModeEnabled
         }
@@ -160,6 +172,7 @@ struct SwipeMediaCard: View {
             }
             showLivePlayback = false
             liveGlow = 0
+            if isFront { dragModel?.signal = EdgeSignal.rest }
         }
         .onChange(of: scenePhase) { _, phase in
             if phase != .active, item.kind == .video {
@@ -338,8 +351,8 @@ struct SwipeMediaCard: View {
         let strength = max(0, min(1, -dragOffset.width / commitThreshold))
         // Under the gate the armed state shows at once: the stamp jumps to full strength.
         let stamp: CGFloat = (gate.isStill && armedSide == .delete) ? 1 : strength
+        // The tear itself is drawn at the screen's left edge (`ScreenEdgeOverlay`); only the stamp rides the card.
         return ZStack {
-            TearOverlay(strength: Double(strength), armed: armedSide == .delete, animated: !gate.isStill)
             Text("DELETE")
                 .font(.system(size: 26, weight: .black))
                 .foregroundStyle(.white)
@@ -357,8 +370,8 @@ struct SwipeMediaCard: View {
     private var spareOverlay: some View {
         let strength = max(0, min(1, dragOffset.width / commitThreshold))
         let stamp: CGFloat = (gate.isStill && armedSide == .keep) ? 1 : strength
+        // The barrier itself is drawn at the screen's right edge (`ScreenEdgeOverlay`); only the stamp rides the card.
         return ZStack(alignment: .topTrailing) {
-            BarrierOverlay(strength: Double(strength), armed: armedSide == .keep, animated: !gate.isStill)
             Text("KEEP")
                 .font(.system(size: 26, weight: .black))
                 .foregroundStyle(.onAccent)
@@ -416,11 +429,18 @@ struct SwipeMediaCard: View {
         case .none:
             break
         }
-        if comboTier.isMax {
+        if shownTier.isMax {
             try? await Task.sleep(for: .milliseconds(150))
             guard !Task.isCancelled else { return }
             withAnimation(.easeInOut(duration: 0.5)) { comboSheen = 1.4 }
         }
+    }
+
+    /// Tells the screen's edges how far this card is dragged. Once the card is committed the overlays let go.
+    private func publishEdges() {
+        guard isFront, let dragModel else { return }
+        dragModel.animated = !gate.isStill
+        dragModel.signal = snapAway == nil ? EdgeSignal(progress: progress) : EdgeSignal.rest
     }
 
     /// Keeps `armedSide` in step with the drag and fires the detent once per crossing.
@@ -458,6 +478,7 @@ struct SwipeMediaCard: View {
                 snapAway = target
             }
         }
+        if isFront { dragModel?.signal = EdgeSignal.rest }
         // Fire callback after a short delay so the animation reads.
         Task { @MainActor in
             try? await Task.sleep(for: .milliseconds(reduceMotion ? 80 : 220))
