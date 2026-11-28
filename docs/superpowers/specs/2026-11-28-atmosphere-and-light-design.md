@@ -83,6 +83,7 @@ What the owner's spec asks, and what is already settled:
 2. Dark's torch strength is the 0.08 the owner chose (a deliberate pin: changing it should take a decision).
 3. In both palettes, the torch lifts the Dark canvas's luminance and does not lower the Light canvas's by more than 2% (the pool it replaces lowered it about 12%).
 4. Text contrast at the torch's brightest point is at least 4.5:1 for all three text colours in all four looks.
+5. The rim stays faint: both rim alphas are above 0 and at most 0.3, so it can never become a frame.
 
 **The tour.** Every screen in Light and Dark already shoots the canvas and the panels, so the existing tour shows Part 1 with no new test. The owner judges from it.
 
