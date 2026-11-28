@@ -180,3 +180,32 @@ Built as one PR (plan: `docs/superpowers/plans/2026-11-27-combat-card-depth-pr2-
 - **Hues.** Every skin colour is `family.accentColor` or the existing `glitchRose` and `videoSapphire`; no new hues and no new image assets.
 
 **Not verified.** No one has seen any of this rendered, and every constant (arc sizes, counts, alphas, speeds, positions) is a first guess. `testZFamilySkins` shoots each skin on the first card in Light and Dark, and `testZCardDragPoses` shoots the drag; those screenshots are how the owner judges the look. Frame rate with a skin running, thermals, Reduce Motion, Low Power Mode, VoiceOver and Dynamic Type still need a device pass.
+
+## 14. Revision after the first tour (28 November 2026)
+
+The tour of parts 2 and 3 was the first time anyone saw the card rendered. It showed five things wrong, all in how the design was built, not in what it asked for. Where each was fixed:
+
+| Finding | Fix |
+|---|---|
+| The tear and the barrier were drawn on the card, so they slid off the screen with it and were almost invisible; the tear's jagged edge also showed as red lines over the nameplate | `ScreenEdgeOverlay` draws them at the screen's own left and right edges, over the deck area, above the card. `EdgeSignal` (pure, with tests) turns the drag into what each overlay is told, and only the side being dragged is ever above zero. The limits are unchanged (34% and 24% of the width, edge alphas 0.55 and 0.5), but the width they are a fraction of is now the deck's, not the card's, so they reach a little further in points. The tear's fill is crimson from the edge. The DELETE and KEEP stamps stay on the card. The overlays are still the one bounded exception to invariant 1, and only while a finger is down |
+| The skins were hairlines on a 4 pt rim: almost nothing to see | Every skin's rim is 2 pt wider (the Behemoths' 4), so the photo starts at least 14 pt in. A wash of the monster's accent colours the rim, and the marks are heavier and larger (scales, chips, cracks, bevel, rivets, glass edge, notches, chromatic split). Edge particles are drawn 1.6 times larger and 1.7 times stronger, and the Phantoms' glow and after-images are stronger. Nothing is added inside the photo: `CardSkinInvarianceTests` is unchanged and still has to pass. Every constant is still a first guess |
+| In Light, the Undo pill sat over the duplicate group's "Confirm, keep all copies" button | The group card always leaves 56 pt at the bottom for the pill, and its photo is 140 to 250 pt tall, shorter when the screen is crowded, so the card fits |
+| Two of the twelve skin shots landed on a duplicate group, which has no skin | The tour puts a group away (keeping every copy, so nothing is deleted) and shoots the next card. That also clears the first-card swipe arrows from the shot |
+| Part 3 had no screenshot at all | `testZComboRim` shoots the combo rim at x1.5 and x2.0 in Light and Dark, with the app told the combo (`-UITestCombo`). The video vignette and breath and the Live Photo glow and iris are still not shot: the synthetic library has no video or Live Photo. They need the owner's device pass |
+
+**Not changed.** One of the shipped staves (Ashen Bough IV) has a grey smudge at its upper right in the art. That is an art question for the owner, not a code change: the modular asset tests pin each sprite's pixels.
+
+### 14.1 Second pass on the skins, and two small fixes (28 November 2026)
+
+The new tour's frame corners at 1:1 showed the first pass of section 14 had made only the Duplicate Dragons unmistakable; the Storage Behemoths and the Video Phantoms had barely changed, and the Undead, Relics and Glitchborn only a little. Each skin now has a mark a person can name at a glance, all still drawn inside the rim ring and nowhere else, so the photo promise and its pixel test are unchanged:
+
+- **Storage Behemoths:** a dark stone slab under the bevel, mortar seams every few dozen points, eight rivets (the four corners and four side midpoints), and heavier pressure cracks.
+- **Video Phantoms:** a brighter glass rim with a shimmer that swings with the tilt, a lit inner edge, and a stronger cool glow outside the frame.
+- **Clutter Undead:** more chips, larger patches of rot and moss, and a darker inner edge.
+- **Archive Relics:** a scatter of limestone dust, fourteen longer cracks, and a stronger corner of light.
+- **Glitchborn:** scanlines across the rim, more and wider notches, six slipped slices of the two glitch colours, and a wider chromatic split.
+- **Duplicate Dragons:** a stronger wash, scales and glint.
+
+The accent wash is stronger for every skin. Everything remains a first guess for the owner to judge on the tour.
+
+Two things the tour showed beside the skins: the card behind a duplicate group showed its nameplate text under the group card, which now sits higher to leave room for the Undo pill, so the card behind is not drawn while a group is on top; and one skin shot caught the Undo pill from the group the tour had put away, so the tour now waits the pill out before it shoots.

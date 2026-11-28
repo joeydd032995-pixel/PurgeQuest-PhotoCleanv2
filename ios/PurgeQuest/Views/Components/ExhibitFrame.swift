@@ -30,7 +30,7 @@ struct ExhibitFrame<Photo: View>: View {
     @ViewBuilder let photo: () -> Photo
 
     private let outer: CGFloat = 12
-    /// The rim is 4 pt; a Storage Behemoths frame is 3 pt heavier.
+    /// The plain rim is 4 pt; a family skin widens it (see `FamilySkinKind.extraRim`) so its treatment can be seen.
     private var rim: CGFloat { 4 + CGFloat(skin?.extraRim ?? 0) }
 
     var body: some View {
@@ -69,8 +69,8 @@ struct ExhibitFrame<Photo: View>: View {
         let bevel = LinearGradient(colors: bevelColors, startPoint: litStart, endPoint: litEnd)
         let litEdge = RoundedRectangle(cornerRadius: outer - 1).stroke(bevel, lineWidth: 1).padding(1)
         // The Video Phantoms' cool glow sits outside the frame; the frame is opaque, so it never reaches the photo.
-        let glowColor: Color = skin == .phantoms ? accent.opacity(0.45) : Color.clear
-        let glowRadius: CGFloat = skin == .phantoms ? 10 : 0
+        let glowColor: Color = skin == .phantoms ? accent.opacity(0.85) : Color.clear
+        let glowRadius: CGFloat = skin == .phantoms ? 18 : 0
         // The combo's glow also reaches a little outside the frame, never inside it.
         let comboGlowAlpha: Double = (combo?.tier.glowAlpha ?? 0) * (combo?.shown ?? 0) * 0.8
         let liveGlowAlpha: Double = liveGlow * 0.8
@@ -99,7 +99,7 @@ struct ExhibitFrame<Photo: View>: View {
     @ViewBuilder
     private var skinLayer: some View {
         if let skin {
-            SkinRim(kind: skin, seedKey: skinSeed, highlightShift: highlightShift, crack: crack,
+            SkinRim(kind: skin, seedKey: skinSeed, accent: accent, highlightShift: highlightShift, crack: crack,
                     outerRadius: outer, rim: rim)
         }
     }
